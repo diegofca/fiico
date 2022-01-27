@@ -29,11 +29,50 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  equatable: ^2.0.3
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  #arch
+  flutter_bloc: ^7.3.0
   cupertino_icons: ^1.0.2
+  very_good_analysis: ^2.2.0
+  intl: ^0.17.0
+  font_awesome_flutter: ^9.0.0
+
+  #Firebase
+  firebase_core: ^1.10.0
+  firebase_auth: ^3.2.0
+  firebase_messaging: ^11.1.0
+  cloud_firestore:
+
+  #Local Not
+  flutter_local_notifications: ^9.1.5
+
+  #authproviders
+  google_sign_in: ^5.2.1
+  flutter_facebook_auth: ^3.5.6
+  sign_in_with_apple: ^3.3.0
+  crypto: ^3.0.1
+
+  #Verify code
+  pin_code_fields: ^7.3.0 
+
+  #text linked
+  flutter_linkify: ^5.0.2 
+
+  #shared preferences
+  shared_preferences: ^2.0.9 
+
+  #screen loader
+  load: ^1.0.0
+  
+  #Load SVG IMAGES
+  flutter_svg: ^0.23.0+1 
+  cached_network_image: ^3.1.0+1
+
+  #Icons
+  material_design_icons_flutter: ^5.0.6595
 
 dev_dependencies:
   flutter_test:
@@ -51,11 +90,17 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+  fonts:
+    - family: Kollektif
+      fonts:
+        - asset: assets/fonts/Kollektif.ttf
+        - asset: assets/fonts/Kollektif-Bold.ttf
+          weight: 700
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -8,11 +8,11 @@
 			"name": "development",
 			"request": "launch",
 			"type": "dart",
-			"program": "lib/main/main_dev.dart",
-			"args": [
-				"--flavor",
-				"dev"
-			]
+			"program": "lib/main/main.dart",
+			// "args": [
+			// 	"--flavor",
+			// 	"dev"
+			// ]
 		},
 		{
 			"name": "production",
