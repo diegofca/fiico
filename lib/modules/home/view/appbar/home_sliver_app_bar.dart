@@ -89,13 +89,13 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                             right: FiicoPaddings.eight,
                           ),
                           child: SvgPicture.asset(
-                            SVGImages.arrowDown,
+                            SVGImages.arrowUp,
                             height: 23,
                             width: 23,
                           ),
                         ),
                         Text(
-                          "\$ 500.000",
+                          "\$ 3 M",
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -132,13 +132,13 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                             right: FiicoPaddings.eight,
                           ),
                           child: SvgPicture.asset(
-                            SVGImages.arrowUp,
+                            SVGImages.arrowDown,
                             height: 25,
                             width: 25,
                           ),
                         ),
                         Text(
-                          "\$ 500.000",
+                          "\$ 1 M",
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -181,7 +181,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                           ),
                         ),
                         Text(
-                          "\$ 500.000",
+                          "\$ 13 K",
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -302,18 +302,10 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buttonAction(SVGImages.addEntry, "Add entry", () {
-              print('addEntry');
-            }),
-            _buttonAction(SVGImages.addDebt, "Add debt", () {
-              print('addDebt');
-            }),
-            _buttonAction(SVGImages.addBudget, "Add group", () {
-              print('addBudget');
-            }),
-            _buttonAction(SVGImages.budgetList, "My groups", () {
-              print('budgetList');
-            }),
+            _buttonAction(SVGImages.addEntry, "Add entry", () {}),
+            _buttonAction(SVGImages.addDebt, "Add debt", () {}),
+            _buttonAction(SVGImages.addBudget, "Add group", () {}),
+            _buttonAction(SVGImages.budgetList, "My groups", () {}),
           ],
         ),
       ),

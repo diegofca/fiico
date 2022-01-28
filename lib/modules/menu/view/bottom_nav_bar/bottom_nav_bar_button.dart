@@ -46,7 +46,7 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         .value;
 
     final _colorTween =
-        ColorTween(begin: FiicoColors.purpleSoft, end: FiicoColors.purpleDark);
+        ColorTween(begin: FiicoColors.graySoft, end: FiicoColors.purpleDark);
     final _colorTweenAnimation = _colorTween.animate(CurvedAnimation(
         parent: expandController,
         curve: _expanded ? Curves.easeInExpo : Curves.easeOutCirc));
@@ -66,7 +66,9 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16.5),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
           child: AnimatedContainer(
             curve: Curves.easeOut,
             duration: animatedDuration,
@@ -74,30 +76,44 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
               fit: BoxFit.fitHeight,
               child: Builder(
                 builder: (_) {
-                  return Stack(
-                    children: [
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Opacity(
-                          opacity: 0,
-                          child: icon,
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          widthFactor: curveValue,
-                          child: Opacity(
-                            opacity: _opacityValue(),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: _leftPadding(),
-                                right: _rigthPadding(),
+                  return Container(
+                    decoration: const BoxDecoration(
+                      color: FiicoColors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Stack(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Opacity(
+                                opacity: 0,
+                                child: icon,
                               ),
-                              child: widget.text,
-                            ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                widthFactor: curveValue,
+                                child: Opacity(
+                                  opacity: _opacityValue(),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: _leftPadding(),
+                                      right: _rigthPadding(),
+                                    ),
+                                    child: widget.text,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ]),
-                      Align(alignment: Alignment.centerLeft, child: icon),
-                    ],
+                          Align(alignment: Alignment.centerLeft, child: icon),
+                        ],
+                      ),
+                    ),
                   );
                 },
               ),

@@ -20,17 +20,15 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      height: MediaQuery.of(context).size.height / 2.3,
-      padding: const EdgeInsets.all(24),
+      height: MediaQuery.of(context).size.height / 2.1,
+      color: FiicoColors.white,
+      padding: const EdgeInsets.only(top: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: SvgPicture.asset(
-              SVGImages.emptySafe,
-              height: 180,
-            ),
+          SvgPicture.asset(
+            SVGImages.emptySafe,
+            height: 160,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16),

@@ -1,4 +1,4 @@
-package com.example.control
+package com.fiico.app
 
 import io.flutter.embedding.android.FlutterActivity
 

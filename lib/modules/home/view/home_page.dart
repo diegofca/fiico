@@ -1,3 +1,4 @@
+import 'package:control/helpers/extension/colors.dart';
 import 'package:control/modules/home/view/appbar/home_sliver_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,19 +18,23 @@ class HomePageState extends State<HomePage> {
 
   double opacity = 0;
 
+  //TEMPORAL
+  final items = 0;
+
   @override
   void initState() {
     super.initState();
     _controller.addListener(() {
-      opacity = _controller.offset;
-      setState(() {});
-      if (_controller.position.atEdge) {}
+      setState(() {
+        opacity = _controller.offset;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: FiicoColors.white,
       appBar: const HomeAppBar(
         title: HomeTitleAppBar(
           title: "Hola, Diego",
@@ -47,24 +52,41 @@ class HomePageState extends State<HomePage> {
       slivers: [
         HomeSliverAppBar(
           opacity,
-          isHideBoards: false,
+          isHideBoards: items == 0,
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              if (index == 0) {
-                return const Expanded(
-                  child: HomeEmptyView(),
-                );
-              }
-              return ListTile(
-                title: Center(child: Text('Item #$index')),
-              );
-            },
-            childCount: 10,
-          ),
-        ),
+        _emptySliverView(items),
+        _listItemsView(items),
       ],
+    );
+  }
+
+  Widget _listItemsView(int count) {
+    return SliverVisibility(
+      visible: count > 0,
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return ListTile(
+              title: Center(child: Text('Item #$index')),
+            );
+          },
+          childCount: count,
+        ),
+      ),
+    );
+  }
+
+  Widget _emptySliverView(int count) {
+    return SliverVisibility(
+      visible: count == 0,
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (_, index) {
+            return const HomeEmptyView();
+          },
+          childCount: 1,
+        ),
+      ),
     );
   }
 }

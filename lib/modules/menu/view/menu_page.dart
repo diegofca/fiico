@@ -1,8 +1,7 @@
-import 'package:control/helpers/genericViews/bottom_nav_bar/bottom_nav.dart';
 import 'package:control/modules/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'bottom_nav_bar/bottom_nav.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({
@@ -15,7 +14,8 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _tabs = _onCreateTabs(context);
-    return Column(
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
         Expanded(
           child: _ScreensView(
@@ -45,7 +45,7 @@ class MenuPage extends StatelessWidget {
       ),
       const BottomNavBarItem(
         icon: MdiIcons.tableSettings,
-        text: "Mis grupos",
+        text: "Grupos",
         screen: Text(
           'Index 2',
         ),
