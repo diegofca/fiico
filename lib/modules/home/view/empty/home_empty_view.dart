@@ -1,6 +1,7 @@
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,35 +18,50 @@ class HomeEmptyView extends StatefulWidget {
 }
 
 class HomeEmtpyViewState extends State<HomeEmptyView> {
+  final _imageTopHeigth = 160.0;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.1,
+      height: MediaQuery.of(context).size.height / 2.0,
       color: FiicoColors.white,
-      padding: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            SVGImages.emptySafe,
-            height: 160,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              "No tienes moviemientos recientes",
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayNeutral,
-              ),
-            ),
-          ),
-          const FiicoButton(
-            title: "Agregar movimiento",
-            image: SVGImages.addBudget,
-            padding: EdgeInsets.all(16),
-          )
+          _imageTop(),
+          _emptyText(),
+          _bodyButton(),
         ],
       ),
+    );
+  }
+
+  Widget _imageTop() {
+    return SvgPicture.asset(
+      SVGImages.emptySafe,
+      height: _imageTopHeigth,
+    );
+  }
+
+  Widget _emptyText() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.thirtyThree,
+      ),
+      child: Text(
+        "No tienes moviemientos recientes",
+        style: Style.subtitle.copyWith(
+          color: FiicoColors.grayNeutral,
+        ),
+      ),
+    );
+  }
+
+  Widget _bodyButton() {
+    return FiicoButton.green(
+      title: "Agregar movimiento",
+      padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }
 }

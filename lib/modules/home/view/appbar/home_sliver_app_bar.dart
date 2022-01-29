@@ -32,7 +32,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       title: _resumeBoards(),
-      flexibleSpace: _flexibleWidgets(),
+      flexibleSpace: _flexibleWidgets(context),
       backgroundColor: FiicoColors.purpleDark,
       floating: false,
       collapsedHeight: widget.isHideBoards ? 0 : _heigthTitleWidget,
@@ -118,7 +118,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                   ],
                 ),
                 Container(
-                  width: 1,
+                  width: FiicoLineHeight.normal,
                   color: FiicoColors.white,
                   height: 25,
                 ),
@@ -161,7 +161,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                   ],
                 ),
                 Container(
-                  width: 1,
+                  width: FiicoLineHeight.normal,
                   color: FiicoColors.white,
                   height: 25,
                 ),
@@ -212,7 +212,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   }
 
   /// MARK: - Listado de vistas secundarias
-  Widget _flexibleWidgets() {
+  Widget _flexibleWidgets(BuildContext context) {
     return AnimatedOpacity(
       opacity: getOpacity(),
       curve: Curves.bounceIn,
@@ -221,7 +221,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         child: Column(
           children: [
             _searchWidget(),
-            _menuButtonsWidget(),
+            _menuButtonsWidget(context),
           ],
         ),
       ),
@@ -293,7 +293,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   }
 
   /// MARK: - Listado de botones de acceso rapido
-  Widget _menuButtonsWidget() {
+  Widget _menuButtonsWidget(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
       height: _heigthButtonsWidget,
@@ -302,10 +302,10 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buttonAction(SVGImages.addEntry, "Add entry", () {}),
-            _buttonAction(SVGImages.addDebt, "Add debt", () {}),
-            _buttonAction(SVGImages.addBudget, "Add group", () {}),
-            _buttonAction(SVGImages.budgetList, "My groups", () {}),
+            _buttonAction(context, SVGImages.addEntry, "Add entry", () {}),
+            _buttonAction(context, SVGImages.addDebt, "Add debt", () {}),
+            _buttonAction(context, SVGImages.addBudget, "Add group", () {}),
+            _buttonAction(context, SVGImages.budgetList, "My groups", () {}),
           ],
         ),
       ),
@@ -313,7 +313,8 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   }
 
   /// MARK: - Boton de acceso rapido
-  Widget _buttonAction(String image, String text, Function onTap) {
+  Widget _buttonAction(
+      BuildContext context, String image, String text, Function onTap) {
     return GestureDetector(
       onTap: () => onTap.call(),
       child: Column(

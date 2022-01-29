@@ -17,10 +17,16 @@ class MenuPage extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        Expanded(
-          child: _ScreensView(
-            screens: _tabs.map((e) => e.screen).toList(),
-            selectedIndex: selectIndex,
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: NavigationBottom.height - 10,
+            ),
+            child: _ScreensView(
+              screens: _tabs.map((e) => e.screen).toList(),
+              selectedIndex: selectIndex,
+            ),
           ),
         ),
         NavigationBottom(
@@ -36,11 +42,11 @@ class MenuPage extends StatelessWidget {
     // final l10n = context.l10n;
 
     return <BottomNavBarItem>[
-      const BottomNavBarItem(
+      BottomNavBarItem(
         icon: MdiIcons.homeVariant,
         text: "Home",
         screen: HomePage(
-          key: Key('_MenuBottomTab.feedScreen'),
+          key: const Key('_MenuBottomTab.feedScreen'),
         ),
       ),
       const BottomNavBarItem(

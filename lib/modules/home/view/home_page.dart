@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/modules/home/view/appbar/home_sliver_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,10 @@ import 'appbar/home_title_app_bar.dart';
 import 'empty/home_empty_view.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  //TEMPORAL
+  var items = 1;
 
   @override
   State<HomePage> createState() => HomePageState();
@@ -52,10 +57,10 @@ class HomePageState extends State<HomePage> {
       slivers: [
         HomeSliverAppBar(
           opacity,
-          isHideBoards: items == 0,
+          isHideBoards: widget.items == 0,
         ),
-        _emptySliverView(items),
-        _listItemsView(items),
+        _emptySliverView(widget.items),
+        _listItemsView(widget.items),
       ],
     );
   }
@@ -66,8 +71,16 @@ class HomePageState extends State<HomePage> {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return ListTile(
-              title: Center(child: Text('Item #$index')),
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  widget.items += 1;
+                  _scrollDown();
+                });
+              },
+              child: ListTile(
+                title: Center(child: Text('Item #$index')),
+              ),
             );
           },
           childCount: count,
@@ -87,6 +100,14 @@ class HomePageState extends State<HomePage> {
           childCount: 1,
         ),
       ),
+    );
+  }
+
+  void _scrollDown() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
     );
   }
 }

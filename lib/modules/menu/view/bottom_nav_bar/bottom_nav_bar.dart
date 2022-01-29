@@ -16,6 +16,8 @@ class NavigationBottom extends StatefulWidget {
   final ValueChanged<int>? onTabChange;
   final Curve curve;
 
+  static double height = 60.0;
+
   @override
   _NavigationBottomState createState() => _NavigationBottomState();
 }
