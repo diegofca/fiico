@@ -19,7 +19,7 @@ class HomePageState extends State<HomePage> {
   double opacity = 0;
 
   //TEMPORAL
-  final items = 0;
+  final items = 20;
 
   @override
   void initState() {

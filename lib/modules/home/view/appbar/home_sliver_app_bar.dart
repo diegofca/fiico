@@ -319,24 +319,26 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
       child: Column(
         children: [
           SizedBox(
-            height: 100,
-            width: 100,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: FiicoPaddings.sixteen,
-                right: FiicoPaddings.eight,
-                left: FiicoPaddings.eight,
-                bottom: FiicoPaddings.eight,
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    FiicoPaddings.twenyFour,
-                  ),
-                  color: FiicoColors.purpleNeutral,
+            width: MediaQuery.of(context).size.width / 4.3,
+            child: AspectRatio(
+              aspectRatio: 1 / 1.03,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: FiicoPaddings.sixteen,
+                  right: FiicoPaddings.eight,
+                  left: FiicoPaddings.eight,
+                  bottom: FiicoPaddings.eight,
                 ),
-                child: SvgPicture.asset(image),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      FiicoPaddings.twenyFour,
+                    ),
+                    color: FiicoColors.purpleNeutral,
+                  ),
+                  child: SvgPicture.asset(image),
+                ),
               ),
             ),
           ),
@@ -357,7 +359,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   }
 
   double getOpacity() {
-    var opacity = widget.opacity / 100;
+    var opacity = (widget.opacity / 100) - 0.6;
     opacity = opacity <= -0 ? 0 : opacity;
     opacity = opacity >= 1 ? 1 : opacity;
     return 1 - opacity;

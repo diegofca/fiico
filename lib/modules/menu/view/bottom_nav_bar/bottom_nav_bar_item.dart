@@ -31,21 +31,27 @@ class BottomNavBarItem extends StatefulWidget {
 class _BottomNavBarItemState extends State<BottomNavBarItem> {
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      label: widget.text,
-      child: BottomNavBarButton(
-        active: widget.active,
-        onPressed: () {
-          HapticFeedback.selectionClick();
-          widget.onPressed?.call();
-        },
-        curve: widget.curve,
-        icon: widget.icon,
-        text: Text(
-          widget.text,
-          style: Style.desc.copyWith(
-            color: FiicoColors.purpleDark,
-            fontSize: FiicoFontSize.xs,
+    return Expanded(
+      flex: widget.active ?? false ? 3 : 2,
+      child: SizedBox(
+        height: 25,
+        child: Semantics(
+          label: widget.text,
+          child: BottomNavBarButton(
+            active: widget.active,
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              widget.onPressed?.call();
+            },
+            curve: widget.curve,
+            icon: widget.icon,
+            text: Text(
+              widget.text,
+              style: Style.desc.copyWith(
+                color: FiicoColors.purpleDark,
+                fontSize: FiicoFontSize.xs,
+              ),
+            ),
           ),
         ),
       ),

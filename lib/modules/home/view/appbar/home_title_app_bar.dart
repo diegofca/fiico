@@ -27,7 +27,7 @@ class HomeTitleAppBarState extends State<HomeTitleAppBar> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _columnTexts(),
         _profileImage(widget.profileUrl),
@@ -89,7 +89,7 @@ class HomeTitleAppBarState extends State<HomeTitleAppBar> {
   Widget _profileImage(String path) {
     return Padding(
       padding: const EdgeInsets.only(
-        right: FiicoPaddings.eight,
+        top: FiicoPaddings.eight,
       ),
       child: ProfileImage(pathProfile: path),
     );

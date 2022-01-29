@@ -9,13 +9,13 @@ class ProfileImage extends StatelessWidget {
   final Function? onProfileTap;
 
   Color? maskColor;
-  double size = 50;
+  double size = 40;
 
   ProfileImage({
     Key? key,
     this.pathProfile,
     this.onProfileTap,
-    this.size = 50,
+    this.size = 40,
     this.maskColor,
   }) : super(key: key);
 

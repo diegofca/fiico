@@ -43,27 +43,23 @@ class _NavigationBottomState extends State<NavigationBottom> {
       color: Colors.transparent,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(30),
-          ),
           boxShadow: [
             BoxShadow(
-              color: FiicoColors.grayNeutral,
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: Offset(0, 5), // changes position of shadow
+              color: FiicoColors.grayNeutral.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 20,
+              offset: const Offset(0, 0), // changes position of shadow
             ),
           ],
         ),
         child: SafeArea(
           top: false,
           child: SizedBox(
-            height: 54,
+            height: 60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: widget.tabs
                   .map(
                     (t) => BottomNavBarItem(
