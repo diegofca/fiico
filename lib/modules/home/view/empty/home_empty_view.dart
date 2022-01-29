@@ -9,7 +9,10 @@ import 'package:flutter_svg/svg.dart';
 class HomeEmptyView extends StatefulWidget {
   const HomeEmptyView({
     Key? key,
+    required this.onTapNewItem,
   }) : super(key: key);
+
+  final VoidCallback onTapNewItem;
 
   @override
   State<HomeEmptyView> createState() => HomeEmtpyViewState();
@@ -60,6 +63,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
 
   Widget _bodyButton() {
     return FiicoButton.green(
+      ontap: widget.onTapNewItem,
       title: "Agregar movimiento",
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );

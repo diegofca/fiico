@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
   //TEMPORAL
-  var items = 1;
+  var items = 0;
 
   @override
   State<HomePage> createState() => HomePageState();
@@ -22,9 +22,6 @@ class HomePageState extends State<HomePage> {
   final _controller = ScrollController();
 
   double opacity = 0;
-
-  //TEMPORAL
-  final items = 20;
 
   @override
   void initState() {
@@ -55,13 +52,17 @@ class HomePageState extends State<HomePage> {
     return CustomScrollView(
       controller: _controller,
       slivers: [
-        HomeSliverAppBar(
-          opacity,
-          isHideBoards: widget.items == 0,
-        ),
+        _mainAppBar(),
         _emptySliverView(widget.items),
         _listItemsView(widget.items),
       ],
+    );
+  }
+
+  Widget _mainAppBar() {
+    return HomeSliverAppBar(
+      opacity,
+      isHideBoards: widget.items == 0,
     );
   }
 
@@ -79,7 +80,7 @@ class HomePageState extends State<HomePage> {
                 });
               },
               child: ListTile(
-                title: Center(child: Text('Item #$index')),
+                title: Center(child: Text('ItemSSSSS #$index')),
               ),
             );
           },
@@ -95,7 +96,12 @@ class HomePageState extends State<HomePage> {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (_, index) {
-            return const HomeEmptyView();
+            return HomeEmptyView(
+              onTapNewItem: () {
+                widget.items += 1;
+                setState(() {});
+              },
+            );
           },
           childCount: 1,
         ),

@@ -10,6 +10,7 @@ class FiicoButton extends StatefulWidget {
     Key? key,
     required this.title,
     required this.color,
+    required this.onTap,
     this.image = '',
     this.textColor = FiicoColors.white,
     this.padding = EdgeInsets.zero,
@@ -20,8 +21,10 @@ class FiicoButton extends StatefulWidget {
   final String? image;
   final Color? textColor;
   final EdgeInsets? padding;
+  final VoidCallback onTap;
 
   static FiicoButton green({
+    required VoidCallback ontap,
     String title = '',
     String image = '',
     EdgeInsets padding = EdgeInsets.zero,
@@ -31,6 +34,7 @@ class FiicoButton extends StatefulWidget {
       image: image,
       title: title,
       padding: padding,
+      onTap: ontap,
     );
   }
 
@@ -46,46 +50,49 @@ class FiicoButtonState extends State<FiicoButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: widget.padding!,
-      child: Container(
-        height: _heightButton,
-        margin: const EdgeInsets.symmetric(
-          vertical: FiicoPaddings.sixteen,
-        ),
-        decoration: BoxDecoration(
-          color: widget.color,
-          borderRadius: BorderRadius.circular(FiicoPaddings.twenyFour),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: FiicoPaddings.sixteen,
+    return GestureDetector(
+      onTap: () => widget.onTap.call(),
+      child: Padding(
+        padding: widget.padding!,
+        child: Container(
+          height: _heightButton,
+          margin: const EdgeInsets.symmetric(
+            vertical: FiicoPaddings.sixteen,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Visibility(
-                visible: widget.image != null && widget.image!.isNotEmpty,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: FiicoPaddings.sixteen,
-                  ),
-                  child: SvgPicture.asset(
-                    SVGImages.emptySafe,
-                    width: _sizeImage.width,
-                    height: _sizeImage.height,
+          decoration: BoxDecoration(
+            color: widget.color,
+            borderRadius: BorderRadius.circular(FiicoPaddings.twenyFour),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.sixteen,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Visibility(
+                  visible: widget.image != null && widget.image!.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: FiicoPaddings.sixteen,
+                    ),
+                    child: SvgPicture.asset(
+                      SVGImages.emptySafe,
+                      width: _sizeImage.width,
+                      height: _sizeImage.height,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                widget.title,
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.white,
-                  fontSize: FiicoFontSize.xs,
+                Text(
+                  widget.title,
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.white,
+                    fontSize: FiicoFontSize.xs,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

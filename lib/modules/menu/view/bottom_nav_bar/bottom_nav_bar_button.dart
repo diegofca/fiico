@@ -1,5 +1,6 @@
 import 'dart:math' show pow;
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/fonts_params.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBarButton extends StatefulWidget {
@@ -67,7 +68,7 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         splashColor: Colors.transparent,
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: 20,
+            horizontal: FiicoPaddings.twenty,
           ),
           child: AnimatedContainer(
             curve: Curves.easeOut,
@@ -80,11 +81,11 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
                     decoration: const BoxDecoration(
                       color: FiicoColors.white,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(8),
+                        Radius.circular(FiicoPaddings.eight),
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(FiicoPaddings.four),
                       child: Stack(
                         children: [
                           Row(

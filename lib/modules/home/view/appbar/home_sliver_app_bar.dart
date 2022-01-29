@@ -331,7 +331,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                   bottom: FiicoPaddings.eight,
                 ),
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(FiicoPaddings.twenty),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
                       FiicoPaddings.twenyFour,

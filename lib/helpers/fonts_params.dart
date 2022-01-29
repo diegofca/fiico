@@ -40,19 +40,22 @@ abstract class FiicoLineHeight {
 
 /// Namespace for Default Font Size
 abstract class FiicoPaddings {
-  ///Size 8px
+  ///Size 2px
   static const double two = 2;
 
-  ///Size 8px
+  ///Size 3px
   static const double four = 4;
 
   ///Size 8px
   static const double eight = 8;
 
-  ///Size 8px
+  ///Size 16px
   static const double sixteen = 16;
 
-  ///Size 8px
+  ///Size 20px
+  static const double twenty = 20;
+
+  ///Size 24px
   static const double twenyFour = 24;
 
   ///Size 8px
