@@ -47,7 +47,7 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         .value;
 
     final _colorTween =
-        ColorTween(begin: FiicoColors.graySoft, end: FiicoColors.purpleDark);
+        ColorTween(begin: FiicoColors.graySoft, end: FiicoColors.black);
     final _colorTweenAnimation = _colorTween.animate(CurvedAnimation(
         parent: expandController,
         curve: _expanded ? Curves.easeInExpo : Curves.easeOutCirc));
@@ -68,7 +68,7 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         splashColor: Colors.transparent,
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: FiicoPaddings.twenty,
+            horizontal: FiicoPaddings.four,
           ),
           child: AnimatedContainer(
             curve: Curves.easeOut,
@@ -111,7 +111,10 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
                               ),
                             ],
                           ),
-                          Align(alignment: Alignment.centerLeft, child: icon),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: icon,
+                          ),
                         ],
                       ),
                     ),

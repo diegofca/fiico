@@ -46,6 +46,9 @@ abstract class FiicoPaddings {
   ///Size 3px
   static const double four = 4;
 
+  ///Size 6px
+  static const double six = 6;
+
   ///Size 8px
   static const double eight = 8;
 
@@ -58,8 +61,14 @@ abstract class FiicoPaddings {
   ///Size 24px
   static const double twenyFour = 24;
 
-  ///Size 8px
-  static const double thirtyThree = 32;
+  ///Size 32px
+  static const double thirtyTwo = 32;
+
+  ///Size 64px
+  static const double fourtySix = 46;
+
+  ///Size 64px
+  static const double sixtyTwo = 62;
 }
 
 /// Namespace for Default Font Size
@@ -75,6 +84,9 @@ abstract class FiicoFontSize {
 
   ///Font Size 14px
   static const double xs = 14;
+
+  ///Font Size 16px
+  static const double xm = 16;
 
   ///Font Size 18px
   static const double sm = 18;

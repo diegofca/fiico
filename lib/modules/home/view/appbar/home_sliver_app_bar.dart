@@ -1,19 +1,35 @@
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/num.dart';
+import 'package:control/helpers/extension/toast.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_textfield.dart';
+import 'package:control/models/budget.dart';
+import 'package:control/modules/home/view/selectBottomBudget/home_bottom_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+enum HomeSliverButtonOptions { addEntry, addDebt, addGroup, myGroups }
 
 class HomeSliverAppBar extends SliverAppBar {
   const HomeSliverAppBar(
     this.opacity, {
     required this.isHideBoards,
+    required this.optionTapped,
+    required this.onSearchTap,
+    required this.onBudgetSelector,
+    this.budgetSelected,
     Key? key,
   }) : super(key: key);
 
   final double opacity;
   final bool isHideBoards;
+  final Budget? budgetSelected;
+
+  final Function(HomeSliverButtonOptions) optionTapped;
+  final Function(String) onSearchTap;
+  final Function() onBudgetSelector;
 
   @override
   State<HomeSliverAppBar> createState() => _HomeSliverAppBarState();
@@ -27,6 +43,8 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   final double _maxExpandedHeight = 320.0;
   final double _minExpandedHeight = 220.0;
   final flexDuration = const Duration(milliseconds: 10);
+  final _controller = TextEditingController();
+  final _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -53,26 +71,37 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         alignment: Alignment.topCenter,
         width: double.maxFinite,
         height: _heigthResumeWidget,
-        padding: const EdgeInsets.symmetric(
-          horizontal: FiicoPaddings.twenyFour,
+        padding: const EdgeInsets.only(
+          left: FiicoPaddings.sixteen,
+          right: FiicoPaddings.twenyFour,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  "Mi budget",
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.purpleLite,
-                    fontSize: FiicoFontSize.sm,
-                  ),
+            GestureDetector(
+              onTap: () => widget.onBudgetSelector.call(),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: FiicoPaddings.eight,
+                  bottom: FiicoPaddings.eight,
                 ),
-                const Icon(
-                  Icons.arrow_drop_down,
-                  color: FiicoColors.pink,
+                child: Row(
+                  children: [
+                    Text(
+                      widget.budgetSelected?.name ?? '',
+                      style: Style.subtitle.copyWith(
+                        color: FiicoColors.purpleLite,
+                        fontSize: FiicoFontSize.xm,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.arrow_drop_down,
+                      color: FiicoColors.pink,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
             // Detalle de tabla  ---
             Row(
@@ -95,7 +124,9 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                           ),
                         ),
                         Text(
-                          "\$ 3 M",
+                          widget.budgetSelected?.totalEntry
+                                  ?.toCurrencyCompat() ??
+                              '',
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -138,7 +169,9 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                           ),
                         ),
                         Text(
-                          "\$ 1 M",
+                          widget.budgetSelected?.totalDebt
+                                  ?.toCurrencyCompat() ??
+                              '',
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -181,7 +214,9 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                           ),
                         ),
                         Text(
-                          "\$ 13 K",
+                          widget.budgetSelected?.totalBalance
+                                  ?.toCurrencyCompat() ??
+                              '',
                           style: Style.subtitle.copyWith(
                             color: FiicoColors.white,
                             fontSize: FiicoFontSize.xs,
@@ -236,55 +271,69 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
 
     double topPadding = widget.isHideBoards ? 0 : _heigthTitleWidget;
 
-    return Container(
-      alignment: Alignment.topCenter,
-      height: heigth,
-      child: Padding(
-        padding: EdgeInsets.only(top: topPadding),
+    return GestureDetector(
+      onTap: () => _onSearchAction(),
+      child: Container(
+        alignment: Alignment.topCenter,
+        height: heigth,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: FiicoPaddings.twenyFour,
-            vertical: FiicoPaddings.eight,
-          ),
-          child: Container(
-            height: double.maxFinite,
-            padding: const EdgeInsets.only(
-              left: FiicoPaddings.sixteen,
-              right: FiicoPaddings.eight,
+          padding: EdgeInsets.only(top: topPadding),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.twenyFour,
+              vertical: FiicoPaddings.eight,
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(FiicoPaddings.eight),
-              color: FiicoColors.purpleNeutral,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //  Placeholder de busqueda
-                Text(
-                  'Busca tus boards aqui o ingresos aquí',
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.purpleSoft,
-                    fontSize: FiicoFontSize.xs,
+            child: Container(
+              height: double.maxFinite,
+              padding: const EdgeInsets.only(
+                left: FiicoPaddings.eight,
+                right: FiicoPaddings.eight,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(FiicoPaddings.eight),
+                color: FiicoColors.purpleNeutral,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //  Placeholder de busqueda
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        top: FiicoPaddings.six,
+                      ),
+                      child: FiicoTextfield(
+                        hintText: 'Busca tus boards aqui o ingresos aquí',
+                        textEditingController: _controller,
+                        focusNode: _focusNode,
+                        textInputAction: TextInputAction.search,
+                        onSubmitted: (_) => _onSearchAction(),
+                        textStyle: Style.subtitle.copyWith(
+                          color: FiicoColors.purpleSoft,
+                          fontSize: FiicoFontSize.xs,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                //  Icono de busqueda
-                Container(
-                  height: 45,
-                  width: 45,
-                  margin: const EdgeInsets.only(
-                    right: FiicoPaddings.two,
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    size: 30,
-                    color: FiicoColors.purpleNeutral,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(FiicoPaddings.eight),
-                    color: FiicoColors.white,
-                  ),
-                )
-              ],
+                  //  Icono de busqueda
+                  Container(
+                    height: 45,
+                    width: 45,
+                    margin: const EdgeInsets.only(
+                      right: FiicoPaddings.two,
+                    ),
+                    child: const Icon(
+                      Icons.search,
+                      size: 30,
+                      color: FiicoColors.purpleNeutral,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(FiicoPaddings.eight),
+                      color: FiicoColors.white,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -302,10 +351,18 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buttonAction(context, SVGImages.addEntry, "Add entry", () {}),
-            _buttonAction(context, SVGImages.addDebt, "Add debt", () {}),
-            _buttonAction(context, SVGImages.addBudget, "Add group", () {}),
-            _buttonAction(context, SVGImages.budgetList, "My groups", () {}),
+            _buttonAction(context, SVGImages.addEntry, "Add entry", () {
+              widget.optionTapped(HomeSliverButtonOptions.addEntry);
+            }),
+            _buttonAction(context, SVGImages.addDebt, "Add debt", () {
+              widget.optionTapped(HomeSliverButtonOptions.addDebt);
+            }),
+            _buttonAction(context, SVGImages.addBudget, "Add group", () {
+              widget.optionTapped(HomeSliverButtonOptions.addGroup);
+            }),
+            _buttonAction(context, SVGImages.budgetList, "My groups", () {
+              widget.optionTapped(HomeSliverButtonOptions.myGroups);
+            }),
           ],
         ),
       ),
@@ -343,20 +400,29 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
               ),
             ),
           ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            height: 20,
-            child: Text(
-              text,
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.purpleLite,
-                fontSize: FiicoFontSize.xs,
+          Expanded(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              height: 20,
+              child: Text(
+                text,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.purpleLite,
+                  fontSize: FiicoFontSize.xs,
+                ),
               ),
             ),
           )
         ],
       ),
     );
+  }
+
+  void _onSearchAction() {
+    if (_controller.text.isNotEmpty) {
+      _focusNode.unfocus();
+      widget.onSearchTap.call(_controller.text);
+    }
   }
 
   double getOpacity() {

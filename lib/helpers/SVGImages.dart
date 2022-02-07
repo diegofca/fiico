@@ -10,6 +10,8 @@ class SVGImages {
   static const arrowUp = 'assets/images/arrow_up.svg';
   static const equal = 'assets/images/equal.svg';
   static const emptySafe = 'assets/images/empty_safe.svg';
+  static const emptyBudgets = 'assets/images/empty_budgets_icon.svg';
+  static const emotyNot = 'assets/images/not_empty.svg';
 
   static const homeTab = 'assets/images/home_tab.svg';
   static const groupTab = 'assets/images/group_tab.svg';

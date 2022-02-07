@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "732937293793",
+    "project_id": "control-c0466",
+    "storage_bucket": "control-c0466.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732937293793:android:eab7172e44f327ecf74ca0",
+        "android_client_info": {
+          "package_name": "com.fiico.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732937293793-knmbh9hc9grfr1m0krlpjrktg7ojktdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjP_eQ0jYaVuBRxo0dbtpXjMkTBrEHhvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732937293793-knmbh9hc9grfr1m0krlpjrktg7ojktdj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "732937293793-cas6ieep26e68othfe1n5vr82fqb90ib.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fiico.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

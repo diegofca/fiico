@@ -32,7 +32,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: widget.active ?? false ? 3 : 2,
+      flex: 1,
       child: SizedBox(
         height: 25,
         child: Semantics(

@@ -88,7 +88,7 @@ class FiicoButtonState extends State<FiicoButton> {
                   widget.title,
                   style: Style.subtitle.copyWith(
                     color: FiicoColors.white,
-                    fontSize: FiicoFontSize.xs,
+                    fontSize: FiicoFontSize.sm,
                   ),
                 ),
               ],

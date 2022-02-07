@@ -50,7 +50,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   Widget _emptyText() {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyThree,
+        top: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
         "No tienes moviemientos recientes",
