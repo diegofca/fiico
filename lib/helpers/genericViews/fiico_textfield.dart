@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FiicoTextfield extends Container {
   FiicoTextfield({
@@ -13,6 +16,7 @@ class FiicoTextfield extends Container {
     this.focusNode,
     this.textStyle,
     this.textInputAction = TextInputAction.done,
+    this.inputFormatters,
     this.onChanged,
     this.onSubmitted,
     Key? key,
@@ -26,6 +30,7 @@ class FiicoTextfield extends Container {
   final TextStyle? textStyle;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
 
@@ -43,6 +48,7 @@ class FiicoTextfield extends Container {
         focusNode: focusNode,
         autocorrect: false,
         enableSuggestions: false,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(
             left: FiicoPaddings.sixteen,

@@ -17,6 +17,6 @@ extension NumExtension on num {
     ).format(
       this,
     );
-    return "$value";
+    return value;
   }
 }

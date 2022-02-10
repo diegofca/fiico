@@ -10,10 +10,10 @@ List<BottomNavBarItem> onCreateTabs(BuildContext context) {
   // final l10n = context.l10n;
 
   return <BottomNavBarItem>[
-    BottomNavBarItem(
+    const BottomNavBarItem(
       icon: MdiIcons.homeVariant,
       screen: HomePage(
-        key: const Key('_MenuHome.home'),
+        key: Key('_MenuHome.home'),
       ),
     ),
     const BottomNavBarItem(

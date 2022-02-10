@@ -7,7 +7,9 @@ import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/modules/createItem/view/header/create_item_header_view.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CreateItemSuccessView extends StatelessWidget {
@@ -85,6 +87,8 @@ class CreateItemSuccessView extends StatelessWidget {
   }
 
   Widget _entryPriceView() {
+    late TextEditingController controller = TextEditingController();
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: FiicoPaddings.four,
@@ -94,11 +98,14 @@ class CreateItemSuccessView extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: FiicoPaddings.eight),
+              padding: const EdgeInsets.only(
+                right: FiicoPaddings.four,
+                top: FiicoPaddings.four,
+              ),
               child: Text(
-                "\$",
+                '€',
                 style: Style.subtitle.copyWith(
-                  color: FiicoColors.graySoft,
+                  color: FiicoColors.purpleSoft,
                   fontSize: FiicoFontSize.lg,
                   fontWeight: FontWeight.bold,
                 ),
@@ -108,8 +115,16 @@ class CreateItemSuccessView extends StatelessWidget {
               child: Container(
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
+                  textEditingController: controller,
                   keyboardType: TextInputType.number,
                   hintText: 'Ingresa el valor',
+                  textColor: FiicoColors.purpleSoft,
+                  inputFormatters: <TextInputFormatter>[
+                    CurrencyTextInputFormatter(
+                      decimalDigits: 2,
+                      symbol: '',
+                    ),
+                  ],
                 ),
               ),
             ),

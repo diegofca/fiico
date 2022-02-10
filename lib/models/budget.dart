@@ -62,6 +62,11 @@ class Budget {
     };
   }
 
+  // Functions class ----------------------------------------------------
+  bool isEmptyMovements() {
+    return movements?.isEmpty ?? false;
+  }
+
   Color getStatusColor() {
     switch (status) {
       case "Active":

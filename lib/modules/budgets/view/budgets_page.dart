@@ -1,6 +1,9 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
-import 'package:control/modules/menu/menu.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/models/budget.dart';
+import 'package:control/modules/budgets/bloc/budgets_bloc.dart';
+import 'package:control/modules/home/repository/home_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'budgets_success_view.dart';
@@ -20,7 +23,8 @@ class BudgetsPage extends StatelessWidget {
         isShowBack: false,
       ),
       body: BlocProvider(
-        create: (context) => MenuBloc(),
+        create: (context) => BudgetsBloc(HomeRepository())
+          ..add(const BudgetsFetchRequest(uID: 1)),
         child: const BudgetsPageView(),
       ),
     );
@@ -34,11 +38,23 @@ class BudgetsPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MenuBloc, MenuState>(
+    return BlocBuilder<BudgetsBloc, BudgetsState>(
       builder: (context, state) {
         switch (state.status) {
-          case MenuStatus.success:
-            return const BudgetSuccessView();
+          case BudgetsStatus.waiting:
+            return StreamBuilder<List<Budget>>(
+              stream: state.budgets,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return BudgetSuccessView(
+                    budgets: snapshot.requireData,
+                  );
+                }
+                return const LoadingView(
+                  backgroundColor: FiicoColors.white,
+                ); // add failed view
+              },
+            );
         }
       },
     );

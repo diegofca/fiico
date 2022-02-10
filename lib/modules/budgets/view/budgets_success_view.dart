@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/modules/budgets/view/listView/budgets_list_item_view.dart';
 import 'package:flutter/material.dart';
 import 'emptyView/budgets_empty_view.dart';
@@ -7,9 +8,10 @@ import 'emptyView/budgets_empty_view.dart';
 class BudgetSuccessView extends StatelessWidget {
   const BudgetSuccessView({
     Key? key,
+    required this.budgets,
   }) : super(key: key);
 
-  final items = 5;
+  final List<Budget> budgets;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class BudgetSuccessView extends StatelessWidget {
 
   Widget _emptyView() {
     return Visibility(
-      visible: items == 0,
+      visible: budgets.isEmpty,
       child: BudgetsEmptyView(
         onTapNewItem: () {
           print("new item");
@@ -39,7 +41,7 @@ class BudgetSuccessView extends StatelessWidget {
 
   Widget _budgetsList() {
     return Visibility(
-      visible: items > 0,
+      visible: budgets.isNotEmpty,
       child: Container(
         alignment: Alignment.center,
         width: double.maxFinite,
@@ -55,9 +57,10 @@ class BudgetSuccessView extends StatelessWidget {
           ],
         ),
         child: ListView.builder(
-          itemCount: items,
+          itemCount: budgets.length,
           itemBuilder: (context, index) {
-            return BudgetListItemView(index: index);
+            final budget = budgets[index];
+            return BudgetListItemView(budget: budget);
           },
         ),
       ),

@@ -13,11 +13,20 @@ class FiicoImageNetwork extends StatelessWidget {
     this.iconData,
   }) : super(key: key);
 
+  /// Movement image
   const FiicoImageNetwork.movement({
     Key? key,
     this.url,
     this.size = 40,
     this.iconData = MdiIcons.arrowUpBold,
+  }) : super(key: key);
+
+  /// Budget image
+  const FiicoImageNetwork.budget({
+    Key? key,
+    this.url,
+    this.size = 40,
+    this.iconData = MdiIcons.sack,
   }) : super(key: key);
 
   @override

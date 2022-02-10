@@ -4,9 +4,8 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
-import 'package:control/helpers/genericViews/fiico_textfield.dart';
-import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/modules/createBudget/view/headerView/create_budget_header_view.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -27,7 +26,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
       child: Column(
         children: [
           _headerView(),
-          _bodyView(),
+          _bodyView(context),
         ],
       ),
     );
@@ -47,7 +46,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _bodyView() {
+  Widget _bodyView(BuildContext context) {
     return Expanded(
       child: Container(
         alignment: Alignment.topCenter,
@@ -68,13 +67,15 @@ class CreateBudgetSuccessView extends StatelessWidget {
                 vertical: FiicoPaddings.twenyFour,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _entryMoneyView(),
+                  _entryMoneyView(context),
                   _entryDateView(),
                   _entrysView(),
                   _entrysDebtsView(),
                   _infoView(),
+                  _shareButtonView(),
+                  _separatorLineView(),
                   _createButtonView(),
                 ],
               ),
@@ -85,7 +86,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryMoneyView() {
+  Widget _entryMoneyView(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -124,7 +125,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => _showCurrencyPicker(context),
                 icon: const Icon(
                   Icons.arrow_drop_down,
                   color: FiicoColors.pink,
@@ -279,7 +280,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         _separatorLineView(),
         Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
           height: 90,
           child: Text(
             'Puedes crear tus tableros y compartirlos con tus amigos y familiares, si estan tregistrados en Fiico podrán modificar tu tablero en cualquier momento.',
@@ -294,11 +295,67 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
+  Widget _shareButtonView() {
+    return GestureDetector(
+      onTap: () {
+        print("share button");
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.sixteen,
+          bottom: FiicoPaddings.thirtyTwo,
+        ),
+        child: SizedBox(
+          child: Container(
+            alignment: Alignment.center,
+            height: 40,
+            // width: 130,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                FiicoPaddings.eight,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.ios_share,
+                    size: 20,
+                    color: FiicoColors.purpleSoft,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: FiicoPaddings.eight,
+                    ),
+                    child: Text(
+                      'Share',
+                      textAlign: TextAlign.start,
+                      style: Style.desc.copyWith(
+                        fontSize: FiicoFontSize.xm,
+                        color: FiicoColors.purpleSoft,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: FiicoColors.purpleSoft,
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _createButtonView() {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
+        top: FiicoPaddings.eight,
       ),
       child: FiicoButton.green(
         title: 'Crear ingreso',
@@ -311,6 +368,30 @@ class CreateBudgetSuccessView extends StatelessWidget {
     return Container(
       color: FiicoColors.graySoft,
       height: 1,
+    );
+  }
+
+  void _showCurrencyPicker(BuildContext context) {
+    showCurrencyPicker(
+      context: context,
+      showFlag: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      onSelect: (Currency currency) {
+        print('Select currency: ${currency.name}');
+        print(currency.code);
+        print(currency.symbol);
+      },
+      theme: CurrencyPickerThemeData(
+        titleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.sm,
+        ),
+        subtitleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayNeutral,
+          fontSize: FiicoFontSize.xs,
+        ),
+      ),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/view/headerView/debt_detail_header_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -10,7 +12,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class DebtDetailSuccessView extends StatelessWidget {
   const DebtDetailSuccessView({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,9 @@ class DebtDetailSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: const DebtDetailHeaderView(),
+      child: DebtDetailHeaderView(
+        movement: movement,
+      ),
     );
   }
 
@@ -80,7 +87,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        "Salario principal de la panaderia de la calle 125 con av boyaca",
+        movement.description,
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xm,
@@ -97,73 +104,95 @@ class DebtDetailSuccessView extends StatelessWidget {
   }
 
   Widget _pricesDetailView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _priceView(),
+        _infoDateDetailView(),
+      ],
+    );
+  }
+
+  Widget _priceView() {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.thirtyTwo,
+        bottom: FiicoPaddings.twenyFour,
+        top: FiicoPaddings.twenyFour,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: FiicoPaddings.sixteen),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: FiicoPaddings.eight),
-                      child: Icon(MdiIcons.calendarCheck),
-                    ),
-                    Text(
-                      "Cada mes",
-                      style: Style.subtitle.copyWith(
-                        color: FiicoColors.graySoft,
-                        fontSize: FiicoFontSize.xm,
-                      ),
-                    )
-                  ],
-                ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Text(
+              movement.value.toCurrency(),
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.pinkRed,
+                fontSize: FiicoFontSize.xl,
+                fontWeight: FontWeight.bold,
               ),
-              Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: FiicoPaddings.eight),
-                    child: Icon(MdiIcons.clockOutline),
+            ),
+          ),
+          Text(
+            movement.currency,
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.pinkRed,
+              fontSize: FiicoFontSize.sm,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _infoDateDetailView() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: FiicoPaddings.sixtyTwo,
+            ),
+            child: Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(
+                    right: FiicoPaddings.eight,
                   ),
-                  Text(
-                    "Siempre",
-                    style: Style.subtitle.copyWith(
-                      color: FiicoColors.graySoft,
-                      fontSize: FiicoFontSize.xm,
-                    ),
-                  )
-                ],
-              )
-            ],
+                  child: Icon(MdiIcons.calendarCheck),
+                ),
+                Text(
+                  "Cada mes",
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.graySoft,
+                    fontSize: FiicoFontSize.xm,
+                  ),
+                )
+              ],
+            ),
           ),
           Row(
             children: [
-              Text(
-                "\$ 540.000",
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.pinkRed,
-                  fontSize: FiicoFontSize.lg,
-                  fontWeight: FontWeight.bold,
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: FiicoPaddings.thirtyTwo,
+                  right: FiicoPaddings.eight,
                 ),
+                child: Icon(MdiIcons.clockOutline),
               ),
               Text(
-                " cop",
+                "Siempre",
                 style: Style.subtitle.copyWith(
-                  color: FiicoColors.pinkRed,
-                  fontSize: FiicoFontSize.sm,
+                  color: FiicoColors.graySoft,
+                  fontSize: FiicoFontSize.xm,
                 ),
               )
             ],
-          ),
+          )
         ],
       ),
     );
@@ -175,7 +204,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         top: FiicoPaddings.twenyFour,
       ),
       child: FiicoTagsView(
-        tags: const ["UX", "Wireframe", "Design System", "Four"],
+        tags: movement.tags.map((s) => s as String).toList(),
         onDeleteTag: (int index) {
           print(index);
         },

@@ -26,9 +26,10 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.0,
+      height: MediaQuery.of(context).size.height / 2.5,
       color: FiicoColors.white,
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
+      alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -53,7 +54,8 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
         top: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        "No tienes moviemientos recientes",
+        "Añade todos tus gastos y apoderate de ellos.",
+        textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
         ),

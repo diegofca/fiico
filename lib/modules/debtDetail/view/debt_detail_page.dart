@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/models/movement.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,20 +11,23 @@ import 'debt_detail_success_view.dart';
 class DebtDetailPage extends StatelessWidget {
   const DebtDetailPage({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: "House bard",
+        text: movement.budgetName,
         textColor: FiicoColors.graySoft,
         actions: [_dotsButton()],
       ),
       body: BlocProvider(
         create: (context) => MenuBloc(),
-        child: const DebtDetailPageView(),
+        child: DebtDetailPageView(movement: movement),
       ),
     );
   }
@@ -50,7 +54,10 @@ class DebtDetailPage extends StatelessWidget {
 class DebtDetailPageView extends StatelessWidget {
   const DebtDetailPageView({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +65,7 @@ class DebtDetailPageView extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case MenuStatus.success:
-            return const DebtDetailSuccessView();
+            return DebtDetailSuccessView(movement: movement);
         }
       },
     );

@@ -46,7 +46,7 @@ class FiicoButton extends StatefulWidget {
 
 class FiicoButtonState extends State<FiicoButton> {
   final _sizeImage = const Size(20, 20);
-  final _heightButton = 40.0;
+  final _heightButton = 50.0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class FiicoButtonState extends State<FiicoButton> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: FiicoPaddings.sixteen,
+              horizontal: FiicoPaddings.thirtyTwo,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

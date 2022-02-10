@@ -1,15 +1,18 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 
 class BudgetListItemView extends StatefulWidget {
   const BudgetListItemView({
     Key? key,
-    required this.index,
+    required this.budget,
   }) : super(key: key);
 
-  final int index;
+  final Budget budget;
 
   @override
   State<BudgetListItemView> createState() => BudgetListItemViewState();
@@ -60,9 +63,11 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
           ),
           color: FiicoColors.grayLite,
         ),
-        child: const Icon(
-          Icons.camera,
-          size: 40,
+        child: Padding(
+          padding: const EdgeInsets.all(FiicoPaddings.sixteen),
+          child: FiicoImageNetwork.budget(
+            url: widget.budget.icon,
+          ),
         ),
       ),
     );
@@ -85,7 +90,7 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        "Danu",
+        widget.budget.name ?? '',
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.sm,
@@ -108,7 +113,7 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
             ),
           ),
           Text(
-            "Activo",
+            widget.budget.status ?? '',
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xm,
@@ -136,11 +141,11 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: FiicoPaddings.eight),
+          Padding(
+            padding: const EdgeInsets.only(top: FiicoPaddings.eight),
             child: Text(
-              "\$45.33",
-              style: TextStyle(
+              widget.budget.totalBalance?.toCurrencyCompat() ?? '',
+              style: const TextStyle(
                 color: FiicoColors.greenNeutral,
                 fontWeight: FontWeight.bold,
                 fontSize: FiicoFontSize.xs,

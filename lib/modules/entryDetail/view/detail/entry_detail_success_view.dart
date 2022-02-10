@@ -1,8 +1,10 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/movement.dart';
 import 'package:control/modules/entryDetail/view/detail/header/entry_detail_item_header.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -10,7 +12,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class EntryDetailSuccessView extends StatelessWidget {
   const EntryDetailSuccessView({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,9 @@ class EntryDetailSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: const EntryDetailHeaderView(),
+      child: EntryDetailHeaderView(
+        movement: movement,
+      ),
     );
   }
 
@@ -80,7 +87,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        "Salario principal de la panaderia de la calle 125 con av boyaca",
+        movement.description,
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xm,
@@ -102,70 +109,87 @@ class EntryDetailSuccessView extends StatelessWidget {
         top: FiicoPaddings.sixteen,
         bottom: FiicoPaddings.thirtyTwo,
       ),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: FiicoPaddings.sixteen),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: FiicoPaddings.eight),
-                      child: Icon(MdiIcons.calendarCheck),
-                    ),
-                    Text(
-                      "Cada mes",
-                      style: Style.subtitle.copyWith(
-                        color: FiicoColors.graySoft,
-                        fontSize: FiicoFontSize.xm,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: FiicoPaddings.eight),
-                    child: Icon(MdiIcons.clockOutline),
-                  ),
-                  Text(
-                    "Siempre",
-                    style: Style.subtitle.copyWith(
-                      color: FiicoColors.graySoft,
-                      fontSize: FiicoFontSize.xm,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                "\$ 540.000",
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.greenNeutral,
-                  fontSize: FiicoFontSize.lg,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                " cop",
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.greenNeutral,
-                  fontSize: FiicoFontSize.sm,
-                ),
-              )
-            ],
-          ),
+          _priceView(),
+          _infoDateDetailView(),
         ],
       ),
+    );
+  }
+
+  Widget _priceView() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 24,
+        top: 8,
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Text(
+              movement.value.toCurrency(),
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.greenNeutral,
+                fontSize: FiicoFontSize.lg,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Text(
+            movement.currency,
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.greenNeutral,
+              fontSize: FiicoFontSize.sm,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _infoDateDetailView() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: FiicoPaddings.eight),
+              child: Icon(MdiIcons.calendarCheck),
+            ),
+            Text(
+              "Cada mes",
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.graySoft,
+                fontSize: FiicoFontSize.xm,
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(
+                left: FiicoPaddings.thirtyTwo,
+                right: FiicoPaddings.eight,
+              ),
+              child: Icon(MdiIcons.clockOutline),
+            ),
+            Text(
+              "Siempre",
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.graySoft,
+                fontSize: FiicoFontSize.xm,
+              ),
+            )
+          ],
+        )
+      ],
     );
   }
 
@@ -175,7 +199,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         top: FiicoPaddings.twenyFour,
       ),
       child: FiicoTagsView(
-        tags: const ["UX", "Wireframe", "Design System", "Four"],
+        tags: movement.tags.map((s) => s as String).toList(),
         onDeleteTag: (int index) {
           print(index);
         },

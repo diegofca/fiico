@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/movement.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
 import 'package:control/modules/createBudget/view/create_budget_page.dart';
 import 'package:control/modules/createItem/view/create_item_page.dart';
@@ -61,10 +62,9 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     });
   }
 
-  Budget? _getBudgetSelected() {
-    return widget.budgets
-        .firstWhereOrNull((e) => e.id == widget.budgetSelected);
-  }
+  Budget get currentBudget =>
+      widget.budgets.firstWhereOrNull((e) => e.id == widget.budgetSelected) ??
+      widget.budgets.first;
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +98,20 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     return HomeSliverAppBar(
       opacity,
       isHideBoards: widget.budgets.isEmpty,
-      budgetSelected: _getBudgetSelected(),
+      budgetSelected: currentBudget,
       optionTapped: (option) async {
         switch (option) {
           case HomeSliverButtonOptions.addEntry:
-            FiicoRoute.send(context, const CreateItemPage());
+            FiicoRoute.send(
+              context,
+              CreateItemPage(inBudget: currentBudget, type: MovementType.ENTRY),
+            );
             break;
           case HomeSliverButtonOptions.addDebt:
-            FiicoRoute.send(context, const CreateItemPage());
+            FiicoRoute.send(
+              context,
+              CreateItemPage(inBudget: currentBudget, type: MovementType.DEBT),
+            );
             break;
           case HomeSliverButtonOptions.addGroup:
             CreateBottomView().show(context, callbackName: (name) {
@@ -134,7 +140,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
 
   Widget _headerListItemsView() {
     return SliverVisibility(
-      visible: _getBudgetSelected()?.movements?.isNotEmpty ?? false,
+      visible: !currentBudget.isEmptyMovements(),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -169,16 +175,16 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
 
   Widget _listItemsView() {
     return SliverVisibility(
-      visible: _getBudgetSelected()?.movements?.isNotEmpty ?? false,
+      visible: !currentBudget.isEmptyMovements(),
       sliver: SliverPadding(
         padding: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final movement = _getBudgetSelected()!.movements![index];
+              final movement = currentBudget.movements![index];
               return HomeListItemView(movement: movement);
             },
-            childCount: widget.budgets.length,
+            childCount: currentBudget.movements?.length,
           ),
         ),
       ),
@@ -187,13 +193,16 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
 
   Widget _emptySliverView(BuildContext context) {
     return SliverVisibility(
-      visible: _getBudgetSelected()?.movements?.isEmpty ?? true,
+      visible: currentBudget.isEmptyMovements(),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (_, index) {
             return HomeEmptyView(
-              onTapNewItem: () =>
-                  FiicoRoute.send(context, const CreateItemPage()),
+              onTapNewItem: () => FiicoRoute.send(
+                context,
+                CreateItemPage(
+                    inBudget: currentBudget, type: MovementType.DEBT),
+              ),
             );
           },
           childCount: 1,

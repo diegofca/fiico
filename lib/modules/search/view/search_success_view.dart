@@ -1,6 +1,5 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/modules/home/view/listView/home_list_item_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchSuccessView extends StatelessWidget {

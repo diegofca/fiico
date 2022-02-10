@@ -2,11 +2,9 @@ import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
-import 'package:control/helpers/extension/toast.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/models/budget.dart';
-import 'package:control/modules/home/view/selectBottomBudget/home_bottom_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -25,6 +23,7 @@ class HomeSliverAppBar extends SliverAppBar {
 
   final double opacity;
   final bool isHideBoards;
+
   final Budget? budgetSelected;
 
   final Function(HomeSliverButtonOptions) optionTapped;

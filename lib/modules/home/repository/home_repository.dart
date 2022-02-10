@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/models/budget.dart';
-import 'package:control/models/user.dart';
 
 abstract class HomeRepositoryAbs {
   Future<void> addNewBudget(Budget budget);
@@ -12,11 +11,6 @@ abstract class HomeRepositoryAbs {
 
 class HomeRepository extends HomeRepositoryAbs {
   final budgetCollections = FirebaseFirestore.instance.collection('users');
-
-  @override
-  Future<void> updateUser(User user) {
-    return budgetCollections.doc(user.id.toString()).update(user.toJson());
-  }
 
   @override
   Future<void> addNewBudget(Budget budget) {
@@ -43,7 +37,6 @@ class HomeRepository extends HomeRepositoryAbs {
 
   @override
   Future<void> updateBudget(Budget budget) {
-    // TODO: implement updateBudget
-    throw UnimplementedError();
+    return budgetCollections.doc(budget.id.toString()).update(budget.toJson());
   }
 }

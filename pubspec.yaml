@@ -49,6 +49,13 @@ dependencies:
   #Local Not
   flutter_local_notifications: ^9.1.5
 
+  #animated text
+  animated_text_kit: ^4.2.1
+  currency_text_input_formatter: ^2.1.5
+
+  #Currency picker
+  currency_picker: ^2.0.7
+
   # #authproviders
   # google_sign_in: ^5.2.1
   # flutter_facebook_auth: ^3.5.6
@@ -63,9 +70,6 @@ dependencies:
 
   #shared preferences
   shared_preferences: ^2.0.9 
-
-  #screen loader
-  load: ^1.0.0
   
   #Load SVG IMAGES
   flutter_svg: ^0.23.0+1 

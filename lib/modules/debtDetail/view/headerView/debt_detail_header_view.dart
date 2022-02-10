@@ -1,13 +1,19 @@
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/models/movement.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DebtDetailHeaderView extends StatefulWidget {
   const DebtDetailHeaderView({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
 
   @override
   State<DebtDetailHeaderView> createState() => DebtDetailHeaderViewState();
@@ -46,9 +52,8 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: const Icon(
-          Icons.camera,
-          size: 40,
+        child: FiicoImageNetwork.movement(
+          url: widget.movement.image,
         ),
       ),
     );
@@ -75,7 +80,7 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
 
   Widget _nameItemView() {
     return Text(
-      "Danu",
+      widget.movement.name,
       style: Style.title.copyWith(
         color: FiicoColors.grayDark,
         fontSize: FiicoFontSize.sm,
@@ -117,7 +122,7 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
             ),
           ),
           Text(
-            "Pendiente: 21 de Abril",
+            "Pendiente: ${widget.movement.createdAt.toDate().toDateFormat1()}",
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

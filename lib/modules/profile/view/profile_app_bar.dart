@@ -15,8 +15,7 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
   final Widget? leading;
   final List<Widget>? actions;
 
-//TODO: añadir un user como parametro
-
+  //añadir un user como parametro
   @override
   Widget build(BuildContext context) {
     return AppBar(
