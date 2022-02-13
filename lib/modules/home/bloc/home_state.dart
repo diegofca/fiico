@@ -13,7 +13,7 @@ class HomeState extends Equatable {
 
   final HomeStatus status;
   final Stream<List<Budget>>? budgets;
-  final int? budgetSelected;
+  final Budget? budgetSelected;
 
   @override
   List<Object> get props => [status, budgets ?? []];
@@ -21,7 +21,7 @@ class HomeState extends Equatable {
   HomeState copyWith({
     HomeStatus? status,
     Stream<List<Budget>>? budgets,
-    int? budgetSelected,
+    Budget? budgetSelected,
   }) {
     return HomeState(
       status: status ?? this.status,

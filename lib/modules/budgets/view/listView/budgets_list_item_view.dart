@@ -105,10 +105,11 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: FiicoPaddings.eight),
+          Padding(
+            padding: const EdgeInsets.only(right: FiicoPaddings.eight),
             child: Icon(
               Icons.circle,
+              color: widget.budget.getStatusColor(),
               size: 12,
             ),
           ),

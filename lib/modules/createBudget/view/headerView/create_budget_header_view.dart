@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -10,7 +11,7 @@ class CreateBudgetHeaderView extends StatefulWidget {
     required this.name,
   }) : super(key: key);
 
-  final String name;
+  final String? name;
 
   @override
   State<CreateBudgetHeaderView> createState() => CreateBudgetHeaderViewState();
@@ -47,10 +48,7 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: const Icon(
-          Icons.camera,
-          size: 40,
-        ),
+        child: const FiicoImageNetwork.budget(),
       ),
     );
   }
@@ -76,7 +74,7 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
 
   Widget _nameItemView() {
     return Text(
-      widget.name,
+      widget.name ?? '',
       style: Style.title.copyWith(
         color: FiicoColors.grayDark,
         fontSize: FiicoFontSize.sm,

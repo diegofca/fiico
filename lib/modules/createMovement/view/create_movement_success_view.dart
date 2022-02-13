@@ -6,16 +6,31 @@ import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
-import 'package:control/modules/createItem/view/header/create_item_header_view.dart';
+import 'package:control/models/movement.dart';
+import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
+import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
+import 'package:control/modules/createMovement/view/widgets/create_movement_date_selector.dart';
+import 'package:control/modules/createMovement/view/widgets/create_movement_recurrency_selector.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:control/helpers/extension/date.dart';
 
-class CreateItemSuccessView extends StatelessWidget {
-  const CreateItemSuccessView({
+class CreateMovementSuccessView extends StatelessWidget {
+  CreateMovementSuccessView({
     Key? key,
+    required this.movement,
   }) : super(key: key);
+
+  final Movement movement;
+
+  final _categoriesController = TextEditingController();
+  final _currencyFormarted = CurrencyTextInputFormatter(
+    decimalDigits: 0,
+    symbol: '',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,7 @@ class CreateItemSuccessView extends StatelessWidget {
       child: Column(
         children: [
           _headerView(),
-          _bodyView(),
+          _bodyView(context),
         ],
       ),
     );
@@ -42,11 +57,11 @@ class CreateItemSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: const CreateItemHeaderView(),
+      child: CreateMovementHeaderView(type: movement.getType()),
     );
   }
 
-  Widget _bodyView() {
+  Widget _bodyView(BuildContext context) {
     return Expanded(
       child: Container(
         alignment: Alignment.topCenter,
@@ -66,19 +81,7 @@ class CreateItemSuccessView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 vertical: FiicoPaddings.twenyFour,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _entryPriceView(),
-                  _entryNameView(),
-                  _entryDescriptionView(),
-                  _entryRecurrenceView(),
-                  _entryDateView(),
-                  _entryCategoryView(),
-                  _categoriesList(),
-                  _createButtonView(),
-                ],
-              ),
+              child: _inputsListView(context),
             ),
           ),
         ),
@@ -86,9 +89,23 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryPriceView() {
-    late TextEditingController controller = TextEditingController();
+  Widget _inputsListView(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _entryPriceView(context),
+        _entryNameView(context),
+        _entryDescriptionView(context),
+        _entryRecurrenceView(context),
+        _entryDateView(context),
+        _entryCategoryView(context),
+        _categoriesList(context),
+        _createButtonView(context),
+      ],
+    );
+  }
 
+  Widget _entryPriceView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: FiicoPaddings.four,
@@ -103,7 +120,7 @@ class CreateItemSuccessView extends StatelessWidget {
                 top: FiicoPaddings.four,
               ),
               child: Text(
-                '€',
+                movement.currency ?? '',
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.purpleSoft,
                   fontSize: FiicoFontSize.lg,
@@ -115,16 +132,16 @@ class CreateItemSuccessView extends StatelessWidget {
               child: Container(
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
-                  textEditingController: controller,
                   keyboardType: TextInputType.number,
                   hintText: 'Ingresa el valor',
                   textColor: FiicoColors.purpleSoft,
-                  inputFormatters: <TextInputFormatter>[
-                    CurrencyTextInputFormatter(
-                      decimalDigits: 2,
-                      symbol: '',
-                    ),
-                  ],
+                  inputFormatters: <TextInputFormatter>[_currencyFormarted],
+                  onChanged: (value) {
+                    final value = _currencyFormarted.getUnformattedValue();
+                    context
+                        .read<CreateMovementBloc>()
+                        .add(CreateMovementInfoRequest(value: value));
+                  },
                 ),
               ),
             ),
@@ -134,7 +151,7 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryNameView() {
+  Widget _entryNameView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -159,6 +176,11 @@ class CreateItemSuccessView extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
                 hintText: 'Ingresa el nombre',
+                onChanged: (name) {
+                  context
+                      .read<CreateMovementBloc>()
+                      .add(CreateMovementInfoRequest(name: name));
+                },
               ),
             ),
           ),
@@ -167,7 +189,7 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryDescriptionView() {
+  Widget _entryDescriptionView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -192,6 +214,11 @@ class CreateItemSuccessView extends StatelessWidget {
             child: FiicoTextfield(
               hintText: 'Ingresa una descripción',
               keyboardType: TextInputType.multiline,
+              onChanged: (description) {
+                context
+                    .read<CreateMovementBloc>()
+                    .add(CreateMovementInfoRequest(description: description));
+              },
             ),
           ),
         ],
@@ -199,7 +226,7 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryRecurrenceView() {
+  Widget _entryRecurrenceView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -232,7 +259,7 @@ class CreateItemSuccessView extends StatelessWidget {
                       left: FiicoPaddings.sixteen,
                     ),
                     child: Text(
-                      'Ej: Cada mes',
+                      movement.recurrency ?? 'Ej: Cada mes',
                       textAlign: TextAlign.left,
                       style: Style.subtitle.copyWith(
                         color: FiicoColors.graySoft,
@@ -242,7 +269,14 @@ class CreateItemSuccessView extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => CreateMovementRecurrencySelectorView().show(
+                    context,
+                    onRecurrencySelected: (recurrency) {
+                      context.read<CreateMovementBloc>().add(
+                          CreateMovementInfoRequest(
+                              recurrency: recurrency.name));
+                    },
+                  ),
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: FiicoColors.pink,
@@ -257,7 +291,7 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryDateView() {
+  Widget _entryDateView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -290,7 +324,7 @@ class CreateItemSuccessView extends StatelessWidget {
                       left: FiicoPaddings.sixteen,
                     ),
                     child: Text(
-                      'Ej: Viernes, Abril 20, 2021',
+                      movement.createdAt?.toDate().toDateFormat2() ?? '',
                       textAlign: TextAlign.left,
                       style: Style.subtitle.copyWith(
                         color: FiicoColors.graySoft,
@@ -300,7 +334,15 @@ class CreateItemSuccessView extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => CreateMovementDateSelectorView().show(
+                    context,
+                    initalDate: movement.createdAt?.toDate(),
+                    onDateSelected: (date) {
+                      context
+                          .read<CreateMovementBloc>()
+                          .add(CreateMovementInfoRequest(date: date));
+                    },
+                  ),
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: FiicoColors.pink,
@@ -315,7 +357,7 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryCategoryView() {
+  Widget _entryCategoryView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -341,11 +383,13 @@ class CreateItemSuccessView extends StatelessWidget {
               children: [
                 Expanded(
                   child: FiicoTextfield(
+                    textEditingController: _categoriesController,
                     hintText: 'Ej: Arriendo, auto',
+                    onSubmitted: (text) => _addedTagCategory(context),
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => _addedTagCategory(context),
                   icon: const Icon(
                     MdiIcons.plusCircleOutline,
                     color: FiicoColors.pink,
@@ -360,20 +404,18 @@ class CreateItemSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _categoriesList() {
+  Widget _categoriesList(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
       child: FiicoTagsView(
-        tags: const ["adw"],
+        tags: movement.tags,
         isDeleteTag: true,
-        onDeleteTag: (int index) {
-          print(index);
-        },
+        onDeleteTag: (int index) => _removedTagCategory(context, index),
       ),
     );
   }
 
-  Widget _createButtonView() {
+  Widget _createButtonView(BuildContext context) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.only(
@@ -381,8 +423,35 @@ class CreateItemSuccessView extends StatelessWidget {
       ),
       child: FiicoButton.green(
         title: 'Crear ingreso',
-        ontap: () {},
+        ontap: () => _createdMovement(context),
       ),
     );
+  }
+
+  void _createdMovement(BuildContext context) {
+    if (movement.isAddedWithBudget) {
+      Navigator.of(context).pop(movement);
+    } else {
+      context
+          .read<CreateMovementBloc>()
+          .add(CreateMovementAddedRequest(newMovement: movement));
+    }
+  }
+
+  void _addedTagCategory(BuildContext context) {
+    if (_categoriesController.text.length > 2) {
+      final category = _categoriesController.text;
+      movement.tags.add(category);
+      context
+          .read<CreateMovementBloc>()
+          .add(CreateMovementInfoRequest(tags: movement.tags));
+    }
+  }
+
+  void _removedTagCategory(BuildContext context, int index) {
+    movement.tags.removeAt(index);
+    context
+        .read<CreateMovementBloc>()
+        .add(CreateMovementInfoRequest(tags: movement.tags));
   }
 }

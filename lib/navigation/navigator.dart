@@ -11,12 +11,6 @@ enum TabOption {
   profile,
 }
 
-class FiicoTabsOption {
-  static final Map<String, int> options = {
-    TabOption.home.name: 1,
-  };
-}
-
 extension FiicoRoute on Navigator {
   static Future<dynamic> send(BuildContext context, Widget page) {
     return Navigator.push(
@@ -25,21 +19,6 @@ extension FiicoRoute on Navigator {
 
   static void changeTab(BuildContext context, TabOption tabOption) {
     var tabIndex = tabOption.index;
-    // switch (tabOption) {
-    //   case TabOption.budgets:
-    //     tabIndex = 0;
-    //     break;
-    //   case TabOption.home:
-    //     tabIndex = 1;
-    //     break;
-    //   case TabOption.notifications:
-    //     tabIndex = 2;
-    //     break;
-    //   case TabOption.profile:
-    //     tabIndex = 3;
-    //     break;
-    // }
-
     context.read<MenuBloc>().add(MenuIndexSelected(index: tabIndex));
   }
 }

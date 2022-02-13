@@ -39,6 +39,17 @@ abstract class FiicoLineHeight {
 }
 
 /// Namespace for Default Font Size
+abstract class FiicoMaxLines {
+  static const int unlimited = 100;
+
+  static const int two = 2;
+
+  static const int four = 4;
+
+  static const int ten = 10;
+}
+
+/// Namespace for Default Font Size
 abstract class FiicoPaddings {
   ///Size 2px
   static const double two = 2;

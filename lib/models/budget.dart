@@ -1,10 +1,9 @@
 import 'dart:ui';
-
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/models/movement.dart';
 
 class Budget {
-  final int? id;
+  final String id;
   final String? name;
 
   final String? currency;
@@ -18,7 +17,7 @@ class Budget {
   final List<Movement>? movements;
 
   Budget({
-    this.id,
+    required this.id,
     this.name,
     this.currency,
     this.cycle,
@@ -29,6 +28,20 @@ class Budget {
     this.totalEntry,
     this.userID,
     this.movements,
+  });
+
+  Budget.create({
+    required this.id,
+    this.name,
+    this.currency,
+    this.cycle = 1,
+    this.icon = '',
+    this.status = 'pending',
+    this.totalBalance = 0,
+    this.totalDebt = 0,
+    this.totalEntry = 0,
+    this.userID,
+    this.movements = const [],
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -47,19 +60,27 @@ class Budget {
     );
   }
 
-  Map<String, String?> toJson() {
+  Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
-      // 'firstName': name ?? "",
-      // 'lastName': reason ?? "other",
-      // 'userName': "${initDate?.getDateString("yyyy-MM-dd hh:mm:ss")}",
-      // 'email': "${endDate()?.getDateString("yyyy-MM-dd hh:mm:ss")}",
-      // 'socialToken': pricePerMember.toString(),
-      // 'deviceTokens': randomOrder ?? false ? 1.toString() : 2.toString(),
-      // 'vip': isDeduct ?? false ? 1.toString() : 2.toString(),
-      // 'currentPlan': inviteUsers.length.toString(),
-      // 'budgets': 3.toString(),
+      'id': id,
+      'name': name,
+      'currency': currency,
+      'cycle': cycle,
+      'icon': icon,
+      'status': status,
+      'totalBalance': totalBalance,
+      'totalDebt': totalDebt,
+      'totalEntry': totalEntry,
+      'userID': userID,
     };
+  }
+
+  static List<Budget> toList(Map<String, dynamic>? json) {
+    List<Budget> budgets = [];
+    json?['budgets'].forEach((budget) {
+      budgets.add(Budget.fromJson(budget));
+    });
+    return budgets;
   }
 
   // Functions class ----------------------------------------------------

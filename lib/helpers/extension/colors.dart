@@ -9,6 +9,7 @@ class FiicoColors {
 
   static const greenNeutral = Color(0xFF46C2B1);
   static const greenSoft = Color(0xFF61E8D5);
+  static var greenTag = const Color(0xFF61E8D5).withOpacity(0.4);
 
   static const pink = Color(0xFFFCB2AB);
   static const gold = Color(0xFFFFBD59);

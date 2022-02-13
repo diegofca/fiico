@@ -1,3 +1,5 @@
+import 'package:control/models/budget.dart';
+
 class User {
   final int? id;
   final String? firstName;
@@ -8,7 +10,7 @@ class User {
   final List<String>? deviceTokens;
   final bool? vip;
   final String? currentPlan;
-  final List<int>? budgets;
+  final List<Budget>? budgets;
 
   User({
     this.id,
@@ -27,14 +29,14 @@ class User {
     return User(
       id: json?['id'],
       firstName: json?['firstName'],
-      lastName: json?['firstName'],
-      userName: json?['firstName'],
-      socialToken: json?['firstName'],
-      deviceTokens: json?['firstName'],
-      currentPlan: json?['firstName'],
-      budgets: json?['firstName'],
-      email: json?['firstName'],
-      vip: json?['firstName'],
+      lastName: json?['lastName'],
+      userName: json?['userName'],
+      socialToken: json?['socialToken'],
+      deviceTokens: List.castFrom(json?['deviceTokens']),
+      currentPlan: json?['currentPlan'],
+      budgets: Budget.toList(json?['budgets']),
+      email: json?['email'],
+      vip: json?['vip'],
     );
   }
 

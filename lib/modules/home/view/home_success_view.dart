@@ -8,14 +8,15 @@ import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
 import 'package:control/modules/createBudget/view/create_budget_page.dart';
-import 'package:control/modules/createItem/view/create_item_page.dart';
+import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/modules/home/home.dart';
-import 'package:control/modules/home/view/selectBottomBudget/home_bottom_view.dart';
+import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
 import 'package:control/modules/search/view/search_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'empty/home_empty_view.dart';
 import 'listView/home_list_item_view.dart';
@@ -29,7 +30,7 @@ class HomeSuccesView extends StatefulWidget {
 
   //TEMPORAL
   final List<Budget> budgets;
-  final int? budgetSelected;
+  final Budget? budgetSelected;
   // Initial Selected Value
   String dropdownvalue = 'Mas recientes';
 
@@ -49,6 +50,7 @@ class HomeSuccesView extends StatefulWidget {
 
 class HomeSuccessViewState extends State<HomeSuccesView> {
   final _controller = ScrollController();
+  final _refreshController = RefreshController();
 
   double opacity = 0;
 
@@ -63,7 +65,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   Budget get currentBudget =>
-      widget.budgets.firstWhereOrNull((e) => e.id == widget.budgetSelected) ??
+      widget.budgets
+          .firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
       widget.budgets.first;
 
   @override
@@ -82,14 +85,27 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   Widget _body(BuildContext context) {
-    return CustomScrollView(
-      controller: _controller,
-      slivers: [
-        _mainAppBar(context),
-        _emptySliverView(context),
-        _headerListItemsView(),
-        _listItemsView(),
-      ],
+    return SmartRefresher(
+      controller: _refreshController,
+      header: const WaterDropMaterialHeader(
+        backgroundColor: FiicoColors.purpleSoft,
+        color: FiicoColors.white,
+      ),
+      onRefresh: () {
+        context.read<HomeBloc>().add(const HomeBudgetsFetchRequest(uID: 1));
+        Future.delayed(const Duration(seconds: 2), () {
+          _refreshController.refreshCompleted();
+        });
+      },
+      child: CustomScrollView(
+        controller: _controller,
+        slivers: [
+          _mainAppBar(context),
+          _emptySliverView(context),
+          _headerListItemsView(),
+          _listItemsView(),
+        ],
+      ),
     );
   }
 
@@ -104,13 +120,19 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
           case HomeSliverButtonOptions.addEntry:
             FiicoRoute.send(
               context,
-              CreateItemPage(inBudget: currentBudget, type: MovementType.ENTRY),
+              CreateMovementPage(
+                budget: currentBudget,
+                type: MovementType.ENTRY,
+              ),
             );
             break;
           case HomeSliverButtonOptions.addDebt:
             FiicoRoute.send(
               context,
-              CreateItemPage(inBudget: currentBudget, type: MovementType.DEBT),
+              CreateMovementPage(
+                budget: currentBudget,
+                type: MovementType.DEBT,
+              ),
             );
             break;
           case HomeSliverButtonOptions.addGroup:
@@ -131,7 +153,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
           context,
           widget.budgets,
           onBudgetSelected: (budget) {
-            context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget.id));
+            context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget));
           },
         );
       },
@@ -200,8 +222,10 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
             return HomeEmptyView(
               onTapNewItem: () => FiicoRoute.send(
                 context,
-                CreateItemPage(
-                    inBudget: currentBudget, type: MovementType.DEBT),
+                CreateMovementPage(
+                  budget: currentBudget,
+                  type: MovementType.DEBT,
+                ),
               ),
             );
           },

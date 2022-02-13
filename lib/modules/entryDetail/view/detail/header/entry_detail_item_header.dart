@@ -2,7 +2,6 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/movement.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -52,9 +51,7 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: FiicoImageNetwork.movement(
-          url: widget.movement.image,
-        ),
+        child: widget.movement.getIcon(),
       ),
     );
   }
@@ -79,11 +76,15 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
   }
 
   Widget _nameItemView() {
-    return Text(
-      widget.movement.name,
-      style: Style.title.copyWith(
-        color: FiicoColors.grayDark,
-        fontSize: FiicoFontSize.sm,
+    return SizedBox(
+      width: 190,
+      child: Text(
+        widget.movement.name ?? '',
+        maxLines: FiicoMaxLines.two,
+        style: Style.title.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.sm,
+        ),
       ),
     );
   }
@@ -122,7 +123,7 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
             ),
           ),
           Text(
-            "Pendiente: ${widget.movement.createdAt.toDate().toDateFormat1()}",
+            "Pendiente: ${widget.movement.createdAt?.toDate().toDateFormat1()}",
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

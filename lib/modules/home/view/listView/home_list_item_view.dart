@@ -3,7 +3,6 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/view/debt_detail_page.dart';
 import 'package:control/modules/entryDetail/view/detail/entry_detail_page.dart';
@@ -63,9 +62,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(FiicoPaddings.sixteen),
-          child: FiicoImageNetwork.movement(
-            url: widget.movement.image,
-          ),
+          child: widget.movement.getIcon(),
         ),
       ),
     );
@@ -88,7 +85,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        widget.movement.name,
+        widget.movement.name ?? '',
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.xm,
@@ -101,7 +98,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement.createdAt.toDate().toDateFormat1(),
+        widget.movement.createdAt?.toDate().toDateFormat1() ?? '',
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,
@@ -139,13 +136,13 @@ class HomeListItemViewState extends State<HomeListItemView> {
             repeatForever: true,
             animatedTexts: [
               FadeAnimatedText(
-                widget.movement.value.toCurrency(),
+                widget.movement.value?.toCurrency() ?? '',
                 duration: const Duration(seconds: 3),
                 fadeOutBegin: 0.8,
                 fadeInEnd: 0.2,
               ),
               FadeAnimatedText(
-                widget.movement.value.toCurrencyCompat(),
+                widget.movement.value?.toCurrencyCompat() ?? '',
                 duration: const Duration(seconds: 3),
                 fadeOutBegin: 0.8,
                 fadeInEnd: 0.2,
@@ -161,7 +158,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement.typeDescription,
+        widget.movement.typeDescription ?? '',
         style: Style.desc.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,

@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 class FiicoTextfield extends Container {
   FiicoTextfield({
     this.textEditingController,
-    this.textColor = FiicoColors.graySoft,
+    this.textColor = FiicoColors.grayNeutral,
     this.hintColor = FiicoColors.graySoft,
     this.keyboardType,
     this.hintText,

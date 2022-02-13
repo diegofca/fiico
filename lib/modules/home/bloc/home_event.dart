@@ -18,7 +18,7 @@ class HomeBudgetSelected extends HomeEvent {
     this.budget,
   });
 
-  final int? budget;
+  final Budget? budget;
 
   @override
   List<Object?> get props => [budget];

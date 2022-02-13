@@ -14,9 +14,9 @@ class FiicoTagsView extends StatefulWidget {
     required this.tags,
     this.minTagViewHeight = 0,
     this.maxTagViewHeight = 150,
-    this.tagBackgroundColor = FiicoColors.purpleTag,
+    this.tagBackgroundColor = FiicoColors.purpleLite,
     this.isDeleteTag = false,
-    required this.onDeleteTag,
+    this.onDeleteTag,
   }) : super(key: key);
 
   List<String> tags;
@@ -24,7 +24,7 @@ class FiicoTagsView extends StatefulWidget {
   bool isDeleteTag;
   double maxTagViewHeight;
   double minTagViewHeight;
-  DeleteTag<int> onDeleteTag;
+  DeleteTag<int>? onDeleteTag;
 
   @override
   _FiicoTagViewState createState() => _FiicoTagViewState();
@@ -83,6 +83,8 @@ class _FiicoTagViewState extends State<FiicoTagsView> {
   }
 
   void deleteTag(int index) {
-    widget.onDeleteTag(index);
+    if (widget.onDeleteTag != null) {
+      widget.onDeleteTag!(index);
+    }
   }
 }

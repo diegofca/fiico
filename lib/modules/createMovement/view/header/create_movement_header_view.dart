@@ -2,19 +2,24 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/models/movement.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CreateItemHeaderView extends StatefulWidget {
-  const CreateItemHeaderView({
+class CreateMovementHeaderView extends StatefulWidget {
+  const CreateMovementHeaderView({
     Key? key,
+    required this.type,
   }) : super(key: key);
 
+  final MovementType type;
+
   @override
-  State<CreateItemHeaderView> createState() => CreateItemHeaderViewState();
+  State<CreateMovementHeaderView> createState() =>
+      CreateMovementHeaderViewState();
 }
 
-class CreateItemHeaderViewState extends State<CreateItemHeaderView> {
+class CreateMovementHeaderViewState extends State<CreateMovementHeaderView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -45,7 +50,9 @@ class CreateItemHeaderViewState extends State<CreateItemHeaderView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: const FiicoImageNetwork.movement(),
+        child: widget.type == MovementType.ENTRY
+            ? const FiicoImageNetwork.entry()
+            : const FiicoImageNetwork.debt(),
       ),
     );
   }

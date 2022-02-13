@@ -15,6 +15,7 @@ abstract class Style {
     letterSpacing: FiicoLetterSpace.normal,
     fontFamily: FiicoFontFamily.base,
     color: FiicoColors.grayDark,
+    overflow: TextOverflow.ellipsis,
   );
 
   static const subtitle = TextStyle(
@@ -24,6 +25,7 @@ abstract class Style {
     letterSpacing: FiicoLetterSpace.normal,
     fontFamily: FiicoFontFamily.base,
     color: FiicoColors.grayDark,
+    overflow: TextOverflow.ellipsis,
   );
 
   static const desc = TextStyle(
@@ -33,5 +35,6 @@ abstract class Style {
     letterSpacing: FiicoLetterSpace.normal,
     fontFamily: FiicoFontFamily.base,
     color: FiicoColors.grayDark,
+    overflow: TextOverflow.ellipsis,
   );
 }

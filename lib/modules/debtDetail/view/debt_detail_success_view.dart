@@ -87,9 +87,10 @@ class DebtDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement.description,
+        movement.description ?? '',
+        maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
-          color: FiicoColors.graySoft,
+          color: FiicoColors.grayNeutral,
           fontSize: FiicoFontSize.xm,
         ),
       ),
@@ -104,13 +105,19 @@ class DebtDetailSuccessView extends StatelessWidget {
   }
 
   Widget _pricesDetailView() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _priceView(),
-        _infoDateDetailView(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.sixteen,
+        bottom: FiicoPaddings.thirtyTwo,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _priceView(),
+          _infoDateDetailView(),
+        ],
+      ),
     );
   }
 
@@ -118,83 +125,82 @@ class DebtDetailSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: FiicoPaddings.twenyFour,
-        top: FiicoPaddings.twenyFour,
+        top: FiicoPaddings.eight,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Text(
-              movement.value.toCurrency(),
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.pinkRed,
-                fontSize: FiicoFontSize.xl,
-                fontWeight: FontWeight.bold,
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: FiicoPaddings.eight),
+                child: Text(
+                  movement.value?.toCurrency() ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.pinkRed,
+                    fontSize: FiicoFontSize.xl,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
-          ),
-          Text(
-            movement.currency,
-            style: Style.subtitle.copyWith(
-              color: FiicoColors.pinkRed,
-              fontSize: FiicoFontSize.sm,
-            ),
-          )
-        ],
+            Text(
+              movement.currency ?? '',
+              textAlign: TextAlign.start,
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.pinkRed,
+                fontSize: FiicoFontSize.xs,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget _infoDateDetailView() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: FiicoPaddings.sixtyTwo,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: FiicoPaddings.eight),
+              child: Icon(MdiIcons.calendarCheck),
             ),
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(
-                    right: FiicoPaddings.eight,
-                  ),
-                  child: Icon(MdiIcons.calendarCheck),
-                ),
-                Text(
-                  "Cada mes",
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.graySoft,
-                    fontSize: FiicoFontSize.xm,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: FiicoPaddings.thirtyTwo,
-                  right: FiicoPaddings.eight,
-                ),
-                child: Icon(MdiIcons.clockOutline),
+            Text(
+              "Cada mes",
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+                fontSize: FiicoFontSize.xm,
               ),
-              Text(
-                "Siempre",
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.graySoft,
-                  fontSize: FiicoFontSize.xm,
-                ),
-              )
-            ],
-          )
-        ],
-      ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(
+                left: FiicoPaddings.thirtyTwo,
+                right: FiicoPaddings.eight,
+              ),
+              child: Icon(MdiIcons.clockOutline),
+            ),
+            Text(
+              "Siempre",
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+                fontSize: FiicoFontSize.xm,
+              ),
+            )
+          ],
+        )
+      ],
     );
   }
 
@@ -204,10 +210,8 @@ class DebtDetailSuccessView extends StatelessWidget {
         top: FiicoPaddings.twenyFour,
       ),
       child: FiicoTagsView(
-        tags: movement.tags.map((s) => s as String).toList(),
-        onDeleteTag: (int index) {
-          print(index);
-        },
+        tagBackgroundColor: FiicoColors.pink,
+        tags: movement.tags,
       ),
     );
   }

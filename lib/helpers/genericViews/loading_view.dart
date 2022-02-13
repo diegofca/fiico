@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LoadingView extends StatelessWidget {
   const LoadingView({
     Key? key,
-    this.backgroundColor = FiicoColors.black,
+    this.backgroundColor = FiicoColors.purpleDark,
   }) : super(key: key);
 
   final Color backgroundColor;
@@ -13,7 +13,7 @@ class LoadingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        color: backgroundColor.withOpacity(0.8),
+        color: backgroundColor.withOpacity(0.5),
         height: constraints.maxHeight,
         width: constraints.maxWidth,
         child: SafeArea(
