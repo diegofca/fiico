@@ -175,7 +175,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Ingresos',
+                  'Income',
                   textAlign: TextAlign.start,
                   style: Style.subtitle.copyWith(
                     fontSize: FiicoFontSize.sm,
@@ -232,7 +232,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Gastos',
+                'Outcome',
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,

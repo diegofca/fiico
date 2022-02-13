@@ -75,8 +75,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       backgroundColor: FiicoColors.white,
       appBar: const HomeAppBar(
         title: HomeTitleAppBar(
-          title: "Hola, Diego",
-          subtitle: "Controla tu dinero de la mejor manera",
+          title: "Hi, Juan Camilo",
+          subtitle: "Control your money in the best way",
           profileUrl: "",
         ),
       ),

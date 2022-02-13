@@ -15,7 +15,7 @@ class NotificationsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: const GenericAppBar(
-        text: "Mis notificaciones",
+        text: "Notifications",
         textColor: FiicoColors.black,
         isShowBack: false,
       ),

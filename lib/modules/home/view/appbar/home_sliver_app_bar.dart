@@ -71,8 +71,8 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         width: double.maxFinite,
         height: _heigthResumeWidget,
         padding: const EdgeInsets.only(
-          left: FiicoPaddings.sixteen,
-          right: FiicoPaddings.twenyFour,
+          left: FiicoPaddings.eight,
+          right: FiicoPaddings.eight,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -82,7 +82,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
               onTap: () => widget.onBudgetSelector.call(),
               child: Padding(
                 padding: const EdgeInsets.only(
-                  left: FiicoPaddings.eight,
+                  left: FiicoPaddings.twenyFour,
                   bottom: FiicoPaddings.eight,
                 ),
                 child: Row(
@@ -104,7 +104,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
             ),
             // Detalle de tabla  ---
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Ingresos -----------------------------------------
@@ -138,7 +138,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Ingresos",
+                        "Incomes",
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -183,7 +183,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Gastos",
+                        "Outcomes",
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -228,7 +228,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Saldo",
+                        "Balance",
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -302,7 +302,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         top: FiicoPaddings.six,
                       ),
                       child: FiicoTextfield(
-                        hintText: 'Busca tus boards aqui o ingresos aquí',
+                        hintText: 'Find your budgets or movements here',
                         textEditingController: _controller,
                         focusNode: _focusNode,
                         textInputAction: TextInputAction.search,
@@ -350,16 +350,16 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buttonAction(context, SVGImages.addEntry, "Add entry", () {
+            _buttonAction(context, SVGImages.addEntry, "Add income", () {
               widget.optionTapped(HomeSliverButtonOptions.addEntry);
             }),
-            _buttonAction(context, SVGImages.addDebt, "Add debt", () {
+            _buttonAction(context, SVGImages.addDebt, "Add outcome", () {
               widget.optionTapped(HomeSliverButtonOptions.addDebt);
             }),
-            _buttonAction(context, SVGImages.addBudget, "Add group", () {
+            _buttonAction(context, SVGImages.addBudget, "Add budget", () {
               widget.optionTapped(HomeSliverButtonOptions.addGroup);
             }),
-            _buttonAction(context, SVGImages.budgetList, "My groups", () {
+            _buttonAction(context, SVGImages.budgetList, "My budgets", () {
               widget.optionTapped(HomeSliverButtonOptions.myGroups);
             }),
           ],
@@ -378,7 +378,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
           SizedBox(
             width: MediaQuery.of(context).size.width / 4.3,
             child: AspectRatio(
-              aspectRatio: 1 / 1.03,
+              aspectRatio: 1 / 1.0,
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: FiicoPaddings.sixteen,
@@ -402,12 +402,13 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
-              height: 20,
+              height: 30,
               child: Text(
                 text,
+                textAlign: TextAlign.center,
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.purpleLite,
-                  fontSize: FiicoFontSize.xs,
+                  fontSize: FiicoFontSize.xxs,
                 ),
               ),
             ),

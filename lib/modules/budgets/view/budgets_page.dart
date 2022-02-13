@@ -18,7 +18,7 @@ class BudgetsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: const GenericAppBar(
-        text: "Mis budgets",
+        text: "Budgets",
         textColor: FiicoColors.black,
         isShowBack: false,
       ),
