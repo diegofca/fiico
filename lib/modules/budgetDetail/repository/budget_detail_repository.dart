@@ -42,7 +42,7 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
         .doc(budgetID)
         .update({
       'movements': FieldValue.arrayRemove(
-        [movement!.toJson()],
+        [movement.toJson()],
       ),
     });
   }
