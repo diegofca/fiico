@@ -23,3 +23,25 @@ class HomeBudgetSelected extends HomeEvent {
   @override
   List<Object?> get props => [budget];
 }
+
+class HomeBudgetSelectedFilter extends HomeEvent {
+  const HomeBudgetSelectedFilter({
+    this.filter,
+  });
+
+  final int? filter;
+
+  @override
+  List<Object?> get props => [filter];
+}
+
+class HomeBudgetRemovedMovement extends HomeEvent {
+  const HomeBudgetRemovedMovement({
+    this.movement,
+  });
+
+  final Movement? movement;
+
+  @override
+  List<Object?> get props => [movement];
+}

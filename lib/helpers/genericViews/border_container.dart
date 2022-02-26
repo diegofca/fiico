@@ -23,7 +23,9 @@ class BorderContainer extends Container {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.decelerate,
       alignment: alignment,
       child: child,
       height: heigth,

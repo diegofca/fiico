@@ -6,9 +6,12 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/view/debt_detail_page.dart';
 import 'package:control/modules/entryDetail/view/detail/entry_detail_page.dart';
+import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomeListItemView extends StatefulWidget {
   const HomeListItemView({
@@ -16,7 +19,7 @@ class HomeListItemView extends StatefulWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   State<HomeListItemView> createState() => HomeListItemViewState();
@@ -27,19 +30,40 @@ class HomeListItemView extends StatefulWidget {
 class HomeListItemViewState extends State<HomeListItemView> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _onDetailViewed(),
-      child: Container(
-        color: Colors.white,
-        height: 100,
-        width: double.maxFinite,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _icon(),
-            _nameAndDateView(),
-            _priceAndDescView(),
-          ],
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        context
+            .read<HomeBloc>()
+            .add(HomeBudgetRemovedMovement(movement: widget.movement));
+      },
+      background: Container(
+        alignment: Alignment.centerRight,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
+          color: FiicoColors.grayLite,
+        ),
+        padding: const EdgeInsets.only(right: FiicoPaddings.sixteen),
+        child: const Icon(
+          MdiIcons.delete,
+          color: FiicoColors.pinkRed,
+        ),
+      ),
+      child: GestureDetector(
+        onTap: () => _onDetailViewed(),
+        child: Container(
+          color: Colors.white,
+          height: 100,
+          width: double.maxFinite,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _icon(),
+              _nameAndDateView(),
+              _priceAndDescView(),
+            ],
+          ),
         ),
       ),
     );
@@ -60,10 +84,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(FiicoPaddings.sixteen),
-          child: widget.movement.getIcon(),
-        ),
+        child: widget.movement?.getIcon(),
       ),
     );
   }
@@ -85,7 +106,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        widget.movement.name ?? '',
+        widget.movement?.name ?? '',
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.xm,
@@ -98,7 +119,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement.createdAt?.toDate().toDateFormat1() ?? '',
+        widget.movement?.recurrencyAt?.toDate().toDateFormat1() ?? '',
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,
@@ -126,7 +147,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: DefaultTextStyle(
         style: TextStyle(
-          color: widget.movement.getTypeColor(),
+          color: widget.movement?.getTypeColor(),
           fontWeight: FontWeight.bold,
           fontSize: FiicoFontSize.xs,
         ),
@@ -136,13 +157,13 @@ class HomeListItemViewState extends State<HomeListItemView> {
             repeatForever: true,
             animatedTexts: [
               FadeAnimatedText(
-                widget.movement.value?.toCurrency() ?? '',
+                widget.movement?.getValue()?.toCurrency() ?? '',
                 duration: const Duration(seconds: 3),
                 fadeOutBegin: 0.8,
                 fadeInEnd: 0.2,
               ),
               FadeAnimatedText(
-                widget.movement.value?.toCurrencyCompat() ?? '',
+                widget.movement?.getValue()?.toCurrencyCompat() ?? '',
                 duration: const Duration(seconds: 3),
                 fadeOutBegin: 0.8,
                 fadeInEnd: 0.2,
@@ -158,7 +179,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement.typeDescription ?? '',
+        widget.movement?.typeDescription ?? '',
         style: Style.desc.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,
@@ -168,7 +189,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
   }
 
   void _onDetailViewed() {
-    switch (widget.movement.getType()) {
+    switch (widget.movement?.getType()) {
       case MovementType.ENTRY:
         FiicoRoute.send(context, EntryDetailPage(movement: widget.movement));
         break;

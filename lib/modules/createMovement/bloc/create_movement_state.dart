@@ -11,6 +11,8 @@ class CreateMovementState extends Equatable {
     this.tags,
     this.value,
     this.date,
+    this.icon,
+    this.alert,
     this.recurrency,
   });
 
@@ -22,6 +24,8 @@ class CreateMovementState extends Equatable {
   final num? value;
   final DateTime? date;
   final String? recurrency;
+  final FiicoIcon? icon;
+  final FiicoAlert? alert;
 
   bool get isAdded => onAddedCompleted ?? false;
 
@@ -38,6 +42,8 @@ class CreateMovementState extends Equatable {
     num? value,
     DateTime? date,
     String? recurrency,
+    FiicoIcon? icon,
+    FiicoAlert? alert,
   }) {
     return CreateMovementState(
       status: status ?? this.status,
@@ -47,6 +53,8 @@ class CreateMovementState extends Equatable {
       value: value ?? this.value,
       tags: tags ?? this.tags,
       date: date ?? this.date,
+      alert: alert ?? this.alert,
+      icon: icon ?? this.icon,
       recurrency: recurrency ?? this.recurrency,
     );
   }

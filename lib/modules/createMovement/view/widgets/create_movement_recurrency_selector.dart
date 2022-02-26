@@ -2,15 +2,14 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/recurrency.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CreateMovementRecurrencySelectorView {
   final _options = [
-    Recurrency('Semanal', "week"),
-    Recurrency('Quincenal', "biweekly"),
-    Recurrency('Mensual', "monthly"),
-    Recurrency('Anual', "annual"),
+    Recurrency.week(),
+    Recurrency.biweekly(),
+    Recurrency.month(),
+    Recurrency.annual(),
   ];
 
   void show(
@@ -64,8 +63,8 @@ class CreateMovementRecurrencySelectorView {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  bottom: 16,
-                  top: 16,
+                  bottom: FiicoPaddings.sixteen,
+                  top: FiicoPaddings.sixteen,
                 ),
                 child: GestureDetector(
                   child: SizedBox(
@@ -96,7 +95,7 @@ class CreateMovementRecurrencySelectorView {
   Widget _separatorLineView() {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: FiicoPaddings.sixteen,
       ),
       child: Container(
         color: FiicoColors.grayLite,

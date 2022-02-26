@@ -62,7 +62,7 @@ class HomeSelectorBudgetListItemViewState
         ),
         child: Center(
           child: FiicoImageNetwork(
-            url: widget.budget.icon,
+            iconData: widget.budget.icon?.getIcon(),
             size: 50,
           ),
         ),

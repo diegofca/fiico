@@ -4,7 +4,6 @@ import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
-import 'package:control/modules/searchUsers/repository/search_users_repository.dart';
 import 'package:control/modules/searchUsers/view/search_users_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

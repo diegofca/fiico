@@ -1,4 +1,5 @@
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
@@ -15,7 +16,7 @@ class EntryDetailSuccessView extends StatelessWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement.description ?? '',
+        movement?.description ?? '',
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
@@ -124,31 +125,30 @@ class EntryDetailSuccessView extends StatelessWidget {
   Widget _priceView() {
     return Padding(
       padding: const EdgeInsets.only(
-        bottom: FiicoPaddings.twenyFour,
-        top: FiicoPaddings.eight,
+        bottom: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.sixteen,
       ),
       child: SizedBox(
         width: double.maxFinite,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: FiicoPaddings.eight),
-                child: Text(
-                  movement.value?.toCurrency() ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.greenNeutral,
-                    fontSize: FiicoFontSize.xl,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(right: FiicoPaddings.eight),
+              child: Text(
+                movement?.value?.toCurrency() ?? '',
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.greenNeutral,
+                  fontSize: FiicoFontSize.xl,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Text(
-              movement.currency ?? '',
+              movement?.currency ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.greenNeutral,
                 fontSize: FiicoFontSize.xs,
@@ -172,7 +172,7 @@ class EntryDetailSuccessView extends StatelessWidget {
               child: Icon(MdiIcons.calendarCheck),
             ),
             Text(
-              "Cada mes",
+              movement?.recurrency ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.graySoft,
                 fontSize: FiicoFontSize.xm,
@@ -190,7 +190,7 @@ class EntryDetailSuccessView extends StatelessWidget {
               child: Icon(MdiIcons.clockOutline),
             ),
             Text(
-              "Siempre",
+              movement?.getRecurrencyDate() ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.graySoft,
                 fontSize: FiicoFontSize.xm,
@@ -209,7 +209,7 @@ class EntryDetailSuccessView extends StatelessWidget {
       ),
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.greenTag,
-        tags: movement.tags,
+        tags: movement?.tags ?? [],
       ),
     );
   }

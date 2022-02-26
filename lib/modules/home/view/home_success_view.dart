@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
@@ -11,6 +12,7 @@ import 'package:control/modules/createBudget/view/create_budget_page.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/modules/home/home.dart';
+import 'package:control/modules/home/model/home_filters_movements.dart';
 import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
 import 'package:control/modules/search/view/search_page.dart';
 import 'package:control/navigation/navigator.dart';
@@ -24,25 +26,19 @@ import 'listView/home_list_item_view.dart';
 class HomeSuccesView extends StatefulWidget {
   HomeSuccesView({
     Key? key,
-    required this.budgets,
+    this.budgets = const [],
     this.budgetSelected,
+    required this.dropdownvalue,
   }) : super(key: key);
 
   //TEMPORAL
-  final List<Budget> budgets;
+  final List<Budget>? budgets;
   final Budget? budgetSelected;
   // Initial Selected Value
-  String dropdownvalue = 'Mas recientes';
+  final int dropdownvalue;
 
   // List of items in our dropdown menu
-  var itemsFilter = [
-    'Mas recientes',
-    'De menor a mayor',
-    'De mayor a menor',
-    'Por tipo',
-    'Solo ingresos',
-    'Solo gastos',
-  ];
+  var itemsFilter = HomeFilterMovement.itemsFilter;
 
   @override
   State<HomeSuccesView> createState() => HomeSuccessViewState();
@@ -64,10 +60,15 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     });
   }
 
-  Budget get currentBudget =>
-      widget.budgets
-          .firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
-      widget.budgets.first;
+  Budget? get currentBudget {
+    final budget = (widget.budgets ?? [])
+            .firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
+        widget.budgets?.firstOrNull;
+    if (widget.budgetSelected == null) {
+      context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget));
+    }
+    return budget;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,32 +114,18 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   Widget _mainAppBar(BuildContext context) {
     return HomeSliverAppBar(
       opacity,
-      isHideBoards: widget.budgets.isEmpty,
+      isHideBoards: widget.budgets?.isEmpty ?? true,
       budgetSelected: currentBudget,
       optionTapped: (option) async {
         switch (option) {
           case HomeSliverButtonOptions.addEntry:
-            FiicoRoute.send(
-              context,
-              CreateMovementPage(
-                budget: currentBudget,
-                type: MovementType.ENTRY,
-              ),
-            );
+            _addEntryButtonClickedAction(context);
             break;
           case HomeSliverButtonOptions.addDebt:
-            FiicoRoute.send(
-              context,
-              CreateMovementPage(
-                budget: currentBudget,
-                type: MovementType.DEBT,
-              ),
-            );
+            _addDebtButtonClickedAction(context);
             break;
           case HomeSliverButtonOptions.addGroup:
-            CreateBottomView().show(context, callbackName: (name) {
-              FiicoRoute.send(context, CreateBudgetPage(budgetName: name));
-            });
+            _addBudgetClickedAction(context);
             break;
           case HomeSliverButtonOptions.myGroups:
             FiicoRoute.changeTab(context, TabOption.budgets);
@@ -151,7 +138,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       onBudgetSelector: () {
         HomeBottomView().show(
           context,
-          widget.budgets,
+          widget.budgets ?? [],
           onBudgetSelected: (budget) {
             context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget));
           },
@@ -162,7 +149,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
 
   Widget _headerListItemsView() {
     return SliverVisibility(
-      visible: !currentBudget.isEmptyMovements(),
+      visible: !(currentBudget?.isEmptyMovements() ?? true),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -196,17 +183,19 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   Widget _listItemsView() {
+    final _movements =
+        currentBudget?.getMovementsBy(widget.dropdownvalue) ?? [];
     return SliverVisibility(
-      visible: !currentBudget.isEmptyMovements(),
+      visible: _movements.isNotEmpty,
       sliver: SliverPadding(
         padding: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final movement = currentBudget.movements![index];
+              final movement = _movements[index];
               return HomeListItemView(movement: movement);
             },
-            childCount: currentBudget.movements?.length,
+            childCount: _movements.length,
           ),
         ),
       ),
@@ -215,18 +204,14 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
 
   Widget _emptySliverView(BuildContext context) {
     return SliverVisibility(
-      visible: currentBudget.isEmptyMovements(),
+      visible: currentBudget?.isEmptyMovements() ?? true,
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (_, index) {
             return HomeEmptyView(
-              onTapNewItem: () => FiicoRoute.send(
-                context,
-                CreateMovementPage(
-                  budget: currentBudget,
-                  type: MovementType.DEBT,
-                ),
-              ),
+              isContaintBudgets: currentBudget != null,
+              onTapNewItem: () => _addDebtButtonClickedAction(context),
+              onTapNewBudget: () => _addBudgetClickedAction(context),
             );
           },
           childCount: 1,
@@ -250,29 +235,76 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
         fontSize: FiicoFontSize.xm,
       ),
       dropdownColor: Colors.white,
-      items: widget.itemsFilter.map((String items) {
-        return DropdownMenuItem(
+      items: widget.itemsFilter.entries.map((item) {
+        return DropdownMenuItem<int>(
           alignment: Alignment.centerLeft,
-          value: items,
+          value: item.key,
           child: Text(
-            items,
+            item.value,
             textAlign: TextAlign.right,
           ),
         );
       }).toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          widget.dropdownvalue = newValue!;
-        });
+      onChanged: (int? newValue) {
+        context
+            .read<HomeBloc>()
+            .add(HomeBudgetSelectedFilter(filter: newValue));
+        _scrollUp();
       },
     );
   }
 
+  /// MARK: - Functions class actions
   void _scrollDown() {
     _controller.animateTo(
       _controller.position.maxScrollExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  void _scrollUp() {
+    _controller.animateTo(
+      _controller.position.minScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  void _addBudgetClickedAction(BuildContext context) {
+    CreateBottomView().show(context, callbackName: (name) {
+      FiicoRoute.send(context, CreateBudgetPage(budgetName: name));
+    });
+  }
+
+  void _addEntryButtonClickedAction(BuildContext context) async {
+    if (currentBudget == null) {
+      _showEmptyBudgetAction(context);
+      return;
+    }
+    FiicoRoute.send(
+      context,
+      CreateMovementPage(budget: currentBudget, type: MovementType.ENTRY),
+    );
+  }
+
+  void _addDebtButtonClickedAction(BuildContext context) {
+    if (currentBudget == null) {
+      _showEmptyBudgetAction(context);
+      return;
+    }
+    FiicoRoute.send(
+      context,
+      CreateMovementPage(budget: currentBudget, type: MovementType.DEBT),
+    );
+  }
+
+  void _showEmptyBudgetAction(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      message: 'Debes crear un nuevo presupuesto para agregar movimientos',
+      confirmBtnText: 'Crear nuevo presupuesto',
+      onOkAction: () => _addBudgetClickedAction(context),
     );
   }
 }

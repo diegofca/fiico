@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
+import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/models/alert.dart';
+import 'package:control/models/fiico_icon.dart';
 import 'package:flutter/material.dart';
 
 enum MovementType { ENTRY, DEBT, SAFE }
@@ -13,7 +15,8 @@ class Movement {
   final String? name;
   final num? value;
   final Timestamp? createdAt;
-  final String? image;
+  final Timestamp? recurrencyAt;
+  final FiicoIcon? icon;
   final String? type;
   final String? description;
   final String? typeDescription;
@@ -21,6 +24,7 @@ class Movement {
   final String? currency;
   final String? budgetName;
   final List<String> tags;
+  final FiicoAlert? alert;
   final bool isAddedWithBudget;
 
   Movement({
@@ -28,13 +32,15 @@ class Movement {
     required this.name,
     required this.value,
     required this.createdAt,
-    required this.image,
+    required this.recurrencyAt,
+    required this.icon,
     required this.type,
     required this.description,
     required this.typeDescription,
     required this.currency,
     required this.budgetName,
     required this.recurrency,
+    required this.alert,
     this.tags = const [],
     this.isAddedWithBudget = false,
   });
@@ -45,13 +51,15 @@ class Movement {
       name: json?['name'] ?? '',
       value: json?['value'] ?? 0,
       createdAt: json?['createdAt'] ?? Timestamp.now(),
-      image: json?['image'] ?? '',
+      recurrencyAt: json?['recurrencyAt'] ?? Timestamp.now(),
       type: json?['type'] ?? '',
       description: json?['description'] ?? '',
       typeDescription: json?['typeDescription'] ?? '',
       currency: json?['currency'] ?? '',
       budgetName: json?['budgetName'] ?? '',
       recurrency: json?['recurrency'] ?? '',
+      icon: FiicoIcon.fromJson(json?['icon']),
+      alert: FiicoAlert.fromJson(json?['alert']),
       tags: List.castFrom(json?['tags']),
     );
   }
@@ -62,13 +70,15 @@ class Movement {
       'name': name,
       'value': value,
       'createdAt': createdAt,
-      'image': image,
+      'recurrencyAt': recurrencyAt,
       'type': type,
       'description': description,
       'typeDescription': typeDescription,
       'currency': currency,
       'budgetName': budgetName,
       'recurrency': recurrency,
+      'icon': icon?.toJson(),
+      'alert': alert?.toJson(),
       'tags': tags,
     };
   }
@@ -89,17 +99,11 @@ class Movement {
   Widget getIcon() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return FiicoImageNetwork.entry(
-          url: image,
-        );
+        return FiicoImageNetwork.entry(iconData: icon?.getIcon());
       case MovementType.DEBT:
-        return FiicoImageNetwork.debt(
-          url: image,
-        );
+        return FiicoImageNetwork.debt(iconData: icon?.getIcon());
       default:
-        return FiicoImageNetwork.debt(
-          url: image,
-        );
+        return FiicoImageNetwork.debt(iconData: icon?.getIcon());
     }
   }
 
@@ -122,6 +126,44 @@ class Movement {
         return FiicoColors.pinkRed;
       default:
         return FiicoColors.grayDark;
+    }
+  }
+
+  String getDateTitleText() {
+    switch (getType()) {
+      case MovementType.ENTRY:
+        return 'Fecha de ingreso oportuno';
+      case MovementType.DEBT:
+        return 'Fecha de pago oportuno';
+      default:
+        return 'Fecha';
+    }
+  }
+
+  String getAlertDate() {
+    return alert?.date?.toDate().toDateFormat1() ?? '';
+  }
+
+  String getRecurrencyDate() {
+    return recurrencyAt?.toDate().toDateFormat3() ?? '';
+  }
+
+  Color getBellColor() {
+    if (alert?.date == null) {
+      return FiicoColors.grayNeutral;
+    }
+    if (alert?.isIntensive() ?? false) {
+      return FiicoColors.pinkRed;
+    }
+    return FiicoColors.gold;
+  }
+
+  num? getValue() {
+    switch (getType()) {
+      case MovementType.DEBT:
+        return (value ?? 0) * -1;
+      default:
+        return value;
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
+import 'package:control/modules/createBudget/view/create_budget_cycle_view.dart';
 import 'package:control/modules/createBudget/view/headerView/create_budget_header_view.dart';
 import 'package:control/modules/createBudget/view/listView/create_budget_movement_item_list_view.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
@@ -92,6 +93,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _entryMoneyView(context),
+        _entryDurationView(context),
         _entrysView(context),
         _entryListView(context),
         _entrysDebtsView(context),
@@ -99,7 +101,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         _infoView(),
         _shareButtonView(context),
         _separatorLineView(),
-        _createButtonView(),
+        _createButtonView(context),
       ],
     );
   }
@@ -155,6 +157,10 @@ class CreateBudgetSuccessView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _entryDurationView(BuildContext context) {
+    return CreateBudgetCycleView(budgetToCreate: budgetToCreate);
   }
 
   Widget _entrysView(BuildContext context) {
@@ -376,7 +382,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _createButtonView() {
+  Widget _createButtonView(BuildContext context) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.only(
@@ -384,7 +390,11 @@ class CreateBudgetSuccessView extends StatelessWidget {
       ),
       child: FiicoButton.green(
         title: 'Crear ingreso',
-        ontap: () {},
+        ontap: () {
+          context
+              .read<CreateBudgetBloc>()
+              .add(CreateBudgetAdded(budget: budgetToCreate));
+        },
       ),
     );
   }
@@ -405,7 +415,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
       onSelect: (currency) {
         context
             .read<CreateBudgetBloc>()
-            .add(CreateBudgetCurrencySelected(currency: currency));
+            .add(CreateBudgetInfoSelected(currency: currency));
       },
       theme: CurrencyPickerThemeData(
         titleTextStyle: Style.subtitle.copyWith(

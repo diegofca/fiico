@@ -3,8 +3,11 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/recurrency.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/repository/create_movement_repository.dart';
 import 'package:control/modules/createMovement/view/create_movement_success_view.dart';
@@ -21,7 +24,7 @@ class CreateMovementPage extends StatelessWidget {
     this.addedinBudget = false,
   }) : super(key: key);
 
-  final Budget budget;
+  final Budget? budget;
   final MovementType type;
   final bool addedinBudget;
 
@@ -30,17 +33,17 @@ class CreateMovementPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: budget.name,
+        text: budget?.name ?? '',
         textColor: FiicoColors.black,
         actions: [_dotsButton()],
       ),
       body: BlocProvider(
         create: (context) => CreateMovementBloc(
-          CreateMovementRepository(budget.id),
+          CreateMovementRepository(budget?.id ?? ''),
         ),
         child: CreateMovementPageView(
-          currencyCode: budget.currency,
-          budgetName: budget.name,
+          currencyCode: budget?.currency,
+          budgetName: budget?.name,
           addedinBudget: addedinBudget,
           type: type,
         ),
@@ -92,9 +95,7 @@ class CreateMovementPageView extends StatelessWidget {
               movement: getMovementToBloc(state),
             );
           case CreateMovementStatus.addedLoading:
-            return const LoadingView(
-              backgroundColor: Colors.red,
-            );
+            return const LoadingView();
           case CreateMovementStatus.failed:
             return Container(
               color: Colors.black,
@@ -113,18 +114,20 @@ class CreateMovementPageView extends StatelessWidget {
     final type = this.type == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
     final typeDescription =
         this.type == MovementType.ENTRY ? 'Income' : 'Outcome';
-    final createdAt = Timestamp.fromDate(state.date ?? DateTime.now());
+    final recurrencyAt = Timestamp.fromDate(state.date ?? DateTime.now());
 
     return Movement(
       id: const Uuid().v1(),
       name: state.name,
       value: state.value,
-      createdAt: createdAt,
-      description: state.description,
+      recurrency: state.recurrency ?? Recurrency.month().name,
+      icon: state.icon ?? const FiicoIcon.empty(),
+      alert: state.alert ?? FiicoAlert.empty(),
+      description: state.description ?? '',
+      createdAt: Timestamp.now(),
+      recurrencyAt: recurrencyAt,
       typeDescription: typeDescription,
-      recurrency: state.recurrency,
       isAddedWithBudget: addedinBudget,
-      image: 'image',
       currency: currencyCode,
       budgetName: budgetName,
       tags: state.tags ?? [],

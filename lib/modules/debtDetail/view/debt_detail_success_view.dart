@@ -1,4 +1,5 @@
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
@@ -15,7 +16,7 @@ class DebtDetailSuccessView extends StatelessWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement.description ?? '',
+        movement?.description ?? '',
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -124,8 +125,8 @@ class DebtDetailSuccessView extends StatelessWidget {
   Widget _priceView() {
     return Padding(
       padding: const EdgeInsets.only(
-        bottom: FiicoPaddings.twenyFour,
-        top: FiicoPaddings.eight,
+        bottom: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.sixteen,
       ),
       child: SizedBox(
         width: double.maxFinite,
@@ -133,23 +134,21 @@ class DebtDetailSuccessView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: FiicoPaddings.eight),
-                child: Text(
-                  movement.value?.toCurrency() ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.pinkRed,
-                    fontSize: FiicoFontSize.xl,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(right: FiicoPaddings.eight),
+              child: Text(
+                movement?.value?.toCurrency() ?? '',
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.pinkRed,
+                  fontSize: FiicoFontSize.xl,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Text(
-              movement.currency ?? '',
+              movement?.currency ?? '',
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.pinkRed,
@@ -174,7 +173,7 @@ class DebtDetailSuccessView extends StatelessWidget {
               child: Icon(MdiIcons.calendarCheck),
             ),
             Text(
-              "Cada mes",
+              movement?.recurrency ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
@@ -192,7 +191,7 @@ class DebtDetailSuccessView extends StatelessWidget {
               child: Icon(MdiIcons.clockOutline),
             ),
             Text(
-              "Siempre",
+              movement?.getRecurrencyDate() ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
@@ -211,7 +210,7 @@ class DebtDetailSuccessView extends StatelessWidget {
       ),
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.pink,
-        tags: movement.tags,
+        tags: movement?.tags ?? [],
       ),
     );
   }

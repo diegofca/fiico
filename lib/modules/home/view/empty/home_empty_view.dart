@@ -9,10 +9,14 @@ import 'package:flutter_svg/svg.dart';
 class HomeEmptyView extends StatefulWidget {
   const HomeEmptyView({
     Key? key,
-    required this.onTapNewItem,
+    this.onTapNewItem,
+    this.onTapNewBudget,
+    required this.isContaintBudgets,
   }) : super(key: key);
 
-  final VoidCallback onTapNewItem;
+  final bool isContaintBudgets;
+  final VoidCallback? onTapNewItem;
+  final VoidCallback? onTapNewBudget;
 
   @override
   State<HomeEmptyView> createState() => HomeEmtpyViewState();
@@ -65,8 +69,12 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
 
   Widget _bodyButton() {
     return FiicoButton.green(
-      ontap: widget.onTapNewItem,
-      title: "Agregar movimiento",
+      ontap: () => widget.isContaintBudgets
+          ? widget.onTapNewItem!.call()
+          : widget.onTapNewBudget!.call(),
+      title: widget.isContaintBudgets
+          ? ' Agregar movimiento'
+          : 'Crear presupuesto',
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }

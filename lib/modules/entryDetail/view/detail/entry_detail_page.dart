@@ -14,14 +14,14 @@ class EntryDetailPage extends StatelessWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: movement.budgetName,
+        text: movement?.budgetName,
         textColor: FiicoColors.graySoft,
         actions: [_dotsButton()],
       ),
@@ -57,7 +57,7 @@ class EntryDetailPageView extends StatelessWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   Widget build(BuildContext context) {

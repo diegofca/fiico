@@ -41,7 +41,7 @@ class FiicoTextfield extends Container {
         top: FiicoPaddings.four,
       ),
       child: TextField(
-        maxLines: 10,
+        maxLines: FiicoMaxLines.ten,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
         controller: textEditingController,

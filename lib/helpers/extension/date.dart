@@ -10,8 +10,13 @@ extension DateExtension on DateTime {
     return DateFormat("MMM, dd yyyy").format(this);
   }
 
-  /// Format "MMM, dd yyyy"
+  /// Format "EEEE MMM, dd yyyy"
   String toDateFormat2() {
     return DateFormat("EEEE MMM, dd yyyy").format(this);
+  }
+
+  /// Format "EE MMM, dd yyyy"
+  String toDateFormat3() {
+    return DateFormat("EE - MMM dd, yyyy").format(this);
   }
 }

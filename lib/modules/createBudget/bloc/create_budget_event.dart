@@ -4,15 +4,37 @@ abstract class CreateBudgetEvent extends Equatable {
   const CreateBudgetEvent();
 }
 
-class CreateBudgetCurrencySelected extends CreateBudgetEvent {
-  const CreateBudgetCurrencySelected({
+class CreateBudgetInfoSelected extends CreateBudgetEvent {
+  const CreateBudgetInfoSelected({
     this.currency,
+    this.isCycle,
+    this.cycle,
+    this.duration,
+    this.initDate,
+    this.finishDate,
   });
 
   final Currency? currency;
+  final bool? isCycle;
+  final int? cycle;
+  final int? duration;
+  final Timestamp? initDate;
+  final Timestamp? finishDate;
 
   @override
-  List<Object?> get props => [currency];
+  List<Object?> get props =>
+      [currency, isCycle, cycle, duration, initDate, finishDate];
+}
+
+class CreateBudgetAdded extends CreateBudgetEvent {
+  const CreateBudgetAdded({
+    required this.budget,
+  });
+
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [budget];
 }
 
 class CreateBudgetAddedmovement extends CreateBudgetEvent {

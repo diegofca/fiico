@@ -4,6 +4,8 @@ import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/modules/budgetDetail/view/budget_detail_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 
 class BudgetListItemView extends StatefulWidget {
@@ -24,16 +26,14 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          // widget.items += 1;
-          // _scrollDown();
-          // context.read<MenuBloc>().add(MenuIndexSelected(index: 2));
-        });
-      },
-      child: SizedBox(
+      onTap: () => FiicoRoute.send(
+        context,
+        BudgetDetailPage(budget: widget.budget),
+      ),
+      child: Container(
         height: 100,
         width: double.maxFinite,
+        color: Colors.white,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -66,7 +66,7 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
         child: Padding(
           padding: const EdgeInsets.all(FiicoPaddings.sixteen),
           child: FiicoImageNetwork.budget(
-            url: widget.budget.icon,
+            iconData: widget.budget.icon?.getIcon(),
           ),
         ),
       ),
@@ -147,7 +147,7 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
             child: Text(
               widget.budget.totalBalance?.toCurrencyCompat() ?? '',
               style: const TextStyle(
-                color: FiicoColors.greenNeutral,
+                color: FiicoColors.grayDark,
                 fontWeight: FontWeight.bold,
                 fontSize: FiicoFontSize.xs,
               ),

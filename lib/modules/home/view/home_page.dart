@@ -33,7 +33,7 @@ class HomePageView extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         switch (state.status) {
-          case HomeStatus.waiting:
+          case HomeStatus.init:
             return StreamBuilder<List<Budget>>(
               stream: state.budgets,
               builder: (context, snapshot) {
@@ -41,11 +41,14 @@ class HomePageView extends StatelessWidget {
                   return HomeSuccesView(
                     budgets: snapshot.requireData,
                     budgetSelected: state.budgetSelected,
+                    dropdownvalue: state.filter ?? 0,
                   );
                 }
                 return const LoadingView(); // add failed view
               },
             );
+          case HomeStatus.loading:
+            return const LoadingView(); // add failed view
         }
       },
     );

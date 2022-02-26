@@ -1,9 +1,8 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/budget.dart';
-import 'package:control/models/movement.dart';
-import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
 import 'package:control/modules/createBudget/view/create_budget_success_view.dart';
@@ -68,24 +67,36 @@ class CreateBudgetPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateBudgetBloc, CreateBudgetState>(
+    return BlocConsumer<CreateBudgetBloc, CreateBudgetState>(
       builder: (context, state) {
         switch (state.status) {
-          case CreateBudgetStatus.success:
           case CreateBudgetStatus.loading:
+            return const LoadingView();
+          case CreateBudgetStatus.success:
             return CreateBudgetSuccessView(
-              budgetToCreate: _bugetToCreate(state.currencySelected?.code),
+              budgetToCreate: _bugetToCreate(state),
               mDebts: state.debts,
               mEntrys: state.entrys,
             );
         }
       },
+      listener: (context, state) {
+        if (state.isCompleteAdded) {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 
-  Budget _bugetToCreate(String? currency) => Budget.create(
+  Budget _bugetToCreate(CreateBudgetState state) => Budget.create(
         id: const Uuid().v1(),
         name: budgetName,
-        currency: currency,
+        currency: state.currencySelected?.code,
+        isCycle: state.isCycle,
+        cycle: state.cycle,
+        startDate: state.initDate,
+        finishDate: state.finishDate,
+        duration: state.duration,
+        movements: state.movements,
       );
 }

@@ -1,8 +1,8 @@
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/alert/view/alert_selector_view.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -12,7 +12,7 @@ class EntryDetailHeaderView extends StatefulWidget {
     required this.movement,
   }) : super(key: key);
 
-  final Movement movement;
+  final Movement? movement;
 
   @override
   State<EntryDetailHeaderView> createState() => EntryDetailHeaderViewState();
@@ -51,7 +51,7 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
           color: FiicoColors.grayLite,
         ),
-        child: widget.movement.getIcon(),
+        child: widget.movement?.getIcon(),
       ),
     );
   }
@@ -65,7 +65,7 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _nameItemView(),
+              Expanded(child: _nameItemView()),
               _bellIconView(),
             ],
           ),
@@ -79,7 +79,7 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
     return SizedBox(
       width: 190,
       child: Text(
-        widget.movement.name ?? '',
+        widget.movement?.name ?? '',
         maxLines: FiicoMaxLines.two,
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
@@ -92,16 +92,22 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
   Widget _bellIconView() {
     return GestureDetector(
       onTap: () {
-        print("bell click");
+        AlertSelectorView().show(
+          context,
+          alert: widget.movement?.alert,
+          onSelected: (alert) {
+            print(alert);
+          },
+        );
       },
-      child: const Padding(
-        padding: EdgeInsets.only(
+      child: Padding(
+        padding: const EdgeInsets.only(
           right: FiicoPaddings.sixteen,
           bottom: FiicoPaddings.eight,
         ),
         child: Icon(
           MdiIcons.bell,
-          color: FiicoColors.gold,
+          color: widget.movement?.getBellColor(),
           size: 20,
         ),
       ),
@@ -114,16 +120,16 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: FiicoPaddings.eight),
+          Padding(
+            padding: const EdgeInsets.only(right: FiicoPaddings.eight),
             child: Icon(
               Icons.circle,
-              color: FiicoColors.gold,
+              color: widget.movement?.getTypeColor(),
               size: 12,
             ),
           ),
           Text(
-            "Pendiente: ${widget.movement.createdAt?.toDate().toDateFormat1()}",
+            "Activo: ${widget.movement?.getAlertDate()}",
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

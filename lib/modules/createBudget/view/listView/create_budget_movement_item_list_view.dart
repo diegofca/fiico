@@ -32,7 +32,7 @@ class CreateBudgetMovementListItemViewState
       onTap: () => _onDetailViewed(),
       child: Container(
         color: Colors.white,
-        height: 80,
+        height: 90,
         width: double.maxFinite,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +55,7 @@ class CreateBudgetMovementListItemViewState
         // left: FiicoPaddings.twenyFour,
       ),
       child: Container(
-        width: 55,
+        width: 60,
         height: double.maxFinite,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(FiicoPaddings.eight),
@@ -124,7 +124,7 @@ class CreateBudgetMovementListItemViewState
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        widget.movement.value?.toCurrencyCompat() ?? '',
+        widget.movement.getValue()?.toCurrencyCompat() ?? '',
         style: TextStyle(
           color: widget.movement.getTypeColor(),
           fontWeight: FontWeight.bold,

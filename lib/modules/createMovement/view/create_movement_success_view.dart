@@ -57,7 +57,7 @@ class CreateMovementSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: CreateMovementHeaderView(type: movement.getType()),
+      child: CreateMovementHeaderView(movement: movement),
     );
   }
 
@@ -210,7 +210,7 @@ class CreateMovementSuccessView extends StatelessWidget {
             ),
           ),
           BorderContainer(
-            heigth: 150,
+            heigth: 100,
             child: FiicoTextfield(
               hintText: 'Ingresa una descripción',
               keyboardType: TextInputType.multiline,
@@ -304,7 +304,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Fecha',
+              movement.getDateTitleText(),
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -324,7 +324,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                       left: FiicoPaddings.sixteen,
                     ),
                     child: Text(
-                      movement.createdAt?.toDate().toDateFormat2() ?? '',
+                      movement.recurrencyAt?.toDate().toDateFormat2() ?? '',
                       textAlign: TextAlign.left,
                       style: Style.subtitle.copyWith(
                         color: FiicoColors.graySoft,
@@ -336,7 +336,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 IconButton(
                   onPressed: () => CreateMovementDateSelectorView().show(
                     context,
-                    initalDate: movement.createdAt?.toDate(),
+                    initalDate: movement.recurrencyAt?.toDate(),
                     onDateSelected: (date) {
                       context
                           .read<CreateMovementBloc>()

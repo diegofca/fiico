@@ -8,6 +8,7 @@ abstract class CreateMovementRepositoryAbs {
   Future<void> addNewMovement(Movement movement);
   Future<Budget> getBudget();
   Future<void> updateMovement(Movement movement);
+  Future<void> updatetBudget(Budget budget);
 }
 
 class CreateMovementRepository extends CreateMovementRepositoryAbs {
@@ -19,13 +20,18 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
 
   @override
   Future<void> addNewMovement(Movement movement) async {
-    return _movementsCollections
+    await _movementsCollections
         .doc("1")
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .update({
-      'movements': FieldValue.arrayUnion([movement.toJson()])
+      'movements': FieldValue.arrayUnion(
+        [movement.toJson()],
+      ),
     });
+
+    final budget = await getBudget();
+    updatetBudget(budget);
   }
 
   @override
@@ -45,5 +51,18 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
     return _movementsCollections
         .doc(movement.id.toString())
         .update(movement.toJson());
+  }
+
+  @override
+  Future<void> updatetBudget(Budget budget) async {
+    return _movementsCollections
+        .doc("1")
+        .collection(Firestore.budgetsPath)
+        .doc(budgetID)
+        .update({
+      'totalEntry': budget.getTotalEntry(),
+      'totalDebt': budget.getTotalDebt(),
+      'totalBalance': budget.getTotalBalance(),
+    });
   }
 }
