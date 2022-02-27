@@ -21,39 +21,12 @@ class BudgetDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FiicoColors.grayBackground,
-      appBar: GenericAppBar(
-        actions: [_dotsButton(context)],
-        bottomHeigth: 0,
-      ),
-      body: BlocProvider(
-        create: (context) => BudgetDetailBloc(
-          BudgetDetailRepository(budget.id),
-        )..add(const BudgetDetailFetchRequest(uID: 1)),
-        child: BudgetDetailPageView(
-          budget: budget,
-        ),
-      ),
-    );
-  }
-
-  Widget _dotsButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-      ),
-      child: IconButton(
-        highlightColor: Colors.transparent,
-        onPressed: () {
-          BudgetDetailBottomView().show(context, onOptionSelected: (option) {
-            print(option);
-          });
-        },
-        icon: const Icon(
-          MdiIcons.dotsHorizontal,
-          color: Colors.black,
-        ),
+    return BlocProvider(
+      create: (blocContext) => BudgetDetailBloc(
+        BudgetDetailRepository(budget.id),
+      )..add(const BudgetDetailFetchRequest(uID: 1)),
+      child: BudgetDetailPageView(
+        budget: budget,
       ),
     );
   }
@@ -69,7 +42,7 @@ class BudgetDetailPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BudgetDetailBloc, BudgetDetailState>(
+    return BlocConsumer<BudgetDetailBloc, BudgetDetailState>(
       builder: (context, state) {
         switch (state.status) {
           case BudgetDetailStatus.loading:
@@ -80,8 +53,15 @@ class BudgetDetailPageView extends StatelessWidget {
               stream: state.budget,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return BudgetDetailSuccessView(
-                    budget: snapshot.requireData,
+                  return Scaffold(
+                    backgroundColor: FiicoColors.grayBackground,
+                    appBar: GenericAppBar(
+                      actions: [_dotsButton(context)],
+                      bottomHeigth: 0,
+                    ),
+                    body: BudgetDetailSuccessView(
+                      budget: snapshot.requireData,
+                    ),
                   );
                 }
                 return const LoadingView(); // add failed view
@@ -89,6 +69,44 @@ class BudgetDetailPageView extends StatelessWidget {
             );
         }
       },
+      listener: (context, state) {
+        if (state.isDeletedBudget) {
+          Navigator.of(context).pop();
+        }
+      },
     );
+  }
+
+  Widget _dotsButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: FiicoPaddings.sixteen,
+      ),
+      child: IconButton(
+        highlightColor: Colors.transparent,
+        onPressed: () {
+          BudgetDetailBottomView().show(
+            context,
+            onOptionSelected: (option) => _selectedOption(context, option),
+          );
+        },
+        icon: const Icon(
+          MdiIcons.dotsHorizontal,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  void _selectedOption(BuildContext context, BudgetDetailBottomOption option) {
+    switch (option) {
+      case BudgetDetailBottomOption.delete_budget:
+        context
+            .read<BudgetDetailBloc>()
+            .add(BudgetDetailDeleteRequest(budget: budget));
+        break;
+      case BudgetDetailBottomOption.add_friend:
+        break;
+    }
   }
 }

@@ -6,12 +6,16 @@ class BudgetDetailState extends Equatable {
   const BudgetDetailState({
     this.status = BudgetDetailStatus.success,
     this.movementAdded,
+    this.deleteBudget,
     this.budget,
   });
 
   final BudgetDetailStatus status;
   final Stream<Budget>? budget;
   final Movement? movementAdded;
+  final Budget? deleteBudget;
+
+  bool get isDeletedBudget => deleteBudget != null;
 
   @override
   List<Object> get props => [status];
@@ -20,9 +24,11 @@ class BudgetDetailState extends Equatable {
     BudgetDetailStatus? status,
     Stream<Budget>? budget,
     Movement? movementAdded,
+    Budget? deleteBudget,
   }) {
     return BudgetDetailState(
       movementAdded: movementAdded ?? this.movementAdded,
+      deleteBudget: deleteBudget ?? this.deleteBudget,
       status: status ?? this.status,
       budget: budget ?? this.budget,
     );

@@ -1,5 +1,4 @@
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
@@ -96,6 +95,7 @@ class CreateMovementHeaderViewState extends State<CreateMovementHeaderView> {
   Widget _nameItemView() {
     return Text(
       widget.movement.name ?? '',
+      maxLines: FiicoMaxLines.two,
       style: Style.title.copyWith(
         color: FiicoColors.grayDark,
         fontSize: FiicoFontSize.sm,

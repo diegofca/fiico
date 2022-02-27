@@ -13,6 +13,15 @@ class BudgetDetailFetchRequest extends BudgetDetailEvent {
   List<Object?> get props => [uID];
 }
 
+class BudgetDetailDeleteRequest extends BudgetDetailEvent {
+  const BudgetDetailDeleteRequest({required this.budget});
+
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [budget];
+}
+
 class BudgetDetailMovementAddedRequest extends BudgetDetailEvent {
   const BudgetDetailMovementAddedRequest({required this.newMovement});
 

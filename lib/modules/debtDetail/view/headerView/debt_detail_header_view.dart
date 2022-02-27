@@ -1,5 +1,4 @@
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/movement.dart';
@@ -101,14 +100,14 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
           },
         );
       },
-      child: const Padding(
-        padding: EdgeInsets.only(
+      child: Padding(
+        padding: const EdgeInsets.only(
           right: FiicoPaddings.sixteen,
           bottom: FiicoPaddings.eight,
         ),
         child: Icon(
           MdiIcons.bell,
-          color: FiicoColors.gold,
+          color: widget.movement?.getBellColor(),
           size: 20,
         ),
       ),

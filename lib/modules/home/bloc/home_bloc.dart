@@ -55,14 +55,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBudgetRemovedMovement event,
     Emitter<HomeState> emit,
   ) async {
-    final budgetID = state.budgetSelected?.id;
+    final budgetID = state.budgetSelected?.id ?? '';
     await repository.deleteMovement(event.movement, budgetID);
-    Timer(const Duration(seconds: 1), () {
-      emit(state.copyWith(
-        status: HomeStatus.init,
-        removedMovement: event.movement,
-        budgets: repository.budgets(),
-      ));
-    });
+    emit(state.copyWith(
+      status: HomeStatus.init,
+      removedMovement: event.movement,
+      budgets: repository.budgets(),
+    ));
   }
 }

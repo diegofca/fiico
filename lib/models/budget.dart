@@ -113,7 +113,7 @@ class Budget {
       'currency': currency,
       'cycle': cycle,
       'duration': duration,
-      'icon': icon,
+      'icon': icon?.toJson(),
       'totalBalance': getTotalBalance(),
       'totalDebt': getTotalDebt(),
       'totalEntry': getTotalEntry(),

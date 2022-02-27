@@ -7,7 +7,8 @@ import 'package:control/network/firestore_path.dart';
 abstract class BudgetDetailRepositoryAbs {
   Future<void> addNewMovement(Movement movement);
   Future<void> deleteMovement(Movement movement);
-  Future<void> updatetBudget(Budget budget);
+  Future<void> updateBudget(Budget budget);
+  Future<void> deleteBudget(Budget budget);
   Stream<Budget> getBudget();
 }
 
@@ -29,9 +30,10 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
         [movement.toJson()],
       ),
     });
+    await Future.delayed(const Duration(seconds: 1));
 
     final budget = await getBudget().first;
-    updatetBudget(budget);
+    return updateBudget(budget);
   }
 
   @override
@@ -45,6 +47,10 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
         [movement.toJson()],
       ),
     });
+    await Future.delayed(const Duration(seconds: 1));
+
+    final budget = await getBudget().first;
+    return updateBudget(budget);
   }
 
   @override
@@ -60,7 +66,7 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
   }
 
   @override
-  Future<void> updatetBudget(Budget budget) async {
+  Future<void> updateBudget(Budget budget) async {
     return _movementsCollections
         .doc("1")
         .collection(Firestore.budgetsPath)
@@ -70,5 +76,14 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
       'totalDebt': budget.getTotalDebt(),
       'totalBalance': budget.getTotalBalance(),
     });
+  }
+
+  @override
+  Future<void> deleteBudget(Budget budget) {
+    return _movementsCollections
+        .doc("1")
+        .collection(Firestore.budgetsPath)
+        .doc(budgetID)
+        .delete();
   }
 }

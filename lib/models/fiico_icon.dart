@@ -22,7 +22,7 @@ class FiicoIcon {
     return FiicoIcon(
       codePoint: json?['codePoint'] ?? MdiIcons.sack.codePoint,
       fontFamily: json?['fontFamily'] ?? MdiIcons.sack.fontFamily,
-      fontPackage: json?['fontPackage'] ?? MdiIcons.sack.fontPackage,
+      fontPackage: json?['fontPackage'],
     );
   }
 
@@ -37,8 +37,8 @@ class FiicoIcon {
   Map<String, dynamic> toJson() {
     return {
       'codePoint': codePoint,
-      'fontFamily': fontFamily ?? '',
-      'fontPackage': fontPackage ?? '',
+      'fontFamily': fontFamily,
+      'fontPackage': fontPackage,
     };
   }
 

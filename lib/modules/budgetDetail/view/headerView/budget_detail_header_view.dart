@@ -73,11 +73,14 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
   }
 
   Widget _nameItemView() {
-    return Text(
-      widget.name ?? '',
-      style: Style.title.copyWith(
-        color: FiicoColors.grayDark,
-        fontSize: FiicoFontSize.sm,
+    return Expanded(
+      child: Text(
+        widget.name ?? '',
+        maxLines: FiicoMaxLines.two,
+        style: Style.title.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.sm,
+        ),
       ),
     );
   }

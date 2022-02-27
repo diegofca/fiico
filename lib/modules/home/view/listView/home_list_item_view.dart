@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/view/debt_detail_page.dart';
 import 'package:control/modules/entryDetail/view/detail/entry_detail_page.dart';
@@ -37,6 +38,17 @@ class HomeListItemViewState extends State<HomeListItemView> {
         context
             .read<HomeBloc>()
             .add(HomeBudgetRemovedMovement(movement: widget.movement));
+      },
+      confirmDismiss: (direction) async {
+        return BottomDialog().show(
+          context,
+          title:
+              '¿Deseas eliminar ${widget.movement?.name} de ${widget.movement?.budgetName}?',
+          titleButton: 'Eliminar',
+          onTapAction: () {
+            Navigator.pop(context, true);
+          },
+        );
       },
       background: Container(
         alignment: Alignment.centerRight,

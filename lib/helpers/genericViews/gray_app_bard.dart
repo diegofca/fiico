@@ -58,6 +58,7 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
           width: double.maxFinite,
           child: Text(
             text ?? '',
+            maxLines: FiicoMaxLines.two,
             style: Style.title.copyWith(
               color: textColor,
             ),

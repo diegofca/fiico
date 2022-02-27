@@ -2,6 +2,9 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/budgets/view/listView/budgets_list_item_view.dart';
+import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
+import 'package:control/modules/createBudget/view/create_budget_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'emptyView/budgets_empty_view.dart';
 
@@ -21,20 +24,18 @@ class BudgetSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
       child: Stack(
         children: [
-          _emptyView(),
+          _emptyView(context),
           _budgetsList(),
         ],
       ),
     );
   }
 
-  Widget _emptyView() {
+  Widget _emptyView(BuildContext context) {
     return Visibility(
       visible: budgets.isEmpty,
       child: BudgetsEmptyView(
-        onTapNewItem: () {
-          print("new item");
-        },
+        onTapNewItem: () => _addBudgetClickedAction(context),
       ),
     );
   }
@@ -65,5 +66,11 @@ class BudgetSuccessView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _addBudgetClickedAction(BuildContext context) {
+    CreateBottomView().show(context, callbackName: (name) {
+      FiicoRoute.send(context, CreateBudgetPage(budgetName: name));
+    });
   }
 }

@@ -4,12 +4,12 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/view/headerView/budget_detail_header_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_add_movement_view.dart';
-import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/view/listView/create_budget_movement_item_list_view.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
@@ -358,6 +358,16 @@ class BudgetDetailSuccessView extends StatelessWidget {
         context
             .read<BudgetDetailBloc>()
             .add(BudgetDetailMovementRemoveRequest(movement: movement));
+      },
+      confirmDismiss: (direction) async {
+        return BottomDialog().show(
+          context,
+          title: '¿Deseas eliminar ${movement.name} de ${movement.budgetName}?',
+          titleButton: 'Eliminar',
+          onTapAction: () {
+            Navigator.pop(context, true);
+          },
+        );
       },
       background: Container(
         alignment: Alignment.centerRight,

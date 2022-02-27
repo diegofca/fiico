@@ -10,6 +10,7 @@ part 'budget_detail_state.dart';
 class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
   BudgetDetailBloc(this.repository) : super(const BudgetDetailState()) {
     on<BudgetDetailFetchRequest>(_mapBudgetsToState);
+    on<BudgetDetailDeleteRequest>(_mapDeleteBudgetToState);
     on<BudgetDetailMovementAddedRequest>(_mapAddedMovementToState);
     on<BudgetDetailMovementRemoveRequest>(_mapRemoveMovementToState);
   }
@@ -24,6 +25,22 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
       status: BudgetDetailStatus.success,
       budget: repository.getBudget(),
     ));
+  }
+
+  void _mapDeleteBudgetToState(
+    BudgetDetailDeleteRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    try {
+      await repository.deleteBudget(event.budget);
+      emit(state.copyWith(
+        status: BudgetDetailStatus.success,
+        deleteBudget: event.budget,
+      ));
+    } catch (_) {
+      emit(state.copyWith(status: BudgetDetailStatus.failed));
+    }
   }
 
   void _mapAddedMovementToState(
