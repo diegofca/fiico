@@ -8,12 +8,8 @@ part 'search_users_event.dart';
 
 class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
   SearchUsersBloc(this.repository) : super(const SearchUsersState()) {
-    on<SearchUsersFetchRequest>(
-      _mapUsersSearchToState,
-    );
-    on<SearchUsersFilterRequest>(
-      _mapUsersSearchFiltersToState,
-    );
+    on<SearchUsersFetchRequest>(_mapUsersSearchToState);
+    on<SearchUsersFilterRequest>(_mapUsersSearchFiltersToState);
   }
 
   final SearchUsersRepository repository;

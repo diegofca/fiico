@@ -132,9 +132,10 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
             break;
         }
       },
-      onSearchTap: (searchQuery) {
-        FiicoRoute.send(context, const SearchPage());
-      },
+      onSearchTap: (searchQuery) => FiicoRoute.send(
+        context,
+        SearchPage(query: searchQuery),
+      ),
       onBudgetSelector: () {
         HomeBottomView().show(
           context,

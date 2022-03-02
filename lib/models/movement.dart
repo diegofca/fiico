@@ -144,7 +144,7 @@ class Movement {
   }
 
   String getRecurrencyDate() {
-    return recurrencyAt?.toDate().toDateFormat3() ?? '';
+    return recurrencyAt?.toDate().toDateFormat2() ?? '';
   }
 
   Color getBellColor() {

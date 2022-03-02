@@ -25,7 +25,7 @@ class HomeEmptyView extends StatefulWidget {
 }
 
 class HomeEmtpyViewState extends State<HomeEmptyView> {
-  final _imageTopHeigth = 160.0;
+  final _imageTopHeigth = 120.0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
       color: FiicoColors.white,
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Wrap(
+        alignment: WrapAlignment.center,
         children: [
           _imageTop(),
           _emptyText(),
@@ -55,7 +55,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   Widget _emptyText() {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.twenyFour,
       ),
       child: Text(
         "Añade todos tus gastos y apoderate de ellos.",

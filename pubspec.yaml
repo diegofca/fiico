@@ -98,6 +98,10 @@ dependencies:
   #Pull to refresh
   pull_to_refresh: ^2.0.0
 
+  #Animated Segment Control
+  animated_segment: ^0.0.3
+
+
 
 dev_dependencies:
   flutter_test:

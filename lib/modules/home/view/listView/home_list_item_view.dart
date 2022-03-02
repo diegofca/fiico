@@ -18,9 +18,11 @@ class HomeListItemView extends StatefulWidget {
   const HomeListItemView({
     Key? key,
     required this.movement,
+    this.showValue = true,
   }) : super(key: key);
 
   final Movement? movement;
+  final bool? showValue;
 
   @override
   State<HomeListItemView> createState() => HomeListItemViewState();
@@ -65,7 +67,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
       child: GestureDetector(
         onTap: () => _onDetailViewed(),
         child: Container(
-          color: Colors.white,
+          color: Colors.transparent,
           height: 100,
           width: double.maxFinite,
           child: Row(
@@ -155,32 +157,35 @@ class HomeListItemViewState extends State<HomeListItemView> {
   }
 
   Widget _priceView() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: widget.movement?.getTypeColor(),
-          fontWeight: FontWeight.bold,
-          fontSize: FiicoFontSize.xs,
-        ),
-        child: SizedBox(
-          height: 20,
-          child: AnimatedTextKit(
-            repeatForever: true,
-            animatedTexts: [
-              FadeAnimatedText(
-                widget.movement?.getValue()?.toCurrency() ?? '',
-                duration: const Duration(seconds: 3),
-                fadeOutBegin: 0.8,
-                fadeInEnd: 0.2,
-              ),
-              FadeAnimatedText(
-                widget.movement?.getValue()?.toCurrencyCompat() ?? '',
-                duration: const Duration(seconds: 3),
-                fadeOutBegin: 0.8,
-                fadeInEnd: 0.2,
-              ),
-            ],
+    return Visibility(
+      visible: widget.showValue ?? true,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: widget.movement?.getTypeColor(),
+            fontWeight: FontWeight.bold,
+            fontSize: FiicoFontSize.xs,
+          ),
+          child: SizedBox(
+            height: 20,
+            child: AnimatedTextKit(
+              repeatForever: true,
+              animatedTexts: [
+                FadeAnimatedText(
+                  widget.movement?.getValue()?.toCurrency() ?? '',
+                  duration: const Duration(seconds: 3),
+                  fadeOutBegin: 0.8,
+                  fadeInEnd: 0.2,
+                ),
+                FadeAnimatedText(
+                  widget.movement?.getValue()?.toCurrencyCompat() ?? '',
+                  duration: const Duration(seconds: 3),
+                  fadeOutBegin: 0.8,
+                  fadeInEnd: 0.2,
+                ),
+              ],
+            ),
           ),
         ),
       ),

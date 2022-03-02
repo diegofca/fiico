@@ -161,7 +161,7 @@ class DebtDetailSuccessView extends StatelessWidget {
   }
 
   Widget _infoDateDetailView() {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -180,23 +180,30 @@ class DebtDetailSuccessView extends StatelessWidget {
             )
           ],
         ),
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(
-                left: FiicoPaddings.thirtyTwo,
-                right: FiicoPaddings.eight,
+        Padding(
+          padding: const EdgeInsets.only(
+            top: FiicoPaddings.sixteen,
+            right: FiicoPaddings.eight,
+          ),
+          child: Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(
+                  right: FiicoPaddings.eight,
+                ),
+                child: Icon(MdiIcons.clockOutline),
               ),
-              child: Icon(MdiIcons.clockOutline),
-            ),
-            Text(
-              movement?.getRecurrencyDate() ?? '',
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayNeutral,
-                fontSize: FiicoFontSize.xm,
-              ),
-            )
-          ],
+              Text(
+                movement?.getRecurrencyDate() ?? '',
+                overflow: TextOverflow.ellipsis,
+                maxLines: FiicoMaxLines.four,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.grayNeutral,
+                  fontSize: FiicoFontSize.xm,
+                ),
+              )
+            ],
+          ),
         )
       ],
     );

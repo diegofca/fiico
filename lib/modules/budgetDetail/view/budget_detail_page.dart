@@ -49,30 +49,34 @@ class BudgetDetailPageView extends StatelessWidget {
           case BudgetDetailStatus.failed:
             return const LoadingView();
           case BudgetDetailStatus.success:
-            return StreamBuilder<Budget>(
-              stream: state.budget,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Scaffold(
-                    backgroundColor: FiicoColors.grayBackground,
-                    appBar: GenericAppBar(
-                      actions: [_dotsButton(context)],
-                      bottomHeigth: 0,
-                    ),
-                    body: BudgetDetailSuccessView(
-                      budget: snapshot.requireData,
-                    ),
-                  );
-                }
-                return const LoadingView(); // add failed view
-              },
-            );
+            return _bodyContainer(state.budget);
         }
       },
       listener: (context, state) {
         if (state.isDeletedBudget) {
           Navigator.of(context).pop();
         }
+      },
+    );
+  }
+
+  Widget _bodyContainer(Stream<Budget>? budget) {
+    return StreamBuilder<Budget>(
+      stream: budget,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: FiicoColors.grayBackground,
+            appBar: GenericAppBar(
+              actions: [_dotsButton(context)],
+              bottomHeigth: 0,
+            ),
+            body: BudgetDetailSuccessView(
+              budget: snapshot.requireData,
+            ),
+          );
+        }
+        return const LoadingView(); // add failed view
       },
     );
   }

@@ -33,7 +33,7 @@ class BudgetListItemViewState extends State<BudgetListItemView> {
       child: Container(
         height: 100,
         width: double.maxFinite,
-        color: Colors.white,
+        color: Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
