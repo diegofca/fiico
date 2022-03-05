@@ -1,11 +1,11 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
-import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
 import 'package:control/modules/createBudget/view/create_budget_success_view.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -69,18 +69,21 @@ class CreateBudgetPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateBudgetBloc, CreateBudgetState>(
       builder: (context, state) {
-        switch (state.status) {
-          case CreateBudgetStatus.loading:
-            return const LoadingView();
-          case CreateBudgetStatus.success:
-            return CreateBudgetSuccessView(
-              budgetToCreate: _bugetToCreate(state),
-              mDebts: state.debts,
-              mEntrys: state.entrys,
-            );
-        }
+        return CreateBudgetSuccessView(
+          budgetToCreate: _bugetToCreate(state),
+          mDebts: state.debts,
+          mEntrys: state.entrys,
+          users: state.users,
+        );
       },
       listener: (context, state) {
+        switch (state.status) {
+          case CreateBudgetStatus.loading:
+            FiicoRoute.showLoader(context);
+            break;
+          default:
+            FiicoRoute.hideLoader(context);
+        }
         if (state.isCompleteAdded) {
           Navigator.of(context).pop();
         }

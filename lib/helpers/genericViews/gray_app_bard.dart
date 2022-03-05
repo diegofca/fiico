@@ -8,6 +8,8 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     this.text,
     this.textColor = FiicoColors.black,
+    this.bgColor = FiicoColors.grayBackground,
+    this.backColor = FiicoColors.grayDark,
     this.isShowBack = true,
     this.actions,
     this.title,
@@ -16,6 +18,8 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
 
   final String? text;
   final Color? textColor;
+  final Color? bgColor;
+  final Color? backColor;
   final List<Widget>? actions;
   final Widget? title;
   final double bottomHeigth;
@@ -25,7 +29,7 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       key: key,
-      backgroundColor: FiicoColors.grayBackground,
+      backgroundColor: bgColor,
       toolbarHeight: kToolbarHeight,
       leading: _getLeading(context),
       title: title,
@@ -41,9 +45,9 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
       onTap: () => Navigator.pop(context),
       child: Visibility(
         visible: isShowBack ?? true,
-        child: const Icon(
+        child: Icon(
           Icons.arrow_back_ios_new,
-          color: FiicoColors.grayDark,
+          color: backColor,
         ),
       ),
     );

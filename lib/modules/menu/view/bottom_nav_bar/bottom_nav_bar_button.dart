@@ -47,7 +47,7 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
         .value;
 
     final _colorTween =
-        ColorTween(begin: FiicoColors.graySoft, end: FiicoColors.black);
+        ColorTween(begin: FiicoColors.graySoft, end: FiicoColors.grayDark);
     final _colorTweenAnimation = _colorTween.animate(CurvedAnimation(
         parent: expandController,
         curve: _expanded ? Curves.easeInExpo : Curves.easeOutCirc));

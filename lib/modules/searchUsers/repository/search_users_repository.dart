@@ -11,7 +11,10 @@ class SearchUsersRepository extends SearchUsersRepositoryAbs {
       FirebaseFirestore.instance.collection(Firestore.usersPath);
   @override
   Stream<List<User>> searchUsers() {
-    return _usersCollections.snapshots().map((snapshot) {
+    return _usersCollections
+        .where("id", isNotEqualTo: 1)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) => User.fromJson(doc.data())).toList();
     });
   }

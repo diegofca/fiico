@@ -1,10 +1,10 @@
 part of 'create_movement_bloc.dart';
 
-enum CreateMovementStatus { waiting, addedLoading, success, failed }
+enum CreateMovementStatus { success, loading, failure }
 
 class CreateMovementState extends Equatable {
   const CreateMovementState({
-    this.status = CreateMovementStatus.waiting,
+    this.status = CreateMovementStatus.success,
     this.onAddedCompleted,
     this.name,
     this.description,

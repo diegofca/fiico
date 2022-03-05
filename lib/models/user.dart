@@ -1,12 +1,14 @@
 import 'package:control/models/budget.dart';
+import 'package:equatable/equatable.dart';
 
-class User {
+class User extends Equatable {
   final int? id;
   final String? firstName;
   final String? lastName;
   final String? userName;
   final String? email;
   final String? socialToken;
+  final String? profileImage;
   final List<String>? deviceTokens;
   final bool? vip;
   final String? currentPlan;
@@ -19,6 +21,7 @@ class User {
     this.userName,
     this.email,
     this.socialToken,
+    this.profileImage,
     this.deviceTokens,
     this.vip,
     this.currentPlan,
@@ -32,6 +35,7 @@ class User {
       lastName: json?['lastName'],
       userName: json?['userName'],
       socialToken: json?['socialToken'],
+      profileImage: json?['profileImage'],
       deviceTokens: List.castFrom(json?['deviceTokens']),
       currentPlan: json?['currentPlan'],
       budgets: Budget.toList(json?['budgets']),
@@ -54,4 +58,7 @@ class User {
       // 'budgets': 3.toString(),
     };
   }
+
+  @override
+  List<Object?> get props => [id];
 }

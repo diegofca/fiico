@@ -10,6 +10,7 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
   SearchUsersBloc(this.repository) : super(const SearchUsersState()) {
     on<SearchUsersFetchRequest>(_mapUsersSearchToState);
     on<SearchUsersFilterRequest>(_mapUsersSearchFiltersToState);
+    on<SearchSelectUserRequest>(_mapSelectedUserToState);
   }
 
   final SearchUsersRepository repository;
@@ -21,6 +22,7 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
     emit(state.copyWith(
       status: SearchUsersStatus.success,
       users: repository.searchUsers(),
+      selectedUsers: event.users,
     ));
   }
 
@@ -31,8 +33,26 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
     emit(state.copyWith(status: SearchUsersStatus.searching));
     emit(state.copyWith(
       status: SearchUsersStatus.success,
-      users: repository.searchUsers(),
       query: event.query,
+    ));
+  }
+
+  void _mapSelectedUserToState(
+    SearchSelectUserRequest event,
+    Emitter<SearchUsersState> emit,
+  ) async {
+    emit(state.copyWith(status: SearchUsersStatus.loading));
+
+    final _users = state.selectedUsers?.toList() ?? [];
+    if (_users.contains(event.user)) {
+      _users.remove(event.user);
+    } else {
+      _users.add(event.user);
+    }
+
+    emit(state.copyWith(
+      status: SearchUsersStatus.success,
+      selectedUsers: _users,
     ));
   }
 }

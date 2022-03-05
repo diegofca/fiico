@@ -5,10 +5,12 @@ abstract class SearchUsersEvent extends Equatable {
 }
 
 class SearchUsersFetchRequest extends SearchUsersEvent {
-  const SearchUsersFetchRequest();
+  const SearchUsersFetchRequest(this.users);
+
+  final List<User>? users;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [users];
 }
 
 class SearchUsersFilterRequest extends SearchUsersEvent {
@@ -17,5 +19,14 @@ class SearchUsersFilterRequest extends SearchUsersEvent {
   final String query;
 
   @override
-  List<Object?> get props => [query];
+  List<Object> get props => [query];
+}
+
+class SearchSelectUserRequest extends SearchUsersEvent {
+  const SearchSelectUserRequest(this.user);
+
+  final User user;
+
+  @override
+  List<Object?> get props => [user];
 }

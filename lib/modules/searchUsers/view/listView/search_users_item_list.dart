@@ -1,10 +1,12 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/models/user.dart';
+import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SearchUserListItemView extends StatefulWidget {
   const SearchUserListItemView({
@@ -26,17 +28,22 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
-      child: SizedBox(
-        height: 90,
-        width: double.maxFinite,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _iconView(),
-            _userDataView(),
-            _onSelectedView(),
-          ],
+      onTap: () => context
+          .read<SearchUsersBloc>()
+          .add(SearchSelectUserRequest(widget.user)),
+      child: Container(
+        color: Colors.white.withOpacity(0),
+        child: SizedBox(
+          height: 90,
+          width: double.maxFinite,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _iconView(),
+              _userDataView(),
+              _onSelectedView(),
+            ],
+          ),
         ),
       ),
     );
@@ -46,15 +53,17 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
     return Padding(
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
       child: Container(
-        width: 75,
+        width: 60,
         height: double.maxFinite,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(
             FiicoPaddings.eight,
           ),
-          color: FiicoColors.grayLite,
+          color: FiicoColors.white,
         ),
-        child: const FiicoImageNetwork.user(),
+        child: FiicoProfileNetwork.user(
+          url: widget.user.profileImage,
+        ),
       ),
     );
   }
@@ -88,8 +97,7 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
   Widget _emailView() {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.two),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Wrap(
         children: [
           Text(
             widget.user.email ?? '',
@@ -117,7 +125,7 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
         child: const Padding(
           padding: EdgeInsets.all(FiicoPaddings.sixteen),
           child: Icon(
-            MdiIcons.checkBold,
+            MdiIcons.check,
             color: FiicoColors.greenNeutral,
           ),
         ),

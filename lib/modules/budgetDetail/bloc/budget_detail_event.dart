@@ -39,3 +39,12 @@ class BudgetDetailMovementRemoveRequest extends BudgetDetailEvent {
   @override
   List<Object?> get props => [movement];
 }
+
+class BudgetUpdateDetailRequest extends BudgetDetailEvent {
+  const BudgetUpdateDetailRequest({required this.budget});
+
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [budget];
+}

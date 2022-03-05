@@ -38,14 +38,6 @@ class FiicoImageNetwork extends StatelessWidget {
     this.iconData = MdiIcons.sack,
   }) : super(key: key);
 
-  /// Budget image
-  const FiicoImageNetwork.user({
-    Key? key,
-    this.url,
-    this.size = 40,
-    this.iconData = MdiIcons.faceManShimmer,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     if (url?.isUrl() ?? false) {

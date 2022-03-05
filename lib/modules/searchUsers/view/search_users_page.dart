@@ -1,41 +1,33 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
-import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
+import 'package:control/modules/searchUsers/repository/search_users_repository.dart';
 import 'package:control/modules/searchUsers/view/search_users_success_view.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SearchUsersPage extends StatelessWidget {
   const SearchUsersPage({
     Key? key,
+    required this.users,
+    required this.onUsersSelected,
   }) : super(key: key);
+
+  final List<User>? users;
+  final Function(List<User>?) onUsersSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FiicoColors.grayBackground,
-      appBar: GenericAppBar(
-        bottomHeigth: 0,
-        title: SizedBox(
-          width: double.maxFinite,
-          height: 60,
-          child: FiicoTextfield(
-            hintText: "Busca y agrega tus amigos aqui ..",
-            textInputAction: TextInputAction.search,
-            onChanged: (text) {
-              context
-                  .read<SearchUsersBloc>()
-                  .add(SearchUsersFilterRequest(text));
-            },
-          ),
-        ),
-      ),
-      body: BlocProvider(
-        create: (context) => context.read<SearchUsersBloc>(),
-        child: const SearchUsersPageView(),
+    return BlocProvider(
+      create: (context) => SearchUsersBloc(
+        SearchUsersRepository(),
+      )..add(SearchUsersFetchRequest(users)),
+      child: SearchUsersPageView(
+        onUsersSelected: onUsersSelected,
       ),
     );
   }
@@ -44,48 +36,74 @@ class SearchUsersPage extends StatelessWidget {
 class SearchUsersPageView extends StatelessWidget {
   const SearchUsersPageView({
     Key? key,
+    required this.onUsersSelected,
   }) : super(key: key);
+
+  final Function(List<User>?) onUsersSelected;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchUsersBloc, SearchUsersState>(
+    return BlocConsumer<SearchUsersBloc, SearchUsersState>(
       builder: (context, state) {
+        return StreamBuilder<List<User>>(
+          stream: state.users,
+          builder: (context, snapshot) {
+            return Scaffold(
+              backgroundColor: FiicoColors.grayBackground,
+              appBar: GenericAppBar(
+                bottomHeigth: 0,
+                title: SizedBox(
+                  width: double.maxFinite,
+                  height: 60,
+                  child: _searchInputView(context),
+                ),
+              ),
+              body: SearchUsersSuccessView(
+                users: state.getFilteredUsers(
+                  snapshot.data,
+                  state.query ?? '',
+                ),
+              ),
+            );
+          },
+        );
+      },
+      listener: (context, state) {
         switch (state.status) {
-          case SearchUsersStatus.success:
-            return StreamBuilder<List<User>>(
-              stream: state.users,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SearchUsersSuccessView(
-                    users: _getFilteredUsers(snapshot.requireData, state.query),
-                  );
-                }
-                return const LoadingView();
-              },
-            );
-          case SearchUsersStatus.searching:
-          case SearchUsersStatus.waiting:
-            return const LoadingView(
-              backgroundColor: FiicoColors.pink,
-            );
+          case SearchUsersStatus.loading:
+            FiicoRoute.showLoader(context);
+            break;
+          default:
+            FiicoRoute.hideLoader(context);
         }
       },
     );
   }
 
-  List<User> _getFilteredUsers(List<User>? users, String? query) {
-    final _users = users ?? [];
-    if (query != null) {
-      return _users
-          .where(
-            (e) =>
-                e.firstName!.contains(query) ||
-                e.lastName!.contains(query) ||
-                e.userName!.contains(query) ||
-                e.email!.contains(query),
-          )
-          .toList();
-    }
-    return _users;
+  Widget _searchInputView(BuildContext context) {
+    final bloc = context.read<SearchUsersBloc>();
+    return Row(
+      children: [
+        Expanded(
+          child: FiicoTextfield(
+            hintText: "Busca usuarios aquí ...",
+            textInputAction: TextInputAction.search,
+            onChanged: (text) {
+              bloc.add(SearchUsersFilterRequest(text));
+            },
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            onUsersSelected(bloc.state.selectedUsers);
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            MdiIcons.checkAll,
+            color: FiicoColors.greenNeutral,
+          ),
+        ),
+      ],
+    );
   }
 }

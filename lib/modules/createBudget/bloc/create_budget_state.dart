@@ -5,6 +5,7 @@ part of 'create_budget_bloc.dart';
 enum CreateBudgetStatus {
   success,
   loading,
+  failure,
 }
 
 class CreateBudgetState extends Equatable {

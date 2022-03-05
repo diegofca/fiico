@@ -13,6 +13,7 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     on<BudgetDetailDeleteRequest>(_mapDeleteBudgetToState);
     on<BudgetDetailMovementAddedRequest>(_mapAddedMovementToState);
     on<BudgetDetailMovementRemoveRequest>(_mapRemoveMovementToState);
+    on<BudgetUpdateDetailRequest>(_mapUpdateBudgetToState);
   }
 
   final BudgetDetailRepository repository;
@@ -69,6 +70,22 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
         movementAdded: event.movement,
+      ));
+    } catch (_) {
+      emit(state.copyWith(status: BudgetDetailStatus.failed));
+    }
+  }
+
+  void _mapUpdateBudgetToState(
+    BudgetUpdateDetailRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    try {
+      await repository.updateBudget(event.budget);
+      emit(state.copyWith(
+        status: BudgetDetailStatus.success,
+        budget: repository.getBudget(),
       ));
     } catch (_) {
       emit(state.copyWith(status: BudgetDetailStatus.failed));

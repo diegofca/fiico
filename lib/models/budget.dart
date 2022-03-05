@@ -25,7 +25,6 @@ class Budget {
   final bool? isCycle;
   final Timestamp? startDate;
   final Timestamp? finishDate;
-
   final int? duration;
 
   Budget({
@@ -92,9 +91,9 @@ class Budget {
       'cycle': cycle,
       'duration': duration,
       'status': status,
-      'totalBalance': totalBalance,
-      'totalDebt': totalDebt,
-      'totalEntry': totalEntry,
+      'totalBalance': getTotalBalance(),
+      'totalDebt': getTotalDebt(),
+      'totalEntry': getTotalEntry(),
       'userID': userID,
       'isCycle': isCycle,
       'startDate': startDate,
@@ -132,6 +131,41 @@ class Budget {
       budgets.add(Budget.fromJson(budget));
     });
     return budgets;
+  }
+
+  Budget copyWith({
+    String? name,
+    String? currency,
+    int? cycle,
+    FiicoIcon? icon,
+    String? status,
+    num? totalBalance,
+    num? totalDebt,
+    num? totalEntry,
+    String? userID,
+    List<Movement>? movements,
+    bool? isCycle,
+    Timestamp? startDate,
+    Timestamp? finishDate,
+    int? duration,
+  }) {
+    return Budget(
+      id: id,
+      name: name ?? this.name,
+      currency: currency ?? this.currency,
+      cycle: cycle ?? this.cycle,
+      duration: duration ?? this.duration,
+      icon: icon ?? this.icon,
+      status: status ?? this.status,
+      totalBalance: totalBalance ?? this.totalBalance,
+      totalDebt: totalDebt ?? this.totalDebt,
+      totalEntry: totalEntry ?? this.totalEntry,
+      userID: userID ?? this.userID,
+      isCycle: isCycle ?? this.isCycle,
+      startDate: startDate ?? this.startDate,
+      finishDate: finishDate ?? this.finishDate,
+      movements: movements ?? this.movements,
+    );
   }
 
   // Functions class -----------------------------------------------------------------------------------------

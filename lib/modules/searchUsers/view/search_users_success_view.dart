@@ -1,9 +1,11 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/user.dart';
+import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
 import 'package:control/modules/searchUsers/view/emptyView/search_users_empty_view.dart';
 import 'package:control/modules/searchUsers/view/listView/search_users_item_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchUsersSuccessView extends StatelessWidget {
   const SearchUsersSuccessView({
@@ -56,10 +58,16 @@ class SearchUsersSuccessView extends StatelessWidget {
           itemCount: users.length,
           itemBuilder: (context, index) {
             final user = users[index];
-            return SearchUserListItemView(user: user, isSelected: true);
+            return itemUserView(context, user);
           },
         ),
       ),
     );
+  }
+
+  Widget itemUserView(BuildContext context, User user) {
+    final selectedUsers = context.read<SearchUsersBloc>().state.selectedUsers;
+    final selected = selectedUsers?.contains(user) ?? false;
+    return SearchUserListItemView(user: user, isSelected: selected);
   }
 }

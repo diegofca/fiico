@@ -4,8 +4,10 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/view/create_budget_cycle_view.dart';
 import 'package:control/modules/createBudget/view/headerView/create_budget_header_view.dart';
@@ -24,10 +26,12 @@ class CreateBudgetSuccessView extends StatelessWidget {
     Key? key,
     this.mDebts,
     this.mEntrys,
+    this.users,
   }) : super(key: key);
 
   final Budget budgetToCreate;
 
+  final List<User>? users;
   final List<Movement>? mDebts;
   final List<Movement>? mEntrys;
 
@@ -99,6 +103,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         _entrysDebtsView(context),
         _entrysDebtsListView(),
         _infoView(),
+        _entryUsersListView(context),
         _shareButtonView(context),
         _separatorLineView(),
         _createButtonView(context),
@@ -313,8 +318,9 @@ class CreateBudgetSuccessView extends StatelessWidget {
         _separatorLineView(),
         Container(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
-          height: 90,
+          padding: const EdgeInsets.symmetric(
+            vertical: FiicoPaddings.thirtyTwo,
+          ),
           child: Text(
             'Puedes crear tus tableros y compartirlos con tus amigos y familiares, si estan tregistrados en Fiico podrán modificar tu tablero en cualquier momento.',
             textAlign: TextAlign.start,
@@ -331,7 +337,17 @@ class CreateBudgetSuccessView extends StatelessWidget {
 
   Widget _shareButtonView(BuildContext context) {
     return GestureDetector(
-      onTap: () => FiicoRoute.send(context, const SearchUsersPage()),
+      onTap: () => FiicoRoute.send(
+        context,
+        SearchUsersPage(
+          users: users,
+          onUsersSelected: (users) {
+            context
+                .read<CreateBudgetBloc>()
+                .add(CreateBudgetSearchUsersSelected(users: users));
+          },
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(
           top: FiicoPaddings.sixteen,
@@ -395,6 +411,48 @@ class CreateBudgetSuccessView extends StatelessWidget {
               .read<CreateBudgetBloc>()
               .add(CreateBudgetAdded(budget: budgetToCreate));
         },
+      ),
+    );
+  }
+
+  Widget _entryUsersListView(BuildContext context) {
+    final users = context.read<CreateBudgetBloc>().state.users ?? [];
+    return Visibility(
+      visible: users.isNotEmpty,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _separatorLineView(),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.thirtyTwo,
+              bottom: FiicoPaddings.eight,
+            ),
+            child: Text(
+              'Integrantes',
+              textAlign: TextAlign.start,
+              style: Style.subtitle.copyWith(
+                fontSize: FiicoFontSize.sm,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              itemCount: users.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FiicoProfileNetwork.user(
+                    url: user.profileImage,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

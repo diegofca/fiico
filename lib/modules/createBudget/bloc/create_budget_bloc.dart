@@ -27,15 +27,16 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
     Emitter<CreateBudgetState> emit,
   ) async {
     try {
+      emit(state.copyWith(status: CreateBudgetStatus.loading));
+
       final added = await repository.addNewBudget(event.budget);
       await repository.updateBudget(added.id);
-      emit(state.copyWith(status: CreateBudgetStatus.loading));
       emit(state.copyWith(
         status: CreateBudgetStatus.success,
         addedBudgetID: added.id,
       ));
     } catch (_) {
-      emit(state.copyWith(status: CreateBudgetStatus.loading));
+      emit(state.copyWith(status: CreateBudgetStatus.failure));
     }
   }
 
@@ -81,8 +82,9 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
     CreateBudgetSearchUsersSelected event,
     Emitter<CreateBudgetState> emit,
   ) async {
+    emit(state.copyWith(status: CreateBudgetStatus.loading));
     emit(state.copyWith(
-      status: CreateBudgetStatus.loading,
+      status: CreateBudgetStatus.success,
       users: event.users,
     ));
   }

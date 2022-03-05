@@ -71,11 +71,7 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
         .doc("1")
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
-        .update({
-      'totalEntry': budget.getTotalEntry(),
-      'totalDebt': budget.getTotalDebt(),
-      'totalBalance': budget.getTotalBalance(),
-    });
+        .update(budget.toJson());
   }
 
   @override

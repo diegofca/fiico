@@ -3,7 +3,6 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CreateBudgetHeaderView extends StatefulWidget {
   const CreateBudgetHeaderView({
@@ -63,7 +62,6 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _nameItemView(),
-              _bellIconView(),
             ],
           ),
           _statusAndDate(),
@@ -80,25 +78,6 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.sm,
-        ),
-      ),
-    );
-  }
-
-  Widget _bellIconView() {
-    return GestureDetector(
-      onTap: () {
-        print("bell click");
-      },
-      child: const Padding(
-        padding: EdgeInsets.only(
-          right: FiicoPaddings.sixteen,
-          bottom: FiicoPaddings.eight,
-        ),
-        child: Icon(
-          MdiIcons.bell,
-          color: FiicoColors.gold,
-          size: 20,
         ),
       ),
     );

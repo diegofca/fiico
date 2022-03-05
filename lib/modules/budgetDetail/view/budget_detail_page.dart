@@ -7,6 +7,7 @@ import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
 import 'package:control/modules/budgetDetail/view/budget_detail_success_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_bottom_view.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -44,15 +45,16 @@ class BudgetDetailPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<BudgetDetailBloc, BudgetDetailState>(
       builder: (context, state) {
-        switch (state.status) {
-          case BudgetDetailStatus.loading:
-          case BudgetDetailStatus.failed:
-            return const LoadingView();
-          case BudgetDetailStatus.success:
-            return _bodyContainer(state.budget);
-        }
+        return _bodyContainer(state.budget);
       },
       listener: (context, state) {
+        switch (state.status) {
+          case BudgetDetailStatus.loading:
+            FiicoRoute.showLoader(context);
+            break;
+          default:
+            FiicoRoute.hideLoader(context);
+        }
         if (state.isDeletedBudget) {
           Navigator.of(context).pop();
         }

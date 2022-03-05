@@ -65,7 +65,7 @@ class FiicoButtonState extends State<FiicoButton> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: FiicoPaddings.thirtyTwo,
+              horizontal: FiicoPaddings.sixteen,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +88,7 @@ class FiicoButtonState extends State<FiicoButton> {
                   widget.title,
                   style: Style.title.copyWith(
                     color: FiicoColors.white,
-                    fontSize: FiicoFontSize.md,
+                    fontSize: FiicoFontSize.xm,
                   ),
                 ),
               ],

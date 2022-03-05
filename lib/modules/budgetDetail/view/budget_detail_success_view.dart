@@ -35,14 +35,14 @@ class BudgetDetailSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
       child: Column(
         children: [
-          _headerView(),
+          _headerView(context),
           _bodyView(context),
         ],
       ),
     );
   }
 
-  Widget _headerView() {
+  Widget _headerView(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       width: double.maxFinite,
@@ -52,7 +52,15 @@ class BudgetDetailSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: BudgetDetailHeaderView(name: budget.name),
+      child: BudgetDetailHeaderView(
+        budget: budget,
+        onNewIconSelected: (icon) {
+          var _budget = budget.copyWith(icon: icon);
+          context
+              .read<BudgetDetailBloc>()
+              .add(BudgetUpdateDetailRequest(budget: _budget));
+        },
+      ),
     );
   }
 
@@ -411,7 +419,15 @@ class BudgetDetailSuccessView extends StatelessWidget {
 
   Widget _shareButtonView(BuildContext context) {
     return GestureDetector(
-      onTap: () => FiicoRoute.send(context, const SearchUsersPage()),
+      onTap: () => FiicoRoute.send(
+        context,
+        SearchUsersPage(
+          users: const [],
+          onUsersSelected: (list) {
+            print(list);
+          },
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.only(
           top: FiicoPaddings.sixteen,

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
-import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
@@ -11,6 +10,7 @@ import 'package:control/models/recurrency.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/repository/create_movement_repository.dart';
 import 'package:control/modules/createMovement/view/create_movement_success_view.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -88,21 +88,18 @@ class CreateMovementPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateMovementBloc, CreateMovementState>(
       builder: (context, state) {
-        switch (state.status) {
-          case CreateMovementStatus.success:
-          case CreateMovementStatus.waiting:
-            return CreateMovementSuccessView(
-              movement: getMovementToBloc(state),
-            );
-          case CreateMovementStatus.addedLoading:
-            return const LoadingView();
-          case CreateMovementStatus.failed:
-            return Container(
-              color: Colors.black,
-            );
-        }
+        return CreateMovementSuccessView(
+          movement: getMovementToBloc(state),
+        );
       },
       listener: (context, state) {
+        switch (state.status) {
+          case CreateMovementStatus.loading:
+            FiicoRoute.showLoader(context);
+            break;
+          default:
+            FiicoRoute.hideLoader(context);
+        }
         if (state.isAdded) {
           Navigator.of(context).pop(getMovementToBloc(state));
         }

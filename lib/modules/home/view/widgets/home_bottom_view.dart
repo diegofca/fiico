@@ -33,7 +33,7 @@ class HomeBottomView {
               ),
               child: SafeArea(
                 child: SizedBox(
-                  height: budgets.length * 96,
+                  height: budgets.length * 75,
                   child: _budgetListView(budgets, onBudgetSelected),
                 ),
               ),

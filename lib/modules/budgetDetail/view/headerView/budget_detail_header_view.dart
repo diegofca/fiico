@@ -1,17 +1,23 @@
+import 'dart:async';
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/helpers/genericViews/fiico_selector_icon.dart';
+import 'package:control/models/budget.dart';
+import 'package:control/models/fiico_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BudgetDetailHeaderView extends StatefulWidget {
   const BudgetDetailHeaderView({
     Key? key,
-    required this.name,
+    required this.budget,
+    required this.onNewIconSelected,
   }) : super(key: key);
 
-  final String? name;
+  final Budget budget;
+  final Function(FiicoIcon?) onNewIconSelected;
 
   @override
   State<BudgetDetailHeaderView> createState() => BudgetDetailHeaderViewState();
@@ -34,21 +40,31 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
   }
 
   Widget _iconItem() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.sixteen,
-        right: FiicoPaddings.twenyFour,
-        left: FiicoPaddings.twenyFour,
-      ),
-      child: Container(
-        width: 75,
-        height: double.maxFinite,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(FiicoPaddings.eight),
-          color: FiicoColors.grayLite,
+    return GestureDetector(
+      onTap: () async {
+        final icon = await FiicoSelectorIcon.select(context);
+        Timer(const Duration(milliseconds: 100), () {
+          widget.onNewIconSelected(icon);
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.sixteen,
+          bottom: FiicoPaddings.sixteen,
+          right: FiicoPaddings.twenyFour,
+          left: FiicoPaddings.twenyFour,
         ),
-        child: const FiicoImageNetwork.budget(),
+        child: Container(
+          width: 75,
+          height: double.maxFinite,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(FiicoPaddings.eight),
+            color: FiicoColors.grayLite,
+          ),
+          child: FiicoImageNetwork.budget(
+            iconData: widget.budget.icon?.getIcon(),
+          ),
+        ),
       ),
     );
   }
@@ -61,10 +77,7 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _nameItemView(),
-              _bellIconView(),
-            ],
+            children: [_nameItemView()],
           ),
           _statusAndDate(),
         ],
@@ -75,30 +88,11 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
   Widget _nameItemView() {
     return Expanded(
       child: Text(
-        widget.name ?? '',
+        widget.budget.name ?? '',
         maxLines: FiicoMaxLines.two,
         style: Style.title.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.sm,
-        ),
-      ),
-    );
-  }
-
-  Widget _bellIconView() {
-    return GestureDetector(
-      onTap: () {
-        print("bell click");
-      },
-      child: const Padding(
-        padding: EdgeInsets.only(
-          right: FiicoPaddings.sixteen,
-          bottom: FiicoPaddings.eight,
-        ),
-        child: Icon(
-          MdiIcons.bell,
-          color: FiicoColors.gold,
-          size: 20,
         ),
       ),
     );
@@ -110,16 +104,16 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: FiicoPaddings.eight),
+          Padding(
+            padding: const EdgeInsets.only(right: FiicoPaddings.eight),
             child: Icon(
               Icons.circle,
-              color: FiicoColors.greenNeutral,
+              color: widget.budget.getStatusColor(),
               size: 12,
             ),
           ),
           Text(
-            "Activo",
+            widget.budget.status ?? '',
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

@@ -31,7 +31,7 @@ class HomeSelectorBudgetListItemViewState
         widget.budget,
       ),
       child: Container(
-        height: 80,
+        height: 70,
         color: FiicoColors.white,
         width: double.maxFinite,
         child: Row(
@@ -63,7 +63,7 @@ class HomeSelectorBudgetListItemViewState
         child: Center(
           child: FiicoImageNetwork(
             iconData: widget.budget.icon?.getIcon(),
-            size: 50,
+            size: 30,
           ),
         ),
       ),

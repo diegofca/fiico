@@ -21,7 +21,7 @@ class CreateMovementBloc
     CreateMovementAddedRequest event,
     Emitter<CreateMovementState> emit,
   ) async {
-    emit(state.copyWith(status: CreateMovementStatus.addedLoading));
+    emit(state.copyWith(status: CreateMovementStatus.loading));
     try {
       await repository.addNewMovement(event.newMovement);
       emit(state.copyWith(
@@ -29,7 +29,7 @@ class CreateMovementBloc
         onAddedCompleted: true,
       ));
     } catch (_) {
-      emit(state.copyWith(status: CreateMovementStatus.failed));
+      emit(state.copyWith(status: CreateMovementStatus.failure));
     }
   }
 
@@ -37,7 +37,7 @@ class CreateMovementBloc
     CreateMovementInfoRequest event,
     Emitter<CreateMovementState> emit,
   ) async {
-    emit(state.copyWith(status: CreateMovementStatus.waiting));
+    emit(state.copyWith(status: CreateMovementStatus.loading));
     emit(state.copyWith(
       status: CreateMovementStatus.success,
       description: event.description,
