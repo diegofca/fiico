@@ -32,6 +32,7 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: actions ?? [],
       elevation: 0,
       centerTitle: false,
+      automaticallyImplyLeading: false,
       bottom: bottomWidget,
     );
   }

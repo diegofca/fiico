@@ -17,8 +17,8 @@ class SearchUsersPage extends StatelessWidget {
     required this.onUsersSelected,
   }) : super(key: key);
 
-  final List<User>? users;
-  final Function(List<User>?) onUsersSelected;
+  final List<FiicoUser>? users;
+  final Function(List<FiicoUser>?) onUsersSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +39,13 @@ class SearchUsersPageView extends StatelessWidget {
     required this.onUsersSelected,
   }) : super(key: key);
 
-  final Function(List<User>?) onUsersSelected;
+  final Function(List<FiicoUser>?) onUsersSelected;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SearchUsersBloc, SearchUsersState>(
       builder: (context, state) {
-        return StreamBuilder<List<User>>(
+        return StreamBuilder<List<FiicoUser>>(
           stream: state.users,
           builder: (context, snapshot) {
             return Scaffold(

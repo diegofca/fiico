@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/cycle.dart';
 import 'package:flutter/material.dart';
 
@@ -95,14 +96,11 @@ class CreateBudgetCycleSelectorView {
   }
 
   Widget _separatorLineView() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
+    return const Padding(
+      padding: EdgeInsets.symmetric(
         horizontal: FiicoPaddings.sixteen,
       ),
-      child: Container(
-        color: FiicoColors.grayLite,
-        height: 1,
-      ),
+      child: SeparatorView(),
     );
   }
 }

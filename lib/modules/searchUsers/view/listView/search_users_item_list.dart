@@ -16,7 +16,7 @@ class SearchUserListItemView extends StatefulWidget {
   }) : super(key: key);
 
   final bool isSelected;
-  final User user;
+  final FiicoUser user;
 
   @override
   State<SearchUserListItemView> createState() => SearchUserListItemViewState();

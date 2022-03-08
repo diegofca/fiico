@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/entryDetail/view/detail/header/entry_detail_item_header.dart';
@@ -98,10 +99,7 @@ class EntryDetailSuccessView extends StatelessWidget {
   }
 
   Widget _separatorLineView() {
-    return Container(
-      color: FiicoColors.grayLite,
-      height: 1,
-    );
+    return const SeparatorView();
   }
 
   Widget _pricesDetailView() {

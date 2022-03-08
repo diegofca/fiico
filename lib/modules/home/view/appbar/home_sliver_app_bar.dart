@@ -51,6 +51,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
       title: _resumeBoards(),
       flexibleSpace: _flexibleWidgets(context),
       backgroundColor: FiicoColors.purpleDark,
+      leading: null,
       floating: false,
       collapsedHeight: widget.isHideBoards ? 0 : _heigthTitleWidget,
       toolbarHeight: widget.isHideBoards ? 0 : _heigthTitleWidget,
@@ -59,6 +60,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
       titleSpacing: 0,
       pinned: true,
       stretch: true,
+      automaticallyImplyLeading: false,
     );
   }
 

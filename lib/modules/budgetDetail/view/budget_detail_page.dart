@@ -48,16 +48,8 @@ class BudgetDetailPageView extends StatelessWidget {
         return _bodyContainer(state.budget);
       },
       listener: (context, state) {
-        switch (state.status) {
-          case BudgetDetailStatus.loading:
-            FiicoRoute.showLoader(context);
-            break;
-          default:
-            FiicoRoute.hideLoader(context);
-        }
-        if (state.isDeletedBudget) {
-          Navigator.of(context).pop();
-        }
+        _validateStatusView(context, state);
+        _validateIfDeleteBudget(context, state);
       },
     );
   }
@@ -102,6 +94,22 @@ class BudgetDetailPageView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _validateStatusView(BuildContext context, BudgetDetailState state) {
+    switch (state.status) {
+      case BudgetDetailStatus.loading:
+        FiicoRoute.showLoader(context);
+        break;
+      default:
+        FiicoRoute.hideLoader(context);
+    }
+  }
+
+  void _validateIfDeleteBudget(BuildContext context, BudgetDetailState state) {
+    if (state.isDeletedBudget) {
+      Navigator.of(context).pop();
+    }
   }
 
   void _selectedOption(BuildContext context, BudgetDetailBottomOption option) {

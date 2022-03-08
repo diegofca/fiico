@@ -13,11 +13,11 @@ class SearchUsersState extends Equatable {
   });
 
   final SearchUsersStatus status;
-  final Stream<List<User>>? users;
-  final List<User>? selectedUsers;
+  final Stream<List<FiicoUser>>? users;
+  final List<FiicoUser>? selectedUsers;
   final String? query;
 
-  List<User> getFilteredUsers(List<User>? users, String query) {
+  List<FiicoUser> getFilteredUsers(List<FiicoUser>? users, String query) {
     final _users = users ?? [];
     return _users
         .where(
@@ -35,8 +35,8 @@ class SearchUsersState extends Equatable {
 
   SearchUsersState copyWith({
     SearchUsersStatus? status,
-    Stream<List<User>>? users,
-    List<User>? selectedUsers,
+    Stream<List<FiicoUser>>? users,
+    List<FiicoUser>? selectedUsers,
     String? query,
   }) {
     return SearchUsersState(

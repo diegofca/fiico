@@ -21,7 +21,7 @@ class SearchSuccessView extends StatelessWidget {
 
   final items = 10;
 
-  final Stream<List<User>>? usersStream;
+  final Stream<List<FiicoUser>>? usersStream;
   final Stream<List<Budget>>? budgetsStream;
   final Stream<List<Movement>>? movementsStream;
 
@@ -124,7 +124,7 @@ class SearchSuccessView extends StatelessWidget {
 
   Widget _searchUsersListView(BuildContext context) {
     final state = context.read<SearchBloc>().state;
-    return StreamBuilder<List<User>>(
+    return StreamBuilder<List<FiicoUser>>(
       stream: usersStream,
       builder: (context, snapshot) {
         return SearchUsersListView(

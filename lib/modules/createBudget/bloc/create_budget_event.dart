@@ -64,7 +64,7 @@ class CreateBudgetSearchUsersSelected extends CreateBudgetEvent {
     this.users,
   });
 
-  final List<User>? users;
+  final List<FiicoUser>? users;
 
   @override
   List<Object?> get props => [users];

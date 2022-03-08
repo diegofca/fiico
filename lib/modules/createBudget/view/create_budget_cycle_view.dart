@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/view/widgets/create_budget_cycle_selector_view.dart';
@@ -42,9 +43,8 @@ class CreateBudgetCycleView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Linea de Activacion ciclica
                   _isRepetitiveSwitchView(context),
-                  _separatorLineView(),
+                  const SeparatorView(),
                   _cycleSelectorView(context),
                   _durationSelectorView(context),
                   _initalDateSelectorView(context),
@@ -162,7 +162,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            _separatorLineView(),
+            const SeparatorView(),
           ],
         ),
       ),
@@ -232,7 +232,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            _separatorLineView(),
+            const SeparatorView(),
           ],
         ),
       ),
@@ -310,7 +310,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            _separatorLineView(),
+            const SeparatorView(),
           ],
         ),
       ),
@@ -387,7 +387,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            _separatorLineView(),
+            const SeparatorView(),
           ],
         ),
       ),
@@ -411,13 +411,6 @@ class CreateBudgetCycleView extends StatelessWidget {
           fontSize: FiicoFontSize.sm,
         ),
       ),
-    );
-  }
-
-  Widget _separatorLineView() {
-    return Container(
-      color: FiicoColors.graySoft,
-      height: 1,
     );
   }
 }

@@ -18,6 +18,11 @@ extension FiicoRoute on Navigator {
         context, MaterialPageRoute(builder: (context) => page));
   }
 
+  static Future<dynamic> sendReplace(BuildContext context, Widget page) {
+    return Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => page));
+  }
+
   static void changeTab(BuildContext context, TabOption tabOption) {
     var tabIndex = tabOption.index;
     context.read<MenuBloc>().add(MenuIndexSelected(index: tabIndex));

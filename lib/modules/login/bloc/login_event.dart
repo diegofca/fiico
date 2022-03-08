@@ -30,3 +30,19 @@ class LoginPasswordIsShowRequest extends LoginEvent {
   @override
   List<Object> get props => [isShowPassword];
 }
+
+class LoginIntentRequest extends LoginEvent {
+  const LoginIntentRequest();
+
+  @override
+  List<Object> get props => [];
+}
+
+class LoginForgotPasswordRequest extends LoginEvent {
+  const LoginForgotPasswordRequest(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}

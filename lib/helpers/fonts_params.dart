@@ -80,6 +80,9 @@ abstract class FiicoPaddings {
 
   ///Size 64px
   static const double sixtyTwo = 62;
+
+  ///Size 64px
+  static const double oneHundredTwenty = 120;
 }
 
 /// Namespace for Default Font Size

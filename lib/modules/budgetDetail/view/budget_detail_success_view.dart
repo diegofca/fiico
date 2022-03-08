@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
@@ -228,7 +229,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _separatorLineView(),
+          const SeparatorView(),
           Container(
             alignment: Alignment.center,
             height: 60,
@@ -291,7 +292,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _separatorLineView(),
+        const SeparatorView(),
         Container(
           alignment: Alignment.center,
           height: 60,
@@ -398,7 +399,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _separatorLineView(),
+        const SeparatorView(),
         Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
@@ -473,13 +474,6 @@ class BudgetDetailSuccessView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _separatorLineView() {
-    return Container(
-      color: FiicoColors.graySoft,
-      height: 1,
     );
   }
 

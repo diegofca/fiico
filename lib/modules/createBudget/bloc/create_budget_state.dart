@@ -27,7 +27,7 @@ class CreateBudgetState extends Equatable {
   final CreateBudgetStatus status;
   final Movement? addedMovement;
   final Movement? removedMovement;
-  final List<User>? users;
+  final List<FiicoUser>? users;
   List<Movement> movements;
   final Currency? currencySelected;
   final bool? isCycle;
@@ -53,7 +53,7 @@ class CreateBudgetState extends Equatable {
     bool? isCycle,
     Movement? addedMovement,
     Movement? removedMovement,
-    List<User>? users,
+    List<FiicoUser>? users,
     int? cycle,
     int? duration,
     Timestamp? initDate,

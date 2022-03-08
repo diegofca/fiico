@@ -13,7 +13,7 @@ class SearchUsersSuccessView extends StatelessWidget {
     required this.users,
   }) : super(key: key);
 
-  final List<User> users;
+  final List<FiicoUser> users;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class SearchUsersSuccessView extends StatelessWidget {
     );
   }
 
-  Widget itemUserView(BuildContext context, User user) {
+  Widget itemUserView(BuildContext context, FiicoUser user) {
     final selectedUsers = context.read<SearchUsersBloc>().state.selectedUsers;
     final selected = selectedUsers?.contains(user) ?? false;
     return SearchUserListItemView(user: user, isSelected: selected);

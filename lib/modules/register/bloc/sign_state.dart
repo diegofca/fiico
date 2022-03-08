@@ -1,57 +1,68 @@
 // ignore_for_file: must_be_immutable
 
-part of 'login_bloc.dart';
+part of 'sign_bloc.dart';
 
-enum LoginStatus { success, loading, failure }
-enum LoginError { userNotFound, wrongPassword, toManyRequest, unknow }
+enum SignStatus { success, loading, failure }
+enum SignUpError { userNotFound, wrongPassword, toManyRequest, unknow }
 
-class LoginState extends Equatable {
-  const LoginState({
-    this.status = LoginStatus.success,
+class SignState extends Equatable {
+  const SignState({
+    this.status = SignStatus.success,
     this.email = const EmailValidatorModel(''),
     this.password = const PasswordValidatorModel(''),
+    this.lastName = const LastNameValidatorModel(''),
+    this.name = const NameValidatorModel(''),
     this.isShowPassword,
     this.userLogged,
     this.errorType,
     this.errorMgs,
   });
 
-  final LoginStatus status;
+  final SignStatus status;
   final EmailValidatorModel? email;
   final PasswordValidatorModel? password;
+  final NameValidatorModel? name;
+  final LastNameValidatorModel? lastName;
+
   final bool? isShowPassword;
   final FiicoUser? userLogged;
-  final LoginError? errorType;
+  final SignUpError? errorType;
   final String? errorMgs;
 
-  bool get loginError => errorType != null;
-  bool get loginComplete => status == LoginStatus.success && userLogged != null;
+  bool get signUpError => errorType != null;
+  bool get signUpComplete => status == SignStatus.success && userLogged != null;
 
   @override
   List<Object?> get props => [
         status,
         email,
         password,
+        name,
+        lastName,
         isShowPassword,
         userLogged,
         errorType,
         errorMgs
       ];
 
-  LoginState copyWith({
-    LoginStatus? status,
+  SignState copyWith({
+    SignStatus? status,
     EmailValidatorModel? email,
     PasswordValidatorModel? password,
+    NameValidatorModel? name,
+    LastNameValidatorModel? lastName,
     bool? isShowPassword,
     FiicoUser? userLogged,
-    LoginError? errorType,
+    SignUpError? errorType,
     String? errorMgs,
   }) {
-    return LoginState(
+    return SignState(
       status: status ?? this.status,
       password: password ?? this.password,
       isShowPassword: isShowPassword ?? this.isShowPassword,
+      lastName: lastName ?? this.lastName,
       email: email ?? this.email,
+      name: name ?? this.name,
       userLogged: userLogged,
       errorType: errorType,
       errorMgs: errorMgs,

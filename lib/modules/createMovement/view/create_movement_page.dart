@@ -93,18 +93,27 @@ class CreateMovementPageView extends StatelessWidget {
         );
       },
       listener: (context, state) {
-        switch (state.status) {
-          case CreateMovementStatus.loading:
-            FiicoRoute.showLoader(context);
-            break;
-          default:
-            FiicoRoute.hideLoader(context);
-        }
-        if (state.isAdded) {
-          Navigator.of(context).pop(getMovementToBloc(state));
-        }
+        _validateStatusView(context, state);
+        _validateIfCompleteMovement(context, state);
       },
     );
+  }
+
+  void _validateStatusView(BuildContext context, CreateMovementState state) {
+    switch (state.status) {
+      case CreateMovementStatus.loading:
+        FiicoRoute.showLoader(context);
+        break;
+      default:
+        FiicoRoute.hideLoader(context);
+    }
+  }
+
+  void _validateIfCompleteMovement(
+      BuildContext context, CreateMovementState state) {
+    if (state.isAdded) {
+      Navigator.of(context).pop(getMovementToBloc(state));
+    }
   }
 
   Movement getMovementToBloc(CreateMovementState state) {

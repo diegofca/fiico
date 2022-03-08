@@ -77,18 +77,27 @@ class CreateBudgetPageView extends StatelessWidget {
         );
       },
       listener: (context, state) {
-        switch (state.status) {
-          case CreateBudgetStatus.loading:
-            FiicoRoute.showLoader(context);
-            break;
-          default:
-            FiicoRoute.hideLoader(context);
-        }
-        if (state.isCompleteAdded) {
-          Navigator.of(context).pop();
-        }
+        _validateStatusView(context, state);
+        _validateIfCompleteBudget(context, state);
       },
     );
+  }
+
+  void _validateStatusView(BuildContext context, CreateBudgetState state) {
+    switch (state.status) {
+      case CreateBudgetStatus.loading:
+        FiicoRoute.showLoader(context);
+        break;
+      default:
+        FiicoRoute.hideLoader(context);
+    }
+  }
+
+  void _validateIfCompleteBudget(
+      BuildContext context, CreateBudgetState state) {
+    if (state.isCompleteAdded) {
+      Navigator.of(context).pop();
+    }
   }
 
   Budget _bugetToCreate(CreateBudgetState state) => Budget.create(

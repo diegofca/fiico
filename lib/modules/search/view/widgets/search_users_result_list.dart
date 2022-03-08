@@ -12,7 +12,7 @@ class SearchUsersListView extends StatelessWidget {
   }) : super(key: key);
 
   final items = 20;
-  final List<User> users;
+  final List<FiicoUser> users;
 
   final double _heigthCell = 90.0;
 

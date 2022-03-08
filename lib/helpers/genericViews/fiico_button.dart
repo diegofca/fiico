@@ -14,6 +14,7 @@ class FiicoButton extends StatefulWidget {
     this.image = '',
     this.textColor = FiicoColors.white,
     this.padding = EdgeInsets.zero,
+    this.borderColor = FiicoColors.clear,
   }) : super(key: key);
 
   final String title;
@@ -22,6 +23,7 @@ class FiicoButton extends StatefulWidget {
   final Color? textColor;
   final EdgeInsets? padding;
   final VoidCallback onTap;
+  final Color? borderColor;
 
   static FiicoButton green({
     required VoidCallback ontap,
@@ -62,6 +64,9 @@ class FiicoButtonState extends State<FiicoButton> {
           decoration: BoxDecoration(
             color: widget.color,
             borderRadius: BorderRadius.circular(FiicoPaddings.twenyFour),
+            border: Border.all(
+              color: widget.borderColor ?? FiicoColors.clear,
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -87,7 +92,7 @@ class FiicoButtonState extends State<FiicoButton> {
                 Text(
                   widget.title,
                   style: Style.title.copyWith(
-                    color: FiicoColors.white,
+                    color: widget.textColor,
                     fontSize: FiicoFontSize.xm,
                   ),
                 ),

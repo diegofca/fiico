@@ -5,6 +5,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
@@ -31,7 +32,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
 
   final Budget budgetToCreate;
 
-  final List<User>? users;
+  final List<FiicoUser>? users;
   final List<Movement>? mDebts;
   final List<Movement>? mEntrys;
 
@@ -458,10 +459,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
   }
 
   Widget _separatorLineView() {
-    return Container(
-      color: FiicoColors.graySoft,
-      height: 1,
-    );
+    return const SeparatorView();
   }
 
   void _showCurrencyPicker(BuildContext context) {

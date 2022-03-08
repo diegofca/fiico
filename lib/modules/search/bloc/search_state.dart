@@ -15,7 +15,7 @@ class SearchState extends Equatable {
   });
 
   final SearchStatus status;
-  final Stream<List<User>>? users;
+  final Stream<List<FiicoUser>>? users;
   final Stream<List<Budget>>? budgets;
   final Stream<List<Movement>>? movements;
 
@@ -30,7 +30,7 @@ class SearchState extends Equatable {
 
   SearchState copyWith({
     SearchStatus? status,
-    Stream<List<User>>? users,
+    Stream<List<FiicoUser>>? users,
     Stream<List<Budget>>? budgets,
     Stream<List<Movement>>? movements,
     String? query,

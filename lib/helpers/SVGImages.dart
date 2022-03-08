@@ -13,6 +13,7 @@ class SVGImages {
   static const emptyBudgets = 'assets/images/empty_budgets_icon.svg';
   static const emotyNot = 'assets/images/not_empty.svg';
   static const loginTopBg = 'assets/images/login_top_bg.svg';
+  static const userSignupBg = 'assets/images/user_signup_bg.svg';
 
   static const homeTab = 'assets/images/home_tab.svg';
   static const groupTab = 'assets/images/group_tab.svg';

@@ -1,36 +1,36 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_top_title_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
-import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
-import 'package:control/modules/register/view/sign_up_page.dart';
-import 'package:control/navigation/navigator.dart';
+import 'package:control/modules/register/bloc/sign_bloc.dart';
+import 'package:control/modules/register/model/last_name_validator_model.dart';
+import 'package:control/modules/register/model/name_validator_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-class LoginSuccesView extends StatefulWidget {
-  const LoginSuccesView({
+class SignSuccesView extends StatefulWidget {
+  const SignSuccesView({
     Key? key,
     this.state,
   }) : super(key: key);
 
-  final LoginState? state;
+  final SignState? state;
 
   @override
-  State<LoginSuccesView> createState() => LoginSuccesViewState();
+  State<SignSuccesView> createState() => SignSuccesViewState();
 }
 
-class LoginSuccesViewState extends State<LoginSuccesView> {
+class SignSuccesViewState extends State<SignSuccesView> {
+  final TextEditingController _nameEditingController = TextEditingController();
+  final TextEditingController _lastNameEditingController =
+      TextEditingController();
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
@@ -44,87 +44,90 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const GenericAppBar(
+        textColor: FiicoColors.purpleDark,
         bgColor: FiicoColors.clear,
-        isShowBack: false,
+        text: 'Sign Up',
       ),
-      extendBodyBehindAppBar: true,
       body: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _headerView(),
-          _bodyContainer(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _headerView() {
-    return AspectRatio(
-      aspectRatio: 3 / 3,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SvgPicture.asset(
-            SVGImages.loginTopBg,
-            fit: BoxFit.cover,
-          ),
-          _titleHeaderView(),
-        ],
-      ),
-    );
-  }
-
-  Widget _titleHeaderView() {
-    return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            'Fiico',
-            style: Style.title.copyWith(
-              color: Colors.white,
-              fontSize: 64,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: FiicoPaddings.thirtyTwo,
-              left: FiicoPaddings.thirtyTwo,
-              top: FiicoPaddings.thirtyTwo,
-            ),
-            child: Text(
-              'Tu podrás manejar de la mejor manera tu dinero, controlar tus gastos y deudas e iniciar tus ahorros.',
-              maxLines: FiicoMaxLines.ten,
-              textAlign: TextAlign.center,
-              style: Style.subtitle.copyWith(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 32),
+      child: SingleChildScrollView(
+        physics: const RangeMaintainingScrollPhysics(),
+        child: _bodyContainer(context),
       ),
     );
   }
 
   Widget _bodyContainer(BuildContext context) {
-    return Column(
-      children: [
-        _emailTextfieldView(context),
-        _passwordTextfieldView(context),
-        _forgotPasswordView(),
-        _logInButton(),
-        _orSeparateView(),
-        _signUpButton(),
-      ],
+    return SafeArea(
+      child: Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _nameTextfieldView(context),
+            _lastnameTextfieldView(context),
+            _emailTextfieldView(context),
+            _passwordTextfieldView(context),
+            _signUpButton(),
+            _orSeparateView(),
+            _logInButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _nameTextfieldView(BuildContext context) {
+    final name = widget.state?.name?.name ?? '';
+    final containtError = widget.state?.name?.isError ?? false;
+    _nameEditingController.text = name;
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: FiicoPaddings.eight,
+        top: FiicoPaddings.sixteen,
+      ),
+      child: FiicoTopStyleTextfield(
+        textEditingController: _nameEditingController
+          ..selection = TextSelection.fromPosition(
+            TextPosition(offset: name.length),
+          ),
+        labelText: 'Name',
+        errorText: 'Invalidate name format.',
+        onChanged: (text) {
+          var name = NameValidatorModel(text);
+          context.read<SignBloc>().add(SignUpInfoRequest(name: name));
+        },
+        containError: containtError,
+      ),
+    );
+  }
+
+  Widget _lastnameTextfieldView(BuildContext context) {
+    final lastName = widget.state?.lastName?.lastName ?? '';
+    final containtError = widget.state?.lastName?.isError ?? false;
+    _lastNameEditingController.text = lastName;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
+      child: FiicoTopStyleTextfield(
+        textEditingController: _lastNameEditingController
+          ..selection = TextSelection.fromPosition(
+            TextPosition(offset: lastName.length),
+          ),
+        labelText: 'Last name',
+        errorText: 'Invalidate last name format.',
+        onChanged: (text) {
+          var lastName = LastNameValidatorModel(text);
+          context.read<SignBloc>().add(SignUpInfoRequest(lastName: lastName));
+        },
+        containError: containtError,
+      ),
     );
   }
 
@@ -142,11 +145,9 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           ),
         labelText: 'Email',
         errorText: 'Invalidate email format.',
-        prefixIcon: widget.state?.email?.getStatusIcon,
-        suffixIcon: widget.state?.email?.getRigthStatusIcon,
         onChanged: (text) {
           var email = EmailValidatorModel(text);
-          context.read<LoginBloc>().add(LoginValidateEmailRequest(email));
+          context.read<SignBloc>().add(SignUpInfoRequest(email: email));
         },
         containError: containtError,
       ),
@@ -171,15 +172,14 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           'Invalidate password format. La contraseña debe contener una mayuscula, numeros y un caracter especial.',
       maxLines: 1,
       obscureText: !isShowPassword,
-      prefixIcon: widget.state?.password?.getStatusIcon,
       suffixIcon: IconButton(
         focusColor: FiicoColors.clear,
         highlightColor: FiicoColors.clear,
         hoverColor: FiicoColors.clear,
         onPressed: () {
           context
-              .read<LoginBloc>()
-              .add(LoginPasswordIsShowRequest(!isShowPassword));
+              .read<SignBloc>()
+              .add(SignUpPasswordIsShowRequest(!isShowPassword));
         },
         icon: Icon(
           isShowPassword ? MdiIcons.eyeOff : MdiIcons.eye,
@@ -188,45 +188,24 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       ),
       onChanged: (text) {
         var pass = PasswordValidatorModel(text);
-        context.read<LoginBloc>().add(LoginValidatePasswordRequest(pass));
+        context.read<SignBloc>().add(SignUpInfoRequest(password: pass));
       },
       containError: containtError,
     );
   }
 
-  Widget _forgotPasswordView() {
-    return GestureDetector(
-      onTap: () {
-        context
-            .read<LoginBloc>()
-            .add(const LoginForgotPasswordRequest("fiicodev@example.com"));
-      },
-      child: Container(
-        width: double.maxFinite,
-        padding: const EdgeInsets.all(
-          FiicoPaddings.sixteen,
-        ),
-        alignment: Alignment.centerRight,
-        child: Text(
-          'Forgot password',
-          style: Style.subtitle.copyWith(
-            color: FiicoColors.purpleDark,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _logInButton() {
+  Widget _signUpButton() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: FiicoPaddings.sixteen,
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.oneHundredTwenty,
+        right: FiicoPaddings.sixteen,
+        left: FiicoPaddings.sixteen,
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Iniciar sesión',
+        title: 'Sign Up',
         color: FiicoColors.purpleDark,
-        onTap: () => context.read<LoginBloc>().add(const LoginIntentRequest()),
+        onTap: () => context.read<SignBloc>().add(const SignUpIntentRequest()),
       ),
     );
   }
@@ -253,21 +232,18 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
     );
   }
 
-  Widget _signUpButton() {
+  Widget _logInButton() {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: FiicoPaddings.sixteen,
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Registro',
+        title: 'Log In',
         color: FiicoColors.white,
         textColor: FiicoColors.grayDark,
         borderColor: FiicoColors.grayDark,
-        onTap: () async => FiicoRoute.send(
-          context,
-          const SignUpPage(),
-        ),
+        onTap: () async => Navigator.of(context).pop(),
       ),
     );
   }

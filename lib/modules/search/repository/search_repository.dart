@@ -5,7 +5,7 @@ import 'package:control/models/user.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class SearchRepositoryAbs {
-  Stream<List<User>> searchUsers(String query);
+  Stream<List<FiicoUser>> searchUsers(String query);
   Stream<List<Budget>> searchBudgets(String query);
   Stream<List<Movement>> searchMovements(String query);
 }
@@ -14,11 +14,11 @@ class SearchRepository extends SearchRepositoryAbs {
   final _usersCollections =
       FirebaseFirestore.instance.collection(Firestore.usersPath);
   @override
-  Stream<List<User>> searchUsers(String query) {
+  Stream<List<FiicoUser>> searchUsers(String query) {
     searchBudgets(query);
     return _usersCollections.snapshots().map((snapshot) {
       return snapshot.docs // Filter users with query
-          .map((doc) => User.fromJson(doc.data()))
+          .map((doc) => FiicoUser.fromJson(doc.data()))
           .where((e) =>
               (e.email?.contains(query) ?? false) ||
               (e.firstName?.contains(query) ?? false) ||
