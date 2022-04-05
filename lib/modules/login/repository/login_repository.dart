@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/network/firestore_path.dart';
@@ -36,9 +37,11 @@ class LoginRepository extends LoginRepositoryAbs {
     return null;
   }
 
-  Future<FiicoUser> _getUser(String? id) {
-    return _usersCollections.doc(id).snapshots().map((snapshot) {
+  Future<FiicoUser> _getUser(String? id) async {
+    final user = await _usersCollections.doc(id).snapshots().map((snapshot) {
       return FiicoUser.fromJson(snapshot.data());
     }).first;
+    Preferences.get.saveUser(user);
+    return user;
   }
 }

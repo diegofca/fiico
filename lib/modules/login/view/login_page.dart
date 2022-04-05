@@ -4,6 +4,7 @@ import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/login_repository.dart';
 import 'package:control/modules/login/view/login_success_view.dart';
+import 'package:control/modules/menu/view/view.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class LoginPageView extends StatelessWidget {
       builder: (context, state) {
         return LoginSuccesView(state: state);
       },
-      listener: (context, state) {
+      listener: (context, state) async {
         _validateStatusView(context, state);
         _validateIfLoginError(context, state);
         _validateIfLoginComplete(context, state);
@@ -53,10 +54,7 @@ class LoginPageView extends StatelessWidget {
 
   void _validateIfLoginComplete(BuildContext context, LoginState state) {
     if (state.loginComplete) {
-      FiicoAlertDialog.showInfo(
-        context,
-        message: state.userLogged?.email ?? '',
-      );
+      FiicoRoute.sendReplace(context, MenuPage(user: state.userLogged));
     }
   }
 

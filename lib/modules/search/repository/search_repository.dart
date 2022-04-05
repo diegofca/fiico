@@ -5,17 +5,17 @@ import 'package:control/models/user.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class SearchRepositoryAbs {
-  Stream<List<FiicoUser>> searchUsers(String query);
-  Stream<List<Budget>> searchBudgets(String query);
-  Stream<List<Movement>> searchMovements(String query);
+  Stream<List<FiicoUser>> searchUsers(String? userID, String query);
+  Stream<List<Budget>> searchBudgets(String? userID, String query);
+  Stream<List<Movement>> searchMovements(String? userID, String query);
 }
 
 class SearchRepository extends SearchRepositoryAbs {
   final _usersCollections =
       FirebaseFirestore.instance.collection(Firestore.usersPath);
   @override
-  Stream<List<FiicoUser>> searchUsers(String query) {
-    searchBudgets(query);
+  Stream<List<FiicoUser>> searchUsers(String? userID, String query) {
+    searchBudgets(userID, query);
     return _usersCollections.snapshots().map((snapshot) {
       return snapshot.docs // Filter users with query
           .map((doc) => FiicoUser.fromJson(doc.data()))
@@ -29,9 +29,9 @@ class SearchRepository extends SearchRepositoryAbs {
   }
 
   @override
-  Stream<List<Budget>> searchBudgets(String query) {
+  Stream<List<Budget>> searchBudgets(String? userID, String query) {
     return _usersCollections
-        .doc("1")
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .snapshots()
         .map((snapshot) {
@@ -44,9 +44,9 @@ class SearchRepository extends SearchRepositoryAbs {
   }
 
   @override
-  Stream<List<Movement>> searchMovements(String query) {
+  Stream<List<Movement>> searchMovements(String? userID, String query) {
     final streamResult = _usersCollections
-        .doc("1")
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .snapshots()
         .map((snapshot) {
@@ -56,8 +56,10 @@ class SearchRepository extends SearchRepositoryAbs {
 
     List<Movement> movements = [];
     streamResult.forEach((e) async {
-      final b = e.first.movements!.where((e) => e.name!.contains(query));
-      movements.addAll(b);
+      if (e.first.movements != null) {
+        final b = e.first.movements!.where((e) => e.name!.contains(query));
+        movements.addAll(b);
+      }
     });
     return Stream.value(movements);
   }

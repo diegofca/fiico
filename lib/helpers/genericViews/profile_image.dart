@@ -26,9 +26,14 @@ class ProfileImage extends StatelessWidget {
 
   Widget getUserImage() {
     if (pathProfile == null || (pathProfile?.isEmpty ?? false)) {
-      return SvgPicture.asset(
-        SVGImages.userIcon,
-        height: size - 5,
+      return GestureDetector(
+        onTap: () {
+          onProfileTap?.call();
+        },
+        child: SvgPicture.asset(
+          SVGImages.userIcon,
+          height: size - 5,
+        ),
       );
     }
 

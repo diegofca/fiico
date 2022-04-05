@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/generic_repository.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class HomeRepositoryAbs extends BudgetGenericRepositoryAbs {
-  Stream<List<Budget>> budgets();
+  Stream<List<Budget>> budgets(String? userID);
   Future<void> deleteMovement(Movement? movement, String budgetID);
 }
 
@@ -15,9 +16,9 @@ class HomeRepository extends HomeRepositoryAbs {
       FirebaseFirestore.instance.collection(Firestore.usersPath);
 
   @override
-  Stream<List<Budget>> budgets() {
+  Stream<List<Budget>> budgets(String? userID) {
     return budgetCollections
-        .doc("1")
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .snapshots()
         .map((snapshot) {
@@ -27,8 +28,9 @@ class HomeRepository extends HomeRepositoryAbs {
 
   @override
   Future<void> deleteMovement(Movement? movement, String budgetID) async {
+    final user = await Preferences.get.getUser();
     await budgetCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .update({
@@ -44,9 +46,10 @@ class HomeRepository extends HomeRepositoryAbs {
 
   //Generic ----------------------------------------------------------
   @override
-  Future<Budget> getBudget(String budgetID) {
+  Future<Budget> getBudget(String budgetID) async {
+    final user = await Preferences.get.getUser();
     return budgetCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .snapshots()
@@ -57,8 +60,9 @@ class HomeRepository extends HomeRepositoryAbs {
 
   @override
   Future<void> updateBudget(Budget budget) async {
+    final user = await Preferences.get.getUser();
     return budgetCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budget.id)
         .update({

@@ -2,6 +2,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/budgets/bloc/budgets_bloc.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,10 @@ import 'budgets_success_view.dart';
 class BudgetsPage extends StatelessWidget {
   const BudgetsPage({
     Key? key,
+    this.user,
   }) : super(key: key);
+
+  final FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class BudgetsPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => BudgetsBloc(HomeRepository())
-          ..add(const BudgetsFetchRequest(uID: 1)),
+          ..add(BudgetsFetchRequest(uID: user?.id)),
         child: const BudgetsPageView(),
       ),
     );

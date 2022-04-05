@@ -44,14 +44,14 @@ class CreateBudgetSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
       child: Column(
         children: [
-          _headerView(),
+          _headerView(context),
           _bodyView(context),
         ],
       ),
     );
   }
 
-  Widget _headerView() {
+  Widget _headerView(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       width: double.maxFinite,
@@ -61,7 +61,14 @@ class CreateBudgetSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: CreateBudgetHeaderView(name: budgetToCreate.name),
+      child: CreateBudgetHeaderView(
+        budget: budgetToCreate,
+        onNewIconSelected: (icon) {
+          context
+              .read<CreateBudgetBloc>()
+              .add(CreateBudgetInfoSelected(icon: icon));
+        },
+      ),
     );
   }
 

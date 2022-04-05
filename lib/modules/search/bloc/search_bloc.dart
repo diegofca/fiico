@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
@@ -21,11 +22,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     emit(state.copyWith(status: SearchStatus.searching));
+
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: SearchStatus.success,
-      users: repository.searchUsers(event.query),
-      budgets: repository.searchBudgets(event.query),
-      movements: repository.searchMovements(event.query),
+      users: repository.searchUsers(user?.id, event.query),
+      budgets: repository.searchBudgets(user?.id, event.query),
+      movements: repository.searchMovements(user?.id, event.query),
       query: event.query,
     ));
   }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
@@ -53,6 +54,7 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
       finishDate: event.finishDate,
       duration: event.duration,
       cycle: event.cycle,
+      icon: event.icon,
     ));
   }
 

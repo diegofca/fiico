@@ -10,12 +10,14 @@ class BottomNavBarButton extends StatefulWidget {
     this.text,
     required this.onPressed,
     this.curve,
+    required this.badgeVisible,
     required this.active,
   }) : super(key: key);
 
   final IconData? icon;
   final Text? text;
   final bool? active;
+  final bool? badgeVisible;
   final VoidCallback onPressed;
   final Curve? curve;
 
@@ -94,6 +96,19 @@ class _BottomNavBarButtonState extends State<BottomNavBarButton>
                               Opacity(
                                 opacity: 0,
                                 child: icon,
+                              ),
+                              Visibility(
+                                visible: widget.badgeVisible ?? false,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: FiicoPaddings.twelve,
+                                  ),
+                                  child: Icon(
+                                    Icons.circle,
+                                    size: 10,
+                                    color: FiicoColors.pinkRed,
+                                  ),
+                                ),
                               ),
                               Align(
                                 alignment: Alignment.centerRight,

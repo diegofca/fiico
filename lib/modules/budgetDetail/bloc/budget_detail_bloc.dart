@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
@@ -22,9 +23,10 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     BudgetDetailFetchRequest event,
     Emitter<BudgetDetailState> emit,
   ) async {
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: BudgetDetailStatus.success,
-      budget: repository.getBudget(),
+      budget: repository.getBudget(user?.id),
     ));
   }
 
@@ -82,10 +84,11 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
   ) async {
     emit(state.copyWith(status: BudgetDetailStatus.loading));
     try {
+      final user = await Preferences.get.getUser();
       await repository.updateBudget(event.budget);
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
-        budget: repository.getBudget(),
+        budget: repository.getBudget(user?.id),
       ));
     } catch (_) {
       emit(state.copyWith(status: BudgetDetailStatus.failed));

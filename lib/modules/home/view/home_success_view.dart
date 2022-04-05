@@ -7,6 +7,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
 import 'package:control/modules/createBudget/view/create_budget_page.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
@@ -28,12 +29,14 @@ class HomeSuccesView extends StatefulWidget {
     Key? key,
     this.budgets = const [],
     this.budgetSelected,
+    this.user,
     required this.dropdownvalue,
   }) : super(key: key);
 
-  //TEMPORAL
   final List<Budget>? budgets;
   final Budget? budgetSelected;
+  final FiicoUser? user;
+
   // Initial Selected Value
   final int dropdownvalue;
 
@@ -74,9 +77,9 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.white,
-      appBar: const HomeAppBar(
+      appBar: HomeAppBar(
         title: HomeTitleAppBar(
-          title: "Hi, Juan Camilo",
+          title: "Hi, ${widget.user?.firstName}",
           subtitle: "Control your money in the best way",
           profileUrl: "",
         ),
@@ -93,7 +96,9 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
         color: FiicoColors.white,
       ),
       onRefresh: () {
-        context.read<HomeBloc>().add(const HomeBudgetsFetchRequest(uID: 1));
+        context
+            .read<HomeBloc>()
+            .add(HomeBudgetsFetchRequest(uID: widget.user?.id));
         Future.delayed(const Duration(seconds: 2), () {
           _refreshController.refreshCompleted();
         });

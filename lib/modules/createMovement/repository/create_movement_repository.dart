@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
@@ -20,8 +21,9 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
 
   @override
   Future<void> addNewMovement(Movement movement) async {
+    final user = await Preferences.get.getUser();
     await _movementsCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .update({
@@ -35,9 +37,10 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
   }
 
   @override
-  Future<Budget> getBudget() {
+  Future<Budget> getBudget() async {
+    final user = await Preferences.get.getUser();
     return _movementsCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .snapshots()
@@ -55,8 +58,9 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
 
   @override
   Future<void> updatetBudget(Budget budget) async {
+    final user = await Preferences.get.getUser();
     return _movementsCollections
-        .doc("1")
+        .doc(user?.id)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .update({

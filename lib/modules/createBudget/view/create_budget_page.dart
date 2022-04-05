@@ -110,5 +110,6 @@ class CreateBudgetPageView extends StatelessWidget {
         finishDate: state.finishDate,
         duration: state.duration,
         movements: state.movements,
+        icon: state.icon,
       );
 }

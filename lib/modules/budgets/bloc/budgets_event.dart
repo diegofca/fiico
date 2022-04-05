@@ -7,7 +7,7 @@ abstract class BudgetsEvent extends Equatable {
 class BudgetsFetchRequest extends BudgetsEvent {
   const BudgetsFetchRequest({required this.uID});
 
-  final int uID;
+  final String? uID;
 
   @override
   List<Object?> get props => [uID];

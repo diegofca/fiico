@@ -63,6 +63,9 @@ abstract class FiicoPaddings {
   ///Size 8px
   static const double eight = 8;
 
+  ///Size 12px
+  static const double twelve = 12;
+
   ///Size 16px
   static const double sixteen = 16;
 

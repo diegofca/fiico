@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
-import 'package:control/modules/home/view/home_page.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/modules/register/repository/sign_up_repository.dart';

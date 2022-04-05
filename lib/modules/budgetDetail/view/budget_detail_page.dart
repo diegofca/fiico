@@ -25,7 +25,7 @@ class BudgetDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (blocContext) => BudgetDetailBloc(
         BudgetDetailRepository(budget.id),
-      )..add(const BudgetDetailFetchRequest(uID: 1)),
+      )..add(BudgetDetailFetchRequest(uID: budget.id)),
       child: BudgetDetailPageView(
         budget: budget,
       ),

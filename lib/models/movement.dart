@@ -168,7 +168,7 @@ class Movement {
 
   static List<Movement> toList(Map<String, dynamic>? json) {
     List<Movement> movements = [];
-    json?['movements'].forEach((move) {
+    json?['movements']?.forEach((move) {
       movements.add(Movement.fromJson(move));
     });
     return movements;

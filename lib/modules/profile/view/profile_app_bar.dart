@@ -2,18 +2,21 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/profile_image.dart';
+import 'package:control/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
   const ProfileAppBar({
     Key? key,
+    required this.user,
     this.leading,
     this.actions,
   }) : super(key: key);
 
   final Widget? leading;
   final List<Widget>? actions;
+  final FiicoUser? user;
 
   //añadir un user como parametro
   @override
@@ -21,32 +24,30 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       key: key,
       backgroundColor: FiicoColors.purpleDark,
-      toolbarHeight: 0,
       leading: leading,
       actions: actions ?? [],
-      elevation: 0,
-      centerTitle: false,
       bottom: bottomWidget,
+      elevation: 0,
     );
   }
 
   Widget get bottom => SizedBox(
-        height: 200,
+        height: 180,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProfileImage(size: 70),
             Padding(
-              padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
+              padding: const EdgeInsets.only(top: FiicoPaddings.four),
               child: Text(
-                "Paulina rubio",
+                user?.firstName ?? '',
                 style: Style.title.copyWith(
                   color: FiicoColors.white,
                 ),
               ),
             ),
             Text(
-              "diegoca.08@gmil.com",
+              user?.email ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.white,
                 fontWeight: FiicoFontWeight.regular,
@@ -62,7 +63,9 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
                 vertical: FiicoPaddings.four,
               ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(
+                  FiicoPaddings.sixteen,
+                ),
                 color: FiicoColors.purpleNeutral,
               ),
               child: Row(

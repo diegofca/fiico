@@ -71,6 +71,7 @@ class _NavigationBottomState extends State<NavigationBottom> {
                       curve: widget.curve,
                       screen: t.screen,
                       active: selectedIndex == widget.tabs.indexOf(t),
+                      badgeVisible: t.badgeVisible,
                       onPressed: () => _onPressed(t),
                     ),
                   )

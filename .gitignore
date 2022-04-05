@@ -28,6 +28,7 @@
 .flutter-plugins-dependencies
 .packages
 .pub-cache/
+.fvm/flutter_sdk
 .pub/
 /build/
 

@@ -7,7 +7,7 @@ abstract class HomeEvent extends Equatable {
 class HomeBudgetsFetchRequest extends HomeEvent {
   const HomeBudgetsFetchRequest({required this.uID});
 
-  final int uID;
+  final String? uID;
 
   @override
   List<Object?> get props => [uID];

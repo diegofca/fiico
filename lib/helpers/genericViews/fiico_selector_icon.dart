@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/models/fiico_icon.dart';
@@ -27,6 +29,6 @@ class FiicoSelectorIcon {
         IconPack.material,
       ],
     );
-    return FiicoIcon.fromIcon(icon);
+    return icon == null ? null : FiicoIcon.fromIcon(icon);
   }
 }

@@ -18,7 +18,7 @@ class BudgetDetailState extends Equatable {
   bool get isDeletedBudget => deleteBudget != null;
 
   @override
-  List<Object> get props => [status];
+  List<Object?> get props => [status, budget, movementAdded, deleteBudget];
 
   BudgetDetailState copyWith({
     BudgetDetailStatus? status,

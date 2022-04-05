@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -27,7 +28,7 @@ class BudgetsBloc extends Bloc<BudgetsEvent, BudgetsState> {
   ) async {
     emit(state.copyWith(
       status: BudgetsStatus.waiting,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(event.uID),
     ));
   }
 
@@ -35,9 +36,10 @@ class BudgetsBloc extends Bloc<BudgetsEvent, BudgetsState> {
     BudgetsSelected event,
     Emitter<BudgetsState> emit,
   ) async {
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: BudgetsStatus.waiting,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(user?.id),
       budgetSelected: event.budget,
     ));
   }

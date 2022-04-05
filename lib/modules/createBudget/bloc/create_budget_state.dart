@@ -22,6 +22,7 @@ class CreateBudgetState extends Equatable {
     this.initDate,
     this.finishDate,
     this.addedBudgetID,
+    this.icon,
   });
 
   final CreateBudgetStatus status;
@@ -36,6 +37,7 @@ class CreateBudgetState extends Equatable {
   final Timestamp? initDate;
   final Timestamp? finishDate;
   final String? addedBudgetID;
+  final FiicoIcon? icon;
 
   List<Movement> get entrys =>
       movements.where((e) => e.getType() == MovementType.ENTRY).toList();
@@ -59,6 +61,7 @@ class CreateBudgetState extends Equatable {
     Timestamp? initDate,
     Timestamp? finishDate,
     String? addedBudgetID,
+    FiicoIcon? icon,
   }) {
     var newMovements = movements.toList();
     if (addedMovement != null) {
@@ -82,6 +85,7 @@ class CreateBudgetState extends Equatable {
       users: users ?? this.users,
       addedBudgetID: addedBudgetID ?? this.addedBudgetID,
       movements: newMovements,
+      icon: icon ?? this.icon,
     );
   }
 }

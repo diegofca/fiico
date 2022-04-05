@@ -10,6 +10,7 @@ class BottomNavBarItem extends StatefulWidget {
   const BottomNavBarItem({
     Key? key,
     this.active,
+    this.badgeVisible,
     required this.icon,
     this.text = '',
     this.curve,
@@ -18,6 +19,7 @@ class BottomNavBarItem extends StatefulWidget {
   }) : super(key: key);
 
   final bool? active;
+  final bool? badgeVisible;
   final IconData icon;
   final String text;
   final Curve? curve;
@@ -39,6 +41,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
           label: widget.text,
           child: BottomNavBarButton(
             active: widget.active,
+            badgeVisible: widget.badgeVisible,
             onPressed: () {
               HapticFeedback.selectionClick();
               widget.onPressed?.call();

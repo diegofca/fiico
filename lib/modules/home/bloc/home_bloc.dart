@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
@@ -25,7 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(
       status: HomeStatus.init,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(event.uID),
     ));
   }
 
@@ -33,9 +34,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBudgetSelected event,
     Emitter<HomeState> emit,
   ) async {
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: HomeStatus.init,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(user?.id),
       budgetSelected: event.budget,
     ));
   }
@@ -44,9 +46,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBudgetSelectedFilter event,
     Emitter<HomeState> emit,
   ) async {
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: HomeStatus.init,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(user?.id),
       filter: event.filter,
     ));
   }
@@ -57,10 +60,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final budgetID = state.budgetSelected?.id ?? '';
     await repository.deleteMovement(event.movement, budgetID);
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: HomeStatus.init,
       removedMovement: event.movement,
-      budgets: repository.budgets(),
+      budgets: repository.budgets(user?.id),
     ));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:control/models/user.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:control/modules/menu/menu_items.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,15 @@ class MenuSuccessView extends StatelessWidget {
   const MenuSuccessView({
     Key? key,
     this.selectIndex = 0,
+    this.user,
   }) : super(key: key);
 
   final int selectIndex;
+  final FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
-    final _tabs = onCreateTabs(context);
+    final _tabs = onCreateTabs(user, context);
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [

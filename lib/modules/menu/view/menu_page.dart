@@ -1,3 +1,4 @@
+import 'package:control/models/user.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,13 +7,16 @@ import 'menu_success_view.dart';
 class MenuPage extends StatelessWidget {
   const MenuPage({
     Key? key,
+    this.user,
   }) : super(key: key);
+
+  final FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MenuBloc(),
-      child: const MenuPageView(),
+      child: MenuPageView(user: user),
     );
   }
 }
@@ -20,7 +24,10 @@ class MenuPage extends StatelessWidget {
 class MenuPageView extends StatelessWidget {
   const MenuPageView({
     Key? key,
+    this.user,
   }) : super(key: key);
+
+  final FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +37,7 @@ class MenuPageView extends StatelessWidget {
           case MenuStatus.success:
             return MenuSuccessView(
               selectIndex: state.selectedIndex,
+              user: user,
             );
         }
       },
