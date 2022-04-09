@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/repository/search_users_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -19,9 +20,10 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
     SearchUsersFetchRequest event,
     Emitter<SearchUsersState> emit,
   ) async {
+    final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: SearchUsersStatus.success,
-      users: repository.searchUsers(),
+      users: repository.searchUsers(user?.id),
       selectedUsers: event.users,
     ));
   }

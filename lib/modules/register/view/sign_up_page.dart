@@ -54,7 +54,7 @@ class SignPageView extends StatelessWidget {
 
   void _validateIfSigUpComplete(BuildContext context, SignState state) {
     if (state.signUpComplete) {
-      FiicoRoute.sendReplace(context, const MenuPage());
+      FiicoRoute.sendReplace(context, MenuPage(user: state.userLogged));
     }
   }
 

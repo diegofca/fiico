@@ -1,3 +1,4 @@
+import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/string.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -35,9 +36,13 @@ class FiicoProfileNetwork extends StatelessWidget {
       );
     }
 
-    return Icon(
-      iconData ?? MdiIcons.sack,
-      size: size,
+    return CircleAvatar(
+      backgroundColor: FiicoColors.grayShadow,
+      child: Icon(
+        iconData ?? MdiIcons.sack,
+        color: FiicoColors.black,
+        size: size,
+      ),
     );
   }
 }

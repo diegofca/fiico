@@ -20,10 +20,11 @@ class SearchRepository extends SearchRepositoryAbs {
       return snapshot.docs // Filter users with query
           .map((doc) => FiicoUser.fromJson(doc.data()))
           .where((e) =>
-              (e.email?.contains(query) ?? false) ||
-              (e.firstName?.contains(query) ?? false) ||
-              (e.userName?.contains(query) ?? false) ||
-              (e.lastName?.contains(query) ?? false))
+              (e.id != userID) &&
+              ((e.email?.contains(query) ?? false) ||
+                  (e.firstName?.contains(query) ?? false) ||
+                  (e.userName?.contains(query) ?? false) ||
+                  (e.lastName?.contains(query) ?? false)))
           .toList();
     });
   }
@@ -56,7 +57,7 @@ class SearchRepository extends SearchRepositoryAbs {
 
     List<Movement> movements = [];
     streamResult.forEach((e) async {
-      if (e.first.movements != null) {
+      if (e.first.movements != null && e.first.movements!.isNotEmpty) {
         final b = e.first.movements!.where((e) => e.name!.contains(query));
         movements.addAll(b);
       }

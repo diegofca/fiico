@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
@@ -429,12 +430,19 @@ class CreateMovementSuccessView extends StatelessWidget {
   }
 
   void _createdMovement(BuildContext context) {
-    if (movement.isAddedWithBudget) {
-      Navigator.of(context).pop(movement);
+    if (movement.isCompleteByCreate()) {
+      if (movement.isAddedWithBudget) {
+        Navigator.of(context).pop(movement);
+      } else {
+        context
+            .read<CreateMovementBloc>()
+            .add(CreateMovementAddedRequest(newMovement: movement));
+      }
     } else {
-      context
-          .read<CreateMovementBloc>()
-          .add(CreateMovementAddedRequest(newMovement: movement));
+      FiicoAlertDialog.showWarnning(context,
+          title: 'Campos vacios',
+          message:
+              'Completa los campos faltantes para poder agregar tu movimiento a tu presupuesto.');
     }
   }
 

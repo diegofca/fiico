@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/models/fiico_notification.dart';
 import 'package:flutter/material.dart';
 import 'emptyView/notifications_empty_view.dart';
 import 'listView/notifications_list_item.dart';
@@ -7,9 +8,10 @@ import 'listView/notifications_list_item.dart';
 class NotificationsSuccessView extends StatelessWidget {
   const NotificationsSuccessView({
     Key? key,
+    required this.notifications,
   }) : super(key: key);
 
-  final items = 0;
+  final List<FiicoNotification> notifications;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class NotificationsSuccessView extends StatelessWidget {
 
   Widget _emptyView() {
     return Visibility(
-      visible: items == 0,
+      visible: notifications.isEmpty,
       child: NotificationsEmptyView(
         onTapNewItem: () {
           print("new item");
@@ -39,7 +41,7 @@ class NotificationsSuccessView extends StatelessWidget {
 
   Widget _notificationsList() {
     return Visibility(
-      visible: items > 0,
+      visible: notifications.isNotEmpty,
       child: Container(
         alignment: Alignment.center,
         width: double.maxFinite,
@@ -55,9 +57,10 @@ class NotificationsSuccessView extends StatelessWidget {
           ],
         ),
         child: ListView.builder(
-          itemCount: 10,
+          itemCount: notifications.length,
           itemBuilder: (context, index) {
-            return NotificationsListItemView(index: index);
+            final not = notifications[index];
+            return NotificationsListItemView(notification: not);
           },
         ),
       ),

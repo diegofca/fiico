@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/network/firestore_path.dart';
@@ -31,6 +32,8 @@ class SignUpRepository extends SignUpRepositoryAbs {
         lastName: state.lastName?.lastName,
         currentPlan: 'free',
       );
+
+      Preferences.get.saveUser(user);
       await _addNewUser(user);
       return _getUser(user.id);
     } on FirebaseAuthException catch (e) {

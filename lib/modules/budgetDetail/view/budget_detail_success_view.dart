@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
+import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
@@ -103,6 +104,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
         _entrysDebtsView(context),
         _entrysDebtsListView(context),
         _infoView(),
+        _entryUsersListView(context),
         _shareButtonView(context),
       ],
     );
@@ -419,62 +421,113 @@ class BudgetDetailSuccessView extends StatelessWidget {
   }
 
   Widget _shareButtonView(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FiicoRoute.send(
-        context,
-        SearchUsersPage(
-          users: const [],
-          onUsersSelected: (list) {
-            print(list);
-          },
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: FiicoPaddings.sixteen,
-          bottom: FiicoPaddings.thirtyTwo,
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          height: 40,
-          child: Padding(
-            padding: const EdgeInsets.all(
-              FiicoPaddings.eight,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.ios_share,
-                  size: 20,
-                  color: FiicoColors.purpleSoft,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: FiicoPaddings.eight,
-                  ),
-                  child: Text(
-                    'Share',
-                    textAlign: TextAlign.start,
-                    style: Style.desc.copyWith(
-                      fontSize: FiicoFontSize.xm,
-                      color: FiicoColors.purpleSoft,
-                    ),
-                  ),
-                )
-              ],
-            ),
+    final users = budget.users ?? [];
+    return Visibility(
+      visible: budget.isOwner ?? false,
+      child: GestureDetector(
+        onTap: () => FiicoRoute.send(
+          context,
+          SearchUsersPage(
+            users: users,
+            onUsersSelected: (list) {
+              print(list);
+            },
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: FiicoColors.purpleSoft,
-              width: 2,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: FiicoPaddings.sixteen,
+            bottom: FiicoPaddings.thirtyTwo,
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            height: 40,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                FiicoPaddings.eight,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.ios_share,
+                    size: 20,
+                    color: FiicoColors.purpleSoft,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: FiicoPaddings.eight,
+                    ),
+                    child: Text(
+                      'Share',
+                      textAlign: TextAlign.start,
+                      style: Style.desc.copyWith(
+                        fontSize: FiicoFontSize.xm,
+                        color: FiicoColors.purpleSoft,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: FiicoColors.purpleSoft,
+                width: 2,
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _entryUsersListView(BuildContext context) {
+    final users = budget.users ?? [];
+    return Visibility(
+      visible: users.isNotEmpty,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _separatorLineView(),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.thirtyTwo,
+              bottom: FiicoPaddings.eight,
+            ),
+            child: Text(
+              'Integrantes',
+              textAlign: TextAlign.start,
+              style: Style.subtitle.copyWith(
+                fontSize: FiicoFontSize.sm,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              itemCount: users.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                return Container(
+                  width: 60,
+                  padding: const EdgeInsets.all(FiicoPaddings.eight),
+                  child: FiicoProfileNetwork.user(
+                    url: user.profileImage,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _separatorLineView() {
+    return const SeparatorView();
   }
 
   void _addedMovement(BuildContext context, MovementType type) async {

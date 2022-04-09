@@ -7,6 +7,7 @@ import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
 import 'package:control/modules/budgetDetail/view/budget_detail_success_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_bottom_view.dart';
+import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,6 +121,15 @@ class BudgetDetailPageView extends StatelessWidget {
             .add(BudgetDetailDeleteRequest(budget: budget));
         break;
       case BudgetDetailBottomOption.add_friend:
+        FiicoRoute.send(
+          context,
+          SearchUsersPage(
+            users: budget.users,
+            onUsersSelected: (list) {
+              print(list);
+            },
+          ),
+        );
         break;
     }
   }

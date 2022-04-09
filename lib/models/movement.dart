@@ -173,4 +173,11 @@ class Movement {
     });
     return movements;
   }
+
+  bool isCompleteByCreate() {
+    final nameContained = name?.isNotEmpty ?? false;
+    final valueContained = value != null && value != 0;
+    final currencyContained = currency?.isNotEmpty ?? false;
+    return nameContained && valueContained && currencyContained;
+  }
 }

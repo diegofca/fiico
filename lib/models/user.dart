@@ -59,6 +59,14 @@ class FiicoUser extends Equatable {
     };
   }
 
+  static List<FiicoUser> toList(Map<String, dynamic>? json) {
+    List<FiicoUser> users = [];
+    json?['users']?.forEach((move) {
+      users.add(FiicoUser.fromJson(move));
+    });
+    return users;
+  }
+
   @override
   List<Object?> get props => [id];
 }

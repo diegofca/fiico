@@ -396,19 +396,17 @@ class CreateBudgetCycleView extends StatelessWidget {
 
   Widget _infoDetailView() {
     return Container(
-      padding: const EdgeInsets.only(
-        left: FiicoPaddings.sixteen,
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.sixteen,
+      padding: const EdgeInsets.all(
+        FiicoPaddings.sixteen,
       ),
       alignment: Alignment.centerLeft,
       child: Text(
-        'Tu presupuesto esta en modo repetitivo, se repetira cada mes',
+        budgetToCreate.getCycleDescription(),
         textAlign: TextAlign.left,
         maxLines: FiicoMaxLines.ten,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
-          fontSize: FiicoFontSize.sm,
+          fontSize: FiicoFontSize.xm,
         ),
       ),
     );

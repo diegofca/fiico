@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:control/models/user.dart';
+import 'package:control/modules/login/view/login_page.dart';
+import 'package:control/navigation/navigator.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -21,5 +24,16 @@ class Preferences {
     } else {
       return null;
     }
+  }
+
+  void _deleteUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user');
+  }
+
+  //LogOut
+  void logOut(BuildContext context) {
+    _deleteUser();
+    FiicoRoute.send(context, LoginPage());
   }
 }

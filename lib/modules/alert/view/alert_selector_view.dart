@@ -115,7 +115,7 @@ class AlertSelectorView {
           IconButton(
             onPressed: () => FiicoAlertDialog.showInfo(
               context,
-              title: 'Notifcación modo intensivo',
+              title: 'Notificación intensiva',
               message:
                   'Las notificaciones en modo intesivo se activiran a diario una semana antes de la fecha final estipulada, puedes activarlo y desactivarlo en cualquier momento.',
             ),

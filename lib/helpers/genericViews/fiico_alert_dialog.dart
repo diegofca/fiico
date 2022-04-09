@@ -63,7 +63,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     String message = '',
-    String confirmBtnText = 'Accept',
+    String confirmBtnText = 'Aceptar',
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -75,6 +75,7 @@ class FiicoAlertDialog {
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
+      animType: CoolAlertAnimType.slideInUp,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();

@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
@@ -24,7 +25,7 @@ class CreateBudgetPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        actions: [_dotsButton()],
+        actions: [_infoButton(context)],
         bottomHeigth: 0,
       ),
       body: BlocProvider(
@@ -38,7 +39,7 @@ class CreateBudgetPage extends StatelessWidget {
     );
   }
 
-  Widget _dotsButton() {
+  Widget _infoButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         right: FiicoPaddings.sixteen,
@@ -46,11 +47,11 @@ class CreateBudgetPage extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          print("dost button");
+          FiicoAlertDialog.showInfo(context);
         },
         icon: const Icon(
-          MdiIcons.dotsHorizontal,
-          color: Colors.black,
+          MdiIcons.informationOutline,
+          color: FiicoColors.grayDark,
         ),
       ),
     );
@@ -111,5 +112,6 @@ class CreateBudgetPageView extends StatelessWidget {
         duration: state.duration,
         movements: state.movements,
         icon: state.icon,
+        users: state.users,
       );
 }

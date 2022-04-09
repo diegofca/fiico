@@ -7,6 +7,7 @@ import 'package:control/models/cycle.dart';
 import 'package:control/models/duration.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/fiico_icon.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/home/model/home_filters_movements.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -26,6 +27,8 @@ class Budget {
   final Timestamp? startDate;
   final Timestamp? finishDate;
   final int? duration;
+  final List<FiicoUser>? users;
+  final bool? isOwner;
 
   Budget({
     required this.id,
@@ -43,6 +46,8 @@ class Budget {
     this.startDate,
     this.finishDate,
     this.duration,
+    this.users,
+    this.isOwner,
   });
 
   Budget.create({
@@ -61,6 +66,8 @@ class Budget {
     this.startDate,
     this.finishDate,
     this.duration = 3,
+    this.users = const [],
+    this.isOwner = true,
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -77,9 +84,11 @@ class Budget {
       totalEntry: json?['totalEntry'] ?? 0,
       userID: json?['userID'] ?? '',
       isCycle: json?['isCycle'] ?? false,
+      isOwner: json?['isOwner'] ?? false,
       startDate: json?['startDate'] ?? Timestamp.now(),
       finishDate: json?['finishDate'] ?? Timestamp.now(),
       movements: Movement.toList(json),
+      users: FiicoUser.toList(json),
     );
   }
 
@@ -98,9 +107,12 @@ class Budget {
       'isCycle': isCycle,
       'startDate': startDate,
       'finishDate': finishDate,
+      'isOwner': isOwner,
       'icon': icon?.toJson(),
       'movements': FieldValue.arrayUnion(
           movements?.map((e) => e.toJson()).toList() ?? []),
+      'users':
+          FieldValue.arrayUnion(users?.map((e) => e.toJson()).toList() ?? []),
     };
   }
 
@@ -120,8 +132,11 @@ class Budget {
       'isCycle': isCycle,
       'startDate': startDate,
       'finishDate': finishDate,
+      'isOwner': isOwner,
       'movements': FieldValue.arrayUnion(
           movements?.map((e) => e.toJson()).toList() ?? []),
+      'users':
+          FieldValue.arrayUnion(users?.map((e) => e.toJson()).toList() ?? []),
     };
   }
 
@@ -148,6 +163,8 @@ class Budget {
     Timestamp? startDate,
     Timestamp? finishDate,
     int? duration,
+    List<FiicoUser>? users,
+    bool? isOwner,
   }) {
     return Budget(
       id: id,
@@ -165,6 +182,8 @@ class Budget {
       startDate: startDate ?? this.startDate,
       finishDate: finishDate ?? this.finishDate,
       movements: movements ?? this.movements,
+      users: users ?? this.users,
+      isOwner: isOwner ?? this.isOwner,
     );
   }
 
@@ -225,6 +244,28 @@ class Budget {
     }
   }
 
+  String getCycleDescription() {
+    var description = 'Tu presupuesto esta en modo repetitivo y se repetirá ';
+    final type = BudgetCycleType.values
+        .firstWhereOrNull((element) => element.index == cycle);
+    switch (type) {
+      case BudgetCycleType.WEEK:
+        return description + 'cada semana';
+      case BudgetCycleType.TWO_WEEKS:
+        return description + 'cada dos semanas';
+      case BudgetCycleType.MONTH:
+        return description + 'mes';
+      case BudgetCycleType.THREE_MONTH:
+        return description + 'cada tres meses';
+      case BudgetCycleType.SIX_MONTH:
+        return description + 'cada seis meses';
+      case BudgetCycleType.ANNUAL:
+        return description + 'año';
+      default:
+        return '';
+    }
+  }
+
   String getDurationText() {
     final type = BudgetDurationType.values
         .firstWhereOrNull((element) => element.index == duration);
@@ -275,6 +316,13 @@ class Budget {
       default:
         return Timestamp.fromDate(date);
     }
+  }
+
+  bool isCompleteByCreate() {
+    final idInitDateContained = (isCycle ?? false) ? true : startDate != null;
+    final nameContained = name?.isNotEmpty ?? false;
+    final currencyContained = currency?.isNotEmpty ?? false;
+    return idInitDateContained && nameContained && currencyContained;
   }
 
   //  Ger Orders by movements

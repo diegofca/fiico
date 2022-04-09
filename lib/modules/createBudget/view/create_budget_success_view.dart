@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
@@ -415,9 +416,13 @@ class CreateBudgetSuccessView extends StatelessWidget {
       child: FiicoButton.green(
         title: 'Crear ingreso',
         ontap: () {
-          context
-              .read<CreateBudgetBloc>()
-              .add(CreateBudgetAdded(budget: budgetToCreate));
+          if (budgetToCreate.isCompleteByCreate()) {
+            context
+                .read<CreateBudgetBloc>()
+                .add(CreateBudgetAdded(budget: budgetToCreate));
+          } else {
+            FiicoAlertDialog.showWarnning(context);
+          }
         },
       ),
     );
@@ -451,8 +456,9 @@ class CreateBudgetSuccessView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final user = users[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                return Container(
+                  width: 60,
+                  padding: const EdgeInsets.all(FiicoPaddings.eight),
                   child: FiicoProfileNetwork.user(
                     url: user.profileImage,
                   ),

@@ -64,20 +64,18 @@ class SignSuccesViewState extends State<SignSuccesView> {
 
   Widget _bodyContainer(BuildContext context) {
     return SafeArea(
-      child: Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _nameTextfieldView(context),
-            _lastnameTextfieldView(context),
-            _emailTextfieldView(context),
-            _passwordTextfieldView(context),
-            _signUpButton(),
-            _orSeparateView(),
-            _logInButton(),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _nameTextfieldView(context),
+          _lastnameTextfieldView(context),
+          _emailTextfieldView(context),
+          _passwordTextfieldView(context),
+          _signUpButton(),
+          _orSeparateView(),
+          _logInButton(),
+        ],
       ),
     );
   }
