@@ -9,7 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class LoginRepositoryAbs {
   Future<FiicoUser?> loginUserWithEmail(
       LoginState state, Function(String, String?) onError);
-  Future<void> forgotPasswordWithEmail(String email);
+  Future<bool?> forgotPasswordWithEmail(
+      String email, Function(String, String?) onError);
 }
 
 class LoginRepository extends LoginRepositoryAbs {
@@ -17,8 +18,15 @@ class LoginRepository extends LoginRepositoryAbs {
       FirebaseFirestore.instance.collection(Firestore.usersPath);
 
   @override
-  Future<void> forgotPasswordWithEmail(String email) {
-    return FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  Future<bool?> forgotPasswordWithEmail(
+      String email, Function(String, String?) onError) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      onError(e.code, e.message);
+    }
+    return false;
   }
 
   @override

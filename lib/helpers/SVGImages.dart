@@ -15,6 +15,9 @@ class SVGImages {
   static const loginTopBg = 'assets/images/login_top_bg.svg';
   static const userSignupBg = 'assets/images/user_signup_bg.svg';
   static const purpleBg = 'assets/images/purple_bg.svg';
+  static const googleIcon = 'assets/images/google_icon.svg';
+  static const facebookIcon = 'assets/images/facebook_icon.svg';
+  static const appleIcon = 'assets/images/apple_icon.svg';
 
   static const homeTab = 'assets/images/home_tab.svg';
   static const groupTab = 'assets/images/group_tab.svg';

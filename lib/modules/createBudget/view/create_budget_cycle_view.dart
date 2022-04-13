@@ -175,7 +175,6 @@ class CreateBudgetCycleView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(
           left: FiicoPaddings.sixteen,
-          right: FiicoPaddings.sixteen,
           top: FiicoPaddings.eight,
         ),
         child: Column(
@@ -232,7 +231,12 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            const SeparatorView(),
+            const Padding(
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.sixteen,
+              ),
+              child: SeparatorView(),
+            ),
           ],
         ),
       ),
@@ -245,7 +249,6 @@ class CreateBudgetCycleView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(
           left: FiicoPaddings.sixteen,
-          right: FiicoPaddings.sixteen,
           top: FiicoPaddings.eight,
         ),
         child: Column(
@@ -310,7 +313,12 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            const SeparatorView(),
+            const Padding(
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.sixteen,
+              ),
+              child: SeparatorView(),
+            )
           ],
         ),
       ),
@@ -323,7 +331,6 @@ class CreateBudgetCycleView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(
           left: FiicoPaddings.sixteen,
-          right: FiicoPaddings.sixteen,
           top: FiicoPaddings.eight,
         ),
         child: Column(
@@ -387,7 +394,12 @@ class CreateBudgetCycleView extends StatelessWidget {
                 ],
               ),
             ),
-            const SeparatorView(),
+            const Padding(
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.sixteen,
+              ),
+              child: SeparatorView(),
+            )
           ],
         ),
       ),

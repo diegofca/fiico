@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
@@ -35,7 +36,7 @@ class CreateMovementPage extends StatelessWidget {
       appBar: GenericAppBar(
         text: budget?.name ?? '',
         textColor: FiicoColors.black,
-        actions: [_dotsButton()],
+        actions: [_infoButton(context)],
       ),
       body: BlocProvider(
         create: (context) => CreateMovementBloc(
@@ -51,7 +52,7 @@ class CreateMovementPage extends StatelessWidget {
     );
   }
 
-  Widget _dotsButton() {
+  Widget _infoButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         right: FiicoPaddings.sixteen,
@@ -59,11 +60,14 @@ class CreateMovementPage extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          print("dost button");
+          FiicoAlertDialog.showSuccess(context,
+              title: 'Movimiento',
+              message:
+                  'Los movimientos son acciones que modifican tu saldo total, en este puede estar un gasto, ahorro o ingreso.');
         },
         icon: const Icon(
-          MdiIcons.dotsHorizontal,
-          color: Colors.black,
+          MdiIcons.informationOutline,
+          color: FiicoColors.grayDark,
         ),
       ),
     );
@@ -129,7 +133,7 @@ class CreateMovementPageView extends StatelessWidget {
       recurrency: state.recurrency ?? Recurrency.month().name,
       icon: state.icon ?? const FiicoIcon.empty(),
       alert: state.alert ?? FiicoAlert.empty(),
-      description: state.description ?? '',
+      description: state.description,
       createdAt: Timestamp.now(),
       recurrencyAt: recurrencyAt,
       typeDescription: typeDescription,

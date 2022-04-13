@@ -158,9 +158,9 @@ class EntryDetailSuccessView extends StatelessWidget {
   }
 
   Widget _infoDateDetailView() {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
@@ -177,23 +177,29 @@ class EntryDetailSuccessView extends StatelessWidget {
             )
           ],
         ),
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(
-                left: FiicoPaddings.thirtyTwo,
-                right: FiicoPaddings.eight,
+        Padding(
+          padding: const EdgeInsets.only(
+            top: FiicoPaddings.sixteen,
+          ),
+          child: Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(
+                  right: FiicoPaddings.eight,
+                ),
+                child: Icon(MdiIcons.clockOutline),
               ),
-              child: Icon(MdiIcons.clockOutline),
-            ),
-            Text(
-              movement?.getRecurrencyDate() ?? '',
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.graySoft,
-                fontSize: FiicoFontSize.xm,
-              ),
-            )
-          ],
+              Text(
+                movement?.getRecurrencyDate() ?? '',
+                maxLines: 2,
+                overflow: TextOverflow.fade,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.graySoft,
+                  fontSize: FiicoFontSize.xm,
+                ),
+              )
+            ],
+          ),
         )
       ],
     );

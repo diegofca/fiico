@@ -1,5 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
@@ -12,6 +15,7 @@ import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/modules/register/model/last_name_validator_model.dart';
 import 'package:control/modules/register/model/name_validator_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +77,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           _emailTextfieldView(context),
           _passwordTextfieldView(context),
           _signUpButton(),
+          _socialSignUpButtons(),
           _orSeparateView(),
           _logInButton(),
         ],
@@ -97,6 +102,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ),
         labelText: 'Name',
         errorText: 'Invalidate name format.',
+        prefixIcon: widget.state?.name?.getStatusIcon,
         onChanged: (text) {
           var name = NameValidatorModel(text);
           context.read<SignBloc>().add(SignUpInfoRequest(name: name));
@@ -120,6 +126,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ),
         labelText: 'Last name',
         errorText: 'Invalidate last name format.',
+        prefixIcon: widget.state?.lastName?.getStatusIcon,
         onChanged: (text) {
           var lastName = LastNameValidatorModel(text);
           context.read<SignBloc>().add(SignUpInfoRequest(lastName: lastName));
@@ -143,6 +150,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ),
         labelText: 'Email',
         errorText: 'Invalidate email format.',
+        prefixIcon: widget.state?.email?.getStatusIcon,
         onChanged: (text) {
           var email = EmailValidatorModel(text);
           context.read<SignBloc>().add(SignUpInfoRequest(email: email));
@@ -170,6 +178,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           'Invalidate password format. La contraseña debe contener una mayuscula, numeros y un caracter especial.',
       maxLines: 1,
       obscureText: !isShowPassword,
+      prefixIcon: widget.state?.password?.getStatusIcon,
       suffixIcon: IconButton(
         focusColor: FiicoColors.clear,
         highlightColor: FiicoColors.clear,
@@ -204,6 +213,44 @@ class SignSuccesViewState extends State<SignSuccesView> {
         title: 'Sign Up',
         color: FiicoColors.purpleDark,
         onTap: () => context.read<SignBloc>().add(const SignUpIntentRequest()),
+      ),
+    );
+  }
+
+  Widget _socialSignUpButtons() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: FiicoPaddings.sixteen,
+        vertical: FiicoPaddings.sixteen,
+      ),
+      width: double.maxFinite,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        runAlignment: WrapAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SvgPicture.asset(
+              SVGImages.facebookIcon,
+              width: 40,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SvgPicture.asset(
+              SVGImages.googleIcon,
+              width: 40,
+            ),
+          ),
+          if (Platform.isIOS)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SvgPicture.asset(
+                SVGImages.appleIcon,
+                width: 40,
+              ),
+            )
+        ],
       ),
     );
   }

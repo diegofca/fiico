@@ -60,7 +60,7 @@ class IntroPageViewState extends State<IntroPageView> {
       DeviceOrientation.portraitUp,
     ]);
     _controller =
-        VideoPlayerController.asset("assets/videos/login_video_2.mp4");
+        VideoPlayerController.asset("assets/videos/login_video_1.mp4");
     _controller.initialize().then((_) {
       _controller.setLooping(true);
       _controller.play();

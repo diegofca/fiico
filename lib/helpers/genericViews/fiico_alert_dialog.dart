@@ -9,7 +9,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     String message = '',
-    String confirmBtnText = 'Continue',
+    String confirmBtnText = 'Continuar',
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -76,6 +76,33 @@ class FiicoAlertDialog {
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
       animType: CoolAlertAnimType.slideInUp,
+      onConfirmBtnTap: () {
+        Navigator.of(context).pop();
+        onOkAction?.call();
+      },
+      confirmBtnTextStyle: Style.title.copyWith(
+        fontSize: FiicoFontSize.sm,
+        color: FiicoColors.white,
+      ),
+    );
+  }
+
+  static void showCustom(
+    BuildContext context, {
+    String? title,
+    Widget? body,
+    String confirmBtnText = 'Aceptar',
+    VoidCallback? onOkAction,
+  }) {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      title: title,
+      widget: body,
+      backgroundColor: FiicoColors.grayLite,
+      confirmBtnColor: FiicoColors.purpleDark,
+      animType: CoolAlertAnimType.slideInUp,
+      confirmBtnText: ' $confirmBtnText ',
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();

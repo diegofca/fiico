@@ -83,7 +83,7 @@ class FiicoButtonState extends State<FiicoButton> {
                       right: FiicoPaddings.sixteen,
                     ),
                     child: SvgPicture.asset(
-                      SVGImages.emptySafe,
+                      widget.image ?? '',
                       width: _sizeImage.width,
                       height: _sizeImage.height,
                     ),

@@ -10,6 +10,7 @@ class LoginState extends Equatable {
     this.status = LoginStatus.success,
     this.email = const EmailValidatorModel(''),
     this.password = const PasswordValidatorModel(''),
+    this.isSendForgotEmail,
     this.isShowPassword,
     this.userLogged,
     this.errorType,
@@ -20,12 +21,15 @@ class LoginState extends Equatable {
   final EmailValidatorModel? email;
   final PasswordValidatorModel? password;
   final bool? isShowPassword;
+  final bool? isSendForgotEmail;
   final FiicoUser? userLogged;
   final LoginError? errorType;
   final String? errorMgs;
 
   bool get loginError => errorType != null;
   bool get loginComplete => status == LoginStatus.success && userLogged != null;
+  bool get isRecoverPass =>
+      status == LoginStatus.success && (isSendForgotEmail ?? false);
 
   @override
   List<Object?> get props => [
@@ -35,13 +39,15 @@ class LoginState extends Equatable {
         isShowPassword,
         userLogged,
         errorType,
-        errorMgs
+        errorMgs,
+        isSendForgotEmail,
       ];
 
   LoginState copyWith({
     LoginStatus? status,
     EmailValidatorModel? email,
     PasswordValidatorModel? password,
+    bool? isSendForgotEmail,
     bool? isShowPassword,
     FiicoUser? userLogged,
     LoginError? errorType,
@@ -52,6 +58,7 @@ class LoginState extends Equatable {
       password: password ?? this.password,
       isShowPassword: isShowPassword ?? this.isShowPassword,
       email: email ?? this.email,
+      isSendForgotEmail: isSendForgotEmail,
       userLogged: userLogged,
       errorType: errorType,
       errorMgs: errorMgs,

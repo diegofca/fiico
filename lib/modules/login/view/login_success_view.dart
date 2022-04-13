@@ -1,9 +1,12 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_top_title_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
@@ -33,6 +36,9 @@ class LoginSuccesView extends StatefulWidget {
 class LoginSuccesViewState extends State<LoginSuccesView> {
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
+      TextEditingController();
+
+  final TextEditingController _emailRecoverEditingController =
       TextEditingController();
 
   @override
@@ -122,6 +128,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         _passwordTextfieldView(context),
         _forgotPasswordView(),
         _logInButton(),
+        _socialLoginButtons(),
         _orSeparateView(),
         _signUpButton(),
       ],
@@ -197,9 +204,19 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
   Widget _forgotPasswordView() {
     return GestureDetector(
       onTap: () {
-        context
-            .read<LoginBloc>()
-            .add(const LoginForgotPasswordRequest("fiicodev@example.com"));
+        FiicoAlertDialog.showCustom(
+          context,
+          title: 'Ingresar el correo electronico',
+          body: FiicoTopStyleTextfield(
+            labelText: '',
+            keyboardType: TextInputType.emailAddress,
+            textEditingController: _emailRecoverEditingController,
+          ),
+          onOkAction: () {
+            final email = _emailRecoverEditingController.text;
+            context.read<LoginBloc>().add(LoginForgotPasswordRequest(email));
+          },
+        );
       },
       child: Container(
         width: double.maxFinite,
@@ -227,6 +244,44 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         title: 'Iniciar sesión',
         color: FiicoColors.purpleDark,
         onTap: () => context.read<LoginBloc>().add(const LoginIntentRequest()),
+      ),
+    );
+  }
+
+  Widget _socialLoginButtons() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: FiicoPaddings.sixteen,
+        vertical: FiicoPaddings.sixteen,
+      ),
+      width: double.maxFinite,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        runAlignment: WrapAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SvgPicture.asset(
+              SVGImages.facebookIcon,
+              width: 40,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SvgPicture.asset(
+              SVGImages.googleIcon,
+              width: 40,
+            ),
+          ),
+          if (Platform.isIOS)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SvgPicture.asset(
+                SVGImages.appleIcon,
+                width: 40,
+              ),
+            )
+        ],
       ),
     );
   }

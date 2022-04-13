@@ -246,24 +246,29 @@ class Budget {
 
   String getCycleDescription() {
     var description = 'Tu presupuesto esta en modo repetitivo y se repetirá ';
-    final type = BudgetCycleType.values
-        .firstWhereOrNull((element) => element.index == cycle);
-    switch (type) {
-      case BudgetCycleType.WEEK:
-        return description + 'cada semana';
-      case BudgetCycleType.TWO_WEEKS:
-        return description + 'cada dos semanas';
-      case BudgetCycleType.MONTH:
-        return description + 'mes';
-      case BudgetCycleType.THREE_MONTH:
-        return description + 'cada tres meses';
-      case BudgetCycleType.SIX_MONTH:
-        return description + 'cada seis meses';
-      case BudgetCycleType.ANNUAL:
-        return description + 'año';
-      default:
-        return '';
+
+    if (isCycle ?? false) {
+      final type = BudgetCycleType.values
+          .firstWhereOrNull((element) => element.index == cycle);
+      switch (type) {
+        case BudgetCycleType.WEEK:
+          return description + 'cada semana';
+        case BudgetCycleType.TWO_WEEKS:
+          return description + 'cada dos semanas';
+        case BudgetCycleType.MONTH:
+          return description + 'mes';
+        case BudgetCycleType.THREE_MONTH:
+          return description + 'cada tres meses';
+        case BudgetCycleType.SIX_MONTH:
+          return description + 'cada seis meses';
+        case BudgetCycleType.ANNUAL:
+          return description + 'año';
+        default:
+          return '';
+      }
     }
+
+    return 'Podrás definir una duración, fecha inicial y fecha final.';
   }
 
   String getDurationText() {

@@ -53,11 +53,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginForgotPasswordRequest event,
     Emitter<LoginState> emit,
   ) async {
-    await repository.forgotPasswordWithEmail(event.email);
+    emit(state.copyWith(status: LoginStatus.loading));
+    final sendEvent =
+        await repository.forgotPasswordWithEmail(event.email, (eType, eMssg) {
+      _mapErrorToIntentLogin(emit, eType, eMssg);
+    });
 
     emit(state.copyWith(
       status: LoginStatus.success,
-      // email: event.email,
+      isSendForgotEmail: sendEvent,
     ));
   }
 
@@ -68,7 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(status: LoginStatus.loading));
     final userLogged =
         await repository.loginUserWithEmail(state, (eType, eMssg) {
-      _mapErrorToIntentLogin(event, emit, eType, eMssg);
+      _mapErrorToIntentLogin(emit, eType, eMssg);
     });
 
     if (userLogged != null) {
@@ -80,7 +84,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void _mapErrorToIntentLogin(
-    LoginIntentRequest event,
     Emitter<LoginState> emit,
     String eType,
     String? eMessage,
@@ -100,6 +103,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return LoginError.wrongPassword;
       case 'too-many-requests':
         return LoginError.toManyRequest;
+      case "ERROR_INVALID_EMAIL":
+      //   errorMessage = "Your email address appears to be malformed.";
+      //   break;
+      // case "ERROR_WRONG_PASSWORD":
+      //   errorMessage = "Your password is wrong.";
+      //   break;
+      // case "ERROR_USER_NOT_FOUND":
+      //   errorMessage = "User with this email doesn't exist.";
+      //   break;
+      // case "ERROR_USER_DISABLED":
+      //   errorMessage = "User with this email has been disabled.";
+      //   break;
+      // case "ERROR_TOO_MANY_REQUESTS":
+      //   errorMessage = "Too many requests. Try again later.";
+      //   break;
+      // case "ERROR_OPERATION_NOT_ALLOWED":
+      //   errorMessage = "Signing in with Email and Password is not enabled.";
+      //   break;
       default:
         return LoginError.unknow;
     }

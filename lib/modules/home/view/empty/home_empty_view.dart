@@ -35,7 +35,8 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       alignment: Alignment.center,
       child: Wrap(
-        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        direction: Axis.vertical,
         children: [
           _imageTop(),
           _emptyText(),

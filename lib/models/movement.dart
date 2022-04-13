@@ -52,7 +52,7 @@ class Movement {
       createdAt: json?['createdAt'] ?? Timestamp.now(),
       recurrencyAt: json?['recurrencyAt'] ?? Timestamp.now(),
       type: json?['type'] ?? '',
-      description: json?['description'] ?? '',
+      description: json?['description'],
       typeDescription: json?['typeDescription'] ?? '',
       currency: json?['currency'] ?? '',
       budgetName: json?['budgetName'] ?? '',

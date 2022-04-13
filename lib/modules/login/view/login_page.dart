@@ -38,6 +38,7 @@ class LoginPageView extends StatelessWidget {
         _validateStatusView(context, state);
         _validateIfLoginError(context, state);
         _validateIfLoginComplete(context, state);
+        _validateIfRecoverPass(context, state);
       },
     );
   }
@@ -55,6 +56,15 @@ class LoginPageView extends StatelessWidget {
   void _validateIfLoginComplete(BuildContext context, LoginState state) {
     if (state.loginComplete) {
       FiicoRoute.sendReplace(context, MenuPage(user: state.userLogged));
+    }
+  }
+
+  void _validateIfRecoverPass(BuildContext context, LoginState state) {
+    if (state.isRecoverPass) {
+      FiicoAlertDialog.showSuccess(
+        context,
+        message: 'El correo de recuperacion ha sido enviado correctamente',
+      );
     }
   }
 
