@@ -260,14 +260,18 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         runAlignment: WrapAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.sixteen,
+            ),
             child: SvgPicture.asset(
               SVGImages.facebookIcon,
               width: 40,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.sixteen,
+            ),
             child: SvgPicture.asset(
               SVGImages.googleIcon,
               width: 40,
@@ -275,7 +279,9 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           ),
           if (Platform.isIOS)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: FiicoPaddings.sixteen,
+              ),
               child: SvgPicture.asset(
                 SVGImages.appleIcon,
                 width: 40,
