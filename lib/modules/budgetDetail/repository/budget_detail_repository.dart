@@ -81,7 +81,7 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
 
   @override
   Future<void> removeUserToBudget(FiicoUser? user, Budget budget) async {
-    final _budget = budget.copyWith(status: 'Disable');
+    final _budget = budget.copyWith(status: 'Disable', movements: []);
 
     final getDoc = await _movementsCollections
         .doc(user?.id)

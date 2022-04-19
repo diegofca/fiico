@@ -56,7 +56,9 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
 
   Widget _bodyImage() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(
+        FiicoPaddings.twelve,
+      ),
       child: CachedNetworkImage(
         imageUrl: widget.notification.imageUrl!,
         fit: BoxFit.contain,
@@ -132,14 +134,12 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
         left: FiicoPaddings.eight,
         bottom: FiicoPaddings.four,
       ),
-      child: Expanded(
-        child: Text(
-          widget.notification.title ?? '',
-          maxLines: FiicoMaxLines.two,
-          style: Style.title.copyWith(
-            color: FiicoColors.purpleDark,
-            fontSize: FiicoFontSize.xm,
-          ),
+      child: Text(
+        widget.notification.title ?? '',
+        maxLines: FiicoMaxLines.two,
+        style: Style.title.copyWith(
+          color: FiicoColors.purpleDark,
+          fontSize: FiicoFontSize.xm,
         ),
       ),
     );
@@ -155,7 +155,7 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
       ),
       child: Text(
         widget.notification.message ?? '',
-        maxLines: FiicoMaxLines.ten,
+        maxLines: FiicoMaxLines.two,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayDark,
           fontSize: FiicoFontSize.xm,

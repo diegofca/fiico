@@ -17,8 +17,10 @@ class SplashRepository extends SplashRepositoryAbs {
   Future<FiicoUser?> getUserTolocalState() async {
     final user = await preferences.getUser();
     _usersCollections.doc(user?.id).snapshots().listen((value) {
-      final updateUser = FiicoUser.fromJson(value.data());
-      preferences.saveUser(updateUser);
+      if (value.exists) {
+        final updateUser = FiicoUser.fromJson(value.data());
+        preferences.saveUser(updateUser);
+      }
     });
     return preferences.getUser();
   }

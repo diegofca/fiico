@@ -204,7 +204,7 @@ class Budget {
   bool get isReadAndWriteOnly {
     final userID = Preferences.get.getID;
     final currentUser = users?.firstWhereOrNull((e) => e.id == userID);
-    final enableBudget = status == 'Active';
+    final enableBudget = isActive();
     final isWritePermissionActive = currentUser?.isRadAndWriteOnly() ?? false;
     return isOwner ? true : enableBudget && isWritePermissionActive;
   }
@@ -347,6 +347,10 @@ class Budget {
     final nameContained = name?.isNotEmpty ?? false;
     final currencyContained = currency?.isNotEmpty ?? false;
     return idInitDateContained && nameContained && currencyContained;
+  }
+
+  bool isActive() {
+    return status == 'Active';
   }
 
   //  Ger Orders by movements

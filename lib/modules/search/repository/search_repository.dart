@@ -39,7 +39,7 @@ class SearchRepository extends SearchRepositoryAbs {
       return snapshot.docs // Filter budgets with query
           .map((doc) => Budget.fromJson(doc.data()))
           .toList()
-          .where((e) => e.name?.contains(query) ?? false)
+          .where((e) => (e.name?.contains(query) ?? false) && (e.isActive()))
           .toList();
     });
   }
@@ -52,14 +52,17 @@ class SearchRepository extends SearchRepositoryAbs {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs // Filter budgets with query
-          .map((doc) => Budget.fromJson(doc.data()));
+          .map((doc) => Budget.fromJson(doc.data()))
+          .where((e) => e.isActive());
     });
 
     List<Movement> movements = [];
     streamResult.forEach((e) async {
-      if (e.first.movements != null && e.first.movements!.isNotEmpty) {
-        final b = e.first.movements!.where((e) => e.name!.contains(query));
-        movements.addAll(b);
+      if (e.isNotEmpty) {
+        if (e.first.movements?.isNotEmpty ?? false) {
+          final b = e.first.movements!.where((e) => e.name!.contains(query));
+          movements.addAll(b);
+        }
       }
     });
     return Stream.value(movements);

@@ -21,10 +21,16 @@ class NotificationDetailSuccessView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: const EdgeInsets.all(32.0),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(
+          FiicoPaddings.thirtyTwo,
+        ),
+        padding: const EdgeInsets.all(
+          FiicoPaddings.four,
+        ),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(32)),
+          borderRadius: BorderRadius.all(Radius.circular(
+            FiicoPaddings.thirtyTwo,
+          )),
           color: Colors.white,
         ),
         child: Column(
@@ -49,7 +55,9 @@ class NotificationDetailSuccessView extends StatelessWidget {
 
   Widget _bodyImage() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(
+        FiicoPaddings.twelve,
+      ),
       child: CachedNetworkImage(
         imageUrl: notification!.imageUrl!,
         fit: BoxFit.contain,
@@ -69,7 +77,9 @@ class NotificationDetailSuccessView extends StatelessWidget {
 
   Widget _titleView() {
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.all(
+        FiicoPaddings.thirtyTwo,
+      ),
       child: Text(
         notification?.title ?? '',
         style: Style.title.copyWith(
@@ -83,9 +93,9 @@ class NotificationDetailSuccessView extends StatelessWidget {
   Widget _messageView() {
     return Padding(
       padding: const EdgeInsets.only(
-        bottom: 32,
-        right: 16,
-        left: 16,
+        bottom: FiicoPaddings.thirtyTwo,
+        right: FiicoPaddings.sixteen,
+        left: FiicoPaddings.sixteen,
       ),
       child: Text(
         notification?.message ?? '',
@@ -112,7 +122,9 @@ class NotificationDetailSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiicoPaddings.eight,
+          ),
           child: FiicoButton(
             title: ' Cancelar ',
             color: FiicoColors.white,
@@ -122,7 +134,9 @@ class NotificationDetailSuccessView extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiicoPaddings.eight,
+          ),
           child: FiicoButton(
             title: notification?.getAcceptButtonText() ?? '',
             color: FiicoColors.purpleNeutral,
