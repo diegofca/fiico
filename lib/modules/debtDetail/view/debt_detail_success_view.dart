@@ -1,13 +1,17 @@
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/view/headerView/debt_detail_header_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DebtDetailSuccessView extends StatelessWidget {
@@ -27,7 +31,7 @@ class DebtDetailSuccessView extends StatelessWidget {
       child: Column(
         children: [
           _headerView(),
-          _bodyView(),
+          _bodyView(context),
         ],
       ),
     );
@@ -49,7 +53,7 @@ class DebtDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _bodyView() {
+  Widget _bodyView(BuildContext context) {
     return Expanded(
       child: Container(
         alignment: Alignment.topCenter,
@@ -73,6 +77,7 @@ class DebtDetailSuccessView extends StatelessWidget {
                 _pricesDetailView(),
                 _separatorLineView(),
                 _categoriesList(),
+                _paymentButtonView(context),
               ],
             ),
           ),
@@ -88,7 +93,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement?.description ?? '',
+        movement?.description ?? 'No hay descripción',
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -215,6 +220,38 @@ class DebtDetailSuccessView extends StatelessWidget {
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.pink,
         tags: movement?.tags ?? [],
+      ),
+    );
+  }
+
+  Widget _paymentButtonView(BuildContext context) {
+    return Visibility(
+      visible: movement?.isPaymentPendingState() ?? true,
+      child: Column(
+        children: [
+          Text(
+            'Recuerda marcar tus gastos cuando los hayas pagado, para llevar un control de tu dinero a diario, para ello no olvides que tenemos notificaciones intesivas que te ayudaran a recordar desde dias antes cuando debes pagar. \n\nAl marcar como Pago unicamente podrás cambiarlo al iniciar el otro ciclo de tu presupuesto.',
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.grayNeutral,
+              fontSize: FiicoFontSize.xm,
+            ),
+            maxLines: FiicoMaxLines.unlimited,
+          ),
+          Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.only(top: FiicoPaddings.eight),
+            child: FiicoButton(
+              title: "Marcar como pago  ",
+              color: FiicoColors.pinkRed,
+              image: SVGImages.checkMarkIcon,
+              onTap: () {
+                context
+                    .read<DebtDetailBloc>()
+                    .add(DebtDetailMarkPayedMovement(movement: movement));
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

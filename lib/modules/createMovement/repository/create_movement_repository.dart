@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/helpers/extension/generic_repository.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class CreateMovementRepositoryAbs {
-  Future<void> addNewMovement(Movement movement);
-  Future<Budget> getBudget();
-  Future<void> updateMovement(Movement movement);
-  Future<void> updatetBudget(Budget budget);
+  Future<void> addNewMovement(Movement movement, Budget? budget);
+  Future<Budget> getBudget(String? userID);
+  Future<void> updateMovement(Movement movement, Budget? budget);
+  Future<void> updateBudget(Budget budget);
 }
 
 class CreateMovementRepository extends CreateMovementRepositoryAbs {
@@ -20,10 +20,10 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
       FirebaseFirestore.instance.collection(Firestore.usersPath);
 
   @override
-  Future<void> addNewMovement(Movement movement) async {
-    final user = await Preferences.get.getUser();
+  Future<void> addNewMovement(Movement movement, Budget? budget) async {
+    final userID = budget?.getPropertiedID();
     await _movementsCollections
-        .doc(user?.id)
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .update({
@@ -32,15 +32,14 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
       ),
     });
 
-    final budget = await getBudget();
-    updatetBudget(budget);
+    final _budget = await getBudget(userID);
+    updateBudget(_budget);
   }
 
   @override
-  Future<Budget> getBudget() async {
-    final user = await Preferences.get.getUser();
+  Future<Budget> getBudget(String? userID) async {
     return _movementsCollections
-        .doc(user?.id)
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .doc(budgetID)
         .snapshots()
@@ -50,23 +49,14 @@ class CreateMovementRepository extends CreateMovementRepositoryAbs {
   }
 
   @override
-  Future<void> updateMovement(Movement movement) {
+  Future<void> updateMovement(Movement movement, Budget? budget) {
     return _movementsCollections
         .doc(movement.id.toString())
         .update(movement.toJson());
   }
 
   @override
-  Future<void> updatetBudget(Budget budget) async {
-    final user = await Preferences.get.getUser();
-    return _movementsCollections
-        .doc(user?.id)
-        .collection(Firestore.budgetsPath)
-        .doc(budgetID)
-        .update({
-      'totalEntry': budget.getTotalEntry(),
-      'totalDebt': budget.getTotalDebt(),
-      'totalBalance': budget.getTotalBalance(),
-    });
+  Future<void> updateBudget(Budget budget) async {
+    return BudgetGenericRepository.updateBudget(budget);
   }
 }

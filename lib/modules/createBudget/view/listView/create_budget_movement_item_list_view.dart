@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/view/debt_detail_page.dart';
 import 'package:control/modules/entryDetail/view/detail/entry_detail_page.dart';
@@ -13,9 +14,11 @@ class CreateBudgetMovementListItemView extends StatefulWidget {
   const CreateBudgetMovementListItemView({
     Key? key,
     required this.movement,
+    required this.budget,
   }) : super(key: key);
 
   final Movement movement;
+  final Budget budget;
 
   @override
   State<CreateBudgetMovementListItemView> createState() =>
@@ -52,7 +55,6 @@ class CreateBudgetMovementListItemViewState
         top: FiicoPaddings.sixteen,
         bottom: FiicoPaddings.sixteen,
         right: FiicoPaddings.sixteen,
-        // left: FiicoPaddings.twenyFour,
       ),
       child: Container(
         width: 60,
@@ -150,10 +152,20 @@ class CreateBudgetMovementListItemViewState
   void _onDetailViewed() {
     switch (widget.movement.getType()) {
       case MovementType.ENTRY:
-        FiicoRoute.send(context, EntryDetailPage(movement: widget.movement));
+        FiicoRoute.send(
+            context,
+            EntryDetailPage(
+              movement: widget.movement,
+              budget: widget.budget,
+            ));
         break;
       case MovementType.DEBT:
-        FiicoRoute.send(context, DebtDetailPage(movement: widget.movement));
+        FiicoRoute.send(
+            context,
+            DebtDetailPage(
+              movement: widget.movement,
+              budget: widget.budget,
+            ));
         break;
       default:
     }

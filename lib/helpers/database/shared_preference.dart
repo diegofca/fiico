@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static Preferences get = Preferences();
 
+  String? getID = '';
+
   void saveUser(FiicoUser? user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userDecode = json.encode(user?.toJson());
@@ -20,6 +22,7 @@ class Preferences {
     final string = prefs.getString('user') ?? '';
     if (string.isNotEmpty) {
       Map<String, dynamic>? valueMap = json.decode(string);
+      getID = FiicoUser.fromJson(valueMap).id;
       return FiicoUser.fromJson(valueMap);
     } else {
       return null;
@@ -34,6 +37,6 @@ class Preferences {
   //LogOut
   void logOut(BuildContext context) {
     _deleteUser();
-    FiicoRoute.send(context, LoginPage());
+    FiicoRoute.send(context, const LoginPage());
   }
 }

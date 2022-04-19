@@ -45,3 +45,14 @@ class HomeBudgetRemovedMovement extends HomeEvent {
   @override
   List<Object?> get props => [movement];
 }
+
+class HomeShowedTutorial extends HomeEvent {
+  const HomeShowedTutorial({
+    this.showed,
+  });
+
+  final bool? showed;
+
+  @override
+  List<Object?> get props => [showed];
+}

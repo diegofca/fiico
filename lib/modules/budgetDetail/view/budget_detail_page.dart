@@ -26,10 +26,8 @@ class BudgetDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (blocContext) => BudgetDetailBloc(
         BudgetDetailRepository(budget.id),
-      )..add(BudgetDetailFetchRequest(uID: budget.id)),
-      child: BudgetDetailPageView(
-        budget: budget,
-      ),
+      )..add(BudgetDetailFetchRequest(budget: budget)),
+      child: const BudgetDetailPageView(),
     );
   }
 }
@@ -37,10 +35,7 @@ class BudgetDetailPage extends StatelessWidget {
 class BudgetDetailPageView extends StatelessWidget {
   const BudgetDetailPageView({
     Key? key,
-    required this.budget,
   }) : super(key: key);
-
-  final Budget budget;
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +55,15 @@ class BudgetDetailPageView extends StatelessWidget {
       stream: budget,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          final newBudget = snapshot.requireData;
           return Scaffold(
             backgroundColor: FiicoColors.grayBackground,
             appBar: GenericAppBar(
-              actions: [_dotsButton(context)],
+              actions: [_dotsButton(context, newBudget)],
               bottomHeigth: 0,
             ),
             body: BudgetDetailSuccessView(
-              budget: snapshot.requireData,
+              budget: newBudget,
             ),
           );
         }
@@ -76,22 +72,26 @@ class BudgetDetailPageView extends StatelessWidget {
     );
   }
 
-  Widget _dotsButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-      ),
-      child: IconButton(
-        highlightColor: Colors.transparent,
-        onPressed: () {
-          BudgetDetailBottomView().show(
-            context,
-            onOptionSelected: (option) => _selectedOption(context, option),
-          );
-        },
-        icon: const Icon(
-          MdiIcons.dotsHorizontal,
-          color: Colors.black,
+  Widget _dotsButton(BuildContext context, Budget budget) {
+    return Visibility(
+      visible: budget.isOwner,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: FiicoPaddings.sixteen,
+        ),
+        child: IconButton(
+          highlightColor: Colors.transparent,
+          onPressed: () {
+            BudgetDetailBottomView().show(
+              context,
+              onOptionSelected: (option) =>
+                  _selectedOption(context, budget, option),
+            );
+          },
+          icon: const Icon(
+            MdiIcons.dotsHorizontal,
+            color: Colors.black,
+          ),
         ),
       ),
     );
@@ -113,7 +113,8 @@ class BudgetDetailPageView extends StatelessWidget {
     }
   }
 
-  void _selectedOption(BuildContext context, BudgetDetailBottomOption option) {
+  void _selectedOption(
+      BuildContext context, Budget budget, BudgetDetailBottomOption option) {
     switch (option) {
       case BudgetDetailBottomOption.delete_budget:
         context
@@ -125,9 +126,8 @@ class BudgetDetailPageView extends StatelessWidget {
           context,
           SearchUsersPage(
             users: budget.users,
-            onUsersSelected: (list) {
-              print(list);
-            },
+            onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
+                BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
           ),
         );
         break;

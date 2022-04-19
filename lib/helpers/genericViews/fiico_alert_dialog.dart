@@ -21,6 +21,7 @@ class FiicoAlertDialog {
       loopAnimation: false,
       backgroundColor: FiicoColors.purpleNeutral,
       confirmBtnColor: FiicoColors.greenNeutral,
+      animType: CoolAlertAnimType.slideInUp,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();
@@ -48,6 +49,7 @@ class FiicoAlertDialog {
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
+      animType: CoolAlertAnimType.slideInUp,
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();

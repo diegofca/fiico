@@ -85,6 +85,11 @@ dependencies:
   #Icons
   material_design_icons_flutter: ^5.0.6595
   flutter_iconpicker: ^3.1.2
+  simple_icons: ^6.13.0
+  iconsax: ^0.0.8 
+  unicons: ^2.1.0
+  flutter_font_icons: ^2.2.4
+  icons_plus: ^1.0.2
 
   #Toast
   fluttertoast: ^8.0.8
@@ -106,6 +111,14 @@ dependencies:
 
   #VideoPlayer
   video_player:
+
+  #RX
+  rxdart: ^0.27.3
+
+  #Giff
+  giffy_dialog:
+    git:
+      url: https://github.com/amiruljack/giffy_dialog.git
 
 
 dev_dependencies:

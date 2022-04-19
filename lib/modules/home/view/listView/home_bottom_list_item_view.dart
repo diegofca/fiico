@@ -3,7 +3,10 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/modules/budgetDetail/view/budget_detail_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomeSelectorBudgetListItemView extends StatefulWidget {
   const HomeSelectorBudgetListItemView({
@@ -39,6 +42,7 @@ class HomeSelectorBudgetListItemViewState
           children: [
             _iconView(),
             _nameStatusView(),
+            _onOpenDetailBudgetView(context),
           ],
         ),
       ),
@@ -119,6 +123,16 @@ class HomeSelectorBudgetListItemViewState
           ),
         ],
       ),
+    );
+  }
+
+  Widget _onOpenDetailBudgetView(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+        FiicoRoute.send(context, BudgetDetailPage(budget: widget.budget));
+      },
+      icon: const Icon(MdiIcons.arrowRight),
     );
   }
 }

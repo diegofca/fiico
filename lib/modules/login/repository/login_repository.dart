@@ -46,9 +46,10 @@ class LoginRepository extends LoginRepositoryAbs {
   }
 
   Future<FiicoUser> _getUser(String? id) async {
-    final user = await _usersCollections.doc(id).snapshots().map((snapshot) {
+    final userStream = _usersCollections.doc(id).snapshots().map((snapshot) {
       return FiicoUser.fromJson(snapshot.data());
-    }).first;
+    });
+    final user = await userStream.first;
     Preferences.get.saveUser(user);
     return user;
   }

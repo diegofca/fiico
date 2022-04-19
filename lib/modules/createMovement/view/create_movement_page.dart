@@ -44,8 +44,8 @@ class CreateMovementPage extends StatelessWidget {
         ),
         child: CreateMovementPageView(
           currencyCode: budget?.currency,
-          budgetName: budget?.name,
           addedinBudget: addedinBudget,
+          budget: budget,
           type: type,
         ),
       ),
@@ -77,13 +77,13 @@ class CreateMovementPage extends StatelessWidget {
 class CreateMovementPageView extends StatelessWidget {
   const CreateMovementPageView({
     Key? key,
-    required this.budgetName,
+    required this.budget,
     required this.type,
     required this.currencyCode,
     required this.addedinBudget,
   }) : super(key: key);
 
-  final String? budgetName;
+  final Budget? budget;
   final MovementType type;
   final String? currencyCode;
   final bool addedinBudget;
@@ -94,6 +94,7 @@ class CreateMovementPageView extends StatelessWidget {
       builder: (context, state) {
         return CreateMovementSuccessView(
           movement: getMovementToBloc(state),
+          budget: budget,
         );
       },
       listener: (context, state) {
@@ -125,6 +126,7 @@ class CreateMovementPageView extends StatelessWidget {
     final typeDescription =
         this.type == MovementType.ENTRY ? 'Income' : 'Outcome';
     final recurrencyAt = Timestamp.fromDate(state.date ?? DateTime.now());
+    const paymentStatus = 'Pending';
 
     return Movement(
       id: const Uuid().v1(),
@@ -138,8 +140,9 @@ class CreateMovementPageView extends StatelessWidget {
       recurrencyAt: recurrencyAt,
       typeDescription: typeDescription,
       isAddedWithBudget: addedinBudget,
+      paymentStatus: paymentStatus,
       currency: currencyCode,
-      budgetName: budgetName,
+      budgetName: budget?.name,
       tags: state.tags ?? [],
       type: type,
     );

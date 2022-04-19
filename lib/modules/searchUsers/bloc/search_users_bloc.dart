@@ -12,6 +12,7 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
     on<SearchUsersFetchRequest>(_mapUsersSearchToState);
     on<SearchUsersFilterRequest>(_mapUsersSearchFiltersToState);
     on<SearchSelectUserRequest>(_mapSelectedUserToState);
+    on<SearchSelectSegment>(_mapSelectSegmentToState);
   }
 
   final SearchUsersRepository repository;
@@ -56,5 +57,26 @@ class SearchUsersBloc extends Bloc<SearchUsersEvent, SearchUsersState> {
       status: SearchUsersStatus.success,
       selectedUsers: _users,
     ));
+  }
+
+  void _mapSelectSegmentToState(
+    SearchSelectSegment event,
+    Emitter<SearchUsersState> emit,
+  ) async {
+    emit(state.copyWith(status: SearchUsersStatus.searching));
+
+    final _users = _getCombineUsers(event.user);
+    emit(state.copyWith(
+      status: SearchUsersStatus.success,
+      selectedUsers: _users,
+    ));
+  }
+
+  List<FiicoUser> _getCombineUsers(FiicoUser user) {
+    final selectedUsers = state.selectedUsers ?? [];
+    return {
+      ...[user],
+      ...selectedUsers
+    }.toList();
   }
 }

@@ -1,4 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:control/models/budget.dart';
+import 'package:control/network/firestore_path.dart';
 import 'package:equatable/equatable.dart';
 
 class FiicoUser extends Equatable {
@@ -13,8 +16,10 @@ class FiicoUser extends Equatable {
   final bool? vip;
   final String? currentPlan;
   final List<Budget>? budgets;
+  final String? budgetPermission;
+  bool? showTutorial;
 
-  const FiicoUser({
+  FiicoUser({
     this.id,
     this.firstName,
     this.lastName,
@@ -26,6 +31,8 @@ class FiicoUser extends Equatable {
     this.vip,
     this.currentPlan,
     this.budgets,
+    this.showTutorial = false,
+    this.budgetPermission,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -39,6 +46,8 @@ class FiicoUser extends Equatable {
       deviceTokens: List.castFrom(json?['deviceTokens']),
       currentPlan: json?['currentPlan'],
       budgets: Budget.toList(json?['budgets']),
+      showTutorial: json?['showTutorial'],
+      budgetPermission: json?['budgetPermission'],
       email: json?['email'],
       vip: json?['vip'],
     );
@@ -55,18 +64,60 @@ class FiicoUser extends Equatable {
       'deviceTokens': deviceTokens ?? [],
       'currentPlan': currentPlan ?? '',
       'profileImage': profileImage ?? '',
+      'showTutorial': showTutorial ?? false,
+      'budgetPermission': budgetPermission ?? '',
       'vip': vip ?? false,
     };
   }
 
   static List<FiicoUser> toList(Map<String, dynamic>? json) {
     List<FiicoUser> users = [];
-    json?['users']?.forEach((move) {
+    json?[Firestore.usersField]?.forEach((move) {
       users.add(FiicoUser.fromJson(move));
     });
     return users;
   }
 
+  FiicoUser copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? userName,
+    String? email,
+    String? socialToken,
+    String? profileImage,
+    List<String>? deviceTokens,
+    bool? vip,
+    String? currentPlan,
+    List<Budget>? budgets,
+    String? budgetPermission,
+  }) {
+    return FiicoUser(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      userName: userName ?? this.userName,
+      email: email ?? this.email,
+      socialToken: socialToken ?? this.socialToken,
+      profileImage: profileImage ?? this.profileImage,
+      deviceTokens: deviceTokens ?? this.deviceTokens,
+      vip: vip ?? this.vip,
+      currentPlan: currentPlan ?? this.currentPlan,
+      budgets: budgets ?? this.budgets,
+      budgetPermission: budgetPermission ?? this.budgetPermission,
+    );
+  }
+
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props =>
+      [id, socialToken, deviceTokens, currentPlan, profileImage, vip];
+
+  //Generic functions
+  int getPermission() {
+    return budgetPermission == 'WRITE' ? 1 : 0;
+  }
+
+  bool isRadAndWriteOnly() {
+    return budgetPermission == 'WRITE';
+  }
 }

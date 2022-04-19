@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
@@ -30,10 +29,7 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
   ) async {
     try {
       emit(state.copyWith(status: CreateBudgetStatus.loading));
-
-      final user = await Preferences.get.getUser();
       final added = await repository.addNewBudget(event.budget);
-      await repository.updateBudget(user?.id, added.id, added.id);
       emit(state.copyWith(
         status: CreateBudgetStatus.success,
         addedBudgetID: added.id,

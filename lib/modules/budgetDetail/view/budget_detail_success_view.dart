@@ -9,10 +9,10 @@ import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/budgetDetail/ItemList/budget_detail_movement_list_item.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/view/headerView/budget_detail_header_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_add_movement_view.dart';
-import 'package:control/modules/createBudget/view/listView/create_budget_movement_item_list_view.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
@@ -275,14 +275,17 @@ class BudgetDetailSuccessView extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: FiicoPaddings.eight,
-            bottom: FiicoPaddings.thirtyTwo,
-          ),
-          child: BudgetDetailAddMovementView(
-            title: 'Agregar nuevo ingreso',
-            onAdded: () => _addedMovement(context, MovementType.ENTRY),
+        Visibility(
+          visible: budget.isReadAndWriteOnly,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.eight,
+              bottom: FiicoPaddings.thirtyTwo,
+            ),
+            child: BudgetDetailAddMovementView(
+              title: 'Agregar nuevo ingreso',
+              onAdded: () => _addedMovement(context, MovementType.ENTRY),
+            ),
           ),
         ),
       ],
@@ -346,14 +349,17 @@ class BudgetDetailSuccessView extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: FiicoPaddings.eight,
-              bottom: FiicoPaddings.thirtyTwo,
-            ),
-            child: BudgetDetailAddMovementView(
-              title: 'Agregar nuevo ingreso',
-              onAdded: () => _addedMovement(context, MovementType.DEBT),
+          Visibility(
+            visible: budget.isReadAndWriteOnly,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: FiicoPaddings.eight,
+                bottom: FiicoPaddings.thirtyTwo,
+              ),
+              child: BudgetDetailAddMovementView(
+                title: 'Agregar nuevo gasto',
+                onAdded: () => _addedMovement(context, MovementType.DEBT),
+              ),
             ),
           ),
         ],
@@ -366,9 +372,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
       key: Key(movement.id ?? ''),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        context
-            .read<BudgetDetailBloc>()
-            .add(BudgetDetailMovementRemoveRequest(movement: movement));
+        context.read<BudgetDetailBloc>().add(BudgetDetailMovementRemoveRequest(
+            movement: movement, budget: budget));
       },
       confirmDismiss: (direction) async {
         return BottomDialog().show(
@@ -392,7 +397,10 @@ class BudgetDetailSuccessView extends StatelessWidget {
           color: FiicoColors.pinkRed,
         ),
       ),
-      child: CreateBudgetMovementListItemView(movement: movement),
+      child: BudgetDetailMovementListItemView(
+        movement: movement,
+        budget: budget,
+      ),
     );
   }
 
@@ -407,7 +415,9 @@ class BudgetDetailSuccessView extends StatelessWidget {
           padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
           height: 90,
           child: Text(
-            'Comparte este preupuesto con tus amigos y familiares.',
+            budget.isOwner
+                ? 'Comparte este presupuesto con tus amigos y familiares.'
+                : '${budget.ownerName} te ha compartido este presupuesto, podrás modificarlo pero no eliminarlo.',
             textAlign: TextAlign.start,
             maxLines: FiicoMaxLines.ten,
             style: Style.desc.copyWith(
@@ -423,15 +433,14 @@ class BudgetDetailSuccessView extends StatelessWidget {
   Widget _shareButtonView(BuildContext context) {
     final users = budget.users ?? [];
     return Visibility(
-      visible: budget.isOwner ?? false,
+      visible: budget.isOwner,
       child: GestureDetector(
         onTap: () => FiicoRoute.send(
           context,
           SearchUsersPage(
             users: users,
-            onUsersSelected: (list) {
-              print(list);
-            },
+            onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
+                BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
           ),
         ),
         child: Padding(
@@ -540,9 +549,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
       ),
     );
     if (movement is Movement) {
-      context
-          .read<BudgetDetailBloc>()
-          .add(BudgetDetailMovementAddedRequest(newMovement: movement));
+      context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
+          newMovement: movement, budget: budget));
     }
   }
 }

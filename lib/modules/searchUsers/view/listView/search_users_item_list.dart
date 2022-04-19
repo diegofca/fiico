@@ -1,22 +1,25 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SearchUserListItemView extends StatefulWidget {
-  const SearchUserListItemView({
+  SearchUserListItemView({
     Key? key,
     required this.user,
     required this.isSelected,
   }) : super(key: key);
 
   final bool isSelected;
-  final FiicoUser user;
+  FiicoUser user;
 
   @override
   State<SearchUserListItemView> createState() => SearchUserListItemViewState();
@@ -25,26 +28,44 @@ class SearchUserListItemView extends StatefulWidget {
 }
 
 class SearchUserListItemViewState extends State<SearchUserListItemView> {
+  final _segmentOptions = {0: 'Solo Lectura ', 1: 'Lectura y escritura '};
+
+  var selectedSegment = 0;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context
           .read<SearchUsersBloc>()
           .add(SearchSelectUserRequest(widget.user)),
-      child: Container(
+      child: AnimatedContainer(
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+        height: widget.isSelected ? 150 : 90,
         color: Colors.white.withOpacity(0),
-        child: SizedBox(
-          height: 90,
-          width: double.maxFinite,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _iconView(),
-              _userDataView(),
-              _onSelectedView(),
-            ],
-          ),
+        width: double.maxFinite,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            _bodyUser(),
+            _onPermissionSelector(),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _bodyUser() {
+    return SizedBox(
+      height: 90,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _iconView(),
+          _userDataView(),
+          _onSelectedView(),
+        ],
       ),
     );
   }
@@ -107,6 +128,45 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _onPermissionSelector() {
+    selectedSegment = widget.user.getPermission();
+    return Visibility(
+      visible: widget.isSelected,
+      child: Padding(
+        padding: const EdgeInsets.only(top: FiicoPaddings.eight),
+        child: CupertinoSlidingSegmentedControl<int>(
+          groupValue: selectedSegment,
+          backgroundColor: FiicoColors.white,
+          thumbColor: FiicoColors.pink,
+          children: {
+            0: _generateSegmentView(selectedSegment, 0),
+            1: _generateSegmentView(selectedSegment, 1),
+          },
+          onValueChanged: (index) {
+            context.read<SearchUsersBloc>().add(SearchSelectSegment(
+                  user: widget.user.copyWith(
+                    budgetPermission: index == 0 ? 'READ' : 'WRITE',
+                  ),
+                ));
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _generateSegmentView(int? selectedSegment, int index) {
+    final key = _segmentOptions.keys.elementAt(index);
+    return Text(
+      _segmentOptions.values.elementAt(index),
+      textAlign: TextAlign.center,
+      style: Style.subtitle.copyWith(
+        color: key == selectedSegment
+            ? FiicoColors.black
+            : FiicoColors.grayNeutral,
       ),
     );
   }

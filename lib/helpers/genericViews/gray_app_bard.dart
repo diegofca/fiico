@@ -11,6 +11,7 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
     this.bgColor = FiicoColors.grayBackground,
     this.backColor = FiicoColors.grayDark,
     this.isShowBack = true,
+    this.textClicked,
     this.actions,
     this.title,
     this.bottomHeigth = 40,
@@ -24,6 +25,7 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
   final Widget? title;
   final double bottomHeigth;
   final bool? isShowBack;
+  final VoidCallback? textClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +59,17 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
 
   PreferredSizeWidget? get bottomWidget => PreferredSize(
         preferredSize: Size.fromHeight(_bottomHeight),
-        child: Container(
-          padding: const EdgeInsets.only(left: FiicoPaddings.thirtyTwo),
-          width: double.maxFinite,
-          child: Text(
-            text ?? '',
-            maxLines: FiicoMaxLines.two,
-            style: Style.title.copyWith(
-              color: textColor,
+        child: GestureDetector(
+          onTap: () => textClicked?.call(),
+          child: Container(
+            padding: const EdgeInsets.only(left: FiicoPaddings.thirtyTwo),
+            width: double.maxFinite,
+            child: Text(
+              text ?? '',
+              maxLines: FiicoMaxLines.two,
+              style: Style.title.copyWith(
+                color: textColor,
+              ),
             ),
           ),
         ),

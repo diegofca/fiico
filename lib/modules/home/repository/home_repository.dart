@@ -6,9 +6,13 @@ import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
 
-abstract class HomeRepositoryAbs extends BudgetGenericRepositoryAbs {
+abstract class HomeRepositoryAbs {
+  Future<Budget> getBudget(String budgetID);
+  Future<void> updateBudget(Budget budget);
   Stream<List<Budget>> budgets(String? userID);
-  Future<void> deleteMovement(Movement? movement, String budgetID);
+  Future<void> deleteMovement(Movement? movement, Budget? budget);
+  Future<void> showTutorial(String? userID);
+  Future<Budget> getShareBudget(String? userID, Budget budget);
 }
 
 class HomeRepository extends HomeRepositoryAbs {
@@ -20,6 +24,7 @@ class HomeRepository extends HomeRepositoryAbs {
     return budgetCollections
         .doc(userID)
         .collection(Firestore.budgetsPath)
+        .where(Firestore.statusField, isEqualTo: 'Active')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Budget.fromJson(doc.data())).toList();
@@ -27,21 +32,21 @@ class HomeRepository extends HomeRepositoryAbs {
   }
 
   @override
-  Future<void> deleteMovement(Movement? movement, String budgetID) async {
-    final user = await Preferences.get.getUser();
+  Future<void> deleteMovement(Movement? movement, Budget? budget) async {
+    final userID = budget?.getPropertiedID();
     await budgetCollections
-        .doc(user?.id)
+        .doc(userID)
         .collection(Firestore.budgetsPath)
-        .doc(budgetID)
+        .doc(budget?.id)
         .update({
-      'movements': FieldValue.arrayRemove(
+      Firestore.movementsField: FieldValue.arrayRemove(
         [movement!.toJson()],
       ),
     });
 
     await Future.delayed(const Duration(seconds: 1));
-    final budget = await getBudget(budgetID);
-    return updateBudget(budget);
+    final _budget = await getBudget(budget!.id);
+    return updateBudget(_budget);
   }
 
   //Generic ----------------------------------------------------------
@@ -60,15 +65,25 @@ class HomeRepository extends HomeRepositoryAbs {
 
   @override
   Future<void> updateBudget(Budget budget) async {
-    final user = await Preferences.get.getUser();
+    return BudgetGenericRepository.updateBudget(budget);
+  }
+
+  @override
+  Future<void> showTutorial(String? userID) {
+    return budgetCollections.doc(userID).update({
+      Firestore.showTutorialField: true,
+    });
+  }
+
+  @override
+  Future<Budget> getShareBudget(String? userID, Budget budget) {
     return budgetCollections
-        .doc(user?.id)
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .doc(budget.id)
-        .update({
-      'totalEntry': budget.getTotalEntry(),
-      'totalDebt': budget.getTotalDebt(),
-      'totalBalance': budget.getTotalBalance(),
-    });
+        .snapshots()
+        .map((snapshot) {
+      return Budget.fromJson(snapshot.data());
+    }).first;
   }
 }

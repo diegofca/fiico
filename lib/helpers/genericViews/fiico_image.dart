@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/string.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -41,8 +43,8 @@ class FiicoImageNetwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (url?.isUrl() ?? false) {
-      return Image.network(
-        url!,
+      return CachedNetworkImage(
+        imageUrl: url!,
         height: size,
         width: size,
         fit: BoxFit.cover,
@@ -51,6 +53,7 @@ class FiicoImageNetwork extends StatelessWidget {
     return Icon(
       iconData ?? MdiIcons.sack,
       size: size,
+      color: FiicoColors.grayDark,
     );
   }
 }

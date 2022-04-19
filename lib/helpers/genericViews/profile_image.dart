@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,9 @@ class ProfileImage extends StatelessWidget {
       );
     }
 
-    Image profileImage;
-    profileImage = Image.network(
-      pathProfile!,
+    CachedNetworkImage profileImage;
+    profileImage = CachedNetworkImage(
+      imageUrl: pathProfile!,
       height: size,
       width: size,
       fit: BoxFit.cover,

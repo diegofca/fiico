@@ -25,17 +25,15 @@ class HomeEmptyView extends StatefulWidget {
 }
 
 class HomeEmtpyViewState extends State<HomeEmptyView> {
-  final _imageTopHeigth = 120.0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.5,
       color: FiicoColors.white,
-      padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
+      padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
       alignment: Alignment.center,
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
         direction: Axis.vertical,
         children: [
           _imageTop(),
@@ -49,7 +47,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   Widget _imageTop() {
     return SvgPicture.asset(
       SVGImages.emptySafe,
-      height: _imageTopHeigth,
+      height: MediaQuery.of(context).size.height / 7,
     );
   }
 

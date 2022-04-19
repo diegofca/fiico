@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, import_of_legacy_library_into_null_safe
 
+import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -43,6 +45,11 @@ class IntroPageView extends StatefulWidget {
 class IntroPageViewState extends State<IntroPageView> {
   late VideoPlayerController _controller;
 
+  final videos = [
+    'assets/videos/login_video_1.mp4',
+    'assets/videos/login_video_2.mp4'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -59,8 +66,9 @@ class IntroPageViewState extends State<IntroPageView> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    _controller =
-        VideoPlayerController.asset("assets/videos/login_video_1.mp4");
+
+    var element = videos[Random().nextInt(videos.length)];
+    _controller = VideoPlayerController.asset(element);
     _controller.initialize().then((_) {
       _controller.setLooping(true);
       _controller.play();
@@ -130,7 +138,7 @@ class IntroPageViewState extends State<IntroPageView> {
               FiicoButton(
                 title: 'Saltar',
                 color: FiicoColors.clear,
-                onTap: () => FiicoRoute.send(context, LoginPage()),
+                onTap: () => FiicoRoute.send(context, const LoginPage()),
               ),
             ],
           ),

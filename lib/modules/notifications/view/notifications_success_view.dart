@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/fiico_notification.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'emptyView/notifications_empty_view.dart';
 import 'listView/notifications_list_item.dart';
@@ -21,20 +22,18 @@ class NotificationsSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
       child: Stack(
         children: [
-          _emptyView(),
+          _emptyView(context),
           _notificationsList(),
         ],
       ),
     );
   }
 
-  Widget _emptyView() {
+  Widget _emptyView(BuildContext context) {
     return Visibility(
       visible: notifications.isEmpty,
       child: NotificationsEmptyView(
-        onTapNewItem: () {
-          print("new item");
-        },
+        onTapNewBudget: () => FiicoRoute.changeTab(context, TabOption.budgets),
       ),
     );
   }

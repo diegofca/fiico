@@ -3,7 +3,9 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/alert/view/alert_selector_view.dart';
+import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DebtDetailHeaderView extends StatefulWidget {
@@ -96,7 +98,10 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
           context,
           alert: widget.movement?.alert,
           onSelected: (alert) {
-            print(alert);
+            final movement = widget.movement?.copyWith(alert: alert);
+            context
+                .read<DebtDetailBloc>()
+                .add(DebtDetailEditMovement(movement: movement));
           },
         );
       },

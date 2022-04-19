@@ -7,6 +7,7 @@ class HomeState extends Equatable {
     this.status = HomeStatus.init,
     this.budgetSelected,
     this.removedMovement,
+    this.showTutorial,
     this.budgets,
     this.filter,
   });
@@ -16,6 +17,7 @@ class HomeState extends Equatable {
   final Budget? budgetSelected;
   final Movement? removedMovement;
   final int? filter;
+  final bool? showTutorial;
 
   @override
   List<Object> get props => [status, budgets ?? []];
@@ -25,6 +27,7 @@ class HomeState extends Equatable {
     Stream<List<Budget>>? budgets,
     Budget? budgetSelected,
     Movement? removedMovement,
+    bool? showTutorial,
     int? filter,
   }) {
     return HomeState(
@@ -32,6 +35,7 @@ class HomeState extends Equatable {
       budgets: budgets ?? this.budgets,
       budgetSelected: budgetSelected ?? this.budgetSelected,
       removedMovement: removedMovement ?? this.removedMovement,
+      showTutorial: showTutorial ?? this.showTutorial,
       filter: filter ?? this.filter,
     );
   }

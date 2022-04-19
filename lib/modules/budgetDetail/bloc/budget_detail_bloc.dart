@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:collection/collection.dart';
 
 part 'budget_detail_event.dart';
 part 'budget_detail_state.dart';
@@ -15,6 +16,7 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     on<BudgetDetailMovementAddedRequest>(_mapAddedMovementToState);
     on<BudgetDetailMovementRemoveRequest>(_mapRemoveMovementToState);
     on<BudgetUpdateDetailRequest>(_mapUpdateBudgetToState);
+    on<BudgetUpdateDetailUsersSelected>(_mapChangeUsersToState);
   }
 
   final BudgetDetailRepository repository;
@@ -23,10 +25,10 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     BudgetDetailFetchRequest event,
     Emitter<BudgetDetailState> emit,
   ) async {
-    final user = await Preferences.get.getUser();
+    final userID = event.budget?.getPropertiedID();
     emit(state.copyWith(
       status: BudgetDetailStatus.success,
-      budget: repository.getBudget(user?.id),
+      budget: repository.getBudget(userID),
     ));
   }
 
@@ -52,7 +54,7 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
   ) async {
     emit(state.copyWith(status: BudgetDetailStatus.loading));
     try {
-      await repository.addNewMovement(event.newMovement);
+      await repository.addNewMovement(event.newMovement, event.budget);
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
         movementAdded: event.newMovement,
@@ -66,9 +68,8 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     BudgetDetailMovementRemoveRequest event,
     Emitter<BudgetDetailState> emit,
   ) async {
-    emit(state.copyWith(status: BudgetDetailStatus.loading));
     try {
-      await repository.deleteMovement(event.movement);
+      await repository.deleteMovement(event.movement, event.budget);
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
         movementAdded: event.movement,
@@ -84,14 +85,38 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
   ) async {
     emit(state.copyWith(status: BudgetDetailStatus.loading));
     try {
-      final user = await Preferences.get.getUser();
+      final userID = event.budget.getPropertiedID();
       await repository.updateBudget(event.budget);
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
-        budget: repository.getBudget(user?.id),
+        budget: repository.getBudget(userID),
       ));
     } catch (_) {
       emit(state.copyWith(status: BudgetDetailStatus.failed));
     }
+  }
+
+  void _mapChangeUsersToState(
+    BudgetUpdateDetailUsersSelected event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+
+    var budget = event.budget;
+    final userID = budget.getPropertiedID();
+
+    for (var u in budget.users ?? []) {
+      final isEntry = event.users?.firstWhereOrNull((e) => e.id == u.id);
+      if (isEntry == null) {
+        await repository.removeUserToBudget(u, budget);
+      }
+    }
+
+    budget = budget.copyWith(users: event.users);
+    await repository.updateBudget(budget);
+    emit(state.copyWith(
+      status: BudgetDetailStatus.success,
+      budget: repository.getBudget(userID),
+    ));
   }
 }

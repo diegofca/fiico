@@ -30,14 +30,14 @@ class NotificationsPage extends StatelessWidget {
         create: (context) => NotificationsBloc(
           NotificationsRepository(),
         )..add(NotificationssFetchRequest(uID: user?.id)),
-        child: const BudgetsPageView(),
+        child: const NotificationsPageView(),
       ),
     );
   }
 }
 
-class BudgetsPageView extends StatelessWidget {
-  const BudgetsPageView({
+class NotificationsPageView extends StatelessWidget {
+  const NotificationsPageView({
     Key? key,
   }) : super(key: key);
 
@@ -57,7 +57,7 @@ class BudgetsPageView extends StatelessWidget {
                 }
                 return const LoadingView(
                   backgroundColor: FiicoColors.white,
-                ); // add failed view
+                );
               },
             );
         }

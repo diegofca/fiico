@@ -16,6 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeBudgetSelected>(_mapSelectedBudgetToState);
     on<HomeBudgetSelectedFilter>(_mapSelectedFilterToState);
     on<HomeBudgetRemovedMovement>(_mapRemovedMovementToState);
+    on<HomeShowedTutorial>(_mapShowedTutorialToState);
   }
 
   final HomeRepository repository;
@@ -58,13 +59,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBudgetRemovedMovement event,
     Emitter<HomeState> emit,
   ) async {
-    final budgetID = state.budgetSelected?.id ?? '';
-    await repository.deleteMovement(event.movement, budgetID);
+    await repository.deleteMovement(event.movement, state.budgetSelected);
     final user = await Preferences.get.getUser();
     emit(state.copyWith(
       status: HomeStatus.init,
       removedMovement: event.movement,
       budgets: repository.budgets(user?.id),
+    ));
+  }
+
+  void _mapShowedTutorialToState(
+    HomeShowedTutorial event,
+    Emitter<HomeState> emit,
+  ) async {
+    var user = await Preferences.get.getUser();
+    user?.showTutorial = event.showed ?? false;
+    Preferences.get.saveUser(user);
+
+    await repository.showTutorial(user?.id);
+
+    emit(state.copyWith(
+      status: HomeStatus.init,
+      budgets: repository.budgets(user?.id),
+      showTutorial: event.showed,
     ));
   }
 }

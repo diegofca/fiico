@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/models/cycle.dart';
 import 'package:control/models/duration.dart';
@@ -28,7 +29,7 @@ class Budget {
   final Timestamp? finishDate;
   final int? duration;
   final List<FiicoUser>? users;
-  final bool? isOwner;
+  final String? ownerName;
 
   Budget({
     required this.id,
@@ -47,7 +48,7 @@ class Budget {
     this.finishDate,
     this.duration,
     this.users,
-    this.isOwner,
+    this.ownerName,
   });
 
   Budget.create({
@@ -56,7 +57,7 @@ class Budget {
     this.currency,
     this.cycle = 2,
     this.icon = const FiicoIcon.empty(),
-    this.status = 'pending',
+    this.status = 'Active',
     this.totalBalance = 0,
     this.totalDebt = 0,
     this.totalEntry = 0,
@@ -67,7 +68,7 @@ class Budget {
     this.finishDate,
     this.duration = 3,
     this.users = const [],
-    this.isOwner = true,
+    this.ownerName,
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -84,9 +85,9 @@ class Budget {
       totalEntry: json?['totalEntry'] ?? 0,
       userID: json?['userID'] ?? '',
       isCycle: json?['isCycle'] ?? false,
-      isOwner: json?['isOwner'] ?? false,
       startDate: json?['startDate'] ?? Timestamp.now(),
       finishDate: json?['finishDate'] ?? Timestamp.now(),
+      ownerName: json?['ownerName'] ?? '',
       movements: Movement.toList(json),
       users: FiicoUser.toList(json),
     );
@@ -107,12 +108,10 @@ class Budget {
       'isCycle': isCycle,
       'startDate': startDate,
       'finishDate': finishDate,
-      'isOwner': isOwner,
       'icon': icon?.toJson(),
-      'movements': FieldValue.arrayUnion(
-          movements?.map((e) => e.toJson()).toList() ?? []),
-      'users':
-          FieldValue.arrayUnion(users?.map((e) => e.toJson()).toList() ?? []),
+      'ownerName': ownerName,
+      'movements': movements?.map((e) => e.toJson()).toList() ?? [],
+      'users': users?.map((e) => e.toJson()).toList() ?? [],
     };
   }
 
@@ -132,7 +131,7 @@ class Budget {
       'isCycle': isCycle,
       'startDate': startDate,
       'finishDate': finishDate,
-      'isOwner': isOwner,
+      'ownerName': ownerName,
       'movements': FieldValue.arrayUnion(
           movements?.map((e) => e.toJson()).toList() ?? []),
       'users':
@@ -149,6 +148,7 @@ class Budget {
   }
 
   Budget copyWith({
+    String? id,
     String? name,
     String? currency,
     int? cycle,
@@ -165,9 +165,10 @@ class Budget {
     int? duration,
     List<FiicoUser>? users,
     bool? isOwner,
+    String? ownerName,
   }) {
     return Budget(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
       currency: currency ?? this.currency,
       cycle: cycle ?? this.cycle,
@@ -182,14 +183,30 @@ class Budget {
       startDate: startDate ?? this.startDate,
       finishDate: finishDate ?? this.finishDate,
       movements: movements ?? this.movements,
+      ownerName: ownerName ?? this.ownerName,
       users: users ?? this.users,
-      isOwner: isOwner ?? this.isOwner,
     );
   }
 
   // Functions class -----------------------------------------------------------------------------------------
+
+  String? getPropertiedID() {
+    final currentID = Preferences.get.getID;
+    return userID ?? currentID;
+  }
+
   bool isEmptyMovements() {
     return movements?.isEmpty ?? false;
+  }
+
+  bool get isOwner => Preferences.get.getID == userID;
+
+  bool get isReadAndWriteOnly {
+    final userID = Preferences.get.getID;
+    final currentUser = users?.firstWhereOrNull((e) => e.id == userID);
+    final enableBudget = status == 'Active';
+    final isWritePermissionActive = currentUser?.isRadAndWriteOnly() ?? false;
+    return isOwner ? true : enableBudget && isWritePermissionActive;
   }
 
   double getTotalEntry() {
@@ -216,8 +233,10 @@ class Budget {
 
   Color getStatusColor() {
     switch (status) {
-      case "Active":
+      case 'Active':
         return FiicoColors.greenNeutral;
+      case 'Disable':
+        return FiicoColors.grayNeutral;
       default:
         return FiicoColors.gold;
     }
@@ -256,7 +275,7 @@ class Budget {
         case BudgetCycleType.TWO_WEEKS:
           return description + 'cada dos semanas';
         case BudgetCycleType.MONTH:
-          return description + 'mes';
+          return description + 'cada mes';
         case BudgetCycleType.THREE_MONTH:
           return description + 'cada tres meses';
         case BudgetCycleType.SIX_MONTH:
@@ -350,6 +369,16 @@ class Budget {
       case 4: // Solo gastos
         return movements
             ?.where((e) => e.getType() == MovementType.DEBT)
+            .toList();
+      case 5: // Solo gastos pendientes
+        return movements
+            ?.where((e) =>
+                e.getType() == MovementType.DEBT && e.isPaymentPendingState())
+            .toList();
+      case 6: // Solo gastos pendientes
+        return movements
+            ?.where((e) =>
+                e.getType() == MovementType.DEBT && !e.isPaymentPendingState())
             .toList();
       default:
         return movements;

@@ -254,6 +254,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
       curve: Curves.bounceIn,
       duration: flexDuration,
       child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             _searchWidget(),

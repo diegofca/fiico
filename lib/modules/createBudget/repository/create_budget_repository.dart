@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class CreatebudgetRepositoryAbs {
   Future<DocumentReference<Map<String, dynamic>>> addNewBudget(Budget budget);
-  Future<void> updateBudget(
-      String? userID, String oldBudgetID, String budgetID);
-  Future<void> addUsersShareBudget(String newBudgetID, Budget budget);
+  Future<void> addUsersShareBudget(Budget budget);
 }
 
 class CreateBudgetRepository extends CreatebudgetRepositoryAbs {
@@ -17,39 +14,35 @@ class CreateBudgetRepository extends CreatebudgetRepositoryAbs {
   @override
   Future<DocumentReference<Map<String, dynamic>>> addNewBudget(
       Budget budget) async {
-    final user = await Preferences.get.getUser();
-    final _budget = budget.copyWith(userID: user?.id);
+    final userID = budget.getPropertiedID();
+    var _budget = budget.copyWith(userID: userID);
     final documentAdded = await _usersCollections
-        .doc(user?.id)
+        .doc(userID)
         .collection(Firestore.budgetsPath)
         .add(_budget.toCreateJson());
 
-    await addUsersShareBudget(documentAdded.id, _budget);
+    _budget = _budget.copyWith(id: documentAdded.id);
+    await updateIDBudget(_budget);
+    await addUsersShareBudget(_budget);
     return documentAdded;
   }
 
   @override
-  Future<void> addUsersShareBudget(String newBudgetID, Budget budget) async {
+  Future<void> addUsersShareBudget(Budget budget) async {
     return budget.users?.forEach((u) async {
-      final doc = await _usersCollections
+      await _usersCollections
           .doc(u.id)
           .collection(Firestore.budgetsPath)
-          .add(budget.copyWith(isOwner: false).toCreateJson());
-      await updateBudget(u.id, doc.id, newBudgetID);
+          .add(budget.toCreateJson());
     });
   }
 
-  @override
-  Future<void> updateBudget(
-      String? userID, String oldBudgetID, String budgetID) async {
+  Future<void> updateIDBudget(Budget budget) async {
+    final userID = budget.getPropertiedID();
     return _usersCollections
         .doc(userID)
         .collection(Firestore.budgetsPath)
-        .doc(oldBudgetID)
-        .update(
-      {
-        'id': budgetID,
-      },
-    );
+        .doc(budget.id)
+        .update(budget.toJson());
   }
 }

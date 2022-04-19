@@ -42,10 +42,12 @@ class BudgetDetailHeaderViewState extends State<BudgetDetailHeaderView> {
   Widget _iconItem() {
     return GestureDetector(
       onTap: () async {
-        final icon = await FiicoSelectorIcon.select(context);
-        Timer(const Duration(milliseconds: 100), () {
-          widget.onNewIconSelected(icon);
-        });
+        if (widget.budget.isReadAndWriteOnly) {
+          final icon = await FiicoSelectorIcon.select(context);
+          Timer(const Duration(milliseconds: 100), () {
+            widget.onNewIconSelected(icon);
+          });
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(

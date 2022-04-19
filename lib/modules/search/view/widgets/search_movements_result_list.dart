@@ -70,6 +70,7 @@ class SearchMovementsListView extends StatelessWidget {
           final movement = movements[index];
           return HomeListItemView(
             movement: movement,
+            budget: null,
             showValue: false,
           );
         },

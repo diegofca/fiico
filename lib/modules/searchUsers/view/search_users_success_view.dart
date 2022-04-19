@@ -6,6 +6,7 @@ import 'package:control/modules/searchUsers/view/emptyView/search_users_empty_vi
 import 'package:control/modules/searchUsers/view/listView/search_users_item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 class SearchUsersSuccessView extends StatelessWidget {
   const SearchUsersSuccessView({
@@ -23,24 +24,25 @@ class SearchUsersSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
       child: Stack(
         children: [
-          _budgetsList(),
-          _emptyView(),
+          _budgetsList(context),
+          _emptyView(context),
         ],
       ),
     );
   }
 
-  Widget _emptyView() {
+  Widget _emptyView(BuildContext context) {
     return Visibility(
       visible: users.isEmpty,
       child: const SearchUsersEmptyView(),
     );
   }
 
-  Widget _budgetsList() {
+  Widget _budgetsList(BuildContext context) {
     return Visibility(
       visible: users.isNotEmpty,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(seconds: 1),
         alignment: Alignment.center,
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -55,14 +57,22 @@ class SearchUsersSuccessView extends StatelessWidget {
           ],
         ),
         child: ListView.builder(
-          itemCount: users.length,
+          itemCount: getCombineUsers(context).length,
           itemBuilder: (context, index) {
-            final user = users[index];
+            final user = getCombineUsers(context)[index];
             return itemUserView(context, user);
           },
         ),
       ),
     );
+  }
+
+  List<FiicoUser> getCombineUsers(BuildContext context) {
+    final selectedUsers =
+        context.read<SearchUsersBloc>().state.selectedUsers ?? [];
+    return {...selectedUsers, ...users}
+        .toList()
+        .sortedBy<String>((e) => e.firstName!);
   }
 
   Widget itemUserView(BuildContext context, FiicoUser user) {

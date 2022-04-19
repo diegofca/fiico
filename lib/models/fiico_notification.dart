@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+
+// ignore: constant_identifier_names
+enum FiicoNotificationType { DEFAULT, INVITATION, EDITED, BANNER }
 
 class FiicoNotification extends Equatable {
   final String? id;
@@ -8,9 +13,12 @@ class FiicoNotification extends Equatable {
   final String? title;
   final String? type;
   final String? senderID;
-  final String? recieverID;
+  final String? receivedID;
+  final String? budgetID;
   final bool? readed;
   final Timestamp? date;
+  final String? imageUrl;
+  final bool? clickeable;
 
   const FiicoNotification({
     this.id,
@@ -18,8 +26,11 @@ class FiicoNotification extends Equatable {
     this.title,
     this.type,
     this.senderID,
-    this.recieverID,
+    this.receivedID,
+    this.budgetID,
     this.readed,
+    this.imageUrl,
+    this.clickeable,
     this.date,
   });
 
@@ -29,8 +40,11 @@ class FiicoNotification extends Equatable {
       message: json?['message'],
       title: json?['title'],
       type: json?['type'],
-      senderID: json?['senderId'],
-      recieverID: json?['receiverId'],
+      senderID: json?['senderID'],
+      receivedID: json?['receivedID'],
+      clickeable: json?['clickeable'],
+      budgetID: json?['budgetID'],
+      imageUrl: json?['imageUrl'],
       readed: json?['readed'],
       date: json?['date'] ?? Timestamp.now(),
     );
@@ -41,18 +55,50 @@ class FiicoNotification extends Equatable {
       'id': id.toString(),
       'message': message ?? '',
       'title': title ?? '',
-      'type': type ?? '',
       'senderID': senderID ?? '',
-      'recieverID': recieverID ?? '',
+      'receivedID': receivedID ?? '',
+      'clickeable': clickeable ?? false,
+      'budgetID': budgetID ?? '',
+      'imageUrl': imageUrl ?? '',
       'readed': readed ?? false,
       'date': date ?? Timestamp.now(),
+      'type': type ?? '',
     };
+  }
+
+  // Generic functions
+  FiicoNotificationType getType() {
+    switch (type) {
+      case 'INVITATION':
+        return FiicoNotificationType.INVITATION;
+      case 'BANNER':
+        return FiicoNotificationType.BANNER;
+      default:
+        return FiicoNotificationType.DEFAULT;
+    }
+  }
+
+  String getAcceptButtonText() {
+    switch (getType()) {
+      case FiicoNotificationType.INVITATION:
+        return 'Ver invitación';
+      default:
+        return 'Aceptar';
+    }
   }
 
   String getCreateDate() {
     return date?.toDate().toDateFormat1() ?? '';
   }
 
+  Color getBorderColor() {
+    return getType() == FiicoNotificationType.BANNER
+        ? FiicoColors.white
+        : readed ?? false
+            ? FiicoColors.grayNeutral
+            : FiicoColors.purpleDark;
+  }
+
   @override
-  List<Object?> get props => [id, readed, message, date];
+  List<Object?> get props => [id, readed, type, message, date];
 }

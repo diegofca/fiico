@@ -15,6 +15,7 @@ import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/modules/home/home.dart';
 import 'package:control/modules/home/model/home_filters_movements.dart';
 import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
+import 'package:control/modules/home/view/widgets/home_create_movement_selector.dart';
 import 'package:control/modules/search/view/search_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +65,11 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   Budget? get currentBudget {
-    final budget = (widget.budgets ?? [])
-            .firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
-        widget.budgets?.firstOrNull;
-    if (widget.budgetSelected == null) {
+    final budgets = widget.budgets ?? [];
+    final budget =
+        budgets.firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
+            widget.budgets?.firstOrNull;
+    if (budgets.isNotEmpty && widget.budgetSelected == null) {
       context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget));
     }
     return budget;
@@ -89,6 +91,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   Widget _body(BuildContext context) {
+    final isEmpty = currentBudget?.isEmptyMovements() ?? true;
     return SmartRefresher(
       controller: _refreshController,
       header: const WaterDropMaterialHeader(
@@ -104,6 +107,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
         });
       },
       child: CustomScrollView(
+        physics: isEmpty ? const NeverScrollableScrollPhysics() : null,
         controller: _controller,
         slivers: [
           _mainAppBar(context),
@@ -199,7 +203,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final movement = _movements[index];
-              return HomeListItemView(movement: movement);
+              return HomeListItemView(
+                  movement: movement, budget: currentBudget);
             },
             childCount: _movements.length,
           ),
@@ -216,7 +221,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
           (_, index) {
             return HomeEmptyView(
               isContaintBudgets: currentBudget != null,
-              onTapNewItem: () => _addDebtButtonClickedAction(context),
+              onTapNewItem: () => _addMovementButtonClickedAction(context),
               onTapNewBudget: () => _addBudgetClickedAction(context),
             );
           },
@@ -229,7 +234,6 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   Widget _dropDownFilterView() {
     return DropdownButton(
       value: widget.dropdownvalue,
-      elevation: 1,
       underline: Container(),
       alignment: AlignmentDirectional.centerEnd,
       icon: const Icon(
@@ -261,14 +265,6 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   /// MARK: - Functions class actions
-  void _scrollDown() {
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
-  }
-
   void _scrollUp() {
     _controller.animateTo(
       _controller.position.minScrollExtent,
@@ -281,6 +277,17 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     CreateBottomView().show(context, callbackName: (name) {
       FiicoRoute.send(context, CreateBudgetPage(budgetName: name));
     });
+  }
+
+  void _addMovementButtonClickedAction(BuildContext context) async {
+    if (currentBudget == null) {
+      _showEmptyBudgetAction(context);
+      return;
+    }
+    HomeCreateMovementBottomView().show(
+      context,
+      onOptionSelected: (option) => _selectedOption(context, option),
+    );
   }
 
   void _addEntryButtonClickedAction(BuildContext context) async {
@@ -302,6 +309,17 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     FiicoRoute.send(
       context,
       CreateMovementPage(budget: currentBudget, type: MovementType.DEBT),
+    );
+  }
+
+  void _selectedOption(
+      BuildContext context, HomeCreateMovementBottomOption option) {
+    final type = option == HomeCreateMovementBottomOption.add_debt
+        ? MovementType.DEBT
+        : MovementType.ENTRY;
+    FiicoRoute.send(
+      context,
+      CreateMovementPage(budget: currentBudget, type: type),
     );
   }
 

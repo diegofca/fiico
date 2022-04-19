@@ -30,3 +30,14 @@ class SearchSelectUserRequest extends SearchUsersEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class SearchSelectSegment extends SearchUsersEvent {
+  const SearchSelectSegment({
+    required this.user,
+  });
+
+  final FiicoUser user;
+
+  @override
+  List<Object?> get props => [user];
+}

@@ -7,6 +7,7 @@ import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
@@ -23,9 +24,11 @@ class CreateMovementSuccessView extends StatelessWidget {
   CreateMovementSuccessView({
     Key? key,
     required this.movement,
+    this.budget,
   }) : super(key: key);
 
   final Movement movement;
+  final Budget? budget;
 
   final _categoriesController = TextEditingController();
   final _currencyFormarted = CurrencyTextInputFormatter(
@@ -422,9 +425,12 @@ class CreateMovementSuccessView extends StatelessWidget {
       padding: const EdgeInsets.only(
         top: FiicoPaddings.sixteen,
       ),
-      child: FiicoButton.green(
-        title: 'Crear ingreso',
-        ontap: () => _createdMovement(context),
+      child: FiicoButton(
+        title: movement.getType() == MovementType.ENTRY
+            ? 'Agregar ingreso'
+            : 'Agregar gasto',
+        color: movement.getTypeColor(),
+        onTap: () => _createdMovement(context),
       ),
     );
   }
@@ -434,9 +440,8 @@ class CreateMovementSuccessView extends StatelessWidget {
       if (movement.isAddedWithBudget) {
         Navigator.of(context).pop(movement);
       } else {
-        context
-            .read<CreateMovementBloc>()
-            .add(CreateMovementAddedRequest(newMovement: movement));
+        context.read<CreateMovementBloc>().add(
+            CreateMovementAddedRequest(newMovement: movement, budget: budget));
       }
     } else {
       FiicoAlertDialog.showWarnning(context,

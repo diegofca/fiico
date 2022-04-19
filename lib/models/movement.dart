@@ -5,9 +5,11 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/fiico_icon.dart';
+import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
 
 enum MovementType { ENTRY, DEBT, SAFE }
+enum MovementPaymentType { PENDING, PAYED }
 
 class Movement {
   final String? id;
@@ -25,6 +27,7 @@ class Movement {
   final List<String> tags;
   final FiicoAlert? alert;
   final bool isAddedWithBudget;
+  final String? paymentStatus;
 
   Movement({
     required this.id,
@@ -40,6 +43,7 @@ class Movement {
     required this.budgetName,
     required this.recurrency,
     required this.alert,
+    required this.paymentStatus,
     this.tags = const [],
     this.isAddedWithBudget = false,
   });
@@ -57,6 +61,7 @@ class Movement {
       currency: json?['currency'] ?? '',
       budgetName: json?['budgetName'] ?? '',
       recurrency: json?['recurrency'] ?? '',
+      paymentStatus: json?['paymentStatus'] ?? 'Pending',
       icon: FiicoIcon.fromJson(json?['icon']),
       alert: FiicoAlert.fromJson(json?['alert']),
       tags: List.castFrom(json?['tags']),
@@ -76,14 +81,52 @@ class Movement {
       'currency': currency,
       'budgetName': budgetName,
       'recurrency': recurrency,
+      'paymentStatus': paymentStatus,
       'icon': icon?.toJson(),
       'alert': alert?.toJson(),
       'tags': tags,
     };
   }
 
-  /// Functions classs
+  Movement copyWith({
+    String? id,
+    String? name,
+    num? value,
+    Timestamp? createdAt,
+    Timestamp? recurrencyAt,
+    FiicoIcon? icon,
+    String? type,
+    String? description,
+    String? typeDescription,
+    String? recurrency,
+    String? currency,
+    String? budgetName,
+    List<String> tags = const [],
+    FiicoAlert? alert,
+    bool isAddedWithBudget = false,
+    String? paymentStatus,
+  }) {
+    return Movement(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      value: value ?? this.value,
+      createdAt: createdAt ?? this.createdAt,
+      recurrencyAt: recurrencyAt ?? this.recurrencyAt,
+      icon: icon ?? this.icon,
+      type: type ?? this.type,
+      description: description ?? this.description,
+      typeDescription: typeDescription ?? this.typeDescription,
+      recurrency: recurrency ?? this.recurrency,
+      currency: currency ?? this.currency,
+      budgetName: budgetName ?? this.budgetName,
+      alert: alert ?? this.alert,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
+      isAddedWithBudget: isAddedWithBudget,
+      tags: tags,
+    );
+  }
 
+  /// Functions classs
   MovementType getType() {
     switch (type) {
       case 'ENTRY':
@@ -92,6 +135,15 @@ class Movement {
         return MovementType.DEBT;
       default:
         return MovementType.SAFE;
+    }
+  }
+
+  MovementPaymentType getPaymentType() {
+    switch (paymentStatus) {
+      case 'Pending':
+        return MovementPaymentType.PENDING;
+      default:
+        return MovementPaymentType.PAYED;
     }
   }
 
@@ -166,9 +218,35 @@ class Movement {
     }
   }
 
+  String getPaymentStatusText() {
+    switch (getType()) {
+      case MovementType.ENTRY:
+        return getPaymentType() == MovementPaymentType.PENDING
+            ? 'Pendiente'
+            : 'Recibido';
+      case MovementType.DEBT:
+        return getPaymentType() == MovementPaymentType.PENDING
+            ? 'Pendiente'
+            : 'Pagado';
+      default:
+        return 'Recibido';
+    }
+  }
+
+  Color getPaymentStatusColor() {
+    return getPaymentType() == MovementPaymentType.PENDING
+        ? FiicoColors.pink
+        : FiicoColors.greenNeutral;
+  }
+
+  bool isPaymentPendingState() {
+    final isPaymentPeding = getPaymentType() == MovementPaymentType.PENDING;
+    return isPaymentPeding && !isAddedWithBudget;
+  }
+
   static List<Movement> toList(Map<String, dynamic>? json) {
     List<Movement> movements = [];
-    json?['movements']?.forEach((move) {
+    json?[Firestore.movementsField]?.forEach((move) {
       movements.add(Movement.fromJson(move));
     });
     return movements;

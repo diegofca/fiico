@@ -7,7 +7,7 @@ enum LoginError { userNotFound, wrongPassword, toManyRequest, unknow }
 
 class LoginState extends Equatable {
   const LoginState({
-    this.status = LoginStatus.success,
+    this.status = LoginStatus.loading,
     this.email = const EmailValidatorModel(''),
     this.password = const PasswordValidatorModel(''),
     this.isSendForgotEmail,

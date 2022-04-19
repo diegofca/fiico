@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/fiico_notification.dart';
+import 'package:control/modules/notificationDetail/view/notification_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -22,14 +24,12 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _onDetailNotification(),
       child: Container(
         margin: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
         decoration: BoxDecoration(
           border: Border.all(
-            color: widget.notification.readed ?? false
-                ? FiicoColors.grayNeutral
-                : FiicoColors.purpleDark,
+            color: widget.notification.getBorderColor(),
             width: widget.notification.readed ?? false ? 1 : 2,
           ),
           borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
@@ -37,10 +37,29 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            _body(),
+            _bodyNotification(),
             _separatorView(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _bodyNotification() {
+    switch (widget.notification.getType()) {
+      case FiicoNotificationType.BANNER:
+        return _bodyImage();
+      default:
+        return _body();
+    }
+  }
+
+  Widget _bodyImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: CachedNetworkImage(
+        imageUrl: widget.notification.imageUrl!,
+        fit: BoxFit.contain,
       ),
     );
   }
@@ -81,53 +100,66 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.topRight,
-            padding: const EdgeInsets.only(
-              top: FiicoPaddings.sixteen,
-              right: FiicoPaddings.sixteen,
-            ),
-            child: Text(
-              widget.notification.getCreateDate(),
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.black,
-                fontSize: FiicoFontSize.xxxs,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: FiicoPaddings.eight,
-              left: FiicoPaddings.eight,
-              bottom: FiicoPaddings.four,
-            ),
-            child: Expanded(
-              child: Text(
-                widget.notification.title ?? '',
-                style: Style.title.copyWith(
-                  color: FiicoColors.purpleDark,
-                  fontSize: FiicoFontSize.xm,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: FiicoPaddings.eight,
-              top: FiicoPaddings.eight,
-              right: FiicoPaddings.sixteen,
-              bottom: FiicoPaddings.eight,
-            ),
-            child: Text(
-              widget.notification.message ?? '',
-              maxLines: FiicoMaxLines.ten,
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayDark,
-                fontSize: FiicoFontSize.xm,
-              ),
-            ),
-          )
+          _dateView(),
+          _titleView(),
+          _messageView(),
         ],
+      ),
+    );
+  }
+
+  Widget _dateView() {
+    return Container(
+      alignment: Alignment.topRight,
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.sixteen,
+        right: FiicoPaddings.sixteen,
+      ),
+      child: Text(
+        widget.notification.getCreateDate(),
+        style: Style.subtitle.copyWith(
+          color: FiicoColors.black,
+          fontSize: FiicoFontSize.xxxs,
+        ),
+      ),
+    );
+  }
+
+  Widget _titleView() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.eight,
+        left: FiicoPaddings.eight,
+        bottom: FiicoPaddings.four,
+      ),
+      child: Expanded(
+        child: Text(
+          widget.notification.title ?? '',
+          maxLines: FiicoMaxLines.two,
+          style: Style.title.copyWith(
+            color: FiicoColors.purpleDark,
+            fontSize: FiicoFontSize.xm,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _messageView() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: FiicoPaddings.eight,
+        top: FiicoPaddings.eight,
+        right: FiicoPaddings.sixteen,
+        bottom: FiicoPaddings.eight,
+      ),
+      child: Text(
+        widget.notification.message ?? '',
+        maxLines: FiicoMaxLines.ten,
+        style: Style.subtitle.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.xm,
+        ),
       ),
     );
   }
@@ -142,5 +174,18 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
         size: 30,
       ),
     );
+  }
+
+  void _onDetailNotification() {
+    if (widget.notification.clickeable ?? false) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return NotificationDetailPage(
+            notification: widget.notification,
+          );
+        },
+      );
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/modules/search/bloc/search_bloc.dart';
@@ -39,7 +40,7 @@ class SearchPageView extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case SearchStatus.success:
-            return _bodyContainer(state);
+            return _bodyContainer(context, state);
           case SearchStatus.searching:
             return const LoadingView();
           case SearchStatus.waiting:
@@ -49,13 +50,13 @@ class SearchPageView extends StatelessWidget {
     );
   }
 
-  Widget _bodyContainer(SearchState state) {
+  Widget _bodyContainer(BuildContext context, SearchState state) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
         text: "Resultados de ${state.query}",
         textColor: FiicoColors.graySoft,
-        actions: [_dotsButton()],
+        actions: [_infoButton(context)],
       ),
       body: SearchSuccessView(
         usersStream: state.users,
@@ -65,7 +66,7 @@ class SearchPageView extends StatelessWidget {
     );
   }
 
-  Widget _dotsButton() {
+  Widget _infoButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         right: FiicoPaddings.sixteen,
@@ -73,11 +74,14 @@ class SearchPageView extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          print("dost button");
+          FiicoAlertDialog.showSuccess(context,
+              title: 'Presupuesto',
+              message:
+                  'Los presupuestos o tableros son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.');
         },
         icon: const Icon(
-          MdiIcons.dotsHorizontal,
-          color: Colors.black,
+          MdiIcons.informationOutline,
+          color: FiicoColors.grayDark,
         ),
       ),
     );

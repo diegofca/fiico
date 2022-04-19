@@ -9,10 +9,10 @@ import 'package:flutter_svg/svg.dart';
 class NotificationsEmptyView extends StatefulWidget {
   const NotificationsEmptyView({
     Key? key,
-    required this.onTapNewItem,
+    required this.onTapNewBudget,
   }) : super(key: key);
 
-  final VoidCallback onTapNewItem;
+  final VoidCallback onTapNewBudget;
 
   @override
   State<NotificationsEmptyView> createState() => NotificationsEmtpyViewState();
@@ -81,7 +81,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
       child: SizedBox(
         child: FiicoButton.green(
           title: "Invitar amigo",
-          ontap: () => widget.onTapNewItem.call(),
+          ontap: () => widget.onTapNewBudget.call(),
         ),
       ),
     );

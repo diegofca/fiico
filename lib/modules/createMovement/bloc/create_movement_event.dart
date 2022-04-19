@@ -5,12 +5,16 @@ abstract class CreateMovementEvent extends Equatable {
 }
 
 class CreateMovementAddedRequest extends CreateMovementEvent {
-  const CreateMovementAddedRequest({required this.newMovement});
+  const CreateMovementAddedRequest({
+    required this.newMovement,
+    required this.budget,
+  });
 
   final Movement newMovement;
+  final Budget? budget;
 
   @override
-  List<Object?> get props => [newMovement];
+  List<Object?> get props => [newMovement, budget];
 }
 
 class CreateMovementInfoRequest extends CreateMovementEvent {

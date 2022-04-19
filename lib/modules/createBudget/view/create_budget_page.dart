@@ -1,7 +1,9 @@
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
@@ -73,11 +75,19 @@ class CreateBudgetPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateBudgetBloc, CreateBudgetState>(
       builder: (context, state) {
-        return CreateBudgetSuccessView(
-          budgetToCreate: _bugetToCreate(state),
-          mDebts: state.debts,
-          mEntrys: state.entrys,
-          users: state.users,
+        return FutureBuilder<Budget>(
+          future: _bugetToCreate(state),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return CreateBudgetSuccessView(
+                budgetToCreate: snapshot.requireData,
+                mDebts: state.debts,
+                mEntrys: state.entrys,
+                users: state.users,
+              );
+            }
+            return const LoadingView();
+          },
         );
       },
       listener: (context, state) {
@@ -104,17 +114,21 @@ class CreateBudgetPageView extends StatelessWidget {
     }
   }
 
-  Budget _bugetToCreate(CreateBudgetState state) => Budget.create(
-        id: const Uuid().v1(),
-        name: budgetName,
-        currency: state.currencySelected?.code,
-        isCycle: state.isCycle,
-        cycle: state.cycle,
-        startDate: state.initDate,
-        finishDate: state.finishDate,
-        duration: state.duration,
-        movements: state.movements,
-        icon: state.icon,
-        users: state.users,
-      );
+  Future<Budget> _bugetToCreate(CreateBudgetState state) async {
+    final user = await Preferences.get.getUser();
+    return Budget.create(
+      id: const Uuid().v1(),
+      name: budgetName,
+      currency: state.currencySelected?.code,
+      ownerName: user?.userName,
+      isCycle: state.isCycle,
+      cycle: state.cycle,
+      startDate: state.initDate,
+      finishDate: state.finishDate,
+      duration: state.duration,
+      movements: state.movements,
+      icon: state.icon,
+      users: state.users,
+    );
+  }
 }

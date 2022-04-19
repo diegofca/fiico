@@ -1,13 +1,17 @@
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/entryDetail/bloc/entry_detail_bloc.dart';
 import 'package:control/modules/entryDetail/view/detail/header/entry_detail_item_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class EntryDetailSuccessView extends StatelessWidget {
@@ -27,7 +31,7 @@ class EntryDetailSuccessView extends StatelessWidget {
       child: Column(
         children: [
           _headerView(),
-          _bodyView(),
+          _bodyView(context),
         ],
       ),
     );
@@ -49,7 +53,7 @@ class EntryDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _bodyView() {
+  Widget _bodyView(BuildContext context) {
     return Expanded(
       child: Container(
         alignment: Alignment.topCenter,
@@ -73,6 +77,7 @@ class EntryDetailSuccessView extends StatelessWidget {
                 _pricesDetailView(),
                 _separatorLineView(),
                 _categoriesList(),
+                _paymentButtonView(context),
               ],
             ),
           ),
@@ -88,7 +93,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement?.description ?? '',
+        movement?.description ?? 'No hay descripción',
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
@@ -213,6 +218,38 @@ class EntryDetailSuccessView extends StatelessWidget {
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.greenTag,
         tags: movement?.tags ?? [],
+      ),
+    );
+  }
+
+  Widget _paymentButtonView(BuildContext context) {
+    return Visibility(
+      visible: movement?.isPaymentPendingState() ?? true,
+      child: Column(
+        children: [
+          Text(
+            'Recuerda marcar tus ingresos cuando los hayas recibido, para llevar un control de tus ingresos totales, para ello no olvides que tenemos notificaciones intesivas que te ayudaran a recordar desde dias antes cuando te vayan a pagar. \n\nAl marcar como Recibido unicamente podrás cambiarlo al iniciar el otro ciclo de tu presupuesto.',
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.grayNeutral,
+              fontSize: FiicoFontSize.xm,
+            ),
+            maxLines: FiicoMaxLines.unlimited,
+          ),
+          Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.only(top: FiicoPaddings.eight),
+            child: FiicoButton(
+              title: "Marcar como recibido  ",
+              color: FiicoColors.greenNeutral,
+              image: SVGImages.checkMarkIcon,
+              onTap: () {
+                context
+                    .read<EntryDetailBloc>()
+                    .add(EntryDetailMarkPayedMovement(movement: movement));
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

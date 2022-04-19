@@ -315,7 +315,10 @@ class CreateBudgetSuccessView extends StatelessWidget {
           color: FiicoColors.pinkRed,
         ),
       ),
-      child: CreateBudgetMovementListItemView(movement: movement),
+      child: CreateBudgetMovementListItemView(
+        movement: movement,
+        budget: budgetToCreate,
+      ),
     );
   }
 
@@ -414,18 +417,25 @@ class CreateBudgetSuccessView extends StatelessWidget {
         top: FiicoPaddings.eight,
       ),
       child: FiicoButton.green(
-        title: 'Crear ingreso',
-        ontap: () {
-          if (budgetToCreate.isCompleteByCreate()) {
-            context
-                .read<CreateBudgetBloc>()
-                .add(CreateBudgetAdded(budget: budgetToCreate));
-          } else {
-            FiicoAlertDialog.showWarnning(context);
-          }
-        },
+        title: 'Crear presupuesto',
+        ontap: () => _onCreateBudgetIntent(context),
       ),
     );
+  }
+
+  void _onCreateBudgetIntent(BuildContext context) {
+    if (budgetToCreate.isCompleteByCreate()) {
+      context
+          .read<CreateBudgetBloc>()
+          .add(CreateBudgetAdded(budget: budgetToCreate));
+    } else {
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: 'Campos vacios',
+        message:
+            'Completa los campos faltantes para poder crear tu presupuesto.',
+      );
+    }
   }
 
   Widget _entryUsersListView(BuildContext context) {
@@ -500,18 +510,25 @@ class CreateBudgetSuccessView extends StatelessWidget {
   }
 
   void _addedMovement(BuildContext context, MovementType type) async {
-    final movement = await FiicoRoute.send(
-      context,
-      CreateMovementPage(
-        budget: budgetToCreate,
-        addedinBudget: true,
-        type: type,
-      ),
-    );
-    if (movement is Movement) {
-      context
-          .read<CreateBudgetBloc>()
-          .add(CreateBudgetAddedmovement(movement: movement));
+    final bloc = context.read<CreateBudgetBloc>();
+
+    if (budgetToCreate.isCompleteByCreate()) {
+      Movement movement = await FiicoRoute.send(
+        context,
+        CreateMovementPage(
+          budget: budgetToCreate,
+          addedinBudget: true,
+          type: type,
+        ),
+      );
+      bloc.add(CreateBudgetAddedmovement(movement: movement));
+    } else {
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: 'Campos vacios',
+        message:
+            'Completa los campos faltantes para poder agregar tus movimientos.',
+      );
     }
   }
 }
