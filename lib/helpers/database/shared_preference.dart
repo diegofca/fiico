@@ -9,6 +9,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static Preferences get = Preferences();
 
+  // -> Remote config variables
+  int maxBudgetsFree = 0;
+  int maxMovementsFree = 0;
+  bool isShareBudgetFree = false;
+
+  //  <-
+
   String? getID = '';
 
   void saveUser(FiicoUser? user) async {

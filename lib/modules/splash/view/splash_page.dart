@@ -2,7 +2,6 @@
 
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/modules/home/home.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
 import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';

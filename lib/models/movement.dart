@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/fiico_icon.dart';
+import 'package:control/models/mark_movement.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,7 @@ class Movement {
   final FiicoAlert? alert;
   final bool isAddedWithBudget;
   final String? paymentStatus;
+  final List<MarkMovement> markHistory;
 
   Movement({
     required this.id,
@@ -46,6 +48,7 @@ class Movement {
     required this.paymentStatus,
     this.tags = const [],
     this.isAddedWithBudget = false,
+    this.markHistory = const [],
   });
 
   factory Movement.fromJson(Map<String, dynamic>? json) {
@@ -64,7 +67,8 @@ class Movement {
       paymentStatus: json?['paymentStatus'] ?? 'Pending',
       icon: FiicoIcon.fromJson(json?['icon']),
       alert: FiicoAlert.fromJson(json?['alert']),
-      tags: List.castFrom(json?['tags']),
+      // tags: List.castFrom(json?['tags']),
+      markHistory: MarkMovement.toList(json),
     );
   }
 
@@ -85,6 +89,7 @@ class Movement {
       'icon': icon?.toJson(),
       'alert': alert?.toJson(),
       'tags': tags,
+      'markHistory': markHistory.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -105,6 +110,7 @@ class Movement {
     FiicoAlert? alert,
     bool isAddedWithBudget = false,
     String? paymentStatus,
+    List<MarkMovement>? markHistory,
   }) {
     return Movement(
       id: id ?? this.id,
@@ -122,6 +128,7 @@ class Movement {
       alert: alert ?? this.alert,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       isAddedWithBudget: isAddedWithBudget,
+      markHistory: markHistory ?? this.markHistory,
       tags: tags,
     );
   }

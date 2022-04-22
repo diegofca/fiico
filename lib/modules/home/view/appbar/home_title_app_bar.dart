@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/profile_image.dart';
+import 'package:control/models/user.dart';
 import 'package:control/modules/profile/view/profile_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,12 @@ class HomeTitleAppBar extends StatefulWidget {
     Key? key,
     required this.title,
     required this.subtitle,
-    required this.profileUrl,
+    required this.user,
   }) : super(key: key);
 
   final String title;
   final String subtitle;
-  final String profileUrl;
+  final FiicoUser? user;
 
   @override
   State<HomeTitleAppBar> createState() => HomeTitleAppBarState();
@@ -33,7 +34,7 @@ class HomeTitleAppBarState extends State<HomeTitleAppBar> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _columnTexts(),
-        _profileImage(context, widget.profileUrl),
+        _profileImage(context, widget.user),
       ],
     );
   }
@@ -89,13 +90,13 @@ class HomeTitleAppBarState extends State<HomeTitleAppBar> {
   }
 
   //  Imagen de perfil del navigation bar
-  Widget _profileImage(BuildContext context, String path) {
+  Widget _profileImage(BuildContext context, FiicoUser? user) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.eight,
       ),
       child: ProfileImage(
-        pathProfile: path,
+        user: user,
         onProfileTap: () async {
           final user = await Preferences.get.getUser();
           FiicoRoute.send(context, ProfilePage(user: user));

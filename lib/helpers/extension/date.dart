@@ -19,4 +19,9 @@ extension DateExtension on DateTime {
   String toDateFormat3() {
     return DateFormat("EE - MMM dd, yyyy").format(this);
   }
+
+  /// Format "MMM, dd yyyy"
+  String toDateFormat4() {
+    return DateFormat("MMMM dd, yyyy").format(this);
+  }
 }

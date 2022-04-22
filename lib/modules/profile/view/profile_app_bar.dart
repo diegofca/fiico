@@ -36,7 +36,7 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ProfileImage(size: 70),
+            ProfileImage(user: user, size: 70),
             Padding(
               padding: const EdgeInsets.only(top: FiicoPaddings.four),
               child: Text(

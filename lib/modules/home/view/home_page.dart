@@ -71,7 +71,7 @@ class HomePageView extends StatelessWidget {
 
   void _validateIfShowTutorial(BuildContext context, HomeState state) {
     final showUserTutorial = user?.showTutorial ?? false;
-    if (!showUserTutorial) {
+    if (!showUserTutorial && state.showTutorial == null) {
       FiicoGiffAlertDialog.show(
         context: context,
         urlImage: FiicoConstants.tutorialGiffUrl,

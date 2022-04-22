@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:io';
-
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -14,6 +12,7 @@ import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
+import 'package:control/modules/login/view/login_social_buttons_view.dart';
 import 'package:control/modules/register/view/sign_up_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -243,7 +242,11 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       child: FiicoButton(
         title: 'Iniciar sesión',
         color: FiicoColors.purpleDark,
-        onTap: () => context.read<LoginBloc>().add(const LoginIntentRequest()),
+        onTap: () => context.read<LoginBloc>().add(
+              const LoginIntentRequest(
+                LoginIntentProvider.email,
+              ),
+            ),
       ),
     );
   }
@@ -255,40 +258,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         vertical: FiicoPaddings.sixteen,
       ),
       width: double.maxFinite,
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        runAlignment: WrapAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: FiicoPaddings.sixteen,
-            ),
-            child: SvgPicture.asset(
-              SVGImages.facebookIcon,
-              width: 40,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: FiicoPaddings.sixteen,
-            ),
-            child: SvgPicture.asset(
-              SVGImages.googleIcon,
-              width: 40,
-            ),
-          ),
-          if (Platform.isIOS)
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: FiicoPaddings.sixteen,
-              ),
-              child: SvgPicture.asset(
-                SVGImages.appleIcon,
-                width: 40,
-              ),
-            )
-        ],
-      ),
+      child: const SocialLoginButtonsView(),
     );
   }
 

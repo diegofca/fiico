@@ -3,6 +3,7 @@ import 'package:control/models/user.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
 import 'package:control/modules/login/repository/login_repository.dart';
+import 'package:control/modules/login/repository/providers/login_social_provider.dart';
 import 'package:equatable/equatable.dart';
 
 part 'login_state.dart';
@@ -70,10 +71,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(status: LoginStatus.loading));
-    final userLogged =
-        await repository.loginUserWithEmail(state, (eType, eMssg) {
-      _mapErrorToIntentLogin(emit, eType, eMssg);
-    });
+    final userLogged = await _getLoginIntent(emit, event);
 
     if (userLogged != null) {
       emit(state.copyWith(
@@ -81,6 +79,52 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         userLogged: userLogged,
       ));
     }
+  }
+
+  Future<FiicoUser?> _getLoginIntent(
+      Emitter<LoginState> emit, LoginIntentRequest event) async {
+    switch (event.provider) {
+      case LoginIntentProvider.email:
+        return repository.loginUserWithEmail(state, (eType, eMssg) {
+          _mapErrorToIntentLogin(emit, eType, eMssg);
+        });
+
+      case LoginIntentProvider.fb:
+        final credential = await repository.provider.loginWithFacebook();
+        return _getLoginIntentByProvider(credential, emit);
+
+      case LoginIntentProvider.google:
+        final credential = await repository.provider.loginWithGoogle();
+        return _getLoginIntentByProvider(credential, emit);
+
+      case LoginIntentProvider.apple:
+        final credential = await repository.provider.loginWithApple();
+        return _getLoginIntentByProvider(credential, emit);
+
+      default:
+        return null;
+    }
+  }
+
+  Future<FiicoUser?> _getLoginIntentByProvider(
+      SocialCredential? credential, Emitter<LoginState> emit) async {
+    if (credential == null) {
+      _mapErrorToIntentLogin(
+          emit, 'Error', 'Intento de inicio de sesión cancelado.');
+      return null;
+    }
+
+    final isCanCreateAccount =
+        await repository.validateIfContaintUserWithEmail(credential);
+    if (isCanCreateAccount) {
+      return repository.loginUserWithCredential(credential.userCredential,
+          (eType, eMssg) {
+        _mapErrorToIntentLogin(emit, eType, eMssg);
+      });
+    }
+    _mapErrorToIntentLogin(emit, '',
+        'Ya tienes una cuenta con este correo, intenta iniciar sesión de otra manera');
+    return null;
   }
 
   void _mapErrorToIntentLogin(

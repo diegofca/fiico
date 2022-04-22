@@ -30,6 +30,7 @@ class SignUpRepository extends SignUpRepositoryAbs {
         email: state.email?.email,
         firstName: state.name?.name,
         lastName: state.lastName?.lastName,
+        userName: '${state.name?.name} ${state.lastName?.lastName}',
         currentPlan: 'free',
       );
 

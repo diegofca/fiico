@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 // ignore: must_be_immutable
 class ProfileImage extends StatelessWidget {
-  final String? pathProfile;
+  final FiicoUser? user;
   final Function? onProfileTap;
 
   Color? maskColor;
@@ -14,7 +15,7 @@ class ProfileImage extends StatelessWidget {
 
   ProfileImage({
     Key? key,
-    this.pathProfile,
+    this.user,
     this.onProfileTap,
     this.size = 40,
     this.maskColor,
@@ -26,21 +27,18 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget getUserImage() {
-    if (pathProfile == null || (pathProfile?.isEmpty ?? false)) {
+    if (user?.profileImage == null || (user?.profileImage?.isEmpty ?? false)) {
       return GestureDetector(
         onTap: () {
           onProfileTap?.call();
         },
-        child: SvgPicture.asset(
-          SVGImages.userIcon,
-          height: size - 5,
-        ),
+        child: _nameImage(user),
       );
     }
 
     CachedNetworkImage profileImage;
     profileImage = CachedNetworkImage(
-      imageUrl: pathProfile!,
+      imageUrl: user!.profileImage!,
       height: size,
       width: size,
       fit: BoxFit.cover,
@@ -77,6 +75,36 @@ class ProfileImage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _nameImage(FiicoUser? user) {
+    final words = user?.userName?.split(' ');
+    String name = '';
+    words?.forEach((e) {
+      if (name.characters.length < 2) {
+        name += e.characters.first.toString();
+      }
+    });
+
+    if (name.isEmpty) {
+      return SvgPicture.asset(
+        SVGImages.userIcon,
+        height: size - 5,
+      );
+    }
+
+    return ClipOval(
+      child: Container(
+        color: FiicoColors.purpleSoft,
+        alignment: Alignment.center,
+        height: size,
+        width: size,
+        child: Text(
+          name,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

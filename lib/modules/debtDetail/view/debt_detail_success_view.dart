@@ -1,5 +1,6 @@
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
@@ -7,6 +8,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/view/headerView/debt_detail_header_view.dart';
@@ -77,6 +79,7 @@ class DebtDetailSuccessView extends StatelessWidget {
                 _pricesDetailView(),
                 _separatorLineView(),
                 _categoriesList(),
+                _historyPaymentList(),
                 _paymentButtonView(context),
               ],
             ),
@@ -249,6 +252,78 @@ class DebtDetailSuccessView extends StatelessWidget {
                     .read<DebtDetailBloc>()
                     .add(DebtDetailMarkPayedMovement(movement: movement));
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _historyPaymentList() {
+    int itemsCount = movement?.markHistory.length ?? 0;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.zero,
+          child: Text(
+            'Pagos realizados:',
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.grayNeutral,
+              fontSize: FiicoFontSize.xm,
+            ),
+            maxLines: FiicoMaxLines.unlimited,
+          ),
+        ),
+        SizedBox(
+          height: (itemsCount * 25) + FiicoPaddings.twenyFour,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              final historyItem = movement?.markHistory[index];
+              return _historyPaymentItem(historyItem);
+            },
+            itemCount: itemsCount,
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.twenyFour,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: FiicoPaddings.twenyFour,
+          ),
+          child: _separatorLineView(),
+        ),
+      ],
+    );
+  }
+
+  Widget _historyPaymentItem(MarkMovement? markMovement) {
+    return SizedBox(
+      height: 25,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            MdiIcons.dotsHexagon,
+            color: FiicoColors.pink,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: FiicoPaddings.eight),
+            child: Text(markMovement?.date?.toDate().toDateFormat4() ?? ''),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: FiicoPaddings.eight),
+              child: Text(
+                'Payment by ${markMovement?.userName}',
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.grayNeutral,
+                ),
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
         ],

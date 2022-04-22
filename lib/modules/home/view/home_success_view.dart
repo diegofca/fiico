@@ -83,7 +83,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
         title: HomeTitleAppBar(
           title: "Hi, ${widget.user?.firstName}",
           subtitle: "Control your money in the best way",
-          profileUrl: "",
+          user: widget.user,
         ),
       ),
       body: _body(context),

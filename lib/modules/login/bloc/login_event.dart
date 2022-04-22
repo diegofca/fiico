@@ -31,11 +31,15 @@ class LoginPasswordIsShowRequest extends LoginEvent {
   List<Object> get props => [isShowPassword];
 }
 
+enum LoginIntentProvider { email, fb, apple, google }
+
 class LoginIntentRequest extends LoginEvent {
-  const LoginIntentRequest();
+  const LoginIntentRequest(this.provider);
+
+  final LoginIntentProvider provider;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [provider];
 }
 
 class LoginForgotPasswordRequest extends LoginEvent {

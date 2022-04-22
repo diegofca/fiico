@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/generic_repository.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:collection/collection.dart';
@@ -90,6 +92,11 @@ class DebtDetailRepository extends DebtDetailRepositoryAbs {
 
   @override
   Future<void> markPayed(Budget? budget, Movement? movement) async {
+    final user = await Preferences.get.getUser();
+    movement?.markHistory.add(MarkMovement(
+      date: Timestamp.now(),
+      userName: user?.userName,
+    ));
     final newMovement = movement!.copyWith(paymentStatus: 'Payed');
     budget?.movements?.removeWhere((e) => e.id == movement.id);
     budget?.movements?.add(newMovement);
