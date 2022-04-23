@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:io';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -7,7 +9,6 @@ class FiicoRemoteConfig {
   // --
   static const String IOS_VERSION = 'update_version';
   static const String ANDROID_VERSION = 'update_version';
-
   static const String FORCE_UPDATE = 'force_update';
 
   static final FirebaseRemoteConfig remoteConfig =

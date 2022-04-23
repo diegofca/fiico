@@ -31,7 +31,7 @@ class FiicoButton extends StatefulWidget {
     EdgeInsets padding = EdgeInsets.zero,
   }) {
     return FiicoButton(
-      color: FiicoColors.greenSoft,
+      color: FiicoColors.pink,
       image: image,
       title: title,
       padding: padding,

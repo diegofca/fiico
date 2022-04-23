@@ -14,9 +14,7 @@ import 'package:control/modules/entryDetail/bloc/entry_detail_bloc.dart';
 import 'package:control/modules/entryDetail/view/detail/header/entry_detail_item_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:simple_icons/simple_icons.dart';
 
 class EntryDetailSuccessView extends StatelessWidget {
   const EntryDetailSuccessView({
