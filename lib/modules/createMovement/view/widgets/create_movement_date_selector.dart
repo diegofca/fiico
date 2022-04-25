@@ -67,7 +67,7 @@ class CreateMovementDateSelectorView {
             ),
           ),
         ),
-        FiicoButton.green(
+        FiicoButton.pink(
           title: 'Seleccionar fecha',
           ontap: () {
             onDateSelected(_selectedDate);

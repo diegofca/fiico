@@ -4,21 +4,28 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 
 enum BudgetDetailBottomOption {
   delete_budget,
+  exit_budget,
   add_friend,
 }
 
 class BudgetDetailBottomView {
-  final _options = {
+  final _ownerOptions = {
     BudgetDetailBottomOption.delete_budget: 'Eliminar presupuesto',
     BudgetDetailBottomOption.add_friend: 'Agregar amigo',
   };
 
+  final _inviteOptions = {
+    BudgetDetailBottomOption.exit_budget: 'Salir del presupuesto',
+  };
+
   void show(
     BuildContext context, {
+    required Budget budget,
     required Function(BudgetDetailBottomOption) onOptionSelected,
   }) {
     showModalBottomSheet(
@@ -26,6 +33,7 @@ class BudgetDetailBottomView {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (BuildContext context) {
+        final _options = budget.isOwner ? _ownerOptions : _inviteOptions;
         return StatefulBuilder(
           builder: (context, setState) {
             return AnimatedContainer(
@@ -45,8 +53,8 @@ class BudgetDetailBottomView {
               ),
               child: SafeArea(
                 child: SizedBox(
-                  height: 150,
-                  child: _budgetListView(onOptionSelected),
+                  height: _options.length * 70,
+                  child: _budgetListView(budget, onOptionSelected),
                 ),
               ),
             );
@@ -56,7 +64,9 @@ class BudgetDetailBottomView {
     );
   }
 
-  Widget _budgetListView(Function(BudgetDetailBottomOption) onOptionSelected) {
+  Widget _budgetListView(
+      Budget budget, Function(BudgetDetailBottomOption) onOptionSelected) {
+    final _options = budget.isOwner ? _ownerOptions : _inviteOptions;
     return ListView.builder(
       itemCount: _options.length,
       itemBuilder: (context, index) {

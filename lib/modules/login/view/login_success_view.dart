@@ -79,7 +79,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         alignment: Alignment.center,
         children: [
           SvgPicture.asset(
-            SVGImages.loginTopBg,
+            SVGImages.loginTopBg2,
             fit: BoxFit.cover,
           ),
           _titleHeaderView(),
@@ -93,12 +93,10 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(
-            'Fiico',
-            style: Style.title.copyWith(
-              color: Colors.white,
-              fontSize: 64,
-            ),
+          SvgPicture.asset(
+            SVGImages.valiuIcon,
+            alignment: Alignment.topCenter,
+            fit: BoxFit.cover,
           ),
           Padding(
             padding: const EdgeInsets.only(

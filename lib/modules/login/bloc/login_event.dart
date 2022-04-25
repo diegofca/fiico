@@ -4,6 +4,13 @@ abstract class LoginEvent extends Equatable {
   const LoginEvent();
 }
 
+class LoginInitEvent extends LoginEvent {
+  const LoginInitEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class LoginValidateEmailRequest extends LoginEvent {
   const LoginValidateEmailRequest(this.email);
 

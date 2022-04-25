@@ -416,7 +416,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
       padding: const EdgeInsets.only(
         top: FiicoPaddings.eight,
       ),
-      child: FiicoButton.green(
+      child: FiicoButton.pink(
         title: 'Crear presupuesto',
         ontap: () => _onCreateBudgetIntent(context),
       ),

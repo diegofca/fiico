@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 
 class CreateMovementRecurrencySelectorView {
   final _options = [
-    Recurrency.week(),
-    Recurrency.biweekly(),
-    Recurrency.month(),
-    Recurrency.annual(),
+    Recurrency.unique(),
+    Recurrency.multiple(),
   ];
 
   void show(
@@ -41,7 +39,7 @@ class CreateMovementRecurrencySelectorView {
               ),
               child: SafeArea(
                 child: SizedBox(
-                  height: 250,
+                  height: _options.length * 60,
                   child: _budgetListView(onRecurrencySelected),
                 ),
               ),

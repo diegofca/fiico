@@ -19,6 +19,8 @@ class SVGImages {
   static const facebookIcon = 'assets/images/facebook_icon.svg';
   static const appleIcon = 'assets/images/apple_icon.svg';
   static const checkMarkIcon = 'assets/images/check-mark.svg';
+  static const valiuIcon = 'assets/images/valiu_icon.svg';
+  static const loginTopBg2 = 'assets/images/login_top_bg_2.svg';
 
   static const homeTab = 'assets/images/home_tab.svg';
   static const groupTab = 'assets/images/group_tab.svg';

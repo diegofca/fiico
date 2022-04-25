@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -104,6 +106,11 @@ class ProfileImage extends StatelessWidget {
         child: Text(
           name,
           textAlign: TextAlign.center,
+          style: Style.subtitle.copyWith(
+            color: FiicoColors.white,
+            fontWeight: FiicoFontWeight.bold,
+            fontSize: size / 3,
+          ),
         ),
       ),
     );

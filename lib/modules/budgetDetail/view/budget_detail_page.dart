@@ -73,25 +73,23 @@ class BudgetDetailPageView extends StatelessWidget {
   }
 
   Widget _dotsButton(BuildContext context, Budget budget) {
-    return Visibility(
-      visible: budget.isOwner,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: FiicoPaddings.sixteen,
-        ),
-        child: IconButton(
-          highlightColor: Colors.transparent,
-          onPressed: () {
-            BudgetDetailBottomView().show(
-              context,
-              onOptionSelected: (option) =>
-                  _selectedOption(context, budget, option),
-            );
-          },
-          icon: const Icon(
-            MdiIcons.dotsHorizontal,
-            color: Colors.black,
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: FiicoPaddings.sixteen,
+      ),
+      child: IconButton(
+        highlightColor: Colors.transparent,
+        onPressed: () {
+          BudgetDetailBottomView().show(
+            context,
+            budget: budget,
+            onOptionSelected: (option) =>
+                _selectedOption(context, budget, option),
+          );
+        },
+        icon: const Icon(
+          MdiIcons.dotsHorizontal,
+          color: Colors.black,
         ),
       ),
     );
@@ -130,6 +128,8 @@ class BudgetDetailPageView extends StatelessWidget {
                 BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
           ),
         );
+        break;
+      case BudgetDetailBottomOption.exit_budget:
         break;
     }
   }

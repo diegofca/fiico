@@ -25,14 +25,14 @@ class LoadingView extends StatelessWidget {
             children: const [
               Center(
                 child: SizedBox(
-                  height: 80,
-                  width: 80,
+                  height: 90,
+                  width: 90,
                   child: CircularProgressIndicator(
-                    strokeWidth: 4,
+                    strokeWidth: 6,
                     color: Colors.white,
-                    backgroundColor: FiicoColors.purpleDark,
+                    backgroundColor: FiicoColors.pink,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FiicoColors.pink,
+                      FiicoColors.purpleDark,
                     ),
                   ),
                 ),

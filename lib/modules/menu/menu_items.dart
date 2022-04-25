@@ -3,6 +3,7 @@ import 'package:control/modules/budgets/view/budgets_page.dart';
 import 'package:control/modules/home/home.dart';
 import 'package:control/modules/notifications/view/notifications_page.dart';
 import 'package:control/modules/profile/view/profile_page.dart';
+import 'package:control/modules/settings/view/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'view/bottom_nav_bar/bottom_nav.dart';
@@ -33,8 +34,8 @@ List<BottomNavBarItem> onCreateTabs(FiicoUser? user, BuildContext context) {
     ),
     BottomNavBarItem(
       icon: Icons.settings,
-      screen: ProfilePage(
-        key: const Key('_MenuHome.profile'),
+      screen: SettingsPage(
+        key: const Key('_MenuHome.settings'),
         user: user,
       ),
     ),

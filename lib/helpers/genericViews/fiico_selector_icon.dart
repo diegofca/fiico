@@ -14,7 +14,7 @@ class FiicoSelectorIcon {
     final icon = await FlutterIconPicker.showIconPicker(
       context,
       title: const Text('Seleccione un icono'),
-      closeChild: FiicoButton.green(
+      closeChild: FiicoButton.pink(
         title: 'Cancelar',
         ontap: () {
           Navigator.of(context).pop();

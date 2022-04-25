@@ -6,6 +6,7 @@ import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/mark_movement.dart';
+import 'package:control/models/recurrency.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +18,12 @@ class Movement {
   final String? name;
   final num? value;
   final Timestamp? createdAt;
-  final Timestamp? recurrencyAt;
+  final List<int>? recurrencyAt;
   final FiicoIcon? icon;
   final String? type;
   final String? description;
   final String? typeDescription;
-  final String? recurrency;
+  final Recurrency? recurrency;
   final String? currency;
   final String? budgetName;
   final List<String> tags;
@@ -57,7 +58,7 @@ class Movement {
       name: json?['name'] ?? '',
       value: json?['value'] ?? 0,
       createdAt: json?['createdAt'] ?? Timestamp.now(),
-      recurrencyAt: json?['recurrencyAt'] ?? Timestamp.now(),
+      recurrencyAt: List.castFrom(json?['recurrencyAt']),
       type: json?['type'] ?? '',
       description: json?['description'],
       typeDescription: json?['typeDescription'] ?? '',
@@ -67,7 +68,7 @@ class Movement {
       paymentStatus: json?['paymentStatus'] ?? 'Pending',
       icon: FiicoIcon.fromJson(json?['icon']),
       alert: FiicoAlert.fromJson(json?['alert']),
-      // tags: List.castFrom(json?['tags']),
+      tags: List.castFrom(json?['tags']),
       markHistory: MarkMovement.toList(json),
     );
   }
@@ -98,12 +99,12 @@ class Movement {
     String? name,
     num? value,
     Timestamp? createdAt,
-    Timestamp? recurrencyAt,
+    List<int>? recurrencyAt,
     FiicoIcon? icon,
     String? type,
     String? description,
     String? typeDescription,
-    String? recurrency,
+    Recurrency? recurrency,
     String? currency,
     String? budgetName,
     List<String> tags = const [],
@@ -190,9 +191,9 @@ class Movement {
   String getDateTitleText() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return 'Fecha de ingreso oportuno';
+        return 'Día de ingreso promedio';
       case MovementType.DEBT:
-        return 'Fecha de pago oportuno';
+        return 'Día de pago promedio';
       default:
         return 'Fecha';
     }
@@ -203,7 +204,15 @@ class Movement {
   }
 
   String getRecurrencyDate() {
-    return recurrencyAt?.toDate().toDateFormat2() ?? '';
+    switch (recurrency?.value) {
+      case Recurrency.uniqueID:
+        // return 'El ${recurrencyAt.toString()} de este mes';
+        return 'El 30 de cada semana';
+      case Recurrency.multipleID:
+        return 'El 1, 8, 15, 22 de cada mes';
+      default:
+        return '';
+    }
   }
 
   Color getBellColor() {

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:control/helpers/GIFImages.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class MovementDetailMarkPayedSuccessBottomView {
 
   static Widget _animationPayedView() {
     final image = Image.asset(
-      'assets/images/mark_payment.gif',
+      GIFmages.markPayment,
       gaplessPlayback: false,
     );
     image.image.evict();

@@ -1,5 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
+
+import 'package:control/helpers/GIFImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
@@ -37,17 +40,22 @@ class SplashPageView extends StatelessWidget {
       builder: (context, state) {
         return Container(
           color: FiicoColors.purpleDark,
+          child: Image.asset(
+            GIFmages.valiuIcon,
+          ),
         );
       },
-      listener: (context, state) async {
+      listener: (context, state) {
         _validateIfLogged(context, state);
       },
     );
   }
 
-  void _validateIfLogged(BuildContext context, SplashState state) async {
-    final user = await Preferences.get.getUser();
-    final page = state.isLogged ? MenuPage(user: user) : const IntroPage();
-    FiicoRoute.sendReplace(context, page);
+  void _validateIfLogged(BuildContext context, SplashState state) {
+    Timer(const Duration(milliseconds: 2700), () async {
+      final user = await Preferences.get.getUser();
+      final page = state.isLogged ? MenuPage(user: user) : const IntroPage();
+      FiicoRoute.sendFade(context, page);
+    });
   }
 }

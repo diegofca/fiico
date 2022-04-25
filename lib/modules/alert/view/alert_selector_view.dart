@@ -87,7 +87,7 @@ class AlertSelectorView {
 
   Widget _dateTitleView() {
     return Text(
-      "Agregar fecha de notificación",
+      'Agregar fecha de notificación',
       style: Style.title.copyWith(
         fontSize: FiicoFontSize.md,
       ),
@@ -169,7 +169,7 @@ class AlertSelectorView {
     final type =
         isIntesive ? FiicoAlert.INTENSIVE_TYPE : FiicoAlert.SIMPLE_TYPE;
 
-    return FiicoButton.green(
+    return FiicoButton.pink(
       title: 'Seleccionar',
       ontap: () {
         final alert = FiicoAlert(

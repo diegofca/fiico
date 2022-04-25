@@ -79,7 +79,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: SizedBox(
-        child: FiicoButton.green(
+        child: FiicoButton.pink(
           title: "Invitar amigo",
           ontap: () => widget.onTapNewBudget.call(),
         ),

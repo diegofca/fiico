@@ -26,9 +26,11 @@ class MyApp extends StatelessWidget {
     return const GlobalLoaderOverlay(
       overlayColor: FiicoColors.black,
       useDefaultLoading: false,
-      overlayWidget: LoadingView(),
+      overlayWidget: LoadingView(
+        backgroundColor: FiicoColors.purpleDark,
+      ),
       child: MaterialApp(
-        title: 'Fiico',
+        title: 'Fiiqo',
         home: SplashPage(),
       ),
     );

@@ -23,7 +23,7 @@ class CreateMovementInfoRequest extends CreateMovementEvent {
     this.description,
     this.tags,
     this.value,
-    this.date,
+    this.markDays,
     this.recurrency,
     this.icon,
     this.alert,
@@ -33,12 +33,12 @@ class CreateMovementInfoRequest extends CreateMovementEvent {
   final String? description;
   final List<String>? tags;
   final num? value;
-  final DateTime? date;
-  final String? recurrency;
+  final List<int>? markDays;
+  final Recurrency? recurrency;
   final FiicoIcon? icon;
   final FiicoAlert? alert;
 
   @override
   List<Object?> get props =>
-      [name, description, tags, value, date, recurrency, icon, alert];
+      [name, description, tags, value, markDays, recurrency, icon, alert];
 }

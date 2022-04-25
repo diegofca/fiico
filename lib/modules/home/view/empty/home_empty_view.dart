@@ -67,7 +67,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   }
 
   Widget _bodyButton() {
-    return FiicoButton.green(
+    return FiicoButton.pink(
       ontap: () => widget.isContaintBudgets
           ? widget.onTapNewItem!.call()
           : widget.onTapNewBudget!.call(),

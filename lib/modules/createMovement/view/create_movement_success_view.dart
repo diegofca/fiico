@@ -12,6 +12,7 @@ import 'package:control/models/movement.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_date_selector.dart';
+import 'package:control/modules/createMovement/view/widgets/create_movement_day_selector.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_recurrency_selector.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               child: Text(
                 movement.currency ?? '',
                 style: Style.subtitle.copyWith(
-                  color: FiicoColors.purpleSoft,
+                  color: movement.getTypeColor(),
                   fontSize: FiicoFontSize.lg,
                   fontWeight: FontWeight.bold,
                 ),
@@ -138,7 +139,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 child: FiicoTextfield(
                   keyboardType: TextInputType.number,
                   hintText: 'Ingresa el valor',
-                  textColor: FiicoColors.purpleSoft,
+                  textColor: movement.getTypeColor(),
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
                   onChanged: (value) {
                     final value = _currencyFormarted.getUnformattedValue();
@@ -263,7 +264,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                       left: FiicoPaddings.sixteen,
                     ),
                     child: Text(
-                      movement.recurrency ?? 'Ej: Cada mes',
+                      movement.recurrency?.name ?? 'Ej: Cada mes',
                       textAlign: TextAlign.left,
                       style: Style.subtitle.copyWith(
                         color: FiicoColors.graySoft,
@@ -277,8 +278,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                     context,
                     onRecurrencySelected: (recurrency) {
                       context.read<CreateMovementBloc>().add(
-                          CreateMovementInfoRequest(
-                              recurrency: recurrency.name));
+                          CreateMovementInfoRequest(recurrency: recurrency));
                     },
                   ),
                   icon: const Icon(
@@ -328,7 +328,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                       left: FiicoPaddings.sixteen,
                     ),
                     child: Text(
-                      movement.recurrencyAt?.toDate().toDateFormat2() ?? '',
+                      movement.getRecurrencyDate(),
                       textAlign: TextAlign.left,
                       style: Style.subtitle.copyWith(
                         color: FiicoColors.graySoft,
@@ -338,13 +338,14 @@ class CreateMovementSuccessView extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => CreateMovementDateSelectorView().show(
+                  onPressed: () => CreateMovementDaySelectorView().show(
                     context,
-                    initalDate: movement.recurrencyAt?.toDate(),
-                    onDateSelected: (date) {
+                    selectedDays: movement.recurrencyAt,
+                    recurrency: movement.recurrency,
+                    onDaySelected: (days) {
                       context
                           .read<CreateMovementBloc>()
-                          .add(CreateMovementInfoRequest(date: date));
+                          .add(CreateMovementInfoRequest(markDays: days));
                     },
                   ),
                   icon: const Icon(

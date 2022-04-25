@@ -3,6 +3,7 @@ import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/recurrency.dart';
 import 'package:control/modules/createMovement/repository/create_movement_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -43,10 +44,10 @@ class CreateMovementBloc
       status: CreateMovementStatus.success,
       description: event.description,
       recurrency: event.recurrency,
+      markDays: event.markDays,
       name: event.name,
       value: event.value,
       tags: event.tags,
-      date: event.date,
       icon: event.icon,
       alert: event.alert,
     ));

@@ -24,7 +24,7 @@ class FiicoButton extends StatefulWidget {
   final VoidCallback onTap;
   final Color? borderColor;
 
-  static FiicoButton green({
+  static FiicoButton pink({
     required VoidCallback ontap,
     String title = '',
     String image = '',

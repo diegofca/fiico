@@ -10,7 +10,7 @@ class CreateMovementState extends Equatable {
     this.description,
     this.tags,
     this.value,
-    this.date,
+    this.markDays,
     this.icon,
     this.alert,
     this.recurrency,
@@ -22,8 +22,8 @@ class CreateMovementState extends Equatable {
   final String? description;
   final List<String>? tags;
   final num? value;
-  final DateTime? date;
-  final String? recurrency;
+  final List<int>? markDays;
+  final Recurrency? recurrency;
   final FiicoIcon? icon;
   final FiicoAlert? alert;
 
@@ -40,8 +40,8 @@ class CreateMovementState extends Equatable {
     String? typeDescription,
     List<String>? tags,
     num? value,
-    DateTime? date,
-    String? recurrency,
+    List<int>? markDays,
+    Recurrency? recurrency,
     FiicoIcon? icon,
     FiicoAlert? alert,
   }) {
@@ -52,7 +52,7 @@ class CreateMovementState extends Equatable {
       description: description ?? this.description,
       value: value ?? this.value,
       tags: tags ?? this.tags,
-      date: date ?? this.date,
+      markDays: markDays ?? this.markDays,
       alert: alert ?? this.alert,
       icon: icon ?? this.icon,
       recurrency: recurrency ?? this.recurrency,

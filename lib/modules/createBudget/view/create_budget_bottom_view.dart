@@ -103,7 +103,7 @@ class CreateBottomView {
         vertical: FiicoPaddings.sixteen,
         horizontal: FiicoPaddings.fourtySix,
       ),
-      child: FiicoButton.green(
+      child: FiicoButton.pink(
         title: 'Crear presupuesto',
         ontap: () {
           Navigator.of(context).pop();

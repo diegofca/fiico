@@ -16,17 +16,11 @@ class BudgetsEmptyView extends StatefulWidget {
 
   @override
   State<BudgetsEmptyView> createState() => BudgetsEmtpyViewState();
-
-  Size get preferredSize => throw UnimplementedError();
 }
 
 class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
   @override
   Widget build(BuildContext context) {
-    return _emptyMyBudgets();
-  }
-
-  Widget _emptyMyBudgets() {
     return Container(
       alignment: Alignment.center,
       width: double.maxFinite,
@@ -41,37 +35,41 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
           )
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: FiicoPaddings.thirtyTwo),
-            child: SvgPicture.asset(
-              SVGImages.emptyBudgets,
-              height: 150,
-            ),
+      child: _emptyMyBudgets(),
+    );
+  }
+
+  Widget _emptyMyBudgets() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: FiicoPaddings.thirtyTwo),
+          child: SvgPicture.asset(
+            SVGImages.emptyBudgets,
+            height: 150,
           ),
-          Padding(
-            padding: const EdgeInsets.all(FiicoPaddings.eight),
-            child: Text(
-              "No tienes boards activos,",
-              style: Style.subtitle.copyWith(
-                fontSize: FiicoFontSize.xm,
-                color: FiicoColors.graySoft,
-              ),
-            ),
-          ),
-          Text(
-            "Intenta crear uno nuevo",
+        ),
+        Padding(
+          padding: const EdgeInsets.all(FiicoPaddings.eight),
+          child: Text(
+            "No tienes boards activos,",
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.xm,
               color: FiicoColors.graySoft,
             ),
           ),
-          _createButtonView()
-        ],
-      ),
+        ),
+        Text(
+          "Intenta crear uno nuevo",
+          style: Style.subtitle.copyWith(
+            fontSize: FiicoFontSize.xm,
+            color: FiicoColors.graySoft,
+          ),
+        ),
+        _createButtonView()
+      ],
     );
   }
 
@@ -79,7 +77,7 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: SizedBox(
-        child: FiicoButton.green(
+        child: FiicoButton.pink(
           title: "Crear nuevo budget",
           ontap: () => widget.onTapNewItem.call(),
         ),

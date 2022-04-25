@@ -73,7 +73,7 @@ class BottomDialog {
         vertical: FiicoPaddings.sixteen,
         horizontal: FiicoPaddings.fourtySix,
       ),
-      child: FiicoButton.green(
+      child: FiicoButton.pink(
         title: titleButton ?? '',
         ontap: () => onTapAction(),
       ),

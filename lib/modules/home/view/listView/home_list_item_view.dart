@@ -1,5 +1,4 @@
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
@@ -136,7 +135,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement?.recurrencyAt?.toDate().toDateFormat1() ?? '',
+        widget.movement?.getRecurrencyDate() ?? '',
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,

@@ -177,7 +177,7 @@ class EntryDetailSuccessView extends StatelessWidget {
               child: Icon(MdiIcons.calendarCheck),
             ),
             Text(
-              movement?.recurrency ?? '',
+              movement?.recurrency?.name ?? '',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.graySoft,
                 fontSize: FiicoFontSize.xm,
@@ -258,43 +258,46 @@ class EntryDetailSuccessView extends StatelessWidget {
   }
 
   Widget _historyPaymentList() {
-    int itemsCount = movement?.markHistory.length ?? 0;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.zero,
-          child: Text(
-            'Pagos recibidos:',
-            style: Style.subtitle.copyWith(
-              color: FiicoColors.grayNeutral,
-              fontSize: FiicoFontSize.xm,
-            ),
-            maxLines: FiicoMaxLines.unlimited,
-          ),
-        ),
-        SizedBox(
-          height: (itemsCount * 25) + FiicoPaddings.twenyFour,
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              final historyItem = movement?.markHistory[index];
-              return _historyPaymentItem(historyItem);
-            },
-            itemCount: itemsCount,
-            padding: const EdgeInsets.only(
-              top: FiicoPaddings.twenyFour,
+    final items = movement?.markHistory ?? [];
+    return Visibility(
+      visible: items.isNotEmpty,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.zero,
+            child: Text(
+              'Pagos recibidos:',
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+                fontSize: FiicoFontSize.xm,
+              ),
+              maxLines: FiicoMaxLines.unlimited,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: FiicoPaddings.twenyFour,
+          SizedBox(
+            height: (items.length * 25) + FiicoPaddings.twenyFour,
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final historyItem = movement?.markHistory[index];
+                return _historyPaymentItem(historyItem);
+              },
+              itemCount: items.length,
+              padding: const EdgeInsets.only(
+                top: FiicoPaddings.twenyFour,
+              ),
+            ),
           ),
-          child: _separatorLineView(),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: FiicoPaddings.twenyFour,
+            ),
+            child: _separatorLineView(),
+          ),
+        ],
+      ),
     );
   }
 

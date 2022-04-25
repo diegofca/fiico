@@ -18,6 +18,7 @@ import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -520,11 +521,21 @@ class BudgetDetailSuccessView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final user = users[index];
-                return Container(
-                  width: 60,
-                  padding: const EdgeInsets.all(FiicoPaddings.eight),
-                  child: FiicoProfileNetwork.user(
-                    url: user.profileImage,
+                return JustTheTooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  content: Padding(
+                    padding: const EdgeInsets.all(FiicoPaddings.sixteen),
+                    child: Text(
+                      user.userName ?? '',
+                      style: Style.subtitle,
+                    ),
+                  ),
+                  child: Container(
+                    width: 60,
+                    padding: const EdgeInsets.all(FiicoPaddings.eight),
+                    child: FiicoProfileNetwork.user(
+                      url: user.profileImage,
+                    ),
                   ),
                 );
               },

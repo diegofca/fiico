@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
@@ -11,6 +13,7 @@ part 'login_event.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.repository) : super(const LoginState()) {
+    on<LoginInitEvent>(_mapInitToState);
     on<LoginValidateEmailRequest>(_mapEmailValidatorToState);
     on<LoginValidatePasswordRequest>(_mapPassValidatorToState);
     on<LoginPasswordIsShowRequest>(_mapPassIsShowToState);
@@ -19,6 +22,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   final LoginRepository repository;
+
+  void _mapInitToState(
+    LoginInitEvent event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.loading));
+    await Future.delayed(const Duration(seconds: 2), () {});
+    emit(state.copyWith(status: LoginStatus.success));
+  }
 
   void _mapEmailValidatorToState(
     LoginValidateEmailRequest event,

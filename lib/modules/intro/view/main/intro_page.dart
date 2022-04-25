@@ -3,10 +3,10 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/modules/login/view/login_page.dart';
 import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';
@@ -14,7 +14,11 @@ import 'package:control/modules/splash/repository/splash_repository.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:simple_icons/simple_icons.dart';
 import 'package:video_player/video_player.dart';
 
 class IntroPage extends StatelessWidget {
@@ -77,7 +81,7 @@ class IntroPageViewState extends State<IntroPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SplashBloc, SplashState>(
+    return BlocBuilder<SplashBloc, SplashState>(
       builder: (context, state) {
         return Stack(
           alignment: Alignment.bottomCenter,
@@ -86,9 +90,6 @@ class IntroPageViewState extends State<IntroPageView> {
             _getIntrosViews(),
           ],
         );
-      },
-      listener: (context, state) async {
-        _validateIfLogged(context, state);
       },
     );
   }
@@ -99,23 +100,29 @@ class IntroPageViewState extends State<IntroPageView> {
 
   Widget _getIntrosViews() {
     return SafeArea(
+      top: false,
       child: Container(
         alignment: Alignment.bottomCenter,
         width: double.maxFinite,
         margin: const EdgeInsets.only(
-          right: FiicoPaddings.twenyFour,
-          left: FiicoPaddings.twenyFour,
+          right: FiicoPaddings.thirtyTwo,
+          left: FiicoPaddings.thirtyTwo,
           top: FiicoPaddings.sixtyTwo,
         ),
         child: DefaultTextStyle(
           style: Style.desc.copyWith(
-            color: FiicoColors.grayBackground,
+            color: FiicoColors.white,
             fontSize: FiicoFontSize.md,
           ),
           maxLines: 3,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              SvgPicture.asset(
+                SVGImages.valiuIcon,
+                alignment: Alignment.topCenter,
+                fit: BoxFit.cover,
+              ),
               AnimatedTextKit(
                 repeatForever: true,
                 animatedTexts: [
@@ -135,20 +142,29 @@ class IntroPageViewState extends State<IntroPageView> {
                   ),
                 ],
               ),
-              FiicoButton(
-                title: 'Saltar',
-                color: FiicoColors.clear,
-                onTap: () => FiicoRoute.send(context, const LoginPage()),
+              GestureDetector(
+                onTap: () => FiicoRoute.sendFade(context, const LoginPage()),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: FiicoPaddings.sixteen,
+                    vertical: FiicoPaddings.sixteen,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      FiicoPaddings.thirtyTwo,
+                    ),
+                    color: FiicoColors.purpleDark.withOpacity(0.3),
+                  ),
+                  child: const Icon(
+                    MdiIcons.arrowRightBold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _validateIfLogged(BuildContext context, SplashState state) {
-    final page = state.isLogged ? const MenuPage() : const LoginPage();
-    FiicoRoute.sendReplace(context, page);
   }
 }

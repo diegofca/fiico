@@ -125,19 +125,19 @@ class CreateMovementPageView extends StatelessWidget {
     final type = this.type == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
     final typeDescription =
         this.type == MovementType.ENTRY ? 'Income' : 'Outcome';
-    final recurrencyAt = Timestamp.fromDate(state.date ?? DateTime.now());
+    final recurrencyDay = state.markDays ?? [DateTime.now().day];
     const paymentStatus = 'Pending';
 
     return Movement(
       id: const Uuid().v1(),
       name: state.name,
       value: state.value,
-      recurrency: state.recurrency ?? Recurrency.month().name,
+      recurrency: state.recurrency ?? Recurrency.unique(),
       icon: state.icon ?? const FiicoIcon.empty(),
       alert: state.alert ?? FiicoAlert.empty(),
       description: state.description,
       createdAt: Timestamp.now(),
-      recurrencyAt: recurrencyAt,
+      recurrencyAt: recurrencyDay,
       typeDescription: typeDescription,
       isAddedWithBudget: addedinBudget,
       paymentStatus: paymentStatus,
