@@ -20,7 +20,7 @@ extension FiicoRoute on Navigator {
         pageBuilder: (context, animation, secondaryAnimation) => page,
         transitionsBuilder: (c, anim, a2, child) =>
             FadeTransition(opacity: anim, child: child),
-        transitionDuration: const Duration(seconds: 2),
+        transitionDuration: const Duration(seconds: 1),
       ),
     );
   }

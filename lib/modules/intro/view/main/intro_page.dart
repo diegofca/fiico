@@ -8,17 +8,14 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/modules/login/view/login_page.dart';
-import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';
 import 'package:control/modules/splash/repository/splash_repository.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:simple_icons/simple_icons.dart';
 import 'package:video_player/video_player.dart';
 
 class IntroPage extends StatelessWidget {

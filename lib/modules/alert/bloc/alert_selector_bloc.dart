@@ -17,7 +17,8 @@ class AlertSelectorBloc extends Bloc<AlertSelectorEvent, AlertSelectorState> {
     emit(state.copyWith(
       status: AlertSelectorStatus.addedLoading,
       isIntensive: event.isIntensive,
-      date: event.date,
+      dates: event.dates,
+      day: event.day,
     ));
   }
 }

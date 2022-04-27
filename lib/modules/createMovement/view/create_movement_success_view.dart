@@ -11,15 +11,12 @@ import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
-import 'package:control/modules/createMovement/view/widgets/create_movement_date_selector.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_day_selector.dart';
-import 'package:control/modules/createMovement/view/widgets/create_movement_recurrency_selector.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:control/helpers/extension/date.dart';
 
 class CreateMovementSuccessView extends StatelessWidget {
   CreateMovementSuccessView({
@@ -62,7 +59,10 @@ class CreateMovementSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: CreateMovementHeaderView(movement: movement),
+      child: CreateMovementHeaderView(
+        movement: movement,
+        budget: budget,
+      ),
     );
   }
 
@@ -101,7 +101,6 @@ class CreateMovementSuccessView extends StatelessWidget {
         _entryPriceView(context),
         _entryNameView(context),
         _entryDescriptionView(context),
-        _entryRecurrenceView(context),
         _entryDateView(context),
         _entryCategoryView(context),
         _categoriesList(context),
@@ -231,70 +230,6 @@ class CreateMovementSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entryRecurrenceView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: FiicoPaddings.sixteen,
-            ),
-            child: Text(
-              'Recurrencia',
-              textAlign: TextAlign.start,
-              style: Style.subtitle.copyWith(
-                fontSize: FiicoFontSize.sm,
-              ),
-            ),
-          ),
-          BorderContainer(
-            alignment: Alignment.center,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(
-                      left: FiicoPaddings.sixteen,
-                    ),
-                    child: Text(
-                      movement.recurrency?.name ?? 'Ej: Cada mes',
-                      textAlign: TextAlign.left,
-                      style: Style.subtitle.copyWith(
-                        color: FiicoColors.graySoft,
-                        fontSize: FiicoFontSize.sm,
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => CreateMovementRecurrencySelectorView().show(
-                    context,
-                    onRecurrencySelected: (recurrency) {
-                      context.read<CreateMovementBloc>().add(
-                          CreateMovementInfoRequest(recurrency: recurrency));
-                    },
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: FiicoColors.pink,
-                    size: 34,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _entryDateView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -340,8 +275,8 @@ class CreateMovementSuccessView extends StatelessWidget {
                 IconButton(
                   onPressed: () => CreateMovementDaySelectorView().show(
                     context,
+                    budget: budget,
                     selectedDays: movement.recurrencyAt,
-                    recurrency: movement.recurrency,
                     onDaySelected: (days) {
                       context
                           .read<CreateMovementBloc>()

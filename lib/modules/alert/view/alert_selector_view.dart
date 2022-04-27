@@ -1,12 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/fiico_calendar.dart';
+import 'package:control/helpers/genericViews/fiico_cycle_calendar.dart';
 import 'package:control/models/alert.dart';
+import 'package:control/models/budget.dart';
+import 'package:control/models/movement.dart';
 import 'package:control/modules/alert/bloc/alert_selector_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -14,7 +16,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class AlertSelectorView {
   void show(
     BuildContext context, {
-    FiicoAlert? alert,
+    Movement? movement,
+    required Budget? budget,
     required Function(FiicoAlert) onSelected,
   }) {
     showModalBottomSheet(
@@ -24,26 +27,26 @@ class AlertSelectorView {
       builder: (BuildContext context) {
         return BlocProvider(
           create: (context) => AlertSelectorBloc(),
-          child: _blocView(context, alert, onSelected),
+          child: _blocView(context, budget, movement, onSelected),
         );
       },
     );
   }
 
-  Widget _blocView(BuildContext context, FiicoAlert? alert,
+  Widget _blocView(BuildContext context, Budget? budget, Movement? movement,
       Function(FiicoAlert) onSelected) {
     return BlocBuilder<AlertSelectorBloc, AlertSelectorState>(
       builder: (context, state) {
         switch (state.status) {
           case AlertSelectorStatus.waiting:
           case AlertSelectorStatus.addedLoading:
-            return _bodySelector(context, alert, onSelected);
+            return _bodySelector(context, budget, movement, onSelected);
         }
       },
     );
   }
 
-  Widget _bodySelector(BuildContext context, FiicoAlert? alert,
+  Widget _bodySelector(BuildContext context, Budget? budget, Movement? movement,
       Function(FiicoAlert) onSelected) {
     return StatefulBuilder(
       builder: (context, setState) {
@@ -63,24 +66,22 @@ class AlertSelectorView {
             ),
           ),
           child: SafeArea(
-            child: _datePicker(context, alert, onSelected),
+            child: _datePicker(context, budget, movement, onSelected),
           ),
         );
       },
     );
   }
 
-  Widget _datePicker(BuildContext context, FiicoAlert? alert,
+  Widget _datePicker(BuildContext context, Budget? budget, Movement? movement,
       Function(FiicoAlert) onSelected) {
-    final state = context.read<AlertSelectorBloc>().state;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _dateTitleView(),
-        _intensiveSwitchPicker(context, alert, state.isIntensive),
-        _datePickerView(context, alert, state.date),
-        _selecteButton(context, alert, onSelected),
+        _intensiveSwitchPicker(context, movement?.alert),
+        _datePickerView(context, budget, movement),
+        _selecteButton(context, movement, onSelected),
       ],
     );
   }
@@ -94,9 +95,9 @@ class AlertSelectorView {
     );
   }
 
-  Widget _intensiveSwitchPicker(
-      BuildContext context, FiicoAlert? alert, bool? isIntensive) {
-    final _isIntensive = isIntensive ?? alert?.isIntensive() ?? false;
+  Widget _intensiveSwitchPicker(BuildContext context, FiicoAlert? alert) {
+    final state = context.read<AlertSelectorBloc>().state;
+    final _isIntensive = state.isIntensive ?? alert?.isIntensive() ?? false;
     return Padding(
       padding: const EdgeInsets.only(
         right: FiicoPaddings.thirtyTwo,
@@ -141,40 +142,60 @@ class AlertSelectorView {
   }
 
   Widget _datePickerView(
-      BuildContext context, FiicoAlert? alert, DateTime? _selectedDate) {
-    final date = _selectedDate ?? alert?.date?.toDate() ?? DateTime.now();
+      BuildContext context, Budget? budget, Movement? movement) {
+    final state = context.read<AlertSelectorBloc>().state;
+    final isCycle = budget?.isCycle ?? false;
+
+    final date =
+        state.day ?? movement?.alert?.day ?? movement?.recurrencyAt?.first ?? 1;
+    final dates = state.dates ?? movement?.alert?.dates ?? [];
+
     return Container(
       margin: const EdgeInsets.only(top: FiicoPaddings.sixteen),
       child: SizedBox(
         height: 200,
-        child: CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.date,
-          initialDateTime: date,
-          onDateTimeChanged: (val) {
-            context
-                .read<AlertSelectorBloc>()
-                .add(AlertSelectorInfoRequest(date: val));
-          },
-        ),
+        child: isCycle
+            ? FiicoCycleCalendar(
+                selectedDays: [date],
+                budget: budget,
+                onDaysSelected: (val) {
+                  context
+                      .read<AlertSelectorBloc>()
+                      .add(AlertSelectorInfoRequest(day: val.first));
+                },
+              )
+            : FiicoUniqueCalendar(
+                selectedDates: dates,
+                onDatesSelected: (dates) {
+                  context
+                      .read<AlertSelectorBloc>()
+                      .add(AlertSelectorInfoRequest(dates: dates));
+                },
+                budget: budget,
+              ),
       ),
     );
   }
 
-  Widget _selecteButton(BuildContext context, FiicoAlert? alert,
+  Widget _selecteButton(BuildContext context, Movement? movement,
       Function(FiicoAlert) onSelected) {
     final state = context.read<AlertSelectorBloc>().state;
 
-    final date = state.date ?? alert?.date?.toDate() ?? DateTime.now();
-    final isIntesive = state.isIntensive ?? alert?.isIntensive() ?? false;
+    final day = state.day ?? movement?.alert?.day ?? 1;
+    final isIntesive =
+        state.isIntensive ?? movement?.alert?.isIntensive() ?? false;
     final type =
         isIntesive ? FiicoAlert.INTENSIVE_TYPE : FiicoAlert.SIMPLE_TYPE;
+
+    final dates = state.dates ?? movement?.alert?.dates ?? [];
 
     return FiicoButton.pink(
       title: 'Seleccionar',
       ontap: () {
         final alert = FiicoAlert(
           active: true,
-          date: Timestamp.fromDate(date),
+          dates: dates,
+          day: day,
           type: type,
         );
         onSelected(alert);

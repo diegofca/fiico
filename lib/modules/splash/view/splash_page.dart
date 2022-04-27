@@ -52,7 +52,7 @@ class SplashPageView extends StatelessWidget {
   }
 
   void _validateIfLogged(BuildContext context, SplashState state) {
-    Timer(const Duration(milliseconds: 2700), () async {
+    Timer(const Duration(milliseconds: 3000), () async {
       final user = await Preferences.get.getUser();
       final page = state.isLogged ? MenuPage(user: user) : const IntroPage();
       FiicoRoute.sendFade(context, page);

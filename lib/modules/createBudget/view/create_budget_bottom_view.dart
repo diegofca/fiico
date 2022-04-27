@@ -21,7 +21,7 @@ class CreateBottomView {
         return StatefulBuilder(
           builder: (context, setState) {
             return AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: const Duration(milliseconds: 0),
               padding: EdgeInsets.only(
                 left: FiicoPaddings.thirtyTwo,
                 right: FiicoPaddings.thirtyTwo,

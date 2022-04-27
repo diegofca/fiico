@@ -8,6 +8,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/entryDetail/bloc/entry_detail_bloc.dart';
@@ -20,9 +21,11 @@ class EntryDetailSuccessView extends StatelessWidget {
   const EntryDetailSuccessView({
     Key? key,
     required this.movement,
+    required this.budget,
   }) : super(key: key);
 
   final Movement? movement;
+  final Budget? budget;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class EntryDetailSuccessView extends StatelessWidget {
       ),
       child: EntryDetailHeaderView(
         movement: movement,
+        budget: budget,
       ),
     );
   }
@@ -99,7 +103,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         movement?.description ?? 'No hay descripción',
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
-          color: FiicoColors.graySoft,
+          color: FiicoColors.grayNeutral,
           fontSize: FiicoFontSize.xm,
         ),
       ),
@@ -173,41 +177,21 @@ class EntryDetailSuccessView extends StatelessWidget {
         Row(
           children: [
             const Padding(
-              padding: EdgeInsets.only(right: FiicoPaddings.eight),
-              child: Icon(MdiIcons.calendarCheck),
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.eight,
+              ),
+              child: Icon(MdiIcons.clockOutline),
             ),
             Text(
-              movement?.recurrency?.name ?? '',
+              movement?.getRecurrencyDateDescription() ?? '',
+              maxLines: 2,
+              overflow: TextOverflow.fade,
               style: Style.subtitle.copyWith(
-                color: FiicoColors.graySoft,
+                color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
               ),
             )
           ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: FiicoPaddings.sixteen,
-          ),
-          child: Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                  right: FiicoPaddings.eight,
-                ),
-                child: Icon(MdiIcons.clockOutline),
-              ),
-              Text(
-                movement?.getRecurrencyDate() ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.fade,
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.graySoft,
-                  fontSize: FiicoFontSize.xm,
-                ),
-              )
-            ],
-          ),
         )
       ],
     );
@@ -217,6 +201,7 @@ class EntryDetailSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.twenyFour,
+        bottom: FiicoPaddings.sixteen,
       ),
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.greenTag,

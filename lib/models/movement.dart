@@ -6,7 +6,6 @@ import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/mark_movement.dart';
-import 'package:control/models/recurrency.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +22,6 @@ class Movement {
   final String? type;
   final String? description;
   final String? typeDescription;
-  final Recurrency? recurrency;
   final String? currency;
   final String? budgetName;
   final List<String> tags;
@@ -44,7 +42,6 @@ class Movement {
     required this.typeDescription,
     required this.currency,
     required this.budgetName,
-    required this.recurrency,
     required this.alert,
     required this.paymentStatus,
     this.tags = const [],
@@ -64,7 +61,6 @@ class Movement {
       typeDescription: json?['typeDescription'] ?? '',
       currency: json?['currency'] ?? '',
       budgetName: json?['budgetName'] ?? '',
-      recurrency: json?['recurrency'] ?? '',
       paymentStatus: json?['paymentStatus'] ?? 'Pending',
       icon: FiicoIcon.fromJson(json?['icon']),
       alert: FiicoAlert.fromJson(json?['alert']),
@@ -79,13 +75,12 @@ class Movement {
       'name': name,
       'value': value,
       'createdAt': createdAt,
-      'recurrencyAt': recurrencyAt,
+      'recurrencyAt': recurrencyAt?..sort(),
       'type': type,
       'description': description,
       'typeDescription': typeDescription,
       'currency': currency,
       'budgetName': budgetName,
-      'recurrency': recurrency,
       'paymentStatus': paymentStatus,
       'icon': icon?.toJson(),
       'alert': alert?.toJson(),
@@ -104,10 +99,9 @@ class Movement {
     String? type,
     String? description,
     String? typeDescription,
-    Recurrency? recurrency,
     String? currency,
     String? budgetName,
-    List<String> tags = const [],
+    List<String>? tags,
     FiicoAlert? alert,
     bool isAddedWithBudget = false,
     String? paymentStatus,
@@ -123,14 +117,13 @@ class Movement {
       type: type ?? this.type,
       description: description ?? this.description,
       typeDescription: typeDescription ?? this.typeDescription,
-      recurrency: recurrency ?? this.recurrency,
       currency: currency ?? this.currency,
       budgetName: budgetName ?? this.budgetName,
       alert: alert ?? this.alert,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       isAddedWithBudget: isAddedWithBudget,
       markHistory: markHistory ?? this.markHistory,
-      tags: tags,
+      tags: tags ?? this.tags,
     );
   }
 
@@ -200,23 +193,43 @@ class Movement {
   }
 
   String getAlertDate() {
-    return alert?.date?.toDate().toDateFormat1() ?? '';
+    if (alert?.dates?.isEmpty ?? false) {
+      final day = alert?.day ?? recurrencyAt?.first ?? 1;
+      final recurrencyDate =
+          DateTime(DateTime.now().year, DateTime.now().month, day);
+      return recurrencyDate.toDateFormat1();
+    }
+    return alert?.dates?.first.toDateFormat1() ?? '';
   }
 
   String getRecurrencyDate() {
-    switch (recurrency?.value) {
-      case Recurrency.uniqueID:
-        // return 'El ${recurrencyAt.toString()} de este mes';
-        return 'El 30 de cada semana';
-      case Recurrency.multipleID:
-        return 'El 1, 8, 15, 22 de cada mes';
+    final days = recurrencyAt?.map((e) => e.toString());
+    if (days == null || days.isEmpty) {
+      return '';
+    }
+    switch (getType()) {
+      case MovementType.ENTRY:
+        return '${days.join(',').toString()} de cada mes';
+      case MovementType.DEBT:
+        return '${days.join(',').toString()} de cada mes';
+      default:
+        return '';
+    }
+  }
+
+  String getRecurrencyDateDescription() {
+    switch (getType()) {
+      case MovementType.ENTRY:
+        return 'Ingreso: ${getRecurrencyDate()}';
+      case MovementType.DEBT:
+        return 'Pago oportuno: ${getRecurrencyDate()}';
       default:
         return '';
     }
   }
 
   Color getBellColor() {
-    if (alert?.date == null) {
+    if (alert?.day == null) {
       return FiicoColors.grayNeutral;
     }
     if (alert?.isIntensive() ?? false) {

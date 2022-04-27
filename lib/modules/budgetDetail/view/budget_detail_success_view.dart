@@ -21,6 +21,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_icons/simple_icons.dart';
 
 class BudgetDetailSuccessView extends StatelessWidget {
   const BudgetDetailSuccessView({
@@ -100,6 +101,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _resumeBoards(context),
+        _infoResumeBalanceView(context),
+        _infoCycleDetailView(context),
         _entrysView(context),
         _entryListView(context),
         _entrysDebtsView(context),
@@ -223,10 +226,84 @@ class BudgetDetailSuccessView extends StatelessWidget {
     );
   }
 
+  Widget _infoResumeBalanceView(BuildContext context) {
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            bottom: FiicoPaddings.twenyFour,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Tu balance es de: ',
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayDark,
+                fontSize: FiicoFontSize.xm,
+              ),
+            ),
+            Text(
+              budget.getTotalBalance().toCurrencyCompat(),
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+              style: Style.title.copyWith(
+                color: FiicoColors.grayDark,
+                fontSize: FiicoFontSize.xm,
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _infoCycleDetailView(BuildContext context) {
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            top: FiicoPaddings.twenyFour,
+            bottom: FiicoPaddings.twenyFour,
+          ),
+          child: SeparatorView(),
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.eight,
+              ),
+              child: Icon(
+                MdiIcons.syncIcon,
+                color: FiicoColors.grayDark,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                'Tipo de ciclo:  ${budget.getCycleText()}',
+                maxLines: 2,
+                overflow: TextOverflow.fade,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.grayNeutral,
+                  fontSize: FiicoFontSize.xm,
+                ),
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _entrysView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.twenyFour,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

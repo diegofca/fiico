@@ -74,7 +74,10 @@ class EntryDetailPageView extends StatelessWidget {
         textColor: FiicoColors.graySoft,
         actions: [_dotsButton(context)],
       ),
-      body: EntryDetailSuccessView(movement: movement),
+      body: EntryDetailSuccessView(
+        movement: movement,
+        budget: budget,
+      ),
     );
   }
 

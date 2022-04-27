@@ -55,7 +55,7 @@ class Budget {
     required this.id,
     this.name,
     this.currency,
-    this.cycle = 2,
+    this.cycle = 1,
     this.icon = const FiicoIcon.empty(),
     this.status = 'Active',
     this.totalBalance = 0,
@@ -242,20 +242,17 @@ class Budget {
     }
   }
 
-  String getCycleText() {
-    final type = BudgetCycleType.values
+  BudgetCycleType? getCycleType() {
+    return BudgetCycleType.values
         .firstWhereOrNull((element) => element.index == cycle);
-    switch (type) {
-      case BudgetCycleType.WEEK:
-        return 'Semanal';
+  }
+
+  String getCycleText() {
+    switch (getCycleType()) {
       case BudgetCycleType.TWO_WEEKS:
         return 'Cada dos semanas';
       case BudgetCycleType.MONTH:
         return 'Mensual';
-      case BudgetCycleType.THREE_MONTH:
-        return 'Cada tres meses';
-      case BudgetCycleType.SIX_MONTH:
-        return 'Cada seis meses';
       case BudgetCycleType.ANNUAL:
         return 'Anual';
       default:
@@ -270,16 +267,10 @@ class Budget {
       final type = BudgetCycleType.values
           .firstWhereOrNull((element) => element.index == cycle);
       switch (type) {
-        case BudgetCycleType.WEEK:
-          return description + 'cada semana';
         case BudgetCycleType.TWO_WEEKS:
           return description + 'cada dos semanas';
         case BudgetCycleType.MONTH:
           return description + 'cada mes';
-        case BudgetCycleType.THREE_MONTH:
-          return description + 'cada tres meses';
-        case BudgetCycleType.SIX_MONTH:
-          return description + 'cada seis meses';
         case BudgetCycleType.ANNUAL:
           return description + 'año';
         default:
@@ -297,13 +288,13 @@ class Budget {
       case BudgetDurationType.CUSTOM:
         return 'Personalizado';
       case BudgetDurationType.MONTH:
-        return 'Mensual';
+        return 'Un mes';
       case BudgetDurationType.THREE_MONTH:
-        return 'Cada tres meses';
+        return 'Tres meses';
       case BudgetDurationType.SIX_MONTH:
-        return 'Cada seis meses';
+        return 'Seis meses';
       case BudgetDurationType.ANNUAL:
-        return 'Anual';
+        return 'Un año';
       default:
         return '';
     }

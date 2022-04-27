@@ -7,11 +7,8 @@ import 'package:flutter/material.dart';
 
 class CreateBudgetCycleSelectorView {
   final _options = [
-    BudgetCycle.week(),
     BudgetCycle.twoWeeks(),
     BudgetCycle.month(),
-    BudgetCycle.threeMonths(),
-    BudgetCycle.sixMonths(),
     BudgetCycle.annual(),
   ];
 
@@ -43,7 +40,7 @@ class CreateBudgetCycleSelectorView {
               ),
               child: SafeArea(
                 child: SizedBox(
-                  height: 350,
+                  height: _options.length * 70,
                   child: _budgetListView(onDurationSelected),
                 ),
               ),

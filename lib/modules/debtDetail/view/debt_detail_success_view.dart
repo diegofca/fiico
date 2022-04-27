@@ -8,6 +8,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
@@ -20,9 +21,11 @@ class DebtDetailSuccessView extends StatelessWidget {
   const DebtDetailSuccessView({
     Key? key,
     required this.movement,
+    required this.budget,
   }) : super(key: key);
 
   final Movement? movement;
+  final Budget? budget;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
         boxShadow: [FiicoShadow.cardShadow],
       ),
-      child: DebtDetailHeaderView(
-        movement: movement,
-      ),
+      child: DebtDetailHeaderView(movement: movement, budget: budget),
     );
   }
 
@@ -174,51 +175,31 @@ class DebtDetailSuccessView extends StatelessWidget {
         Row(
           children: [
             const Padding(
-              padding: EdgeInsets.only(right: FiicoPaddings.eight),
-              child: Icon(MdiIcons.calendarCheck),
+              padding: EdgeInsets.only(
+                right: FiicoPaddings.eight,
+              ),
+              child: Icon(MdiIcons.clockOutline),
             ),
             Text(
-              movement?.recurrency?.name ?? '',
+              movement?.getRecurrencyDateDescription() ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: FiicoMaxLines.four,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
               ),
             )
           ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            top: FiicoPaddings.sixteen,
-            right: FiicoPaddings.eight,
-          ),
-          child: Row(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                  right: FiicoPaddings.eight,
-                ),
-                child: Icon(MdiIcons.clockOutline),
-              ),
-              Text(
-                movement?.getRecurrencyDate() ?? '',
-                overflow: TextOverflow.ellipsis,
-                maxLines: FiicoMaxLines.four,
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.grayNeutral,
-                  fontSize: FiicoFontSize.xm,
-                ),
-              )
-            ],
-          ),
         )
       ],
     );
   }
 
   Widget _categoriesList() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.twenyFour,
+        bottom: FiicoPaddings.sixteen,
       ),
       child: FiicoTagsView(
         tagBackgroundColor: FiicoColors.pink,

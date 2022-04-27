@@ -17,7 +17,7 @@ class CreateBudgetState extends Equatable {
     this.addedMovement,
     this.removedMovement,
     this.isCycle = true,
-    this.cycle = 2,
+    this.cycle = 1,
     this.duration = 3,
     this.initDate,
     this.finishDate,

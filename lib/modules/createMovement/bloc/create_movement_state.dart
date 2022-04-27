@@ -13,7 +13,6 @@ class CreateMovementState extends Equatable {
     this.markDays,
     this.icon,
     this.alert,
-    this.recurrency,
   });
 
   final CreateMovementStatus status;
@@ -23,7 +22,6 @@ class CreateMovementState extends Equatable {
   final List<String>? tags;
   final num? value;
   final List<int>? markDays;
-  final Recurrency? recurrency;
   final FiicoIcon? icon;
   final FiicoAlert? alert;
 
@@ -41,7 +39,6 @@ class CreateMovementState extends Equatable {
     List<String>? tags,
     num? value,
     List<int>? markDays,
-    Recurrency? recurrency,
     FiicoIcon? icon,
     FiicoAlert? alert,
   }) {
@@ -55,7 +52,6 @@ class CreateMovementState extends Equatable {
       markDays: markDays ?? this.markDays,
       alert: alert ?? this.alert,
       icon: icon ?? this.icon,
-      recurrency: recurrency ?? this.recurrency,
     );
   }
 }

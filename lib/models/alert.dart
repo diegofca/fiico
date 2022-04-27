@@ -4,30 +4,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FiicoAlert {
   final bool? active;
-  final Timestamp? date;
+  final int? day;
   final String? type;
+  final List<DateTime>? dates;
 
-  FiicoAlert({this.active, this.date, this.type});
+  FiicoAlert({this.active, this.day, this.type, this.dates});
 
   FiicoAlert.empty({
     this.active = false,
     this.type = FiicoAlert.SIMPLE_TYPE,
-    this.date,
+    this.day,
+    this.dates = const [],
   });
 
   factory FiicoAlert.fromJson(Map<String, dynamic>? json) {
     return FiicoAlert(
       active: json?['active'],
-      date: json?['date'],
+      day: json?['day'],
       type: json?['type'],
+      dates: FiicoAlert.toDatesList(json),
     );
+  }
+
+  static List<DateTime> toDatesList(Map<String, dynamic>? json) {
+    List<DateTime> dates = [];
+    json?['dates'].forEach((date) {
+      dates.add((date as Timestamp).toDate());
+    });
+    return dates;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'active': active,
-      'date': date,
+      'day': day,
       'type': type,
+      'dates': dates,
     };
   }
 

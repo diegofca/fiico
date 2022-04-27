@@ -75,7 +75,10 @@ class DebtDetailPageView extends StatelessWidget {
         textColor: FiicoColors.graySoft,
         actions: [_dotsButton(context)],
       ),
-      body: DebtDetailSuccessView(movement: movement),
+      body: DebtDetailSuccessView(
+        movement: movement,
+        budget: budget,
+      ),
     );
   }
 

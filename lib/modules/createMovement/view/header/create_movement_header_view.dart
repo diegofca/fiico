@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/helpers/genericViews/fiico_selector_icon.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/alert/view/alert_selector_view.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
@@ -14,9 +15,11 @@ class CreateMovementHeaderView extends StatefulWidget {
   const CreateMovementHeaderView({
     Key? key,
     required this.movement,
+    required this.budget,
   }) : super(key: key);
 
   final Movement movement;
+  final Budget? budget;
 
   @override
   State<CreateMovementHeaderView> createState() =>
@@ -137,9 +140,11 @@ class CreateMovementHeaderViewState extends State<CreateMovementHeaderView> {
         final bloc = context.read<CreateMovementBloc>();
         AlertSelectorView().show(
           context,
-          alert: widget.movement.alert,
-          onSelected: (alert) =>
-              bloc.add(CreateMovementInfoRequest(alert: alert)),
+          movement: widget.movement,
+          budget: widget.budget,
+          onSelected: (alert) => bloc.add(
+            CreateMovementInfoRequest(alert: alert),
+          ),
         );
       },
       child: Padding(

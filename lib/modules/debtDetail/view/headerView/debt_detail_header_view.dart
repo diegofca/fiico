@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/alert/view/alert_selector_view.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
@@ -12,9 +13,11 @@ class DebtDetailHeaderView extends StatefulWidget {
   const DebtDetailHeaderView({
     Key? key,
     required this.movement,
+    required this.budget,
   }) : super(key: key);
 
   final Movement? movement;
+  final Budget? budget;
 
   @override
   State<DebtDetailHeaderView> createState() => DebtDetailHeaderViewState();
@@ -96,7 +99,8 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
       onTap: () {
         AlertSelectorView().show(
           context,
-          alert: widget.movement?.alert,
+          movement: widget.movement,
+          budget: widget.budget,
           onSelected: (alert) {
             final movement = widget.movement?.copyWith(alert: alert);
             context
