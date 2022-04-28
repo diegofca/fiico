@@ -74,10 +74,12 @@ class SearchPageView extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          FiicoAlertDialog.showSuccess(context,
-              title: 'Presupuesto',
-              message:
-                  'Los presupuestos o tableros son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.');
+          FiicoAlertDialog.showInfo(
+            context,
+            title: 'Presupuesto',
+            message:
+                'Los presupuestos o tableros son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.',
+          );
         },
         icon: const Icon(
           MdiIcons.informationOutline,

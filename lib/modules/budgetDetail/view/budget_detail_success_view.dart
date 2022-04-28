@@ -1,5 +1,6 @@
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
@@ -21,7 +22,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_icons/simple_icons.dart';
 
 class BudgetDetailSuccessView extends StatelessWidget {
   const BudgetDetailSuccessView({
@@ -103,6 +103,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
         _resumeBoards(context),
         _infoResumeBalanceView(context),
         _infoCycleDetailView(context),
+        _infoPeriodDurationDetailView(context),
         _entrysView(context),
         _entryListView(context),
         _entrysDebtsView(context),
@@ -285,7 +286,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                'Tipo de ciclo:  ${budget.getCycleText()}',
+                budget.getDurationBudgetDescription(),
                 maxLines: 2,
                 overflow: TextOverflow.fade,
                 style: Style.subtitle.copyWith(
@@ -297,6 +298,76 @@ class BudgetDetailSuccessView extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _infoPeriodDurationDetailView(BuildContext context) {
+    return Visibility(
+      visible: !(budget.isCycle ?? false),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(
+              top: FiicoPaddings.twenyFour,
+              bottom: FiicoPaddings.twenyFour,
+            ),
+            child: SeparatorView(),
+          ),
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(
+                  right: FiicoPaddings.eight,
+                ),
+                child: Icon(
+                  MdiIcons.calendarStart,
+                  color: FiicoColors.grayDark,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  ' Inicio:  ${budget.startDate?.toDate().toDateFormat2()}',
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.grayNeutral,
+                    fontSize: FiicoFontSize.xm,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.sixteen,
+            ),
+            child: Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(
+                    right: FiicoPaddings.eight,
+                  ),
+                  child: Icon(
+                    MdiIcons.calendarEnd,
+                    color: FiicoColors.grayDark,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    ' Final:  ${budget.finishDate?.toDate().toDateFormat2()}',
+                    maxLines: 2,
+                    overflow: TextOverflow.fade,
+                    style: Style.subtitle.copyWith(
+                      color: FiicoColors.grayNeutral,
+                      fontSize: FiicoFontSize.xm,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

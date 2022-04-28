@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_selector_icon.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/alert/view/alert_selector_view.dart';
@@ -42,21 +43,30 @@ class EntryDetailHeaderViewState extends State<EntryDetailHeaderView> {
   }
 
   Widget _iconItem() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.sixteen,
-        right: FiicoPaddings.twenyFour,
-        left: FiicoPaddings.twenyFour,
-      ),
-      child: Container(
-        width: 75,
-        height: double.maxFinite,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(FiicoPaddings.eight),
-          color: FiicoColors.grayLite,
+    return GestureDetector(
+      onTap: () async {
+        final icon = await FiicoSelectorIcon.select(context);
+        final newMovement = widget.movement?.copyWith(icon: icon);
+        context
+            .read<EntryDetailBloc>()
+            .add(EntryDetailEditMovement(movement: newMovement));
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.sixteen,
+          bottom: FiicoPaddings.sixteen,
+          right: FiicoPaddings.twenyFour,
+          left: FiicoPaddings.twenyFour,
         ),
-        child: widget.movement?.getIcon(),
+        child: Container(
+          width: 75,
+          height: double.maxFinite,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(FiicoPaddings.eight),
+            color: FiicoColors.grayLite,
+          ),
+          child: widget.movement?.getIcon(),
+        ),
       ),
     );
   }

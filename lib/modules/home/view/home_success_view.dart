@@ -14,6 +14,7 @@ import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/modules/home/home.dart';
 import 'package:control/modules/home/model/home_filters_movements.dart';
+import 'package:control/modules/home/view/empty/home_empty_with_filter_view.dart';
 import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
 import 'package:control/modules/home/view/widgets/home_create_movement_selector.dart';
 import 'package:control/modules/search/view/search_page.dart';
@@ -195,6 +196,11 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   Widget _listItemsView() {
     final _movements =
         currentBudget?.getMovementsBy(widget.dropdownvalue) ?? [];
+
+    if (_movements.isEmpty) {
+      return _emptyFilterSliverView(context);
+    }
+
     return SliverVisibility(
       visible: _movements.isNotEmpty,
       sliver: SliverPadding(
@@ -209,6 +215,20 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
             childCount: _movements.length,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _emptyFilterSliverView(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (_, index) {
+          return HomeEmptyWithFilterView(
+            indexFilter: widget.dropdownvalue,
+            onTapNewItem: () => _addMovementButtonClickedAction(context),
+          );
+        },
+        childCount: 1,
       ),
     );
   }

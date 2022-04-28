@@ -260,6 +260,14 @@ class Budget {
     }
   }
 
+  String getDurationBudgetDescription() {
+    if (!(isCycle ?? false)) {
+      return 'Duración:  ${getDurationText()}';
+    }
+
+    return 'Duración de ciclo: ${getCycleText()}';
+  }
+
   String getCycleDescription() {
     var description = 'Tu presupuesto esta en modo repetitivo y se repetirá ';
 

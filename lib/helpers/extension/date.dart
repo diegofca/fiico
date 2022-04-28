@@ -12,7 +12,7 @@ extension DateExtension on DateTime {
 
   /// Format "EEEE MMM, dd yyyy"
   String toDateFormat2() {
-    return DateFormat("EEEE MMM, dd yyyy").format(this);
+    return DateFormat("EEEE, dd MMM yyyy").format(this);
   }
 
   /// Format "EE MMM, dd yyyy"

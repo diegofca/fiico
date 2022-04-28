@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/models/budget.dart';
+import 'package:control/models/plan.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +15,7 @@ class FiicoUser extends Equatable {
   final String? profileImage;
   final List<String>? deviceTokens;
   final bool? vip;
-  final String? currentPlan;
+  final Plan? currentPlan;
   final List<Budget>? budgets;
   final String? budgetPermission;
   bool? showTutorial;
@@ -44,7 +45,7 @@ class FiicoUser extends Equatable {
       socialToken: json?['socialToken'],
       profileImage: json?['profileImage'],
       deviceTokens: List.castFrom(json?['deviceTokens']),
-      currentPlan: json?['currentPlan'],
+      currentPlan: Plan.fromJson(json?['currentPlan']),
       budgets: Budget.toList(json?['budgets']),
       showTutorial: json?['showTutorial'],
       budgetPermission: json?['budgetPermission'],
@@ -62,7 +63,7 @@ class FiicoUser extends Equatable {
       'email': email ?? '',
       'socialToken': socialToken ?? '',
       'deviceTokens': deviceTokens ?? [],
-      'currentPlan': currentPlan ?? '',
+      'currentPlan': currentPlan?.toJson(),
       'profileImage': profileImage ?? '',
       'showTutorial': showTutorial ?? false,
       'budgetPermission': budgetPermission ?? '',
@@ -88,7 +89,7 @@ class FiicoUser extends Equatable {
     String? profileImage,
     List<String>? deviceTokens,
     bool? vip,
-    String? currentPlan,
+    Plan? currentPlan,
     List<Budget>? budgets,
     String? budgetPermission,
   }) {

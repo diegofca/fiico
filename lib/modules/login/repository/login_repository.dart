@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/providers/login_social_provider.dart';
@@ -94,7 +95,7 @@ class LoginRepository extends LoginRepositoryAbs {
       lastName: lastName,
       profileImage: credential.user?.photoURL,
       userName: credential.user?.displayName,
-      currentPlan: 'free',
+      currentPlan: Plan.free(),
     );
     Preferences.get.saveUser(user);
     await _addNewUser(user);

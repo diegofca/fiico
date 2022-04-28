@@ -13,7 +13,7 @@ class CreateMovementBloc
     extends Bloc<CreateMovementEvent, CreateMovementState> {
   CreateMovementBloc(this.repository) : super(const CreateMovementState()) {
     on<CreateMovementAddedRequest>(_mapAddedMovementToState);
-    on<CreateMovementInfoRequest>(_mapAddedNameToState);
+    on<CreateMovementInfoRequest>(_mapInfoToState);
   }
 
   final CreateMovementRepository repository;
@@ -34,7 +34,7 @@ class CreateMovementBloc
     }
   }
 
-  void _mapAddedNameToState(
+  void _mapInfoToState(
     CreateMovementInfoRequest event,
     Emitter<CreateMovementState> emit,
   ) async {

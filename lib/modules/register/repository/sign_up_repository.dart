@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/network/firestore_path.dart';
@@ -31,7 +32,7 @@ class SignUpRepository extends SignUpRepositoryAbs {
         firstName: state.name?.name,
         lastName: state.lastName?.lastName,
         userName: '${state.name?.name} ${state.lastName?.lastName}',
-        currentPlan: 'free',
+        currentPlan: Plan.free(),
       );
 
       Preferences.get.saveUser(user);
