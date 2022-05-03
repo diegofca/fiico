@@ -1,4 +1,3 @@
-import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -6,7 +5,6 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/profile_image.dart';
 import 'package:control/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
   const ProfileAppBar({
@@ -14,11 +12,13 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
     required this.user,
     this.leading,
     this.actions,
+    this.onDetailTap,
   }) : super(key: key);
 
   final Widget? leading;
   final List<Widget>? actions;
   final FiicoUser? user;
+  final VoidCallback? onDetailTap;
 
   //añadir un user como parametro
   @override
@@ -72,50 +72,40 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   Widget _getPlanDetail() {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: FiicoPaddings.sixtyTwo,
-        vertical: FiicoPaddings.sixteen,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: FiicoPaddings.twenyFour,
-        vertical: FiicoPaddings.four,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          FiicoPaddings.sixteen,
+    return GestureDetector(
+      onTap: () => onDetailTap?.call(),
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: FiicoPaddings.sixtyTwo,
+          vertical: FiicoPaddings.sixteen,
         ),
-        color: FiicoColors.purpleNeutral,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SvgPicture.asset(
-            user?.currentPlan?.icon ?? SVGImages.valiuIcon,
-            width: 20,
-            height: 25,
+        padding: const EdgeInsets.symmetric(
+          horizontal: FiicoPaddings.twenyFour,
+          vertical: FiicoPaddings.four,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            FiicoPaddings.sixteen,
           ),
-          Text(
-            'Plan ${user?.currentPlan?.name}',
-            style: Style.desc.copyWith(
-              color: FiicoColors.white,
-              fontSize: FiicoFontSize.xxs,
+          color: FiicoColors.purpleNeutral,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(
+              user?.currentPlan?.getStatusIcon(),
+              color: user?.currentPlan?.getStatusIconColor(),
+              size: 25,
             ),
-          ),
-          Text(
-            "-",
-            style: Style.desc.copyWith(
-              color: FiicoColors.white,
+            Text(
+              user?.currentPlan?.getPlanTitle() ?? '',
+              style: Style.desc.copyWith(
+                color: FiicoColors.white,
+                fontSize: FiicoFontSize.xxs,
+              ),
             ),
-          ),
-          Text(
-            user?.currentPlan?.startDate?.toDate().toDateFormat4() ?? '',
-            style: Style.desc.copyWith(
-              color: FiicoColors.white,
-              fontSize: FiicoFontSize.xxs,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

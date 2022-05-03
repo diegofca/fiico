@@ -35,6 +35,10 @@ extension FiicoRoute on Navigator {
         context, MaterialPageRoute(builder: (context) => page));
   }
 
+  static void back(BuildContext context) {
+    return Navigator.pop(context);
+  }
+
   static void changeTab(BuildContext context, TabOption tabOption) {
     var tabIndex = tabOption.index;
     context.read<MenuBloc>().add(MenuIndexSelected(index: tabIndex));

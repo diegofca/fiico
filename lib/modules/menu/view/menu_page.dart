@@ -1,4 +1,6 @@
+import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/user.dart';
+import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +18,10 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MenuBloc(),
-      child: MenuPageView(user: user),
+      child: ConnectivityBuilder.noConnection(
+        pageName: PageNames.menuPage,
+        child: MenuPageView(user: user),
+      ),
     );
   }
 }

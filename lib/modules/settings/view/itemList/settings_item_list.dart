@@ -11,7 +11,7 @@ class SettingsListItemView extends StatefulWidget {
     required this.settingGroup,
   }) : super(key: key);
 
-  final SettingGroup settingGroup;
+  final SettingItem? settingGroup;
 
   @override
   State<SettingsListItemView> createState() => SettingsListItemViewState();
@@ -41,7 +41,7 @@ class SettingsListItemViewState extends State<SettingsListItemView> {
         bottom: FiicoPaddings.sixteen,
       ),
       child: Text(
-        widget.settingGroup.name,
+        widget.settingGroup?.name ?? '',
         style: Style.subtitle.copyWith(
           fontSize: FiicoFontSize.xxs,
           color: FiicoColors.grayNeutral,
@@ -52,32 +52,39 @@ class SettingsListItemViewState extends State<SettingsListItemView> {
 
   Widget _optionsListSettingItem() {
     return SizedBox(
-      height: (widget.settingGroup.items?.length ?? 0) * 40,
+      height: (widget.settingGroup?.childs?.length ?? 0) * 40,
       child: ListView.builder(
-        itemCount: widget.settingGroup.items?.length,
+        itemCount: widget.settingGroup?.childs?.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          final item = widget.settingGroup.items?[index];
-          return SizedBox(
-            height: 40,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    item?.name ?? '',
-                    style: Style.subtitle.copyWith(
-                      fontSize: FiicoFontSize.xm,
-                      color: FiicoColors.grayDark,
-                    ),
-                  ),
-                ),
-                item?.icon ?? Container(),
-              ],
-            ),
-          );
+          final item = widget.settingGroup?.childs?[index];
+          return _itemView(item);
         },
+      ),
+    );
+  }
+
+  Widget _itemView(SettingItem? item) {
+    return GestureDetector(
+      onTap: () => item?.onTap?.call(),
+      child: SizedBox(
+        height: 40,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                item?.name ?? '',
+                style: Style.subtitle.copyWith(
+                  fontSize: FiicoFontSize.xm,
+                  color: FiicoColors.grayDark,
+                ),
+              ),
+            ),
+            item?.icon ?? Container(),
+          ],
+        ),
       ),
     );
   }

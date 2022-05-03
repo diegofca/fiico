@@ -7,6 +7,7 @@ import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
 import 'package:control/modules/menu/view/view.dart';
+import 'package:control/modules/pinCodeUnlock/view/pincode_unlock_page.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';
 import 'package:control/modules/splash/repository/splash_repository.dart';
 import 'package:control/navigation/navigator.dart';
@@ -52,9 +53,14 @@ class SplashPageView extends StatelessWidget {
   }
 
   void _validateIfLogged(BuildContext context, SplashState state) {
-    Timer(const Duration(milliseconds: 3000), () async {
+    Timer(const Duration(milliseconds: 3200), () async {
       final user = await Preferences.get.getUser();
-      final page = state.isLogged ? MenuPage(user: user) : const IntroPage();
+      final activePinCode = user?.securityCode?.isNotEmpty ?? false;
+      final page = state.isLogged
+          ? activePinCode
+              ? PinCodeUnlockPage(user: user)
+              : MenuPage(user: user)
+          : const IntroPage();
       FiicoRoute.sendFade(context, page);
     });
   }

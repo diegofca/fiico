@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.0.3"
+  bloc_concurrency:
+    dependency: "direct main"
+    description:
+      name: bloc_concurrency
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -127,6 +134,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  connectivity_plus:
+    dependency: "direct main"
+    description:
+      name: connectivity_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
+  connectivity_plus_linux:
+    dependency: transitive
+    description:
+      name: connectivity_plus_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
+  connectivity_plus_macos:
+    dependency: transitive
+    description:
+      name: connectivity_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.2"
+  connectivity_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
+  connectivity_plus_web:
+    dependency: transitive
+    description:
+      name: connectivity_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
+  connectivity_plus_windows:
+    dependency: transitive
+    description:
+      name: connectivity_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   cool_alert:
     dependency: "direct main"
     description:
@@ -183,6 +232,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  facebook_audience_network:
+    dependency: "direct main"
+    description:
+      name: facebook_audience_network
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -288,6 +344,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.8"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.50.1"
   flare_flutter:
     dependency: transitive
     description:
@@ -389,6 +452,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -485,6 +555,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.8"
+  internet_connection_checker:
+    dependency: "direct main"
+    description:
+      name: internet_connection_checker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+3"
   intl:
     dependency: "direct main"
     description:
@@ -492,13 +569,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
-  intro_views_flutter:
-    dependency: "direct main"
-    description:
-      name: intro_views_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
   js:
     dependency: transitive
     description:
@@ -541,6 +611,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
+  local_auth:
+    dependency: "direct main"
+    description:
+      name: local_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  local_auth_android:
+    dependency: transitive
+    description:
+      name: local_auth_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  local_auth_ios:
+    dependency: transitive
+    description:
+      name: local_auth_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+  local_auth_platform_interface:
+    dependency: transitive
+    description:
+      name: local_auth_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   lottie:
     dependency: transitive
     description:
@@ -583,6 +681,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   octo_image:
     dependency: transitive
     description:
@@ -766,7 +871,7 @@ packages:
     source: hosted
     version: "3.0.1+1"
   rxdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
@@ -903,6 +1008,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  stream_transform:
+    dependency: transitive
+    description:
+      name: stream_transform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   string_scanner:
     dependency: transitive
     description:

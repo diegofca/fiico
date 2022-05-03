@@ -18,6 +18,8 @@ class FiicoUser extends Equatable {
   final Plan? currentPlan;
   final List<Budget>? budgets;
   final String? budgetPermission;
+  final String? securityCode;
+  final bool? authBiometric;
   bool? showTutorial;
 
   FiicoUser({
@@ -34,6 +36,8 @@ class FiicoUser extends Equatable {
     this.budgets,
     this.showTutorial = false,
     this.budgetPermission,
+    this.securityCode,
+    this.authBiometric,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -49,6 +53,8 @@ class FiicoUser extends Equatable {
       budgets: Budget.toList(json?['budgets']),
       showTutorial: json?['showTutorial'],
       budgetPermission: json?['budgetPermission'],
+      authBiometric: json?['authBiometric'],
+      securityCode: json?['securityCode'],
       email: json?['email'],
       vip: json?['vip'],
     );
@@ -67,6 +73,8 @@ class FiicoUser extends Equatable {
       'profileImage': profileImage ?? '',
       'showTutorial': showTutorial ?? false,
       'budgetPermission': budgetPermission ?? '',
+      'authBiometric': authBiometric ?? false,
+      'securityCode': securityCode,
       'vip': vip ?? false,
     };
   }
@@ -92,6 +100,8 @@ class FiicoUser extends Equatable {
     Plan? currentPlan,
     List<Budget>? budgets,
     String? budgetPermission,
+    String? securityCode,
+    bool? authBiometric,
   }) {
     return FiicoUser(
       id: id ?? this.id,
@@ -106,19 +116,41 @@ class FiicoUser extends Equatable {
       currentPlan: currentPlan ?? this.currentPlan,
       budgets: budgets ?? this.budgets,
       budgetPermission: budgetPermission ?? this.budgetPermission,
+      securityCode: securityCode ?? this.securityCode,
+      authBiometric: authBiometric ?? this.authBiometric,
+      showTutorial: showTutorial,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [id, socialToken, deviceTokens, currentPlan, profileImage, vip];
+  List<Object?> get props => [
+        id,
+        vip,
+        userName,
+        socialToken,
+        deviceTokens,
+        currentPlan,
+        profileImage,
+        securityCode,
+        authBiometric
+      ];
 
   //Generic functions
+
+  // que tipo de permiso tiene el usuario en el budget.
   int getPermission() {
     return budgetPermission == 'WRITE' ? 1 : 0;
   }
 
   bool isRadAndWriteOnly() {
     return budgetPermission == 'WRITE';
+  }
+
+  bool isPremium() {
+    return isActivePlan() && currentPlan?.name != 'Free';
+  }
+
+  bool isActivePlan() {
+    return currentPlan?.enable ?? false;
   }
 }

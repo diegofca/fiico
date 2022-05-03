@@ -176,7 +176,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
                   Padding(
                     padding: const EdgeInsets.only(left: FiicoPaddings.eight),
                     child: Text(
-                      "Movimientos recientes",
+                      "Mis movimientos",
                       style: Style.subtitle.copyWith(
                         fontSize: FiicoFontSize.xm,
                       ),

@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:control/helpers/extension/constants.dart';
 import 'package:control/helpers/genericViews/fiico_giff_dialog.dart';
 import 'package:control/models/budget.dart';

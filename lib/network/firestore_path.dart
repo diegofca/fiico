@@ -9,4 +9,5 @@ class Firestore {
   static const showTutorialField = 'showTutorial';
   static const usersField = 'users';
   static const readedField = 'readed';
+  static const histories = 'histories';
 }

@@ -3,9 +3,11 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/view/budget_detail_page.dart';
+import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/repository/debt_detail_repository.dart';
 import 'package:control/modules/debtDetail/view/widget/debt_detail_bottom_view.dart';
@@ -32,7 +34,10 @@ class DebtDetailPage extends StatelessWidget {
       create: (context) => DebtDetailBloc(
         DebtDetailRepository(),
       )..add(DebtDetailBudgetFetchRequest(budget: budget)),
-      child: DebtDetailPageView(movement: movement, budget: budget),
+      child: ConnectivityBuilder.noConnection(
+        pageName: PageNames.debtDetailPage,
+        child: DebtDetailPageView(movement: movement, budget: budget),
+      ),
     );
   }
 }

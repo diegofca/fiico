@@ -13,10 +13,13 @@ import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/ItemList/budget_detail_movement_list_item.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/view/headerView/budget_detail_header_view.dart';
+import 'package:control/modules/budgetDetail/view/widgets/budget_circle_chart_history.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_add_movement_view.dart';
+import 'package:control/modules/budgetDetail/view/widgets/buget_linear_chart_history.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
@@ -24,12 +27,15 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 
 class BudgetDetailSuccessView extends StatelessWidget {
-  const BudgetDetailSuccessView({
+  BudgetDetailSuccessView({
     required this.budget,
     Key? key,
   }) : super(key: key);
 
   final Budget budget;
+
+  final _segmentOptions = {0: ' Grafica por mes ', 1: ' Grafica lineal '};
+  final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +108,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
       children: [
         _resumeBoards(context),
         _infoResumeBalanceView(context),
+        _historyFinalCycles(context),
+        _historySwitchOption(context),
         _infoCycleDetailView(context),
         _infoPeriodDurationDetailView(context),
         _entrysView(context),
@@ -112,6 +120,90 @@ class BudgetDetailSuccessView extends StatelessWidget {
         _entryUsersListView(context),
         _shareButtonView(context),
       ],
+    );
+  }
+
+  Widget _historyFinalCycles(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.72;
+    return Visibility(
+      visible: budget.isShowHistoryBudget(),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(
+              top: FiicoPaddings.twenyFour,
+            ),
+            child: SeparatorView(),
+          ),
+          SizedBox(
+            width: width,
+            height: 280,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              controller: controller,
+              children: [
+                BudgetChartCircleView(
+                  width: width,
+                  budget: budget,
+                  dropdownvalue:
+                      context.read<BudgetDetailBloc>().state.dropdownIndex,
+                ),
+                BudgetLinearChartHistory(
+                  width: width,
+                  budget: budget,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _historySwitchOption(BuildContext context) {
+    final _segmendIndex = context.read<BudgetDetailBloc>().state.segmentIndex;
+    return Container(
+      height: 60,
+      width: double.maxFinite,
+      alignment: Alignment.bottomCenter,
+      child: CupertinoSlidingSegmentedControl<int>(
+        groupValue: _segmendIndex,
+        backgroundColor: FiicoColors.white,
+        thumbColor: FiicoColors.pink,
+        children: {
+          0: _generateSegmentView(_segmendIndex, 0),
+          1: _generateSegmentView(_segmendIndex, 1),
+        },
+        onValueChanged: (index) => _scrollTo(context, index),
+      ),
+    );
+  }
+
+  Widget _generateSegmentView(int? selectedSegment, int index) {
+    final key = _segmentOptions.keys.elementAt(index);
+    return Text(
+      _segmentOptions.values.elementAt(index),
+      textAlign: TextAlign.center,
+      style: Style.subtitle.copyWith(
+        color: key == selectedSegment
+            ? FiicoColors.black
+            : FiicoColors.grayNeutral,
+      ),
+    );
+  }
+
+  void _scrollTo(BuildContext context, int? index) {
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetSegmentIndexRequest(index: index));
+    final posistion = index == 0
+        ? controller.position.minScrollExtent
+        : controller.position.maxScrollExtent;
+    controller.animateTo(
+      posistion,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
     );
   }
 
@@ -240,8 +332,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Tu balance es de: ',
-              maxLines: 2,
+              'El balance hoy es de: ',
+              maxLines: FiicoMaxLines.two,
               overflow: TextOverflow.fade,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayDark,
@@ -250,7 +342,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
             ),
             Text(
               budget.getTotalBalance().toCurrencyCompat(),
-              maxLines: 2,
+              maxLines: FiicoMaxLines.two,
               overflow: TextOverflow.fade,
               style: Style.title.copyWith(
                 color: FiicoColors.grayDark,
@@ -287,7 +379,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
             Expanded(
               child: Text(
                 budget.getDurationBudgetDescription(),
-                maxLines: 2,
+                maxLines: FiicoMaxLines.two,
                 overflow: TextOverflow.fade,
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.grayNeutral,
@@ -327,7 +419,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
               Expanded(
                 child: Text(
                   ' Inicio:  ${budget.startDate?.toDate().toDateFormat2()}',
-                  maxLines: 2,
+                  maxLines: FiicoMaxLines.two,
                   overflow: TextOverflow.fade,
                   style: Style.subtitle.copyWith(
                     color: FiicoColors.grayNeutral,
@@ -355,7 +447,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                 Expanded(
                   child: Text(
                     ' Final:  ${budget.finishDate?.toDate().toDateFormat2()}',
-                    maxLines: 2,
+                    maxLines: FiicoMaxLines.two,
                     overflow: TextOverflow.fade,
                     style: Style.subtitle.copyWith(
                       color: FiicoColors.grayNeutral,

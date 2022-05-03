@@ -69,3 +69,21 @@ class BudgetUpdateDetailUsersSelected extends BudgetDetailEvent {
   @override
   List<Object?> get props => [users, budget];
 }
+
+class BudgetUpdateDropdownHistoryIndexRequest extends BudgetDetailEvent {
+  const BudgetUpdateDropdownHistoryIndexRequest({required this.index});
+
+  final int? index;
+
+  @override
+  List<Object?> get props => [index];
+}
+
+class BudgetSegmentIndexRequest extends BudgetDetailEvent {
+  const BudgetSegmentIndexRequest({required this.index});
+
+  final int? index;
+
+  @override
+  List<Object?> get props => [index];
+}

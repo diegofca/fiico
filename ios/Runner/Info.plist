@@ -79,5 +79,7 @@
 	<string>Fiiko</string>
 	<key>FacebookAppID</key>
 	<string>3486537098283634</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Why is my app authenticating using face id?</string>
 </dict>
 </plist>

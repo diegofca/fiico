@@ -55,7 +55,7 @@ class Movement {
       name: json?['name'] ?? '',
       value: json?['value'] ?? 0,
       createdAt: json?['createdAt'] ?? Timestamp.now(),
-      recurrencyAt: List.castFrom(json?['recurrencyAt']),
+      recurrencyAt: List.castFrom(json?['recurrencyAt'] ?? []),
       type: json?['type'] ?? '',
       description: json?['description'],
       typeDescription: json?['typeDescription'] ?? '',
@@ -125,6 +125,14 @@ class Movement {
       markHistory: markHistory ?? this.markHistory,
       tags: tags ?? this.tags,
     );
+  }
+
+  static List<Movement> toList(Map<String, dynamic>? json) {
+    List<Movement> movements = [];
+    json?[Firestore.movementsField]?.forEach((move) {
+      movements.add(Movement.fromJson(move));
+    });
+    return movements;
   }
 
   /// Functions classs
@@ -273,18 +281,11 @@ class Movement {
     return isPaymentPeding && !isAddedWithBudget;
   }
 
-  static List<Movement> toList(Map<String, dynamic>? json) {
-    List<Movement> movements = [];
-    json?[Firestore.movementsField]?.forEach((move) {
-      movements.add(Movement.fromJson(move));
-    });
-    return movements;
-  }
-
   bool isCompleteByCreate() {
     final nameContained = name?.isNotEmpty ?? false;
     final valueContained = value != null && value != 0;
+    final dayToPending = recurrencyAt != null;
     final currencyContained = currency?.isNotEmpty ?? false;
-    return nameContained && valueContained && currencyContained;
+    return nameContained && valueContained && currencyContained & dayToPending;
   }
 }

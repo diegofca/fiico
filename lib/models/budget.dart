@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/models/budget_cycle_history.dart';
 import 'package:control/models/cycle.dart';
 import 'package:control/models/duration.dart';
 import 'package:control/models/movement.dart';
@@ -30,6 +31,7 @@ class Budget {
   final int? duration;
   final List<FiicoUser>? users;
   final String? ownerName;
+  final List<BudgetCycleHistory>? histories;
 
   Budget({
     required this.id,
@@ -49,6 +51,7 @@ class Budget {
     this.duration,
     this.users,
     this.ownerName,
+    this.histories,
   });
 
   Budget.create({
@@ -69,6 +72,7 @@ class Budget {
     this.duration = 3,
     this.users = const [],
     this.ownerName,
+    this.histories = const [],
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -89,6 +93,7 @@ class Budget {
       finishDate: json?['finishDate'] ?? Timestamp.now(),
       ownerName: json?['ownerName'] ?? '',
       movements: Movement.toList(json),
+      histories: BudgetCycleHistory.toList(json),
       users: FiicoUser.toList(json),
     );
   }
@@ -111,6 +116,7 @@ class Budget {
       'icon': icon?.toJson(),
       'ownerName': ownerName,
       'movements': movements?.map((e) => e.toJson()).toList() ?? [],
+      'histories': histories?.map((e) => e.toJson()).toList() ?? [],
       'users': users?.map((e) => e.toJson()).toList() ?? [],
     };
   }
@@ -132,6 +138,8 @@ class Budget {
       'startDate': startDate,
       'finishDate': finishDate,
       'ownerName': ownerName,
+      'histories': FieldValue.arrayUnion(
+          histories?.map((e) => e.toJson()).toList() ?? []),
       'movements': FieldValue.arrayUnion(
           movements?.map((e) => e.toJson()).toList() ?? []),
       'users':
@@ -166,6 +174,7 @@ class Budget {
     List<FiicoUser>? users,
     bool? isOwner,
     String? ownerName,
+    List<BudgetCycleHistory>? histories,
   }) {
     return Budget(
       id: id ?? this.id,
@@ -184,6 +193,7 @@ class Budget {
       finishDate: finishDate ?? this.finishDate,
       movements: movements ?? this.movements,
       ownerName: ownerName ?? this.ownerName,
+      histories: histories ?? this.histories,
       users: users ?? this.users,
     );
   }
@@ -197,6 +207,14 @@ class Budget {
 
   bool isEmptyMovements() {
     return movements?.isEmpty ?? false;
+  }
+
+  bool isEmptyHistorys() {
+    return histories?.isEmpty ?? false;
+  }
+
+  bool isShowHistoryBudget() {
+    return !isEmptyMovements() || !isEmptyHistorys();
   }
 
   bool get isOwner => Preferences.get.getID == userID;
@@ -225,6 +243,54 @@ class Budget {
       total += e.value ?? 0;
     });
     return total;
+  }
+
+  double getPendingEntry() {
+    final entrys = movements?.where(
+      (e) => e.getType() == MovementType.ENTRY && e.paymentStatus == 'Pending',
+    );
+    double total = 0;
+    entrys?.forEach((e) {
+      total += e.value ?? 0;
+    });
+    return total.roundToDouble();
+  }
+
+  double getPendingDebt() {
+    final entrys = movements?.where((e) =>
+        e.getType() == MovementType.DEBT && e.paymentStatus == 'Pending');
+    double total = 0;
+    entrys?.forEach((e) {
+      total += e.value ?? 0;
+    });
+
+    return total.roundToDouble();
+  }
+
+  double getPayedEntry() {
+    final entrys = movements?.where(
+      (e) => e.getType() == MovementType.ENTRY && e.paymentStatus == 'Payed',
+    );
+    double total = 0;
+    entrys?.forEach((e) {
+      total += e.value ?? 0;
+    });
+    return total.roundToDouble();
+    // ((total * 100) / getTotal()).roundToDouble();
+  }
+
+  double getPayedDebt() {
+    final entrys = movements?.where(
+        (e) => e.getType() == MovementType.DEBT && e.paymentStatus == 'Payed');
+    double total = 0;
+    entrys?.forEach((e) {
+      total += e.value ?? 0;
+    });
+    return total.roundToDouble();
+  }
+
+  double getTotal() {
+    return getTotalEntry() + getTotalDebt();
   }
 
   double getTotalBalance() {

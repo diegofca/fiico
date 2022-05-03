@@ -2,11 +2,13 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
 import 'package:control/modules/budgetDetail/view/budget_detail_success_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_bottom_view.dart';
+import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,10 @@ class BudgetDetailPage extends StatelessWidget {
       create: (blocContext) => BudgetDetailBloc(
         BudgetDetailRepository(budget.id),
       )..add(BudgetDetailFetchRequest(budget: budget)),
-      child: const BudgetDetailPageView(),
+      child: ConnectivityBuilder.noConnection(
+        pageName: PageNames.budgetPage,
+        child: const BudgetDetailPageView(),
+      ),
     );
   }
 }

@@ -17,6 +17,8 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     on<BudgetDetailMovementRemoveRequest>(_mapRemoveMovementToState);
     on<BudgetUpdateDetailRequest>(_mapUpdateBudgetToState);
     on<BudgetUpdateDetailUsersSelected>(_mapChangeUsersToState);
+    on<BudgetUpdateDropdownHistoryIndexRequest>(_mapChangeDropdownIndexToState);
+    on<BudgetSegmentIndexRequest>(_mapChangeSegmentIndexToState);
   }
 
   final BudgetDetailRepository repository;
@@ -117,6 +119,28 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     emit(state.copyWith(
       status: BudgetDetailStatus.success,
       budget: repository.getBudget(userID),
+    ));
+  }
+
+  void _mapChangeDropdownIndexToState(
+    BudgetUpdateDropdownHistoryIndexRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    emit(state.copyWith(
+      status: BudgetDetailStatus.success,
+      dropdownIndex: event.index,
+    ));
+  }
+
+  void _mapChangeSegmentIndexToState(
+    BudgetSegmentIndexRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    emit(state.copyWith(
+      status: BudgetDetailStatus.success,
+      segmentIndex: event.index,
     ));
   }
 }

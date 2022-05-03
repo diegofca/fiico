@@ -24,4 +24,9 @@ extension DateExtension on DateTime {
   String toDateFormat4() {
     return DateFormat("MMMM dd, yyyy").format(this);
   }
+
+  /// Format "MMM, dd yyyy"
+  String toMonthAndYear() {
+    return DateFormat("MMMM, yyyy").format(this);
+  }
 }

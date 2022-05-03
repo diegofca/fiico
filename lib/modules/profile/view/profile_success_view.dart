@@ -27,52 +27,55 @@ class ProfileSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        height: double.maxFinite,
-        color: FiicoColors.grayBackground,
-        child: Column(
-          children: [
-            _notificationsList(),
-            _iconAppVersion(),
-            _logOutButton(context)
-          ],
+      child: SingleChildScrollView(
+        child: Container(
+          color: FiicoColors.grayBackground,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _notificationsList(),
+              _iconAppVersion(),
+              _logOutButton(context)
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _notificationsList() {
-    return Expanded(
-      child: Container(
-        alignment: Alignment.center,
-        width: double.maxFinite,
-        padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
-          boxShadow: const [
-            BoxShadow(
-              color: FiicoColors.grayLite,
-              blurRadius: 5,
-              spreadRadius: 20,
-            )
-          ],
-        ),
-        child: ListView.builder(
-          itemCount: options.length,
-          itemBuilder: (context, index) {
-            final option = options[index];
-            return ProfileListItemView(option: option);
-          },
-        ),
+    return Container(
+      alignment: Alignment.center,
+      width: double.maxFinite,
+      padding: const EdgeInsets.all(FiicoPaddings.thirtyTwo),
+      decoration: BoxDecoration(
+        color: FiicoColors.grayBackground,
+        borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
+        boxShadow: const [
+          BoxShadow(
+            color: FiicoColors.grayLite,
+            blurRadius: 5,
+            spreadRadius: 20,
+          )
+        ],
+      ),
+      child: ListView.builder(
+        itemCount: options.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          final option = options[index];
+          return ProfileListItemView(option: option);
+        },
       ),
     );
   }
 
   Widget _iconAppVersion() {
-    return SizedBox(
+    return Container(
       width: double.maxFinite,
       height: 60,
+      color: FiicoColors.grayBackground,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

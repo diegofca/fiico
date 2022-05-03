@@ -2,12 +2,15 @@ import 'package:control/models/user.dart';
 import 'package:control/modules/budgets/view/budgets_page.dart';
 import 'package:control/modules/home/home.dart';
 import 'package:control/modules/notifications/view/notifications_page.dart';
+import 'package:control/modules/settings/settingsConfig/settings_general.dart';
 import 'package:control/modules/settings/view/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'view/bottom_nav_bar/bottom_nav.dart';
 
 List<BottomNavBarItem> onCreateTabs(FiicoUser? user, BuildContext context) {
+  SettingsConfiguration settingsConfiguration = SettingsConfiguration(context);
+
   return <BottomNavBarItem>[
     BottomNavBarItem(
       icon: MdiIcons.homeVariant,
@@ -36,6 +39,8 @@ List<BottomNavBarItem> onCreateTabs(FiicoUser? user, BuildContext context) {
       screen: SettingsPage(
         key: const Key('_MenuHome.settings'),
         user: user,
+        settingItem: settingsConfiguration.setting,
+        isShowBack: false,
       ),
     ),
   ];

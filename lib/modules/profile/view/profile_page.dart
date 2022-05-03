@@ -3,6 +3,8 @@ import 'package:control/models/user.dart';
 import 'package:control/modules/profile/view/profile_app_bar.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:control/modules/profile/view/profile_success_view.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +20,13 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: ProfileAppBar(user: user),
+      appBar: ProfileAppBar(
+        user: user,
+        onDetailTap: () => FiicoRoute.send(
+          context,
+          SubscriptionDetailPage(user: user),
+        ),
+      ),
       body: BlocProvider(
         create: (context) => MenuBloc(),
         child: const ProfilePageView(),

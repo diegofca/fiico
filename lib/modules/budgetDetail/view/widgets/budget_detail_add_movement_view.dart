@@ -16,8 +16,6 @@ class BudgetDetailAddMovementView extends StatefulWidget {
   @override
   State<BudgetDetailAddMovementView> createState() =>
       BudgetDetailAddMovementViewState();
-
-  Size get preferredSize => throw UnimplementedError();
 }
 
 class BudgetDetailAddMovementViewState

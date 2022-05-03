@@ -3,9 +3,11 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/budgetDetail/view/budget_detail_page.dart';
+import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/debtDetail/view/widget/debt_detail_bottom_view.dart';
 import 'package:control/modules/debtDetail/view/widget/debt_detail_markpayed_success_view.dart';
 import 'package:control/modules/entryDetail/bloc/entry_detail_bloc.dart';
@@ -31,7 +33,10 @@ class EntryDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => EntryDetailBloc(EntryDetailRepository())
         ..add(EntryDetailBudgetFetchRequest(budget: budget)),
-      child: EntryDetailPageView(movement: movement, budget: budget),
+      child: ConnectivityBuilder.noConnection(
+        pageName: PageNames.entryDetailPage,
+        child: EntryDetailPageView(movement: movement, budget: budget),
+      ),
     );
   }
 }

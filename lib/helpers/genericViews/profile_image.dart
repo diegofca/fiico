@@ -104,7 +104,7 @@ class ProfileImage extends StatelessWidget {
         height: size,
         width: size,
         child: Text(
-          name,
+          name.toUpperCase(),
           textAlign: TextAlign.center,
           style: Style.subtitle.copyWith(
             color: FiicoColors.white,
