@@ -7,6 +7,7 @@ import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/providers/login_social_provider.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 abstract class LoginRepositoryAbs {
   Future<FiicoUser?> loginUserWithEmail(
@@ -88,6 +89,7 @@ class LoginRepository extends LoginRepositoryAbs {
     final lastName = credential.additionalUserInfo?.profile?['family_name'] ??
         credential.additionalUserInfo?.profile?['last_name'];
 
+    String token = await FirebaseMessaging.instance.getToken() ?? '';
     final user = FiicoUser(
       id: credential.user?.uid,
       email: credential.user?.email,
@@ -96,6 +98,7 @@ class LoginRepository extends LoginRepositoryAbs {
       profileImage: credential.user?.photoURL,
       userName: credential.user?.displayName,
       currentPlan: Plan.free(),
+      deviceTokens: [token],
     );
     Preferences.get.saveUser(user);
     await _addNewUser(user);

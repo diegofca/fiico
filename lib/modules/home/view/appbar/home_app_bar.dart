@@ -1,4 +1,5 @@
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/fonts_params.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -30,7 +31,7 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
       leading: leading,
       title: title,
       actions: actions ?? [],
-      elevation: 0,
+      elevation: FiicoPaddings.zero,
       centerTitle: false,
       automaticallyImplyLeading: false,
       bottom: bottomWidget,

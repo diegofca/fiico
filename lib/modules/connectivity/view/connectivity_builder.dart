@@ -1,3 +1,4 @@
+import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/modules/connectivity/view/view.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _ConnectivityBuilderState extends State<ConnectivityBuilder>
     if (!isCurrent) return;
 
     final connectivityBloc = context.read<ConnectivityBloc>();
+    FirebaseManager.addContext(context);
 
     switch (state) {
       case AppLifecycleState.inactive:

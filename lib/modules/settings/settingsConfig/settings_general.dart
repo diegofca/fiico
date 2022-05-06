@@ -54,10 +54,11 @@ class SettingsConfiguration {
         onTap: () async {
           final user = await Preferences.get.getUser();
           final isPremium = user?.isPremium() ?? false;
-          final page = isPremium
-              ? SubscriptionDetailPage(user: user)
-              : const PremiumPage();
-          FiicoRoute.send(context, page);
+          if (isPremium) {
+            FiicoRoute.send(context, SubscriptionDetailPage(user: user));
+          } else {
+            FiicoRoute.present(context, PremiumPage(user: user));
+          }
         },
       );
 }

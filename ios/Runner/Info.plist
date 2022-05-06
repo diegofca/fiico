@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Fiico</string>
+	<string>Valiu</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -76,7 +76,7 @@
 	<key>FacebookClientToken</key>
 	<string>CLIENT-TOKEN</string>
 	<key>FacebookDisplayName</key>
-	<string>Fiiko</string>
+	<string>Valiu</string>
 	<key>FacebookAppID</key>
 	<string>3486537098283634</string>
 	<key>NSFaceIDUsageDescription</key>

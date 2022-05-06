@@ -1,3 +1,4 @@
+import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/connectivity/view/connectivity_builder.dart';

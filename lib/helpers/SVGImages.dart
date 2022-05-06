@@ -14,7 +14,7 @@ class SVGImages {
   static const emotyNot = 'assets/images/not_empty.svg';
   static const loginTopBg = 'assets/images/login_top_bg.svg';
   static const userSignupBg = 'assets/images/user_signup_bg.svg';
-  static const purpleBg = 'assets/images/purple_bg.svg';
+  static const purpleBg = 'assets/images/purple_bg.png';
   static const googleIcon = 'assets/images/google_icon.svg';
   static const facebookIcon = 'assets/images/facebook_icon.svg';
   static const appleIcon = 'assets/images/apple_icon.svg';

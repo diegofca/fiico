@@ -87,7 +87,10 @@ abstract class FiicoPaddings {
   ///Size 64px
   static const double sixtyTwo = 62;
 
-  ///Size 64px
+  ///Size 80px
+  static const double eigthTeen = 80;
+
+  ///Size 120px
   static const double oneHundredTwenty = 120;
 }
 

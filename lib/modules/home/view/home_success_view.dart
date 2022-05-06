@@ -197,7 +197,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     final _movements =
         currentBudget?.getMovementsBy(widget.dropdownvalue) ?? [];
 
-    if (_movements.isEmpty) {
+    if (currentBudget != null && _movements.isEmpty) {
       return _emptyFilterSliverView(context);
     }
 

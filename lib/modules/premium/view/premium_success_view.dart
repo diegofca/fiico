@@ -27,15 +27,19 @@ class PremiumSuccessView extends StatelessWidget {
   Widget _bodyView(BuildContext context) {
     return Stack(
       children: [
-        SvgPicture.asset(
-          SVGImages.purpleBg,
-          fit: BoxFit.cover,
-          height: double.maxFinite,
-          width: double.maxFinite,
-        ),
+        _purpleBgView(),
         _premiumDetailListView(context),
         _closeButton(context)
       ],
+    );
+  }
+
+  Widget _purpleBgView() {
+    return Image.asset(
+      SVGImages.purpleBg,
+      fit: BoxFit.cover,
+      height: double.maxFinite,
+      width: double.maxFinite,
     );
   }
 
@@ -103,8 +107,8 @@ class PremiumSuccessView extends StatelessWidget {
         child: Stack(
           children: [
             const Positioned(
-              top: 65,
-              right: 15,
+              top: FiicoPaddings.sixtyTwo,
+              right: FiicoPaddings.sixteen,
               child: Icon(
                 MdiIcons.crownOutline,
                 color: FiicoColors.gold,
@@ -113,7 +117,7 @@ class PremiumSuccessView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 80,
+                top: FiicoPaddings.eigthTeen,
               ),
               child: SvgPicture.asset(
                 SVGImages.valiuIcon,
@@ -219,7 +223,9 @@ class PremiumSuccessView extends StatelessWidget {
 
   Widget _dudesTitleView() {
     return Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.thirtyTwo,
+      ),
       child: Text(
         '¿Tienes dudas?',
         style: Style.subtitle.copyWith(
@@ -234,8 +240,8 @@ class PremiumSuccessView extends StatelessWidget {
     return Container(
       height: 80,
       margin: const EdgeInsets.symmetric(
-        horizontal: 80,
-        vertical: 8,
+        horizontal: FiicoPaddings.eigthTeen,
+        vertical: FiicoPaddings.eight,
       ),
       width: double.maxFinite,
       child: Expanded(
@@ -251,7 +257,9 @@ class PremiumSuccessView extends StatelessWidget {
 
   Widget _cancelDescriptionView() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 64),
+      padding: const EdgeInsets.only(
+        bottom: FiicoPaddings.sixtyTwo,
+      ),
       child: Text(
         'Tu puedes cancelar tu subscripción en el momento que quieras',
         maxLines: FiicoMaxLines.four,
@@ -267,7 +275,7 @@ class PremiumSuccessView extends StatelessWidget {
   Widget _payAndSafeTitleView() {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 24,
+        top: FiicoPaddings.twenyFour,
       ),
       child: Text(
         'Ahorra hasta 56% con el Premium Ilimitado',
@@ -285,7 +293,7 @@ class PremiumSuccessView extends StatelessWidget {
     return Container(
       height: 80,
       margin: const EdgeInsets.symmetric(
-        horizontal: 32,
+        horizontal: FiicoPaddings.thirtyTwo,
       ),
       width: double.maxFinite,
       child: Expanded(

@@ -36,7 +36,7 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
       leading: _getLeading(context),
       title: title,
       actions: actions ?? [],
-      elevation: 0,
+      elevation: FiicoPaddings.zero,
       centerTitle: false,
       bottom: text == null ? null : bottomWidget,
     );

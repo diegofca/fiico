@@ -1,4 +1,5 @@
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/models/user.dart';
@@ -51,7 +52,7 @@ class SearchUsersPageView extends StatelessWidget {
             return Scaffold(
               backgroundColor: FiicoColors.grayBackground,
               appBar: GenericAppBar(
-                bottomHeigth: 0,
+                bottomHeigth: FiicoPaddings.zero,
                 title: SizedBox(
                   width: double.maxFinite,
                   height: 60,

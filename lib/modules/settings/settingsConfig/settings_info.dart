@@ -1,4 +1,6 @@
 import 'package:control/models/setting.dart';
+import 'package:control/modules/settings/view/pages/aboutAt/view/about_of_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 
 class SettingsInfoConfiguration {
@@ -24,9 +26,7 @@ class SettingsInfoConfiguration {
           ),
           SettingItem(
             name: 'Acerca de Valiu',
-            onTap: () {
-              print('ir a mi subscripcion');
-            },
+            onTap: () => FiicoRoute.send(context, const AboutOfPage()),
           ),
         ],
       );

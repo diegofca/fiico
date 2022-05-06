@@ -58,7 +58,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
 
   Widget _body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
       child: SingleChildScrollView(
         physics: const RangeMaintainingScrollPhysics(),
         child: _bodyContainer(context),
@@ -176,7 +176,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       labelText: 'Password',
       errorText:
           'Invalidate password format. La contraseña debe contener una mayuscula, numeros y un caracter especial.',
-      maxLines: 1,
+      maxLines: FiicoMaxLines.four,
       obscureText: !isShowPassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
       suffixIcon: IconButton(
@@ -229,14 +229,16 @@ class SignSuccesViewState extends State<SignSuccesView> {
         runAlignment: WrapAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding:
+                const EdgeInsets.symmetric(horizontal: FiicoPaddings.sixteen),
             child: SvgPicture.asset(
               SVGImages.facebookIcon,
               width: 40,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding:
+                const EdgeInsets.symmetric(horizontal: FiicoPaddings.sixteen),
             child: SvgPicture.asset(
               SVGImages.googleIcon,
               width: 40,
@@ -244,7 +246,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ),
           if (Platform.isIOS)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: FiicoPaddings.sixteen),
               child: SvgPicture.asset(
                 SVGImages.appleIcon,
                 width: 40,

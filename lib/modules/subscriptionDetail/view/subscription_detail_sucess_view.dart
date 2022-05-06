@@ -8,7 +8,6 @@ import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/premium/view/premium_page.dart';
 import 'package:control/modules/subscriptionDetail/view/header/subscription_detail_header.dart';
-import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

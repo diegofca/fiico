@@ -53,7 +53,7 @@ class BudgetDetailPageView extends StatelessWidget {
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
         actions: [_infoButton(context)],
-        bottomHeigth: 0,
+        bottomHeigth: FiicoPaddings.zero,
       ),
       body: SubscriptionDetailSuccessView(user: user),
     );

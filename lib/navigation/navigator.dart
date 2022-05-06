@@ -14,20 +14,16 @@ enum TabOption {
 
 extension FiicoRoute on Navigator {
   static Future<dynamic> sendFade(BuildContext context, Widget page) {
-    return Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => page,
-        transitionsBuilder: (c, anim, a2, child) =>
-            FadeTransition(opacity: anim, child: child),
-        transitionDuration: const Duration(seconds: 1),
-      ),
-    );
+    return Navigator.pushReplacement(context, FiicoRouteTransitions.fade(page));
   }
 
   static Future<dynamic> send(BuildContext context, Widget page) {
     return Navigator.push(
         context, MaterialPageRoute(builder: (context) => page));
+  }
+
+  static Future<dynamic> present(BuildContext context, Widget page) {
+    return Navigator.push(context, FiicoRouteTransitions.present(page));
   }
 
   static Future<dynamic> sendReplace(BuildContext context, Widget page) {
@@ -50,5 +46,33 @@ extension FiicoRoute on Navigator {
 
   static void hideLoader(BuildContext context) {
     context.loaderOverlay.hide();
+  }
+}
+
+// Route transitions
+class FiicoRouteTransitions {
+  static present(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        var tween = Tween(begin: begin, end: Offset.zero).chain(
+          CurveTween(curve: Curves.ease),
+        );
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  static fade(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (c, anim, a2, child) =>
+          FadeTransition(opacity: anim, child: child),
+      transitionDuration: const Duration(seconds: 1),
+    );
   }
 }

@@ -54,14 +54,19 @@ class SplashPageView extends StatelessWidget {
 
   void _validateIfLogged(BuildContext context, SplashState state) {
     Timer(const Duration(milliseconds: 3200), () async {
-      final user = await Preferences.get.getUser();
-      final activePinCode = user?.securityCode?.isNotEmpty ?? false;
-      final page = state.isLogged
-          ? activePinCode
-              ? PinCodeUnlockPage(user: user)
-              : MenuPage(user: user)
-          : const IntroPage();
-      FiicoRoute.sendFade(context, page);
+      if (state.isLogged) {
+        _processLogged(context);
+      } else {
+        FiicoRoute.sendFade(context, const IntroPage());
+      }
     });
+  }
+
+  void _processLogged(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    final activePinCode = user?.securityCode?.isNotEmpty ?? false;
+    final page =
+        activePinCode ? PinCodeUnlockPage(user: user) : MenuPage(user: user);
+    FiicoRoute.sendFade(context, page);
   }
 }

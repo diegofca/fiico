@@ -78,7 +78,7 @@ dependencies:
   flutter_linkify: ^5.0.2 
 
   #shared preferences
-  shared_preferences: ^2.0.9 
+  shared_preferences: ^2.0.13 
   
   #Load SVG IMAGES
   flutter_svg: ^1.0.3 
@@ -94,7 +94,7 @@ dependencies:
   icons_plus: ^1.0.2
 
   #Toast
-  fluttertoast: ^8.0.8
+  overlay_support: ^1.2.1
 
   #Keyboards actions
   keyboard_actions: "^3.4.5"
@@ -121,6 +121,9 @@ dependencies:
   #Connectivity
   connectivity_plus: ^1.0.6
   internet_connection_checker: ^0.0.1+3
+
+  #Translate
+  easy_localization:
 
   #Charts
   fl_chart: ^0.50.1
