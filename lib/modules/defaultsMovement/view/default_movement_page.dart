@@ -16,6 +16,7 @@ class DefaultMovementPage {
     required Function(Movement) onMovementSelected,
     required Budget budget,
     required Function onNewItemSelected,
+    required MovementType type,
   }) {
     showModalBottomSheet(
       context: context,
@@ -26,6 +27,7 @@ class DefaultMovementPage {
           onMovementSelected: onMovementSelected,
           onNewItemSelected: onNewItemSelected,
           budget: budget,
+          type: type,
         );
       },
     );
@@ -38,12 +40,14 @@ class DefaultMovementPageView extends StatelessWidget {
     required this.onMovementSelected,
     required this.budget,
     required this.onNewItemSelected,
+    required this.type,
   }) : super(key: key);
 
   Function(Movement) onMovementSelected;
   Function onNewItemSelected;
 
   final Budget budget;
+  final MovementType type;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +72,7 @@ class DefaultMovementPageView extends StatelessWidget {
             child: Wrap(
               children: [
                 _title(),
-                _movementListView(Movements.items, onMovementSelected),
+                _movementListView(Movements.items(type), onMovementSelected),
                 _createButtonView(context, onNewItemSelected),
               ],
             ),
@@ -86,7 +90,7 @@ class DefaultMovementPageView extends StatelessWidget {
         bottom: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "Usa movimientos pre-definidos",
+        "Movimientos predefinidos",
         style: Style.title.copyWith(
           color: FiicoColors.black,
           fontSize: FiicoFontSize.md,

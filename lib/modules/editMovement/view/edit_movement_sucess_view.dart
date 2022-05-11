@@ -3,8 +3,6 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
-import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/models/budget.dart';
@@ -17,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:control/helpers/extension/num.dart';
 
 class EditMovementSuccessView extends StatefulWidget {
   const EditMovementSuccessView({
@@ -36,6 +35,7 @@ class EditMovementSuccessView extends StatefulWidget {
 class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
   //Vars
   final _nameController = TextEditingController();
+  final _priceController = TextEditingController();
   final _descController = TextEditingController();
 
   final _categoriesController = TextEditingController();
@@ -50,6 +50,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
     setState(() {
       _nameController.text = widget.movement.name ?? '';
       _descController.text = widget.movement.description ?? '';
+      _priceController.text = widget.movement.value?.toExactlyCurrency() ?? '';
     });
   }
 
@@ -123,7 +124,6 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
         _entryDateView(context),
         _entryCategoryView(context),
         _categoriesList(context),
-        // _createButtonView(context),
       ],
     );
   }
@@ -158,6 +158,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                   keyboardType: TextInputType.number,
                   hintText: 'Ingresa el valor',
                   textColor: widget.movement.getTypeColor(),
+                  textEditingController: _priceController,
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
                   onChanged: (value) {
                     final value = _currencyFormarted.getUnformattedValue();
@@ -374,38 +375,6 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
         onDeleteTag: (int index) => _removedTagCategory(context, index),
       ),
     );
-  }
-
-  Widget _createButtonView(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-      ),
-      child: FiicoButton(
-        title: widget.movement.getType() == MovementType.ENTRY
-            ? 'Modificar ingreso'
-            : 'Modificar gasto',
-        color: widget.movement.getTypeColor(),
-        onTap: () => _editMovement(context),
-      ),
-    );
-  }
-
-  void _editMovement(BuildContext context) {
-    if (widget.movement.isCompleteByCreate()) {
-      if (widget.movement.isAddedWithBudget) {
-        Navigator.of(context).pop(widget.movement);
-      } else {
-        context.read<EditMovementBloc>().add(EditMovementAddedRequest(
-            newMovement: widget.movement, budget: widget.budget));
-      }
-    } else {
-      FiicoAlertDialog.showWarnning(context,
-          title: 'Campos vacios',
-          message:
-              'Completa los campos faltantes para poder agregar tu movimiento a tu presupuesto.');
-    }
   }
 
   void _addedTagCategory(BuildContext context) {

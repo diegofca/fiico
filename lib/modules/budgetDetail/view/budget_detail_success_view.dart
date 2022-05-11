@@ -530,7 +530,15 @@ class BudgetDetailSuccessView extends StatelessWidget {
             ),
             child: BudgetDetailAddMovementView(
               title: 'Agregar nuevo ingreso',
-              onAdded: () => _addedMovement(context, MovementType.ENTRY),
+              onAdded: () => DefaultMovementPage().show(
+                context,
+                budget: budget,
+                type: MovementType.ENTRY,
+                onMovementSelected: (movement) =>
+                    _editMovement(context, movement),
+                onNewItemSelected: () =>
+                    _addedMovement(context, MovementType.ENTRY),
+              ),
             ),
           ),
         ),
@@ -607,6 +615,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                 onAdded: () => DefaultMovementPage().show(
                   context,
                   budget: budget,
+                  type: MovementType.DEBT,
                   onMovementSelected: (movement) =>
                       _editMovement(context, movement),
                   onNewItemSelected: () =>
