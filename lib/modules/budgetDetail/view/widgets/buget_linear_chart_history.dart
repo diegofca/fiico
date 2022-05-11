@@ -35,8 +35,14 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double newWidth = 80 + (showingBarGroups.length * 40);
+
     return Container(
       width: widget.width > newWidth ? widget.width : newWidth,
       padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
@@ -60,14 +66,14 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
           Expanded(
             child: BarChart(
               BarChartData(
-                maxY: (widget.budget.getTotal() / 1000000) + 5,
+                maxY: widget.budget.getTotal(),
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
                     tooltipBgColor: FiicoColors.graySoft,
                     getTooltipItem: (data1, index1, data2, index2) {
                       final option = data2.toY;
                       return BarTooltipItem(
-                        (option * 1000000).toCurrencyCompat(),
+                        option.toCurrencyCompat(),
                         Style.desc.copyWith(
                           color: FiicoColors.grayDark,
                           fontSize: FiicoFontSize.xm,
@@ -116,7 +122,7 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
       fontWeight: FontWeight.bold,
       fontSize: FiicoFontSize.small,
     );
-    final valueInMillions = (value * 1000000).toCurrencyCompat();
+    final valueInMillions = value.toCurrencyCompat();
     return Text(valueInMillions, style: style);
   }
 
@@ -133,7 +139,8 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
     );
   }
 
-  /// Functions - get generic data
+  /// Functions - get generic dataç
+
   List<BudgetCycleHistory> _getAllHistorySections() {
     final pendingToDebt = widget.budget.getPendingDebt();
     final pendingToEntry = widget.budget.getPendingEntry();
@@ -154,20 +161,20 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
   }
 
   double _getInterval() {
-    final interval = (widget.budget.getTotal() / 1000000) / 5;
-    return interval == 0 ? 1 : interval;
+    final newInterval = widget.budget.getTotal() / 4;
+    return newInterval;
   }
 
   BarChartGroupData makeGroupData(num? y1, num? y2) {
     poxIndex = poxIndex + 1;
     return BarChartGroupData(barsSpace: 4, x: poxIndex, barRods: [
       BarChartRodData(
-        toY: ((y1?.toDouble() ?? 0) / 1000000),
+        toY: (y1?.toDouble() ?? 0),
         color: FiicoColors.pink,
         width: 10,
       ),
       BarChartRodData(
-        toY: ((y2?.toDouble() ?? 0) / 1000000),
+        toY: (y2?.toDouble() ?? 0),
         color: FiicoColors.greenNeutral,
         width: 10,
       ),

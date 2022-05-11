@@ -22,7 +22,7 @@ class LoginSocialProvider {
 }
 
 class SocialCredential {
-  final AuthCredential userCredential;
+  final OAuthCredential userCredential;
   final String? email;
   SocialCredential({required this.userCredential, this.email});
 }

@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
+import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/modules/connectivity/repository/connectivity_repository.dart';
 import 'package:control/modules/splash/view/splash_page.dart';
@@ -13,17 +14,21 @@ import 'package:overlay_support/overlay_support.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initFacebook();
+  initPurchase();
   await initFirebase();
-
   runApp(const ValiuApp());
 }
 
 Future<void> initFirebase() async {
-  await FirebaseManager.init();
+  return FirebaseManager.init();
 }
 
 void initFacebook() {
   FacebookAudienceNetwork.init(iOSAdvertiserTrackingEnabled: true);
+}
+
+void initPurchase() {
+  PurchaseManager.get.configureStore();
 }
 
 class ValiuApp extends StatelessWidget {

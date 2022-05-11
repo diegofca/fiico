@@ -41,8 +41,6 @@ class FiicoButton extends StatefulWidget {
 
   @override
   State<FiicoButton> createState() => FiicoButtonState();
-
-  Size get preferredSize => throw UnimplementedError();
 }
 
 class FiicoButtonState extends State<FiicoButton> {

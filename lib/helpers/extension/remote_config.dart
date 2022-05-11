@@ -17,8 +17,10 @@ class FiicoRemoteConfig {
   static Future<bool> fetch() async {
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 5),
-      minimumFetchInterval: Duration.zero,
+      minimumFetchInterval: const Duration(seconds: 5), //Duration.zero,
     ));
+    // await remoteConfig.activate();
+    await Future.delayed(const Duration(seconds: 1));
     return remoteConfig.fetchAndActivate();
   }
 

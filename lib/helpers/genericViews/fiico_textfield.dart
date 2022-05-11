@@ -19,6 +19,7 @@ class FiicoTextfield extends Container {
     this.inputFormatters,
     this.onChanged,
     this.onSubmitted,
+    this.initValue,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +34,8 @@ class FiicoTextfield extends Container {
   List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
+
+  String? initValue;
 
   @override
   Widget build(BuildContext context) {
@@ -73,4 +76,19 @@ class FiicoTextfield extends Container {
       ),
     );
   }
+}
+
+class FiicoEditingController extends TextEditingController {
+  // @override
+  // set text(String newText) {
+  //   if (initalizate) {
+  //     initalizate = false;
+  //   }
+  //   value = value.copyWith(
+  //     text: newText,
+  //     selection:
+  //         initalizate ? TextSelection.collapsed(offset: newText.length) : null,
+  //     composing: TextRange.empty,
+  //   );
+  // }
 }

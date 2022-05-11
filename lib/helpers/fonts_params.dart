@@ -42,6 +42,8 @@ abstract class FiicoLineHeight {
 abstract class FiicoMaxLines {
   static const int unlimited = 100;
 
+  static const int one = 1;
+
   static const int two = 2;
 
   static const int four = 4;

@@ -11,7 +11,7 @@ class FirebaseManager {
 
   static Future<void> init() async {
     await Firebase.initializeApp();
-    FiicoRemoteConfig.fetch();
+    await FiicoRemoteConfig.fetch();
     _initFirestore();
     _initRemoteConfig();
     _initMessaging();
@@ -78,7 +78,7 @@ class FirebaseManager {
 
   void suscribe(String topic) async {
     await FirebaseMessaging.instance
-        .subscribeToTopic('$topic')
+        .subscribeToTopic(topic)
         .catchError((error) {
       print(error.toString());
     }).then((value) {

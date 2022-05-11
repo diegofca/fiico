@@ -5,13 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MarkMovement {
   final Timestamp? date;
   final String? userName;
+  final num? value;
 
-  MarkMovement({this.date, this.userName});
+  MarkMovement(
+      {required this.date, required this.userName, required this.value});
 
   factory MarkMovement.fromJson(Map<String, dynamic>? json) {
     return MarkMovement(
       date: json?['date'],
       userName: json?['userName'],
+      value: json?['value'],
     );
   }
 
@@ -19,6 +22,7 @@ class MarkMovement {
     return {
       'date': date,
       'userName': userName,
+      'value': value,
     };
   }
 

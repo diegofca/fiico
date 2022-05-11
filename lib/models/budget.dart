@@ -205,6 +205,10 @@ class Budget {
     return userID ?? currentID;
   }
 
+  bool isCycleBudget() {
+    return isCycle ?? false;
+  }
+
   bool isEmptyMovements() {
     return movements?.isEmpty ?? false;
   }
@@ -214,7 +218,11 @@ class Budget {
   }
 
   bool isShowHistoryBudget() {
-    return !isEmptyMovements() || !isEmptyHistorys();
+    return (!isEmptyMovements() || !isEmptyHistorys());
+  }
+
+  bool isShowSwitcherHistoryBudget() {
+    return isShowHistoryBudget() && isCycleBudget();
   }
 
   bool get isOwner => Preferences.get.getID == userID;

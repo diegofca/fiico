@@ -1,0 +1,68 @@
+{
+  "identifier" : "8CCA8CE7",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "89.99",
+      "familyShareable" : false,
+      "internalID" : "AE10D05D",
+      "localizations" : [
+        {
+          "description" : "A consumable product.",
+          "displayName" : "Valiu Premium Unlimited",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "first consultation",
+          "displayName" : "Valiu Premium Sin limites",
+          "locale" : "es_MX"
+        }
+      ],
+      "productID" : "valiu_premium_unlimited",
+      "referenceName" : "Valiu Premium Unlimited",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "D0FEE8D8",
+      "localizations" : [
+
+      ],
+      "name" : "Example Subscriptions",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "displayPrice" : "25.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "922EB597",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Subscripción mensual",
+              "displayName" : "Subscription Month",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "monthly_subscription",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Valiu Premium",
+          "subscriptionGroupID" : "D0FEE8D8",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

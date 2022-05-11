@@ -74,7 +74,7 @@ class FiicoUser extends Equatable {
       'showTutorial': showTutorial ?? false,
       'budgetPermission': budgetPermission ?? '',
       'authBiometric': authBiometric ?? false,
-      'securityCode': securityCode,
+      'securityCode': securityCode ?? '',
       'vip': vip ?? false,
     };
   }

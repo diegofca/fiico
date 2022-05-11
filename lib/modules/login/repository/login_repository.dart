@@ -15,7 +15,7 @@ abstract class LoginRepositoryAbs {
   Future<bool?> forgotPasswordWithEmail(
       String email, Function(String, String?) onError);
   Future<FiicoUser?> loginUserWithCredential(
-      AuthCredential credential, Function(String, String?) onError);
+      OAuthCredential credential, Function(String, String?) onError);
 }
 
 class LoginRepository extends LoginRepositoryAbs {
@@ -54,7 +54,7 @@ class LoginRepository extends LoginRepositoryAbs {
 
   @override
   Future<FiicoUser?> loginUserWithCredential(
-      AuthCredential? credential, Function(String, String?) onError) async {
+      OAuthCredential? credential, Function(String, String?) onError) async {
     try {
       if (credential != null) {
         UserCredential userCredential =
@@ -62,7 +62,8 @@ class LoginRepository extends LoginRepositoryAbs {
 
         final isNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
         if (isNewUser) {
-          return await _registerUserAfterIntentLogin(userCredential);
+          return await _registerUserAfterIntentLogin(
+              userCredential, credential);
         }
         return await _getUser(userCredential.user?.uid);
       }
@@ -76,29 +77,38 @@ class LoginRepository extends LoginRepositoryAbs {
       SocialCredential? credential) async {
     final currentCredential = credential?.userCredential.signInMethod;
 
+    if (credential?.userCredential.providerId == 'apple.com') {
+      return true;
+    }
+
     final providers = await FirebaseAuth.instance
         .fetchSignInMethodsForEmail(credential?.email ?? '');
     return providers.isEmpty || providers.contains(currentCredential);
   }
 
   Future<FiicoUser> _registerUserAfterIntentLogin(
-      UserCredential credential) async {
-    final firstName = credential.additionalUserInfo?.profile?['given_name'] ??
-        credential.additionalUserInfo?.profile?['first_name'];
+    UserCredential userCredential,
+    OAuthCredential? credential,
+  ) async {
+    final firstName =
+        userCredential.additionalUserInfo?.profile?['given_name'] ??
+            userCredential.additionalUserInfo?.profile?['first_name'];
 
-    final lastName = credential.additionalUserInfo?.profile?['family_name'] ??
-        credential.additionalUserInfo?.profile?['last_name'];
+    final lastName =
+        userCredential.additionalUserInfo?.profile?['family_name'] ??
+            userCredential.additionalUserInfo?.profile?['last_name'];
 
     String token = await FirebaseMessaging.instance.getToken() ?? '';
     final user = FiicoUser(
-      id: credential.user?.uid,
-      email: credential.user?.email,
+      id: userCredential.user?.uid,
+      email: userCredential.user?.email,
       firstName: firstName,
       lastName: lastName,
-      profileImage: credential.user?.photoURL,
-      userName: credential.user?.displayName,
+      profileImage: userCredential.user?.photoURL,
+      userName: userCredential.user?.displayName,
       currentPlan: Plan.free(),
       deviceTokens: [token],
+      socialToken: credential?.accessToken,
     );
     Preferences.get.saveUser(user);
     await _addNewUser(user);

@@ -83,7 +83,7 @@ class IntroPageViewState extends State<IntroPageView> {
         return Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            _getVideoBackground(),
+            _getVideoBackground(context),
             _getIntrosViews(),
           ],
         );
@@ -91,8 +91,11 @@ class IntroPageViewState extends State<IntroPageView> {
     );
   }
 
-  Widget _getVideoBackground() {
-    return VideoPlayer(_controller);
+  Widget _getVideoBackground(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: VideoPlayer(_controller),
+    );
   }
 
   Widget _getIntrosViews() {
@@ -108,7 +111,7 @@ class IntroPageViewState extends State<IntroPageView> {
         ),
         child: DefaultTextStyle(
           style: Style.desc.copyWith(
-            color: FiicoColors.white,
+            color: FiicoColors.white.withAlpha(100),
             fontSize: FiicoFontSize.md,
           ),
           maxLines: 3,
@@ -145,6 +148,9 @@ class IntroPageViewState extends State<IntroPageView> {
                   padding: const EdgeInsets.symmetric(
                     horizontal: FiicoPaddings.sixteen,
                     vertical: FiicoPaddings.sixteen,
+                  ),
+                  margin: const EdgeInsets.only(
+                    bottom: FiicoPaddings.sixteen,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(

@@ -17,6 +17,8 @@ import 'package:control/modules/budgetDetail/view/widgets/budget_circle_chart_hi
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_add_movement_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/buget_linear_chart_history.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
+import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
+import 'package:control/modules/editMovement/view/edit_movement_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,7 +36,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
 
   final Budget budget;
 
-  final _segmentOptions = {0: ' Grafica por mes ', 1: ' Grafica lineal '};
+  final _segmentOptions = {0: ' Resumen por ciclo ', 1: ' Grafica lineal '};
   final ScrollController controller = ScrollController();
 
   @override
@@ -163,19 +165,22 @@ class BudgetDetailSuccessView extends StatelessWidget {
 
   Widget _historySwitchOption(BuildContext context) {
     final _segmendIndex = context.read<BudgetDetailBloc>().state.segmentIndex;
-    return Container(
-      height: 60,
-      width: double.maxFinite,
-      alignment: Alignment.bottomCenter,
-      child: CupertinoSlidingSegmentedControl<int>(
-        groupValue: _segmendIndex,
-        backgroundColor: FiicoColors.white,
-        thumbColor: FiicoColors.pink,
-        children: {
-          0: _generateSegmentView(_segmendIndex, 0),
-          1: _generateSegmentView(_segmendIndex, 1),
-        },
-        onValueChanged: (index) => _scrollTo(context, index),
+    return Visibility(
+      visible: budget.isShowSwitcherHistoryBudget(),
+      child: Container(
+        height: 60,
+        width: double.maxFinite,
+        alignment: Alignment.bottomCenter,
+        child: CupertinoSlidingSegmentedControl<int>(
+          groupValue: _segmendIndex,
+          backgroundColor: FiicoColors.white,
+          thumbColor: FiicoColors.pink,
+          children: {
+            0: _generateSegmentView(_segmendIndex, 0),
+            1: _generateSegmentView(_segmendIndex, 1),
+          },
+          onValueChanged: (index) => _scrollTo(context, index),
+        ),
       ),
     );
   }
@@ -599,7 +604,14 @@ class BudgetDetailSuccessView extends StatelessWidget {
               ),
               child: BudgetDetailAddMovementView(
                 title: 'Agregar nuevo gasto',
-                onAdded: () => _addedMovement(context, MovementType.DEBT),
+                onAdded: () => DefaultMovementPage().show(
+                  context,
+                  budget: budget,
+                  onMovementSelected: (movement) =>
+                      _editMovement(context, movement),
+                  onNewItemSelected: () =>
+                      _addedMovement(context, MovementType.DEBT),
+                ),
               ),
             ),
           ),
@@ -802,6 +814,21 @@ class BudgetDetailSuccessView extends StatelessWidget {
     if (movement is Movement) {
       context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
           newMovement: movement, budget: budget));
+    }
+  }
+
+  void _editMovement(BuildContext context, Movement movement) async {
+    final newMovement = await FiicoRoute.send(
+      context,
+      EditMovementPage(
+        budget: budget,
+        addedinBudget: true,
+        movementToEdit: movement,
+      ),
+    );
+    if (newMovement is Movement) {
+      context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
+          newMovement: newMovement, budget: budget));
     }
   }
 }

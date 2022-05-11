@@ -24,29 +24,26 @@ class AppleAuthProvider {
   }
 
   Future<SocialCredential?> signInWithApple() async {
-    final rawNonce = generateNonce();
-    final nonce = sha256ofString(rawNonce);
+    try {
+      final rawNonce = generateNonce();
+      final nonce = sha256ofString(rawNonce);
+      // Request credential for the currently signed in Apple account.
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
 
-    // Request credential for the currently signed in Apple account.
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: nonce,
-    );
+      final credential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
 
-    // Create an `OAuthCredential` from the credential returned by Apple.
-    final credential = OAuthProvider("apple.com").credential(
-      idToken: appleCredential.identityToken,
-      rawNonce: rawNonce,
-    );
-
-    return SocialCredential(userCredential: credential);
-
-    // final userCredential =
-    //     await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-
-    // return AppleCredential(userCredential, oauthCredential);
+      return SocialCredential(userCredential: credential);
+    } catch (error) {
+      return null;
+    }
   }
 }

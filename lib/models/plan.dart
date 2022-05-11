@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class Plan {
-  final int id;
+  final String id;
   final String? name;
   final String? icon;
   final bool? enable;
   final bool? unlimited;
   Timestamp? startDate = Timestamp.now();
   Timestamp? endDate = Timestamp.now();
+  String? priceDetail;
 
   Plan({
     required this.id,
@@ -21,15 +23,57 @@ class Plan {
     this.endDate,
     this.enable,
     this.unlimited,
+    this.priceDetail,
   });
 
   Plan.free({
-    this.id = 0,
-    this.name = 'Free',
+    this.id = 'free',
+    this.name = 'Plan Gratis',
     this.icon = 'material_design_icons_flutter',
     this.enable = true,
     this.unlimited = false,
   });
+
+  Plan.premiumUnlimited({
+    this.id = 'valiu_premium_unlimited',
+    this.name = 'Plan Premium sin limites',
+    this.icon = SVGImages.addBudget,
+    this.enable = true,
+    this.unlimited = false,
+  });
+
+  Plan.goldPremium({
+    this.id = 'valiu_premium_gold',
+    this.name = 'Plan Premium Oro',
+    this.icon = SVGImages.addBudget,
+    this.enable = true,
+    this.unlimited = false,
+  });
+
+  Plan.diamondPremium({
+    this.id = 'valiu_premium_diamond',
+    this.name = 'Plan Premium Diamante',
+    this.icon = SVGImages.addBudget,
+    this.enable = true,
+    this.unlimited = false,
+  });
+
+  void addPrice(String priceDetail) {
+    this.priceDetail = priceDetail;
+  }
+
+  static Plan getPlanByID(String id) {
+    switch (id) {
+      case 'valiu_premium_unlimited':
+        return Plan.premiumUnlimited();
+      case 'valiu_premium_gold':
+        return Plan.goldPremium();
+      case 'valiu_premium_diamond':
+        return Plan.diamondPremium();
+      default:
+        return Plan.free();
+    }
+  }
 
   factory Plan.fromJson(Map<String, dynamic>? json) {
     return Plan(

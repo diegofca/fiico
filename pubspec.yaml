@@ -128,6 +128,10 @@ dependencies:
   #Charts
   fl_chart: ^0.50.1
 
+  #Purchase
+  in_app_purchase: ^3.0.2
+
+
   #Giff
   giffy_dialog:
     git:

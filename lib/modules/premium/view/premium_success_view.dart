@@ -3,6 +3,9 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/purchase_manager.dart';
+import 'package:control/modules/premium/repository/premium_repository.dart';
+import 'package:control/modules/premium/view/widgets/premium_items_purchase.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -57,7 +60,7 @@ class PremiumSuccessView extends StatelessWidget {
           _dudesButtonView(),
           _cancelDescriptionView(),
           _payAndSafeTitleView(),
-          _showPlansButtonView(),
+          _showPlansButtonView(context),
           _restoreShopsButton(),
           _politicsAndPrivacityButton(),
         ],
@@ -178,45 +181,44 @@ class PremiumSuccessView extends StatelessWidget {
 
   Widget _benefictsListView() {
     return ListView.builder(
-      itemCount: 5,
+      itemCount: PremiumRepository.benefics.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return _beneficItemView();
+        final benefic = PremiumRepository.benefics[index];
+        return _beneficItemView(benefic);
       },
     );
   }
 
-  Widget _beneficItemView() {
+  Widget _beneficItemView(String benefic) {
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(
         horizontal: FiicoPaddings.twenyFour,
       ),
-      child: Expanded(
-        child: Row(
-          children: [
-            const Icon(
-              MdiIcons.star,
-              color: FiicoColors.gold,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: FiicoPaddings.eight,
-                  left: FiicoPaddings.sixteen,
-                ),
-                child: Text(
-                  'Podrás crear mas de un presupuesto',
-                  style: Style.subtitle.copyWith(
-                    color: FiicoColors.white,
-                    fontSize: FiicoFontSize.xm,
-                  ),
+      child: Row(
+        children: [
+          const Icon(
+            MdiIcons.star,
+            color: FiicoColors.gold,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                right: FiicoPaddings.eight,
+                left: FiicoPaddings.sixteen,
+              ),
+              child: Text(
+                benefic,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.white,
+                  fontSize: FiicoFontSize.xm,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -244,13 +246,11 @@ class PremiumSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.eight,
       ),
       width: double.maxFinite,
-      child: Expanded(
-        child: FiicoButton(
-          title: 'Contactanos',
-          color: FiicoColors.white.withOpacity(0.2),
-          textColor: FiicoColors.white.withOpacity(0.3),
-          onTap: () {},
-        ),
+      child: FiicoButton(
+        title: 'Contactanos',
+        color: FiicoColors.white.withOpacity(0.2),
+        textColor: FiicoColors.white.withOpacity(0.3),
+        onTap: () {},
       ),
     );
   }
@@ -289,20 +289,27 @@ class PremiumSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _showPlansButtonView() {
+  Widget _showPlansButtonView(BuildContext context) {
     return Container(
       height: 80,
       margin: const EdgeInsets.symmetric(
         horizontal: FiicoPaddings.thirtyTwo,
       ),
       width: double.maxFinite,
-      child: Expanded(
-        child: FiicoButton(
-          title: 'Ver planes',
-          color: FiicoColors.white,
-          textColor: FiicoColors.purpleNeutral,
-          onTap: () {},
-        ),
+      child: FiicoButton(
+        title: 'Ver planes',
+        color: FiicoColors.white,
+        textColor: FiicoColors.purpleNeutral,
+        onTap: () async {
+          final plans = PurchaseManager.get.getPlans();
+          PremiumItemsPage().show(
+            context,
+            plans: plans,
+            onPlanSelected: (plan) {
+              PurchaseManager.get.purchase(context, plan);
+            },
+          );
+        },
       ),
     );
   }
@@ -339,6 +346,7 @@ class PremiumSuccessView extends StatelessWidget {
           style: Style.subtitle.copyWith(
             color: FiicoColors.white.withOpacity(0.3),
             fontSize: FiicoFontSize.xs,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),

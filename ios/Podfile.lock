@@ -514,6 +514,8 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
+  - in_app_purchase_storekit (0.0.1):
+    - Flutter
   - leveldb-library (1.22.1)
   - local_auth_ios (0.0.1):
     - Flutter
@@ -550,6 +552,7 @@ DEPENDENCIES:
   - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
@@ -611,6 +614,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  in_app_purchase_storekit:
+    :path: ".symlinks/plugins/in_app_purchase_storekit/ios"
   local_auth_ios:
     :path: ".symlinks/plugins/local_auth_ios/ios"
   package_info_plus:
@@ -661,6 +666,7 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  in_app_purchase_storekit: d7fcf4646136ec258e237872755da8ea6c1b6096
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   local_auth_ios: 0d333dde7780f669e66f19d2ff6005f3ea84008d
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96

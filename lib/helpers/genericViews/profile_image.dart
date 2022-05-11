@@ -82,13 +82,13 @@ class ProfileImage extends StatelessWidget {
   }
 
   Widget _nameImage(FiicoUser? user) {
-    final words = user?.userName?.split(' ');
+    final words = (user?.userName ?? "No name").split(' ');
     String name = '';
-    words?.forEach((e) {
-      if (name.characters.length < 2) {
+    for (var e in words) {
+      if (e.isNotEmpty && name.characters.length < 2) {
         name += e.characters.first.toString();
       }
-    });
+    }
 
     if (name.isEmpty) {
       return SvgPicture.asset(

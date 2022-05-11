@@ -17,7 +17,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginBloc(LoginRepository())..add(const LoginInitEvent()),
+      create: (_) => LoginBloc(
+        LoginRepository(),
+      )..add(const LoginInitEvent()),
       child: const LoginPageView(),
     );
   }
@@ -32,7 +34,10 @@ class LoginPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       builder: (context, state) {
-        return LoginSuccesView(state: state);
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: LoginSuccesView(state: state),
+        );
       },
       listener: (context, state) async {
         _validateStatusView(context, state);

@@ -1,24 +1,65 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 class FiicoToast {
   static late OverlaySupportEntry overlay;
 
-  static void showInfoToast() {}
+  static void showInfoToast(String message) {
+    toast(message);
+  }
 
-  static void showWarningToast(String message) {
-    toast('Hello world!');
-
-    showSimpleNotification(
-      Text(message),
-      background: Colors.green,
+  static void showNotificationAlert(
+    String message, {
+    required VoidCallback onTap,
+  }) {
+    HapticFeedback.vibrate();
+    overlay = showSimpleNotification(
+      GestureDetector(
+        onTap: () {
+          onTap.call();
+          overlay.dismiss();
+        },
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.twenyFour,
+              bottom: FiicoPaddings.twenyFour,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    message,
+                    style: Style.subtitle.copyWith(
+                      color: FiicoColors.gold,
+                      fontSize: FiicoFontSize.xm,
+                    ),
+                    maxLines: FiicoMaxLines.ten,
+                  ),
+                ),
+                const Icon(
+                  Icons.double_arrow_rounded,
+                  color: FiicoColors.white,
+                  size: 30,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      elevation: 20,
+      background: FiicoColors.purpleNeutral,
+      position: NotificationPosition.top,
+      slideDismissDirection: DismissDirection.up,
+      autoDismiss: false,
     );
   }
 
@@ -37,8 +78,8 @@ class FiicoToast {
           top: false,
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 24,
-              bottom: 16,
+              top: FiicoPaddings.twenyFour,
+              bottom: FiicoPaddings.sixteen,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,13 +125,15 @@ class FiicoToast {
           overlay.dismiss();
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: FiicoPaddings.sixteen,
+          ),
           child: Row(
             children: [
               const Padding(
                 padding: EdgeInsets.only(
-                  right: 24,
-                  left: 8,
+                  right: FiicoPaddings.twenyFour,
+                  left: FiicoPaddings.eight,
                 ),
                 child: Icon(
                   Icons.cloud,
@@ -102,7 +145,9 @@ class FiicoToast {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(
+                        bottom: FiicoPaddings.eight,
+                      ),
                       child: Text(
                         message.notification?.title ?? '',
                         style: Style.title.copyWith(color: FiicoColors.white),

@@ -1,10 +1,11 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:async';
-
 import 'package:control/helpers/GIFImages.dart';
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
 import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/pinCodeUnlock/view/pincode_unlock_page.dart';
@@ -48,12 +49,21 @@ class SplashPageView extends StatelessWidget {
       },
       listener: (context, state) {
         _validateIfLogged(context, state);
+        _configAll(context);
       },
     );
   }
 
+  void _configAll(BuildContext context) {
+    precacheImage(
+      const AssetImage(SVGImages.purpleBg),
+      context,
+      size: MediaQuery.of(context).size,
+    );
+  }
+
   void _validateIfLogged(BuildContext context, SplashState state) {
-    Timer(const Duration(milliseconds: 3200), () async {
+    Timer(const Duration(milliseconds: 2700), () async {
       if (state.isLogged) {
         _processLogged(context);
       } else {

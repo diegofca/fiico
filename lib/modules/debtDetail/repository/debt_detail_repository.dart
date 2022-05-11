@@ -96,6 +96,7 @@ class DebtDetailRepository extends DebtDetailRepositoryAbs {
     movement?.markHistory.add(MarkMovement(
       date: Timestamp.now(),
       userName: user?.userName,
+      value: movement.value,
     ));
     final newMovement = movement!.copyWith(paymentStatus: 'Payed');
     budget?.movements?.removeWhere((e) => e.id == movement.id);

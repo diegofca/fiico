@@ -1,4 +1,3 @@
-import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/connectivity/view/connectivity_builder.dart';
@@ -41,9 +40,12 @@ class MenuPageView extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case MenuStatus.success:
-            return MenuSuccessView(
-              selectIndex: state.selectedIndex,
-              user: user,
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: MenuSuccessView(
+                selectIndex: state.selectedIndex,
+                user: user,
+              ),
             );
         }
       },

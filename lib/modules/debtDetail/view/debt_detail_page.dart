@@ -12,6 +12,7 @@ import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/repository/debt_detail_repository.dart';
 import 'package:control/modules/debtDetail/view/widget/debt_detail_bottom_view.dart';
 import 'package:control/modules/debtDetail/view/widget/debt_detail_markpayed_success_view.dart';
+import 'package:control/modules/editMovement/view/edit_movement_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -138,15 +139,33 @@ class DebtDetailPageView extends StatelessWidget {
     }
   }
 
-  void _selectedOption(BuildContext context, DebtDetailBottomOption option) {
+  void _selectedOption(
+      BuildContext context, DebtDetailBottomOption option) async {
     switch (option) {
       case DebtDetailBottomOption.delete_movement:
-        context
-            .read<DebtDetailBloc>()
-            .add(DebtDetailRemovedMovement(removeMovement: movement));
+        deleteMovementAction(context);
         break;
       case DebtDetailBottomOption.modify_movement:
+        _updateMovementAction(context);
         break;
+    }
+  }
+
+  void deleteMovementAction(BuildContext context) {
+    context
+        .read<DebtDetailBloc>()
+        .add(DebtDetailRemovedMovement(removeMovement: movement));
+  }
+
+  void _updateMovementAction(BuildContext context) async {
+    final newMovement = await FiicoRoute.send(
+      context,
+      EditMovementPage(budget: budget, movementToEdit: movement),
+    );
+    if (newMovement != null) {
+      context
+          .read<DebtDetailBloc>()
+          .add(DebtDetailEditMovement(movement: newMovement));
     }
   }
 }
