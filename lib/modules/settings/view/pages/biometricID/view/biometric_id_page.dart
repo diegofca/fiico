@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/settings/view/pages/biometricID/bloc/biometric_id_bloc.dart';
 import 'package:control/modules/settings/view/pages/biometricID/repository/biometric_id_repository.dart';
@@ -71,9 +72,8 @@ class BiometricIDPageView extends StatelessWidget {
   void _showCorrectLoggedAlert(BuildContext context) {
     FiicoAlertDialog.showSuccess(
       context,
-      title: 'Actualización exitosa',
-      message:
-          'Hemos actualizado tu PIN de seguridad, recuerda actualizarlo continuamente para tener tus datos seguros.',
+      title: FiicoLocale.successfulUpdate,
+      message: FiicoLocale.changePinMessage,
       onOkAction: () => FiicoRoute.back(context),
     );
   }

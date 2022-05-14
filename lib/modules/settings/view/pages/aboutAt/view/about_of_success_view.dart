@@ -28,38 +28,36 @@ class AboutOfSuccessView extends StatelessWidget {
   }
 
   Widget _bodyView(BuildContext context) {
-    return Expanded(
-      child: Container(
-        alignment: Alignment.center,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          color: FiicoColors.grayLite,
-          borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
-          boxShadow: [FiicoShadow.centerShadow],
-        ),
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            Image.asset(
-              GIFmages.bumbles,
-              fit: BoxFit.cover,
-              color: FiicoColors.pink.withAlpha(60),
-              gaplessPlayback: true,
-              height: 600,
+    return Container(
+      alignment: Alignment.center,
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        color: FiicoColors.grayLite,
+        borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
+        boxShadow: [FiicoShadow.centerShadow],
+      ),
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Image.asset(
+            GIFmages.bumbles,
+            fit: BoxFit.cover,
+            color: FiicoColors.pink.withAlpha(60),
+            gaplessPlayback: true,
+            height: 600,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.twenyFour,
             ),
-            Container(
+            child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: FiicoPaddings.twenyFour,
+                vertical: FiicoPaddings.twenyFour,
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: FiicoPaddings.twenyFour,
-                ),
-                child: _inputsListView(context),
-              ),
+              child: _inputsListView(context),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

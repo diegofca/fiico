@@ -1,5 +1,6 @@
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:control/modules/premium/view/premium_page.dart';
 import 'package:control/modules/settings/settingsConfig/settings_contact.dart';
@@ -16,11 +17,14 @@ class SettingsConfiguration {
 
   SettingsConfiguration(this.context);
 
-  SettingItem get setting => SettingItem(name: 'Settings', childs: [
-        _general(),
-        SettingsInfoConfiguration(context).info(),
-        SettingsContactConfiguration(context).contact()
-      ]);
+  SettingItem get setting => SettingItem(
+        name: FiicoLocale.settings,
+        childs: [
+          _general(),
+          SettingsInfoConfiguration(context).info(),
+          SettingsContactConfiguration(context).contact()
+        ],
+      );
 
 // GENERAL GROUP SETTINGS  -----------------------------------------------------
   SettingItem _general() => SettingItem(name: 'GENERAL', childs: [
@@ -30,7 +34,7 @@ class SettingsConfiguration {
 
   // Security item
   SettingItem _security() => SettingItem(
-        name: 'Seguridad',
+        name: FiicoLocale.security,
         onTap: () async {
           final user = await Preferences.get.getUser();
           FiicoRoute.send(

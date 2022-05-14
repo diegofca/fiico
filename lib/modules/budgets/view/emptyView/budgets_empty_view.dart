@@ -45,32 +45,33 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: FiicoPaddings.thirtyTwo),
-          child: SvgPicture.asset(
-            SVGImages.emptyBudgets,
-            height: 150,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(FiicoPaddings.eight),
-          child: Text(
-            "No tienes boards activos,",
-            style: Style.subtitle.copyWith(
-              fontSize: FiicoFontSize.xm,
-              color: FiicoColors.graySoft,
-            ),
-          ),
-        ),
-        Text(
-          "Intenta crear uno nuevo",
-          style: Style.subtitle.copyWith(
-            fontSize: FiicoFontSize.xm,
-            color: FiicoColors.graySoft,
-          ),
-        ),
+        _emptyBudgetsIconView(),
+        _notHaveBudgetsTextView(),
         _createButtonView()
       ],
+    );
+  }
+
+  Widget _emptyBudgetsIconView() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: FiicoPaddings.thirtyTwo),
+      child: SvgPicture.asset(
+        SVGImages.emptyBudgets,
+        height: 150,
+      ),
+    );
+  }
+
+  Widget _notHaveBudgetsTextView() {
+    return Padding(
+      padding: const EdgeInsets.all(FiicoPaddings.eight),
+      child: Text(
+        FiicoLocale.youHaveNoActiveBudgets,
+        style: Style.subtitle.copyWith(
+          fontSize: FiicoFontSize.xm,
+          color: FiicoColors.graySoft,
+        ),
+      ),
     );
   }
 

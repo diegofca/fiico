@@ -139,4 +139,21 @@ class FiicoLocale {
   static final unlimited = "unlimited".tr();
   static final yourPlanIsUnlimited = "yout_plan_is_unlimited".tr();
   static final dareToImproveYourPlan = "dare_to_improve_your_plan".tr();
+  static final youHaveNoActiveBudgets = "you_have_no_active_budgets".tr();
+  static final settings = "settings".tr();
+  static final security = "security".tr();
+  static final information = "information".tr();
+  static final changeLanguage = "change_language".tr();
+  static final aboutOfValiu = "about_of_valiu".tr();
+  static final contact = "contact".tr();
+  static final securitySettings = "security_settings".tr();
+  static final changePinMessage = "change_pin_message".tr();
+  static final successfulUpdate = "successful_update".tr();
+  static final changeYourPin = "change_your_pin".tr();
+  static final addPin = "add_pin".tr();
+  static final changePin = "change_pin".tr();
+  static final saveButton = "save_button".tr();
+  static final enterOldPin = "enter_old_pin".tr();
+  static final enterNewPin = "enter_new_pin".tr();
+  static final errorUpdatingYourPin = "error_updating_your_pin".tr();
 }

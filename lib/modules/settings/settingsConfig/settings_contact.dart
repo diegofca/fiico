@@ -1,3 +1,4 @@
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class SettingsContactConfiguration {
 // SECURITY GROUP SETTINGS  ----------------------------------------------------
   /// CONTACT GROUP INFORMATION ------------------------------------------------
   SettingItem contact() => SettingItem(
-        name: 'CONTACTO',
+        name: FiicoLocale.contact.toUpperCase(),
         childs: [
           SettingItem(
             name: 'Centro de ayuda',

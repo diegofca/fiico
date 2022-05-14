@@ -1,4 +1,5 @@
 import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:control/modules/settings/view/pages/biometricID/view/biometric_id_page.dart';
 import 'package:control/modules/settings/view/pages/pinCode/view/security_pin_code_page.dart';
@@ -12,9 +13,9 @@ class SettingsSecurityConfiguration {
 
 // SECURITY GROUP SETTINGS  ----------------------------------------------------
   SettingItem security() => SettingItem(
-        name: 'Seguridad',
+        name: FiicoLocale.security,
         childs: [
-          SettingItem(name: 'Configurar seguridad', childs: [
+          SettingItem(name: FiicoLocale.securitySettings, childs: [
             _pinCode(),
             _faceID(),
           ]),
@@ -23,7 +24,7 @@ class SettingsSecurityConfiguration {
 
   // Pincode item
   SettingItem _pinCode() => SettingItem(
-        name: 'Código de seguridad',
+        name: FiicoLocale.securityPinTitle,
         onTap: () async {
           final user = await Preferences.get.getUser();
           FiicoRoute.send(context, SecurityPinCodePage(user: user));

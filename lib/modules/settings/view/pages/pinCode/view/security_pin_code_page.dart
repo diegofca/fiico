@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/settings/view/pages/pinCode/bloc/security_pin_code_bloc.dart';
 import 'package:control/modules/settings/view/pages/pinCode/repository/security_pin_code_repository.dart';
@@ -21,8 +22,8 @@ class SecurityPinCodePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: const GenericAppBar(
-        text: "PIN de seguridad",
+      appBar: GenericAppBar(
+        text: FiicoLocale.securityPinTitle,
         textColor: FiicoColors.black,
       ),
       body: BlocProvider(
@@ -66,7 +67,7 @@ class SecurityPinCodePageView extends StatelessWidget {
         if (state.isPinUpdated) {
           FiicoAlertDialog.showSuccess(
             context,
-            title: 'Actualización exitosa',
+            title: FiicoLocale.successfulUpdate,
             message:
                 'Hemos actualizado tu PIN de seguridad, recuerda actualizarlo continuamente para tener tus datos seguros.',
             onOkAction: () => FiicoRoute.back(context),

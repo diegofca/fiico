@@ -1,3 +1,4 @@
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:control/modules/settings/view/pages/aboutAt/view/about_of_page.dart';
 import 'package:control/navigation/navigator.dart';
@@ -10,22 +11,14 @@ class SettingsInfoConfiguration {
 
   /// INFO GROUP INFORMATION ---------------------------------------------------
   SettingItem info() => SettingItem(
-        name: 'INFORMACIÓN',
+        name: FiicoLocale.information.toUpperCase(),
         childs: [
           SettingItem(
-            name: 'Cambiar idioma',
-            onTap: () {
-              print('ir a seguridad');
-            },
+            name: FiicoLocale.changeLanguage,
+            onTap: () => FiicoRoute.send(context, const AboutOfPage()),
           ),
           SettingItem(
-            name: 'Ultima actualización',
-            onTap: () {
-              print('ir a seguridad');
-            },
-          ),
-          SettingItem(
-            name: 'Acerca de Valiu',
+            name: FiicoLocale.aboutOfValiu,
             onTap: () => FiicoRoute.send(context, const AboutOfPage()),
           ),
         ],

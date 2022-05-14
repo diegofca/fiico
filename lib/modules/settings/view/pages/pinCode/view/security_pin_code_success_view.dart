@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/settings/view/pages/pinCode/bloc/security_pin_code_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,13 +98,13 @@ class SecurityPinCodeSuccessViewState
   }
 
   Widget _descriptionPinCodeView() {
-    return const Padding(
-      padding: EdgeInsets.only(
+    return Padding(
+      padding: const EdgeInsets.only(
         right: FiicoPaddings.sixteen,
         left: FiicoPaddings.sixteen,
       ),
       child: Text(
-        'Activa tu PIN para mayor seguridad. activa tu pin para mayor seguridad activa tu pin para mayor seguridad',
+        FiicoLocale.changePinMessage,
         style: Style.subtitle,
         maxLines: FiicoMaxLines.four,
       ),
@@ -136,7 +137,7 @@ class SecurityPinCodeSuccessViewState
         child: SizedBox(
           width: double.maxFinite,
           child: FiicoButton.pink(
-            title: 'Guardar',
+            title: FiicoLocale.saveButton,
             ontap: () => _savePinCode(context),
           ),
         ),
@@ -154,7 +155,7 @@ class SecurityPinCodeSuccessViewState
         child: SizedBox(
           width: double.maxFinite,
           child: FiicoButton.pink(
-            title: 'Cambiar PIN',
+            title: FiicoLocale.changePin,
             ontap: () => context
                 .read<SecurityPinCodeBloc>()
                 .add(const SecurityPinCodeChangeUnLockRequest(isUnLock: true)),
@@ -183,12 +184,12 @@ class SecurityPinCodeSuccessViewState
 
   String _titleStatusChangePin() {
     return !isUserContentPin()
-        ? 'Argregar PIN'
+        ? FiicoLocale.addPin
         : !isUnlockChangeActive()
-            ? 'Cambia tu PIN'
+            ? FiicoLocale.changeYourPin
             : isChangeCodeActive()
-                ? 'Ingresa tu antiguo PIN'
-                : 'Ingresa tu nuevo PIN';
+                ? FiicoLocale.enterOldPin
+                : FiicoLocale.enterNewPin;
   }
 
   void _changePinCode(BuildContext context, String pinCode) {
@@ -220,7 +221,7 @@ class SecurityPinCodeSuccessViewState
   void _showErrorPinDialog() {
     FiicoAlertDialog.showWarnning(
       context,
-      title: 'Error al actualizar tu PIN',
+      title: FiicoLocale.errorUpdatingYourPin,
       message:
           'El PIN que has ingresado no es el correcto, intentalo de nuevo.',
     );

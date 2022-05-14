@@ -124,6 +124,22 @@
     "inactive": "Inactivo",
     "unlimited": "Ilimitado",
     "your_plan_is_unlimited": "¡Tu plan es ilimitado!",
-    "dare_to_improve_your_plan": "Atrévete a mejorar tu plan"
-
+    "dare_to_improve_your_plan": "Atrévete a mejorar tu plan",
+    "you_have_no_active_budgets": "No tienes presupuestos activos",
+    "settings": "Configuración",
+    "security": "Seguridad",
+    "information": "Información",
+    "change_language": "Cambiar idioma",
+    "about_of_valiu": "Acerca de Valiu",
+    "contact": "Contacto",
+    "security_settings": "Configuración de seguridad",
+    "change_pin_message": "Activa tu pin para mayor seguridad, recuerda usar un pin que no hayas usado y cámbialo con frecuencia.",
+    "successful_update": "Actualización exitosa",
+    "change_your_pin": "Cambiar tu PIN",
+    "add_pin": "Agregar PIN",
+    "change_pin": "Cambiar PIN",
+    "save_button": "Guardar",
+    "enter_old_pin": "Ingresa tu antiguo PIN",
+    "enter_new_pin": "Ingresa tu nuevo PIN",
+    "error_updating_your_pin": "Error al actualizar tu PIN"
 }
