@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     String message = '',
-    String confirmBtnText = 'Continuar',
+    String? confirmBtnText,
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -17,7 +18,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.success,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' $confirmBtnText ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.continueButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.purpleNeutral,
       confirmBtnColor: FiicoColors.greenNeutral,
@@ -37,7 +38,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     String message = '',
-    String confirmBtnText = 'Accept',
+    String? confirmBtnText,
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -45,7 +46,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.warning,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' $confirmBtnText ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
@@ -65,7 +66,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     String message = '',
-    String confirmBtnText = 'Aceptar',
+    String? confirmBtnText,
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -73,7 +74,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.info,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' $confirmBtnText ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
@@ -93,7 +94,7 @@ class FiicoAlertDialog {
     BuildContext context, {
     String? title,
     Widget? body,
-    String confirmBtnText = 'Aceptar',
+    String? confirmBtnText,
     VoidCallback? onOkAction,
   }) {
     CoolAlert.show(
@@ -104,7 +105,7 @@ class FiicoAlertDialog {
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
       animType: CoolAlertAnimType.slideInUp,
-      confirmBtnText: ' $confirmBtnText ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();

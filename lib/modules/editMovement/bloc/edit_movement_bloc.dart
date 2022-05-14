@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
@@ -42,6 +43,7 @@ class EditMovementBloc extends Bloc<EditMovementEvent, EditMovementState> {
     emit(state.copyWith(
       status: EditMovementStatus.success,
       description: event.description,
+      recurrencyDates: event.recurrencyDates,
       markDays: event.markDays,
       name: event.name,
       value: event.value,
@@ -60,6 +62,7 @@ class EditMovementBloc extends Bloc<EditMovementEvent, EditMovementState> {
       status: EditMovementStatus.success,
       description: event.editMovement?.description,
       markDays: event.editMovement?.recurrencyAt,
+      recurrencyDates: event.editMovement?.recurrencyDates,
       name: event.editMovement?.name,
       value: event.editMovement?.value,
       tags: event.editMovement?.tags,

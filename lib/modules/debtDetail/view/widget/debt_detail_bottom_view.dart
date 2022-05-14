@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 
 enum DebtDetailBottomOption {
@@ -13,8 +14,8 @@ enum DebtDetailBottomOption {
 
 class DebtDetailBottomView {
   final _options = {
-    DebtDetailBottomOption.delete_movement: 'Eliminar movimiento',
-    DebtDetailBottomOption.modify_movement: 'Editar movimiento',
+    DebtDetailBottomOption.delete_movement: FiicoLocale.deleteMovement,
+    DebtDetailBottomOption.modify_movement: FiicoLocale.editMovement,
   };
 
   void show(

@@ -2,6 +2,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_cycle_calendar.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,7 @@ class CreateMovementDaySelectorView {
           ),
         ),
         FiicoButton.pink(
-          title: 'Seleccionar',
+          title: FiicoLocale.selectButton,
           ontap: () {
             if (_selectedDays.isNotEmpty) {
               onDaySelected(_selectedDays);
@@ -88,6 +89,6 @@ class CreateMovementDaySelectorView {
   }
 
   String _getTitle() {
-    return 'Selecciona un día';
+    return FiicoLocale.selectAday;
   }
 }

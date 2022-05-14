@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/budget_cycle_history.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -55,9 +56,9 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const <Widget>[
+            children: <Widget>[
               Text(
-                'Grafica por ciclo: Ingresos vs Gastos',
+                '${FiicoLocale.summaryPerCycle}:  ${FiicoLocale.incomes} vs ${FiicoLocale.outcomes}',
                 style: Style.subtitle,
               ),
             ],

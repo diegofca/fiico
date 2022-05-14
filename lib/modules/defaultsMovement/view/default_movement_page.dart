@@ -4,11 +4,14 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/defaultsMovement/bloc/default_movement_bloc.dart';
 import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
-import 'package:control/modules/defaultsMovement/view/widgets/default_movement_item_view.dart';
+import 'package:control/modules/defaultsMovement/view/default_movement_success_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DefaultMovementPage {
   void show(
@@ -16,18 +19,21 @@ class DefaultMovementPage {
     required Function(Movement) onMovementSelected,
     required Budget budget,
     required Function onNewItemSelected,
-    required MovementType type,
+    required MovementsList list,
   }) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return DefaultMovementPageView(
-          onMovementSelected: onMovementSelected,
-          onNewItemSelected: onNewItemSelected,
-          budget: budget,
-          type: type,
+        return BlocProvider(
+          create: (context) => DefaultMovementBloc(),
+          child: DefaultMovementPageView(
+            onMovementSelected: onMovementSelected,
+            onNewItemSelected: onNewItemSelected,
+            budget: budget,
+            list: list,
+          ),
         );
       },
     );
@@ -40,17 +46,30 @@ class DefaultMovementPageView extends StatelessWidget {
     required this.onMovementSelected,
     required this.budget,
     required this.onNewItemSelected,
-    required this.type,
+    required this.list,
   }) : super(key: key);
 
   Function(Movement) onMovementSelected;
   Function onNewItemSelected;
 
   final Budget budget;
-  final MovementType type;
+  final MovementsList list;
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<DefaultMovementBloc, DefaultMovementState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case DefaultMovementStatus.success:
+            return _bodyContainer();
+          case DefaultMovementStatus.waiting:
+            return const LoadingView();
+        }
+      },
+    );
+  }
+
+  Widget _bodyContainer() {
     return StatefulBuilder(
       builder: (context, setState) {
         return AnimatedContainer(
@@ -70,9 +89,13 @@ class DefaultMovementPageView extends StatelessWidget {
           ),
           child: SafeArea(
             child: Wrap(
+              alignment: WrapAlignment.center,
               children: [
                 _title(),
-                _movementListView(Movements.items(type), onMovementSelected),
+                DefaultMovementSuccessView(
+                  movementList: list,
+                  onMovementSelected: onMovementSelected,
+                ),
                 _createButtonView(context, onNewItemSelected),
               ],
             ),
@@ -87,10 +110,9 @@ class DefaultMovementPageView extends StatelessWidget {
       padding: const EdgeInsets.only(
         right: FiicoPaddings.sixteen,
         left: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "Movimientos predefinidos",
+        "${list.name} predefinidos",
         style: Style.title.copyWith(
           color: FiicoColors.black,
           fontSize: FiicoFontSize.md,
@@ -99,39 +121,19 @@ class DefaultMovementPageView extends StatelessWidget {
     );
   }
 
-  Widget _movementListView(
-      List<Movement> movements, Function(Movement) onMovementSelected) {
-    return SizedBox(
-      height: movements.length * 75,
-      child: ListView.builder(
-        itemCount: movements.length,
-        itemBuilder: (context, index) {
-          Movement movement = movements[index];
-          return Container(
-            margin: const EdgeInsets.only(bottom: FiicoPaddings.eight),
-            child: DefaultMovementListItemView(
-              movement: movement,
-              onSelected: (movement) {
-                Navigator.of(context).pop();
-                onMovementSelected.call(movement);
-              },
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   Widget _createButtonView(BuildContext context, Function onNewItemSelected) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(
-        vertical: FiicoPaddings.sixteen,
-        horizontal: FiicoPaddings.fourtySix,
+        vertical: FiicoPaddings.eight,
+        horizontal: FiicoPaddings.sixteen,
       ),
-      child: FiicoButton.pink(
+      child: FiicoButton(
         title: 'Crear uno nuevo',
-        ontap: () {
+        color: FiicoColors.white,
+        borderColor: FiicoColors.purpleDark,
+        textColor: FiicoColors.purpleDark,
+        onTap: () {
           Navigator.of(context).pop();
           onNewItemSelected.call();
         },

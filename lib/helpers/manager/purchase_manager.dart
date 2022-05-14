@@ -4,10 +4,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/toast.dart';
-import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/models/purchase_price_extension.dart';
-import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -40,39 +38,6 @@ class PurchaseManager {
     );
     inAppPurchase.buyConsumable(purchaseParam: params);
   }
-
-  // Future<void> buyValiuPremiumUnlimited() async {
-  //   final user = await Preferences.get.getUser();
-  //   final params = PurchaseParam(
-  //     applicationUserName: user?.userName,
-  //     productDetails: _products.firstWhere(
-  //       (e) => e.id == Plan.premiumUnlimited().id,
-  //     ),
-  //   );
-  //   inAppPurchase.buyConsumable(purchaseParam: params);
-  // }
-
-  // Future<void> buyValiuPremiumGold() async {
-  //   final user = await Preferences.get.getUser();
-  //   final params = PurchaseParam(
-  //     applicationUserName: user?.userName,
-  //     productDetails: _products.firstWhere(
-  //       (e) => e.id == Plan.goldPremium().id,
-  //     ),
-  //   );
-  //   inAppPurchase.buyNonConsumable(purchaseParam: params);
-  // }
-
-  // Future<void> buyValiuPremiumDiamont() async {
-  //   final user = await Preferences.get.getUser();
-  //   final params = PurchaseParam(
-  //     applicationUserName: user?.userName,
-  //     productDetails: _products.firstWhere(
-  //       (e) => e.id == Plan.diamondPremium().id,
-  //     ),
-  //   );
-  //   inAppPurchase.buyNonConsumable(purchaseParam: params);
-  // }
 
   /// --------------------------------------------------------------------------
 

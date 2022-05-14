@@ -4,6 +4,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 
 class CreateBottomView {
@@ -53,7 +54,7 @@ class CreateBottomView {
 
   Widget _title() {
     return Text(
-      "Crea tu nuevo presupuesto",
+      FiicoLocale.createNewBudget,
       style: Style.title.copyWith(
         color: FiicoColors.black,
       ),
@@ -73,7 +74,7 @@ class CreateBottomView {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Nombre',
+              FiicoLocale.name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.md,
@@ -85,7 +86,7 @@ class CreateBottomView {
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
                 textEditingController: _textController,
-                hintText: 'Ingresa el nombre del presupuesto',
+                hintText: FiicoLocale.enterBudgetName,
                 textColor: FiicoColors.black,
               ),
             ),
@@ -104,7 +105,7 @@ class CreateBottomView {
         horizontal: FiicoPaddings.fourtySix,
       ),
       child: FiicoButton.pink(
-        title: 'Crear presupuesto',
+        title: FiicoLocale.createBudget,
         ontap: () {
           Navigator.of(context).pop();
           if (_textController.text.isNotEmpty) {

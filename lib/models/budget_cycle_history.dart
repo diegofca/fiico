@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/date.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/network/firestore_path.dart';
 
 class BudgetCycleHistory {
@@ -53,7 +54,7 @@ class BudgetCycleHistory {
 
   String titleCircleOption(int? id) {
     if (id == 0) {
-      return 'Today';
+      return FiicoLocale.today;
     }
     return titleBarOption();
   }

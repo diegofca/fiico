@@ -6,6 +6,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
@@ -78,10 +79,11 @@ class EditMovementPage extends StatelessWidget {
     if (movementToEdit?.isCompleteByCreate() ?? false) {
       Navigator.of(context).pop(movementToEdit);
     } else {
-      FiicoAlertDialog.showWarnning(context,
-          title: 'Campos vacios',
-          message:
-              'Completa los campos faltantes para poder agregar tu movimiento a tu presupuesto.');
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: FiicoLocale.emptyFields,
+        message: FiicoLocale.completeMissingFieldsAddMovement,
+      );
     }
   }
 }
@@ -152,6 +154,7 @@ class EditMovementPageView extends StatelessWidget {
       description: state.description,
       createdAt: Timestamp.now(),
       recurrencyAt: state.markDays,
+      recurrencyDates: state.recurrencyDates,
       typeDescription: typeDescription,
       isAddedWithBudget: addedinBudget,
       paymentStatus: movement?.paymentStatus,

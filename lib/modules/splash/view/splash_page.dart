@@ -5,7 +5,6 @@ import 'package:control/helpers/GIFImages.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
 import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/pinCodeUnlock/view/pincode_unlock_page.dart';

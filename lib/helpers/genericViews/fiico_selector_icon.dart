@@ -1,7 +1,9 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/fiico_icons.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
@@ -13,15 +15,15 @@ class FiicoSelectorIcon {
   static Future<FiicoIcon?> select(BuildContext context) async {
     final icon = await FlutterIconPicker.showIconPicker(
       context,
-      title: const Text('Seleccione un icono'),
+      title: Text(FiicoLocale.selectAicon),
       closeChild: FiicoButton.pink(
-        title: 'Cancelar',
+        title: FiicoLocale.cancelButton,
         ontap: () {
           Navigator.of(context).pop();
         },
       ),
-      noResultsText: 'No se encontraron resultados de ',
-      searchHintText: 'Buscar',
+      noResultsText: FiicoLocale.notResultFoundFor,
+      searchHintText: FiicoLocale.searchButton,
       iconColor: FiicoColors.grayDark,
       adaptiveDialog: false,
       showTooltips: true,
@@ -97,6 +99,8 @@ class FiicoSelectorIcon {
       'zoom': SimpleIcons.zoom,
       'virgin': SimpleIcons.virgin,
       'pandora': SimpleIcons.pandora,
+      'disneyPlus': AppIcon.disneyPlus,
+      'sack': MdiIcons.sack,
     };
   }
 }

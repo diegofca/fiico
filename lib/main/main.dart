@@ -1,10 +1,12 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/modules/connectivity/repository/connectivity_repository.dart';
 import 'package:control/modules/splash/view/splash_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +17,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initFacebook();
   initPurchase();
+  await initEasyLocation();
   await initFirebase();
-  runApp(const ValiuApp());
+  runApp(EasyLocalization(
+    path: 'assets/locales',
+    supportedLocales: const [
+      Locale('en', 'US'),
+      Locale('es', 'SP'),
+    ],
+    child: const ValiuApp(),
+  ));
+}
+
+Future<void> initEasyLocation() async {
+  return EasyLocalization.ensureInitialized();
 }
 
 Future<void> initFirebase() async {
@@ -36,6 +50,7 @@ class ValiuApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FiicoLocale.locale = context.locale;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -44,16 +59,19 @@ class ValiuApp extends StatelessWidget {
           )..add(const ConnectivityStartListening()),
         )
       ],
-      child: const OverlaySupport.global(
+      child: OverlaySupport.global(
         child: GlobalLoaderOverlay(
           overlayColor: FiicoColors.black,
           useDefaultLoading: false,
-          overlayWidget: LoadingView(
+          overlayWidget: const LoadingView(
             backgroundColor: FiicoColors.purpleDark,
           ),
           child: MaterialApp(
             title: 'Valiu',
-            home: SplashPage(),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            home: const SplashPage(),
           ),
         ),
       ),

@@ -45,7 +45,7 @@ class FiicoCycleCalendarState extends State<FiicoCycleCalendar> {
       },
       datePickerStyles: _style,
       datePickerLayoutSettings: const DatePickerLayoutSettings(
-        hideMonthNavigationRow: true,
+        // hideMonthNavigationRow: true,
         contentPadding: EdgeInsets.zero,
         dayPickerRowHeight: 50,
       ),

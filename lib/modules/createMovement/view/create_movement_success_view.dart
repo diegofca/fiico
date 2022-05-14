@@ -7,10 +7,12 @@ import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
+import 'package:control/modules/createMovement/view/widgets/create_movement_dates_selector.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_day_selector.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +80,7 @@ class CreateMovementSuccessView extends StatelessWidget {
           boxShadow: [FiicoShadow.cardShadow],
         ),
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: FiicoPaddings.twenyFour,
@@ -137,7 +140,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
                   keyboardType: TextInputType.number,
-                  hintText: 'Ingresa el valor',
+                  hintText: FiicoLocale.enterAmount,
                   textColor: movement.getTypeColor(),
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
                   onChanged: (value) {
@@ -168,7 +171,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Nombre',
+              FiicoLocale.name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -179,12 +182,10 @@ class CreateMovementSuccessView extends StatelessWidget {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
-                hintText: 'Ingresa el nombre',
-                onChanged: (name) {
-                  context
-                      .read<CreateMovementBloc>()
-                      .add(CreateMovementInfoRequest(name: name));
-                },
+                hintText: FiicoLocale.enterName,
+                onChanged: (name) => context
+                    .read<CreateMovementBloc>()
+                    .add(CreateMovementInfoRequest(name: name)),
               ),
             ),
           ),
@@ -206,7 +207,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Descripción',
+              FiicoLocale.description,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -216,7 +217,7 @@ class CreateMovementSuccessView extends StatelessWidget {
           BorderContainer(
             heigth: 100,
             child: FiicoTextfield(
-              hintText: 'Ingresa una descripción',
+              hintText: FiicoLocale.enterDescription,
               keyboardType: TextInputType.multiline,
               onChanged: (description) {
                 context
@@ -273,16 +274,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => CreateMovementDaySelectorView().show(
-                    context,
-                    budget: budget,
-                    selectedDays: movement.recurrencyAt,
-                    onDaySelected: (days) {
-                      context
-                          .read<CreateMovementBloc>()
-                          .add(CreateMovementInfoRequest(markDays: days));
-                    },
-                  ),
+                  onPressed: () => _editCalendarRecurrency(context),
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: FiicoColors.pink,
@@ -310,7 +302,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Categorias',
+              FiicoLocale.categories,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -324,7 +316,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 Expanded(
                   child: FiicoTextfield(
                     textEditingController: _categoriesController,
-                    hintText: 'Ej: Arriendo, auto',
+                    hintText: FiicoLocale.exampleCategory,
                     onSubmitted: (text) => _addedTagCategory(context),
                   ),
                 ),
@@ -363,8 +355,8 @@ class CreateMovementSuccessView extends StatelessWidget {
       ),
       child: FiicoButton(
         title: movement.getType() == MovementType.ENTRY
-            ? 'Agregar ingreso'
-            : 'Agregar gasto',
+            ? FiicoLocale.addIncome
+            : FiicoLocale.addOutcome,
         color: movement.getTypeColor(),
         onTap: () => _createdMovement(context),
       ),
@@ -380,10 +372,11 @@ class CreateMovementSuccessView extends StatelessWidget {
             CreateMovementAddedRequest(newMovement: movement, budget: budget));
       }
     } else {
-      FiicoAlertDialog.showWarnning(context,
-          title: 'Campos vacios',
-          message:
-              'Completa los campos faltantes para poder agregar tu movimiento a tu presupuesto.');
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: FiicoLocale.emptyFields,
+        message: FiicoLocale.completeMissingFieldsAddMovement,
+      );
     }
   }
 
@@ -402,5 +395,32 @@ class CreateMovementSuccessView extends StatelessWidget {
     context
         .read<CreateMovementBloc>()
         .add(CreateMovementInfoRequest(tags: movement.tags));
+  }
+
+  void _editCalendarRecurrency(BuildContext context) {
+    final isCycle = budget?.isCycleBudget() ?? false;
+    if (isCycle) {
+      CreateMovementDaySelectorView().show(
+        context,
+        budget: budget,
+        selectedDays: movement.recurrencyAt,
+        onDaySelected: (days) {
+          context
+              .read<CreateMovementBloc>()
+              .add(CreateMovementInfoRequest(markDays: days));
+        },
+      );
+    } else {
+      CreateMovementDatesSelectorView().show(
+        context,
+        budget: budget,
+        selectedDates: movement.recurrencyDates,
+        onDatesSelected: (dates) {
+          context
+              .read<CreateMovementBloc>()
+              .add(CreateMovementInfoRequest(recurrencyDates: dates));
+        },
+      );
+    }
   }
 }

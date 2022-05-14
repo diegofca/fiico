@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/pinCodeUnlock/bloc/pincode_unlock_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +30,8 @@ class PinCodeUnlockSuccessView extends StatefulWidget {
 
 class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
   final LocalAuthentication auth = LocalAuthentication();
+
+  final _controller = TextEditingController();
 
   @override
   void initState() {
@@ -65,6 +68,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
         MdiIcons.shieldKey,
         color: FiicoColors.greenNeutral,
       ),
+      controller: _controller,
       blinkWhenObscuring: true,
       animationType: AnimationType.fade,
       pinTheme: PinTheme(
@@ -134,7 +138,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
       child: SizedBox(
         width: double.maxFinite,
         child: FiicoButton.pink(
-          title: 'Validar',
+          title: FiicoLocale.validateButtonTitle,
           ontap: () => _savePinCode(context),
         ),
       ),
@@ -143,7 +147,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
 
   //Generic functions
   String _titleStatusChangePin() {
-    return 'Ingresa tu PIN';
+    return FiicoLocale.enterYourPinTitle;
   }
 
   void _changePinCode(BuildContext context, String pinCode) {
@@ -156,6 +160,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
     final isCorrectPin = widget.userPinCode == bloc.state.pinCode;
     if (bloc.state.pinCode?.isNotEmpty ?? false) {
       bloc.add(PinCodeUnlockCorrectPinRequest(isCorrect: isCorrectPin));
+      _controller.clear();
     }
   }
 

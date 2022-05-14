@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/helpers/genericViews/fiico_selector_icon.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
             ),
           ),
           Text(
-            "En progreso",
+            FiicoLocale.inProgress,
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

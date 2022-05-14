@@ -5,8 +5,10 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/createMovement/view/widgets/create_movement_dates_selector.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_day_selector.dart';
 import 'package:control/modules/editMovement/bloc/edit_movement_bloc.dart';
 import 'package:control/modules/editMovement/view/widgets/edit_movement_item_header.dart';
@@ -98,6 +100,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
           boxShadow: [FiicoShadow.cardShadow],
         ),
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: FiicoPaddings.twenyFour,
@@ -156,7 +159,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
                   keyboardType: TextInputType.number,
-                  hintText: 'Ingresa el valor',
+                  hintText: FiicoLocale.enterAmount,
                   textColor: widget.movement.getTypeColor(),
                   textEditingController: _priceController,
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
@@ -188,7 +191,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Nombre',
+              FiicoLocale.name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -199,7 +202,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
-                hintText: 'Ingresa el nombre',
+                hintText: FiicoLocale.enterName,
                 textEditingController: _nameController,
                 onChanged: (name) {
                   context
@@ -227,7 +230,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Descripción',
+              FiicoLocale.description,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -237,7 +240,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
           BorderContainer(
             heigth: 100,
             child: FiicoTextfield(
-              hintText: 'Ingresa una descripción',
+              hintText: FiicoLocale.enterDescription,
               keyboardType: TextInputType.multiline,
               textEditingController: _descController,
               onChanged: (description) {
@@ -295,16 +298,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => CreateMovementDaySelectorView().show(
-                    context,
-                    budget: widget.budget,
-                    selectedDays: widget.movement.recurrencyAt,
-                    onDaySelected: (days) {
-                      context
-                          .read<EditMovementBloc>()
-                          .add(EditMovementInfoRequest(markDays: days));
-                    },
-                  ),
+                  onPressed: () => _editCalendarRecurrency(context),
                   icon: const Icon(
                     Icons.arrow_drop_down,
                     color: FiicoColors.pink,
@@ -332,7 +326,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              'Categorias',
+              FiicoLocale.categories,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -346,7 +340,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                 Expanded(
                   child: FiicoTextfield(
                     textEditingController: _categoriesController,
-                    hintText: 'Ej: Arriendo, auto',
+                    hintText: FiicoLocale.exampleCategory,
                     onSubmitted: (text) => _addedTagCategory(context),
                   ),
                 ),
@@ -392,5 +386,32 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
     context
         .read<EditMovementBloc>()
         .add(EditMovementInfoRequest(tags: widget.movement.tags));
+  }
+
+  void _editCalendarRecurrency(BuildContext context) {
+    final isCycle = widget.budget?.isCycleBudget() ?? false;
+    if (isCycle) {
+      CreateMovementDaySelectorView().show(
+        context,
+        budget: widget.budget,
+        selectedDays: widget.movement.recurrencyAt,
+        onDaySelected: (days) {
+          context
+              .read<EditMovementBloc>()
+              .add(EditMovementInfoRequest(markDays: days));
+        },
+      );
+    } else {
+      CreateMovementDatesSelectorView().show(
+        context,
+        budget: widget.budget,
+        selectedDates: widget.movement.recurrencyDates,
+        onDatesSelected: (dates) {
+          context
+              .read<EditMovementBloc>()
+              .add(EditMovementInfoRequest(recurrencyDates: dates));
+        },
+      );
+    }
   }
 }

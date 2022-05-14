@@ -1,0 +1,142 @@
+import 'dart:ui';
+
+import 'package:easy_localization/easy_localization.dart';
+
+class FiicoLocale {
+  static var locale = const Locale('en', 'UK');
+
+  static final securityPinTitle = 'security_pin_title'.tr();
+  static final enterYourPinTitle = 'enter_your_pin_title'.tr();
+  static final validateButtonTitle = 'validate_button_title'.tr();
+  static final invalidPin = 'invalid_pin'.tr();
+  static final invalidPinEnteredIsInvalid =
+      'invalid_pin_entered_is_invalid'.tr();
+  static final continueButton = 'continue_button'.tr();
+  static final acceptButton = 'accept_button'.tr();
+  static final hi = 'hi'.tr();
+  static final controlYourMoneyInTheBestWay =
+      'control_your_money_in_the_best_way'.tr();
+  static final myMovements = 'my_movements'.tr();
+  static final findYourUserOrMovements = 'find_your_budgets_or_users_here'.tr();
+  static final incomes = "incomes".tr();
+  static final outcomes = "outcomes".tr();
+  static final balance = "balance".tr();
+  static final addIncome = "add_income".tr();
+  static final addOutcome = "add_outcome".tr();
+  static final addBudget = "add_budget".tr();
+  static final myBudgets = "my_budgets".tr();
+  static final mostRecent = "most_recent".tr();
+  static final fromSmallestToLargest = "from_smallest_to_largest".tr();
+  static final fromLargesttToSmallest = "from_largest_to_smallest".tr();
+  static final pendingExpenses = "pending_expenses".tr();
+  static final paidExpenses = "paid_expenses".tr();
+  static final addAllYourExpensesAndSiezeThem =
+      "add_all_your_expenses_and_sieze_them".tr();
+  static final addMovement = "add_movement".tr();
+  static final createBudget = "create_budget".tr();
+  static final createNewBudget = "create_new_budget".tr();
+  static final name = "name".tr();
+  static final enterBudgetName = "enter_budget_name".tr();
+  static final inProgress = "in_progress".tr();
+  static final currency = "currency".tr();
+  static final repetitive = "repetitive".tr();
+  static final repeatForm = "repeat_form".tr();
+  static final duration = "duration".tr();
+  static final monthly = "monthly".tr();
+  static final biweekly = "biweekly".tr();
+  static final annual = "annual".tr();
+  static final youtBudgetIsRepeatingMode = "yout_budget_is_repeating_mode".tr();
+  static final youMustCreateNewBudget = "you_must_create_new_budget".tr();
+  static final oneMonth = "one_month".tr();
+  static final threeMonth = "three_month".tr();
+  static final sixMonth = "six_month".tr();
+  static final custom = "custom".tr();
+  static final oneYear = "one_year".tr();
+  static final startDate = "start_date".tr();
+  static final finalDate = "final_Date".tr();
+  static final youCanDefineDurationDates = "you_can_define_duration_dates".tr();
+  static final shareButton = "share_button".tr();
+  static final youCanCreateAndShareBoards =
+      "you_can_create_and_share_boards".tr();
+  static final selectAicon = "select_a_icon".tr();
+  static final cancelButton = "cancel_button".tr();
+  static final searchButton = "search_button".tr();
+  static final notResultFoundFor = "not_result_found_for".tr();
+  static final emptyFields = "empty_fields".tr();
+  static final completeMissingFieldsAddMovement =
+      "complete_missing_fields_add_movement".tr();
+  static final categories = "categories".tr();
+  static final enterName = "enter_name".tr();
+  static final description = "description".tr();
+  static final enterDescription = "enter_description".tr();
+  static final exampleCategory = "example_category".tr();
+  static final enterAmount = "enter_amount".tr();
+  static final averageDayOfAdmission = "average_day_of_admission".tr();
+  static final averageDayOfPayment = "average_day_of_payment".tr();
+  static final everyOfMonth = "every_of_month".tr();
+  static final income = "income".tr();
+  static final addNotificationDate = "add_notification_date".tr();
+  static final intensiveMode = "intensive_mode".tr();
+  static final intensiveNotification = "intensive_notification".tr();
+  static final intensiveNotificationMsg = "intensive_notification_msg".tr();
+  static final selectButton = "select_button".tr();
+  static final selectAday = "select_a_day".tr();
+  static final movement = "movement".tr();
+  static final editMovement = "edit_movement".tr();
+  static final deleteMovement = "delete_movement".tr();
+  static final balanceTodayIs = "balance_today_is".tr();
+  static final cycleDuration = "cycle_duration".tr();
+  static final addNewIncome = "add_new_income".tr();
+  static final addNewOutcome = "add_new_outcome".tr();
+  static final youHaveNot = "you_have_not".tr();
+  static final forNow = "for_now".tr();
+  static final notifications = "notifications".tr();
+  static final youDontHaveNot = "you_dont_have_not".tr();
+  static final rememberMarkIncomeMovement =
+      "remember_mark_income_movement".tr();
+  static final rememberMarkOutcomeMovement =
+      "remember_mark_outcome_movement".tr();
+  static final markAsPaid = "mark_as_paid".tr();
+  static final markAsReceived = "mark_as_received".tr();
+  static final pendingPayable = "pending_payable".tr();
+  static final pendingToReceive = "pending_to_receive".tr();
+  static final totalPaid = "total_paid".tr();
+  static final totalReceived = "total_received".tr();
+  static final today = "today".tr();
+  static final summaryPerCycle = "summary_per_cycle".tr();
+  static final linearGraph = "linear_graph".tr();
+  static final deleteButton = "delete_button".tr();
+  static final pending = "pending".tr();
+  static final received = "received".tr();
+  static final paid = "paid".tr();
+  static final shareThisBudget = "share_this_budget".tr();
+  static final hasSharedBudgetWithYou = "has_shared_budget_with_you".tr();
+  static final deleteBudget = "delete_budget".tr();
+  static final shareWithFriend = "share_with_friend".tr();
+  static final members = "members".tr();
+  static final completeFieldsWithCreateBudget =
+      "complete_fields_with_create_budget".tr();
+  static final readOnly = "read_only".tr();
+  static final readingAndWriting = "reading_and_writing".tr();
+  static final findYourFriendsHere = "find_your_friends_here".tr();
+  static final logIn = "log_in".tr();
+  static final forgotPassword = "forgot_password".tr();
+  static final signUp = "sign_up".tr();
+  static final email = "email".tr();
+  static final password = "password".tr();
+  static final or = "or".tr();
+  static final lastName = "last_name".tr();
+  static final invalidNameFormat = "invalid_name_format".tr();
+  static final invalidLastNameFormat = "invalid_last_name_format".tr();
+  static final invalidEmailFormat = "invalid_email_format".tr();
+  static final invalidPasswordFormat = "invalid_password_format".tr();
+  static final loginAttemptAborted = "login_attempt_aborted".tr();
+  static final youAlreadyHaveAccount = "you_already_have_account".tr();
+  static final enterEmail = "enter_email".tr();
+  static final youWillAbleControlMoney = "you_will_able_control_money".tr();
+  static final active = "active".tr();
+  static final inactive = "inactive".tr();
+  static final unlimited = "unlimited".tr();
+  static final yourPlanIsUnlimited = "yout_plan_is_unlimited".tr();
+  static final dareToImproveYourPlan = "dare_to_improve_your_plan".tr();
+}

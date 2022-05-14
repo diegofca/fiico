@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -57,7 +58,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "Añade todos tus gastos y apoderate de ellos.",
+        FiicoLocale.addAllYourExpensesAndSiezeThem,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -72,8 +73,8 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
           ? widget.onTapNewItem!.call()
           : widget.onTapNewBudget!.call(),
       title: widget.isContaintBudgets
-          ? ' Agregar movimiento'
-          : 'Crear presupuesto',
+          ? FiicoLocale.addMovement
+          : FiicoLocale.createBudget,
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }

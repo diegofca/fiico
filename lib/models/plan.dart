@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -117,21 +118,21 @@ class Plan {
   }
 
   String getPlanTitle() {
-    final unlimited = isUnlimited() ? 'Ilimitado' : '';
+    final unlimited = isUnlimited() ? FiicoLocale.unlimited : '';
     return 'Plan $name $unlimited';
   }
 
   String getStatusTitle() {
-    return enable ?? false ? 'Activo' : 'Inactivo';
+    return enable ?? false ? FiicoLocale.active : FiicoLocale.inactive;
   }
 
   String getFinisthDate() {
     final _endDate = endDate?.toDate().toDateFormat2() ?? '';
     return isUnlimited()
-        ? '¡Tu plan es Ilimitado!'
+        ? FiicoLocale.yourPlanIsUnlimited
         : isPremium()
             ? _endDate
-            : 'Atreveté a mejorar tu plan';
+            : FiicoLocale.dareToImproveYourPlan;
   }
 
   String getFinisthDateTitle() {

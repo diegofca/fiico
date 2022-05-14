@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
@@ -19,6 +20,7 @@ import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
 import 'package:control/modules/home/view/widgets/home_create_movement_selector.dart';
 import 'package:control/modules/search/view/search_page.dart';
 import 'package:control/navigation/navigator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -61,6 +63,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     _controller.addListener(() {
       setState(() {
         opacity = _controller.offset;
+        context.setLocale(Locale('en', 'US'));
       });
     });
   }
@@ -82,8 +85,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       backgroundColor: FiicoColors.white,
       appBar: HomeAppBar(
         title: HomeTitleAppBar(
-          title: "Hi, ${widget.user?.firstName}",
-          subtitle: "Control your money in the best way",
+          title: "${FiicoLocale.hi}, ${widget.user?.firstName}",
+          subtitle: FiicoLocale.controlYourMoneyInTheBestWay,
           user: widget.user,
         ),
       ),
@@ -176,7 +179,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
                   Padding(
                     padding: const EdgeInsets.only(left: FiicoPaddings.eight),
                     child: Text(
-                      "Mis movimientos",
+                      FiicoLocale.myMovements,
                       style: Style.subtitle.copyWith(
                         fontSize: FiicoFontSize.xm,
                       ),
@@ -346,8 +349,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   void _showEmptyBudgetAction(BuildContext context) {
     FiicoAlertDialog.showWarnning(
       context,
-      message: 'Debes crear un nuevo presupuesto para agregar movimientos',
-      confirmBtnText: 'Crear nuevo presupuesto',
+      message: FiicoLocale.youMustCreateNewBudget,
+      confirmBtnText: FiicoLocale.createNewBudget,
       onOkAction: () => _addBudgetClickedAction(context),
     );
   }

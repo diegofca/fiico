@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/view/widgets/create_budget_cycle_selector_view.dart';
@@ -74,7 +75,7 @@ class CreateBudgetCycleView extends StatelessWidget {
             child: Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Repetitivo',
+                FiicoLocale.repetitive,
                 textAlign: TextAlign.left,
                 maxLines: FiicoMaxLines.ten,
                 style: Style.subtitle.copyWith(
@@ -115,7 +116,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.sixteen,
               ),
               child: Text(
-                'Repetir',
+                FiicoLocale.repeatForm,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -185,7 +186,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.eight,
               ),
               child: Text(
-                'Duración',
+                FiicoLocale.duration,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -220,6 +221,10 @@ class CreateBudgetCycleView extends StatelessWidget {
                       onDurationSelected: (duration) {
                         context.read<CreateBudgetBloc>().add(
                             CreateBudgetInfoSelected(duration: duration.value));
+
+                        context.read<CreateBudgetBloc>().add(
+                            CreateBudgetInfoSelected(
+                                finishDate: budgetToCreate.getFinishDate()));
                       },
                     ),
                     icon: const Icon(
@@ -259,7 +264,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.eight,
               ),
               child: Text(
-                'Fecha de inicio',
+                FiicoLocale.startDate,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -341,7 +346,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.sixteen,
               ),
               child: Text(
-                'Fecha final',
+                FiicoLocale.finalDate,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,

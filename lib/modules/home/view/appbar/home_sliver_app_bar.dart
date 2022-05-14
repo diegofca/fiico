@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -140,7 +141,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Incomes",
+                        FiicoLocale.incomes,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -185,7 +186,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Outcomes",
+                        FiicoLocale.outcomes,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -230,7 +231,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        "Balance",
+                        FiicoLocale.balance,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -305,7 +306,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         top: FiicoPaddings.six,
                       ),
                       child: FiicoTextfield(
-                        hintText: 'Find your budgets or movements here',
+                        hintText: FiicoLocale.findYourUserOrMovements,
                         textEditingController: _controller,
                         focusNode: _focusNode,
                         textInputAction: TextInputAction.search,
@@ -353,18 +354,30 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buttonAction(context, SVGImages.addEntry, "Add income", () {
-              widget.optionTapped(HomeSliverButtonOptions.addEntry);
-            }),
-            _buttonAction(context, SVGImages.addDebt, "Add outcome", () {
-              widget.optionTapped(HomeSliverButtonOptions.addDebt);
-            }),
-            _buttonAction(context, SVGImages.addBudget, "Add budget", () {
-              widget.optionTapped(HomeSliverButtonOptions.addGroup);
-            }),
-            _buttonAction(context, SVGImages.budgetList, "My budgets", () {
-              widget.optionTapped(HomeSliverButtonOptions.myGroups);
-            }),
+            _buttonAction(
+              context,
+              SVGImages.addEntry,
+              FiicoLocale.addIncome,
+              () => widget.optionTapped(HomeSliverButtonOptions.addEntry),
+            ),
+            _buttonAction(
+              context,
+              SVGImages.addDebt,
+              FiicoLocale.addOutcome,
+              () => widget.optionTapped(HomeSliverButtonOptions.addDebt),
+            ),
+            _buttonAction(
+              context,
+              SVGImages.addBudget,
+              FiicoLocale.addBudget,
+              () => widget.optionTapped(HomeSliverButtonOptions.addGroup),
+            ),
+            _buttonAction(
+              context,
+              SVGImages.budgetList,
+              FiicoLocale.myBudgets,
+              () => widget.optionTapped(HomeSliverButtonOptions.myGroups),
+            ),
           ],
         ),
       ),

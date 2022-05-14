@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
@@ -8,6 +9,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
@@ -78,7 +80,7 @@ class DebtDetailSuccessView extends StatelessWidget {
                 _descriptionView(),
                 _separatorLineView(),
                 _pricesDetailView(),
-                _separatorLineView(),
+                _datesPaymentList(),
                 _categoriesList(),
                 _historyPaymentList(),
                 _paymentButtonView(context),
@@ -180,13 +182,15 @@ class DebtDetailSuccessView extends StatelessWidget {
               ),
               child: Icon(MdiIcons.clockOutline),
             ),
-            Text(
-              movement?.getRecurrencyDateDescription() ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: FiicoMaxLines.four,
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayNeutral,
-                fontSize: FiicoFontSize.xm,
+            Expanded(
+              child: Text(
+                movement?.getRecurrencyDateDescription() ?? '',
+                overflow: TextOverflow.ellipsis,
+                maxLines: FiicoMaxLines.two,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.grayNeutral,
+                  fontSize: FiicoFontSize.xm,
+                ),
               ),
             )
           ],
@@ -214,7 +218,7 @@ class DebtDetailSuccessView extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Recuerda marcar tus gastos cuando los hayas pagado, para llevar un control de tu dinero a diario, para ello no olvides que tenemos notificaciones intesivas que te ayudaran a recordar desde dias antes cuando debes pagar. \n\nAl marcar como Pago unicamente podrás cambiarlo al iniciar el otro ciclo de tu presupuesto.',
+            FiicoLocale.rememberMarkOutcomeMovement,
             style: Style.subtitle.copyWith(
               color: FiicoColors.grayNeutral,
               fontSize: FiicoFontSize.xm,
@@ -225,7 +229,7 @@ class DebtDetailSuccessView extends StatelessWidget {
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
             child: FiicoButton(
-              title: "Marcar como pago  ",
+              title: FiicoLocale.markAsPaid,
               color: FiicoColors.pinkRed,
               image: SVGImages.checkMarkIcon,
               onTap: () {
@@ -264,7 +268,7 @@ class DebtDetailSuccessView extends StatelessWidget {
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                final historyItem = movement?.markHistory[index];
+                final historyItem = items[index];
                 return _historyPaymentItem(historyItem);
               },
               itemCount: items.length,
@@ -296,7 +300,12 @@ class DebtDetailSuccessView extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: FiicoPaddings.eight),
-            child: Text(markMovement?.date?.toDate().toDateFormat4() ?? ''),
+            child: Text(
+              markMovement?.date?.toDate().toDateFormat4() ?? '',
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+              ),
+            ),
           ),
           Expanded(
             child: Padding(
@@ -307,6 +316,56 @@ class DebtDetailSuccessView extends StatelessWidget {
                   color: FiicoColors.grayNeutral,
                 ),
                 textAlign: TextAlign.end,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _datesPaymentList() {
+    final items = movement?.recurrencyDates ?? [];
+    return Visibility(
+      visible: !(budget?.isCycleBudget() ?? false),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: (items.length * 30),
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final date = items[index];
+                return _datesPaymentItem(date);
+              },
+              itemCount: items.length,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _datesPaymentItem(Timestamp? date) {
+    return SizedBox(
+      height: 30,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            MdiIcons.dotsCircle,
+            color: FiicoColors.pink,
+            size: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: FiicoPaddings.sixteen),
+            child: Text(
+              date?.toDate().toDateFormat2() ?? '',
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
               ),
             ),
           ),

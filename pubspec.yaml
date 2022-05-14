@@ -155,12 +155,18 @@ flutter:
         - asset: assets/fonts/Kollektif.ttf
         - asset: assets/fonts/Kollektif-Bold.ttf
           weight: 700
+
+    - family: Fiico
+      fonts:
+        - asset: assets/fonts/Fiico.ttf
+
   uses-material-design: true
 
   assets:
     - assets/images/
     - assets/fonts/
     - assets/videos/ 
+    - assets/locales/ 
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -78,7 +79,7 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: SizedBox(
         child: FiicoButton.pink(
-          title: "Crear nuevo budget",
+          title: FiicoLocale.createNewBudget,
           ontap: () => widget.onTapNewItem.call(),
         ),
       ),

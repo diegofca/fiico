@@ -2,6 +2,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/home/model/home_filters_movements.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class HomeEmptyWithFilterViewState extends State<HomeEmptyWithFilterView> {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "!No tienes ${HomeFilterMovement.itemsFilter[widget.indexFilter]} por ahora!",
+        "${FiicoLocale.youHaveNot} ${HomeFilterMovement.itemsFilter[widget.indexFilter]} ${FiicoLocale.forNow}!",
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -58,7 +59,7 @@ class HomeEmptyWithFilterViewState extends State<HomeEmptyWithFilterView> {
   Widget _bodyButton() {
     return FiicoButton.pink(
       ontap: () => widget.onTapNewItem!.call(),
-      title: ' Agregar movimiento',
+      title: ' ${FiicoLocale.addMovement} ',
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }

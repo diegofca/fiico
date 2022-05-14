@@ -22,7 +22,7 @@ class FiicoIcon {
     return FiicoIcon(
       codePoint: json?['codePoint'] ?? MdiIcons.sack.codePoint,
       fontFamily: json?['fontFamily'] ?? MdiIcons.sack.fontFamily,
-      fontPackage: json?['fontPackage'] ?? MdiIcons.sack.fontPackage,
+      fontPackage: json?['fontPackage'],
     );
   }
 
@@ -30,7 +30,7 @@ class FiicoIcon {
     return FiicoIcon(
       codePoint: icon?.codePoint ?? MdiIcons.sack.codePoint,
       fontFamily: icon?.fontFamily ?? MdiIcons.sack.fontFamily,
-      fontPackage: icon?.fontPackage ?? MdiIcons.sack.fontPackage,
+      fontPackage: icon?.fontPackage,
     );
   }
 

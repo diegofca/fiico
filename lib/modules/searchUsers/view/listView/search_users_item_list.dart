@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,10 @@ class SearchUserListItemView extends StatefulWidget {
 }
 
 class SearchUserListItemViewState extends State<SearchUserListItemView> {
-  final _segmentOptions = {0: 'Solo Lectura ', 1: 'Lectura y escritura '};
+  final _segmentOptions = {
+    0: FiicoLocale.readOnly,
+    1: FiicoLocale.readingAndWriting
+  };
 
   var selectedSegment = 0;
 

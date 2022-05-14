@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/mark_movement.dart';
@@ -29,6 +30,7 @@ class Movement {
   final bool isAddedWithBudget;
   final String? paymentStatus;
   final List<MarkMovement> markHistory;
+  final List<Timestamp>? recurrencyDates;
 
   Movement({
     required this.id,
@@ -47,6 +49,7 @@ class Movement {
     this.tags = const [],
     this.isAddedWithBudget = false,
     this.markHistory = const [],
+    this.recurrencyDates = const [],
   });
 
   factory Movement.fromJson(Map<String, dynamic>? json) {
@@ -66,6 +69,7 @@ class Movement {
       alert: FiicoAlert.fromJson(json?['alert']),
       tags: List.castFrom(json?['tags']),
       markHistory: MarkMovement.toList(json),
+      recurrencyDates: List.castFrom(json?['recurrencyDates']),
     );
   }
 
@@ -86,6 +90,7 @@ class Movement {
       'alert': alert?.toJson(),
       'tags': tags,
       'markHistory': markHistory.map((e) => e.toJson()).toList(),
+      'recurrencyDates': recurrencyDates,
     };
   }
 
@@ -106,6 +111,7 @@ class Movement {
     bool isAddedWithBudget = false,
     String? paymentStatus,
     List<MarkMovement>? markHistory,
+    List<Timestamp>? recurrencyDates,
   }) {
     return Movement(
       id: id ?? this.id,
@@ -121,6 +127,7 @@ class Movement {
       budgetName: budgetName ?? this.budgetName,
       alert: alert ?? this.alert,
       paymentStatus: paymentStatus ?? this.paymentStatus,
+      recurrencyDates: recurrencyDates ?? this.recurrencyDates,
       isAddedWithBudget: isAddedWithBudget,
       markHistory: markHistory ?? this.markHistory,
       tags: tags ?? this.tags,
@@ -170,9 +177,9 @@ class Movement {
   String getTypeDescription() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return 'Income';
+        return FiicoLocale.income;
       case MovementType.DEBT:
-        return 'OutCome';
+        return FiicoLocale.outcomes;
       default:
         return 'Safe';
     }
@@ -192,34 +199,49 @@ class Movement {
   String getDateTitleText() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return 'Día de ingreso promedio';
+        return FiicoLocale.averageDayOfAdmission;
       case MovementType.DEBT:
-        return 'Día de pago promedio';
+        return FiicoLocale.averageDayOfPayment;
       default:
-        return 'Fecha';
+        return '';
     }
   }
 
-  String getAlertDate() {
-    if (alert?.dates?.isEmpty ?? false) {
-      final day = alert?.day ?? recurrencyAt?.first ?? 1;
-      final recurrencyDate =
-          DateTime(DateTime.now().year, DateTime.now().month, day);
-      return recurrencyDate.toDateFormat1();
+  String getAlertDay() {
+    final day = alert?.day ?? recurrencyAt?.first ?? 1;
+    final recurrencyDate =
+        DateTime(DateTime.now().year, DateTime.now().month, day);
+    return recurrencyDate.toDateFormat1();
+  }
+
+  String getAlertDates() {
+    final dates =
+        alert?.dates ?? recurrencyDates?.map((e) => e.toDate()).toList() ?? [];
+    if (dates.isEmpty) {
+      return 'Sin fecha';
     }
-    return alert?.dates?.first.toDateFormat1() ?? '';
+    if (dates.length == 1) {
+      return dates.first.toDateFormat1();
+    }
+    return '${dates.length} Fechas';
   }
 
   String getRecurrencyDate() {
     final days = recurrencyAt?.map((e) => e.toString());
     if (days == null || days.isEmpty) {
+      if (recurrencyDates?.isNotEmpty ?? false) {
+        return recurrencyDates?.length == 1
+            ? recurrencyDates?.first.toDate().toDateFormat1() ?? ''
+            : '${recurrencyDates?.length} Fechas';
+      }
       return '';
     }
+
     switch (getType()) {
       case MovementType.ENTRY:
-        return '${days.join(',').toString()} de cada mes';
+        return '${days.join(',').toString()} ${FiicoLocale.everyOfMonth}';
       case MovementType.DEBT:
-        return '${days.join(',').toString()} de cada mes';
+        return '${days.join(',').toString()} ${FiicoLocale.everyOfMonth}';
       default:
         return '';
     }
@@ -228,7 +250,7 @@ class Movement {
   String getRecurrencyDateDescription() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return 'Ingreso: ${getRecurrencyDate()}';
+        return '${FiicoLocale.income}: ${getRecurrencyDate()}';
       case MovementType.DEBT:
         return 'Pago oportuno: ${getRecurrencyDate()}';
       default:
@@ -259,14 +281,14 @@ class Movement {
     switch (getType()) {
       case MovementType.ENTRY:
         return getPaymentType() == MovementPaymentType.PENDING
-            ? 'Pendiente'
-            : 'Recibido';
+            ? FiicoLocale.pending
+            : FiicoLocale.received;
       case MovementType.DEBT:
         return getPaymentType() == MovementPaymentType.PENDING
-            ? 'Pendiente'
-            : 'Pagado';
+            ? FiicoLocale.pending
+            : FiicoLocale.paid;
       default:
-        return 'Recibido';
+        return FiicoLocale.received;
     }
   }
 
@@ -284,7 +306,8 @@ class Movement {
   bool isCompleteByCreate() {
     final nameContained = name?.isNotEmpty ?? false;
     final valueContained = value != null && value != 0;
-    final dayToPending = recurrencyAt != null;
+    final dayToPending =
+        recurrencyAt != null || (recurrencyDates?.isNotEmpty ?? false);
     final currencyContained = currency?.isNotEmpty ?? false;
     return nameContained && valueContained && currencyContained & dayToPending;
   }

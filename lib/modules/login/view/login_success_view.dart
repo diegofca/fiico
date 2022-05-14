@@ -9,6 +9,7 @@ import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_top_title_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
@@ -105,7 +106,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
               top: FiicoPaddings.thirtyTwo,
             ),
             child: Text(
-              'Tu podrás manejar de la mejor manera tu dinero, controlar tus gastos y deudas e iniciar tus ahorros.',
+              FiicoLocale.youWillAbleControlMoney,
               maxLines: FiicoMaxLines.ten,
               textAlign: TextAlign.center,
               style: Style.subtitle.copyWith(
@@ -144,8 +145,8 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: email.length),
           ),
-        labelText: 'Email',
-        errorText: 'Invalidate email format.',
+        labelText: FiicoLocale.email,
+        errorText: FiicoLocale.invalidEmailFormat,
         prefixIcon: widget.state?.email?.getStatusIcon,
         suffixIcon: widget.state?.email?.getRigthStatusIcon,
         onChanged: (text) {
@@ -170,9 +171,8 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         ..selection = TextSelection.fromPosition(
           TextPosition(offset: password.length),
         ),
-      labelText: 'Password',
-      errorText:
-          'Invalidate password format. La contraseña debe contener una mayuscula, numeros y un caracter especial.',
+      labelText: FiicoLocale.password,
+      errorText: FiicoLocale.invalidPasswordFormat,
       maxLines: 1,
       obscureText: !isShowPassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
@@ -203,7 +203,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       onTap: () {
         FiicoAlertDialog.showCustom(
           context,
-          title: 'Ingresar el correo electronico',
+          title: FiicoLocale.enterEmail,
           body: FiicoTopStyleTextfield(
             labelText: '',
             keyboardType: TextInputType.emailAddress,
@@ -222,7 +222,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         ),
         alignment: Alignment.centerRight,
         child: Text(
-          'Forgot password',
+          FiicoLocale.forgotPassword,
           style: Style.subtitle.copyWith(
             color: FiicoColors.purpleDark,
           ),
@@ -238,7 +238,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Iniciar sesión',
+        title: FiicoLocale.logIn,
         color: FiicoColors.purpleDark,
         onTap: () => context.read<LoginBloc>().add(
               const LoginIntentRequest(
@@ -268,15 +268,15 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       height: 30,
       width: double.maxFinite,
       child: Row(
-        children: const [
-          Expanded(child: SeparatorView()),
+        children: [
+          const Expanded(child: SeparatorView()),
           Expanded(
             child: Text(
-              'or',
+              FiicoLocale.or,
               textAlign: TextAlign.center,
             ),
           ),
-          Expanded(child: SeparatorView()),
+          const Expanded(child: SeparatorView()),
         ],
       ),
     );
@@ -289,7 +289,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Registro',
+        title: FiicoLocale.signUp,
         color: FiicoColors.white,
         textColor: FiicoColors.grayDark,
         borderColor: FiicoColors.grayDark,

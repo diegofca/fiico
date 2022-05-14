@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -55,7 +56,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
           Padding(
             padding: const EdgeInsets.all(FiicoPaddings.eight),
             child: Text(
-              "No tienes notificaciones aún.",
+              FiicoLocale.youDontHaveNot,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.xm,
                 color: FiicoColors.graySoft,

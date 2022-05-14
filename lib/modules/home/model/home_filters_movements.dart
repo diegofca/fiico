@@ -1,11 +1,13 @@
+import 'package:control/helpers/manager/localizable_manager.dart';
+
 class HomeFilterMovement {
-  static const itemsFilter = {
-    0: 'Mas recientes',
-    1: 'De menor a mayor',
-    2: 'De mayor a menor',
-    3: 'Ingresos',
-    4: 'Gastos',
-    5: 'Gastos pendientes',
-    6: 'Gastos saldados',
+  static final itemsFilter = {
+    0: FiicoLocale.mostRecent,
+    1: FiicoLocale.fromSmallestToLargest,
+    2: FiicoLocale.fromLargesttToSmallest,
+    3: FiicoLocale.incomes,
+    4: FiicoLocale.outcomes,
+    5: FiicoLocale.pendingExpenses,
+    6: FiicoLocale.paidExpenses,
   };
 }

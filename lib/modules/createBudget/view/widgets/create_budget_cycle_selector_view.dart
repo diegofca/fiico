@@ -2,14 +2,15 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/cycle.dart';
 import 'package:flutter/material.dart';
 
 class CreateBudgetCycleSelectorView {
   final _options = [
-    BudgetCycle.twoWeeks(),
-    BudgetCycle.month(),
-    BudgetCycle.annual(),
+    BudgetCycle.twoWeeks(name: FiicoLocale.biweekly),
+    BudgetCycle.month(name: FiicoLocale.monthly),
+    BudgetCycle.annual(name: FiicoLocale.annual),
   ];
 
   void show(

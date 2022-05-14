@@ -5,6 +5,7 @@ import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_calendar.dart';
 import 'package:control/helpers/genericViews/fiico_cycle_calendar.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
@@ -12,6 +13,7 @@ import 'package:control/modules/alert/bloc/alert_selector_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:collection/collection.dart';
 
 class AlertSelectorView {
   void show(
@@ -88,7 +90,7 @@ class AlertSelectorView {
 
   Widget _dateTitleView() {
     return Text(
-      'Agregar fecha de notificación',
+      FiicoLocale.addNotificationDate,
       style: Style.title.copyWith(
         fontSize: FiicoFontSize.md,
       ),
@@ -108,7 +110,7 @@ class AlertSelectorView {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "Modo intesivo",
+            FiicoLocale.intensiveMode,
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.xm,
             ),
@@ -116,9 +118,8 @@ class AlertSelectorView {
           IconButton(
             onPressed: () => FiicoAlertDialog.showInfo(
               context,
-              title: 'Notificación intensiva',
-              message:
-                  'Las notificaciones en modo intesivo se activiran a diario una semana antes de la fecha final estipulada, puedes activarlo y desactivarlo en cualquier momento.',
+              title: FiicoLocale.intensiveNotification,
+              message: FiicoLocale.intensiveNotificationMsg,
             ),
             icon: const Icon(MdiIcons.information),
           ),
@@ -146,9 +147,14 @@ class AlertSelectorView {
     final state = context.read<AlertSelectorBloc>().state;
     final isCycle = budget?.isCycle ?? false;
 
-    final date =
-        state.day ?? movement?.alert?.day ?? movement?.recurrencyAt?.first ?? 1;
-    final dates = state.dates ?? movement?.alert?.dates ?? [];
+    final date = state.day ??
+        movement?.alert?.day ??
+        movement?.recurrencyAt?.firstOrNull ??
+        1;
+    final dates = state.dates ??
+        movement?.alert?.dates ??
+        movement?.recurrencyDates?.map((e) => e.toDate()).toList() ??
+        [];
 
     return Container(
       margin: const EdgeInsets.only(top: FiicoPaddings.sixteen),
@@ -190,7 +196,7 @@ class AlertSelectorView {
     final dates = state.dates ?? movement?.alert?.dates ?? [];
 
     return FiicoButton.pink(
-      title: 'Seleccionar',
+      title: FiicoLocale.selectButton,
       ontap: () {
         final alert = FiicoAlert(
           active: true,

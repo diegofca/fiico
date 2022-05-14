@@ -135,6 +135,14 @@ class FiicoUser extends Equatable {
         authBiometric
       ];
 
+  @override
+  bool operator ==(other) {
+    return other is FiicoUser && id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   //Generic functions
 
   // que tipo de permiso tiene el usuario en el budget.

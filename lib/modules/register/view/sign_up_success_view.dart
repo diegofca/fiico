@@ -6,6 +6,7 @@ import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_top_title_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
 import 'package:control/modules/register/bloc/sign_bloc.dart';
@@ -43,10 +44,10 @@ class SignSuccesViewState extends State<SignSuccesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GenericAppBar(
+      appBar: GenericAppBar(
         textColor: FiicoColors.purpleDark,
         bgColor: FiicoColors.clear,
-        text: 'Sign Up',
+        text: FiicoLocale.signUp,
       ),
       body: _body(context),
     );
@@ -95,8 +96,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: name.length),
           ),
-        labelText: 'Name',
-        errorText: 'Invalidate name format.',
+        labelText: FiicoLocale.name,
+        errorText: FiicoLocale.invalidNameFormat,
         prefixIcon: widget.state?.name?.getStatusIcon,
         onChanged: (text) {
           var name = NameValidatorModel(text);
@@ -119,8 +120,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: lastName.length),
           ),
-        labelText: 'Last name',
-        errorText: 'Invalidate last name format.',
+        labelText: FiicoLocale.lastName,
+        errorText: FiicoLocale.invalidLastNameFormat,
         prefixIcon: widget.state?.lastName?.getStatusIcon,
         onChanged: (text) {
           var lastName = LastNameValidatorModel(text);
@@ -143,8 +144,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: email.length),
           ),
-        labelText: 'Email',
-        errorText: 'Invalidate email format.',
+        labelText: FiicoLocale.email,
+        errorText: FiicoLocale.invalidEmailFormat,
         prefixIcon: widget.state?.email?.getStatusIcon,
         onChanged: (text) {
           var email = EmailValidatorModel(text);
@@ -168,9 +169,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
         ..selection = TextSelection.fromPosition(
           TextPosition(offset: password.length),
         ),
-      labelText: 'Password',
-      errorText:
-          'Invalidate password format. La contraseña debe contener una mayuscula, numeros y un caracter especial.',
+      labelText: FiicoLocale.password,
+      errorText: FiicoLocale.invalidPasswordFormat,
       maxLines: FiicoMaxLines.one,
       obscureText: !isShowPassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
@@ -205,7 +205,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Sign Up',
+        title: FiicoLocale.signUp,
         color: FiicoColors.purpleDark,
         onTap: () => context.read<SignBloc>().add(const SignUpIntentRequest()),
       ),
@@ -220,15 +220,15 @@ class SignSuccesViewState extends State<SignSuccesView> {
       height: 30,
       width: double.maxFinite,
       child: Row(
-        children: const [
-          Expanded(child: SeparatorView()),
+        children: [
+          const Expanded(child: SeparatorView()),
           Expanded(
             child: Text(
-              'or',
+              FiicoLocale.or,
               textAlign: TextAlign.center,
             ),
           ),
-          Expanded(child: SeparatorView()),
+          const Expanded(child: SeparatorView()),
         ],
       ),
     );
@@ -241,7 +241,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Log In',
+        title: FiicoLocale.logIn,
         color: FiicoColors.white,
         textColor: FiicoColors.grayDark,
         borderColor: FiicoColors.grayDark,

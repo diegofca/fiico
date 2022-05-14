@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget_cycle_history.dart';
 import 'package:control/models/cycle.dart';
 import 'package:control/models/duration.dart';
@@ -136,7 +137,7 @@ class Budget {
       'userID': userID,
       'isCycle': isCycle,
       'startDate': startDate,
-      'finishDate': finishDate,
+      'finishDate': getFinishDate(),
       'ownerName': ownerName,
       'histories': FieldValue.arrayUnion(
           histories?.map((e) => e.toJson()).toList() ?? []),
@@ -324,43 +325,43 @@ class Budget {
   String getCycleText() {
     switch (getCycleType()) {
       case BudgetCycleType.TWO_WEEKS:
-        return 'Cada dos semanas';
+        return FiicoLocale.biweekly;
       case BudgetCycleType.MONTH:
-        return 'Mensual';
+        return FiicoLocale.monthly;
       case BudgetCycleType.ANNUAL:
-        return 'Anual';
+        return FiicoLocale.annual;
       default:
-        return 'Selecciona el ciclo de tiempo';
+        return '';
     }
   }
 
   String getDurationBudgetDescription() {
     if (!(isCycle ?? false)) {
-      return 'Duración:  ${getDurationText()}';
+      return '${FiicoLocale.duration} ${getDurationText()}';
     }
 
-    return 'Duración de ciclo: ${getCycleText()}';
+    return '${FiicoLocale.cycleDuration} ${getCycleText()}';
   }
 
   String getCycleDescription() {
-    var description = 'Tu presupuesto esta en modo repetitivo y se repetirá ';
+    var description = FiicoLocale.youtBudgetIsRepeatingMode;
 
     if (isCycle ?? false) {
       final type = BudgetCycleType.values
           .firstWhereOrNull((element) => element.index == cycle);
       switch (type) {
         case BudgetCycleType.TWO_WEEKS:
-          return description + 'cada dos semanas';
+          return description + FiicoLocale.biweekly;
         case BudgetCycleType.MONTH:
-          return description + 'cada mes';
+          return description + FiicoLocale.monthly;
         case BudgetCycleType.ANNUAL:
-          return description + 'año';
+          return description + FiicoLocale.annual;
         default:
           return '';
       }
     }
 
-    return 'Podrás definir una duración, fecha inicial y fecha final.';
+    return FiicoLocale.youCanDefineDurationDates;
   }
 
   String getDurationText() {
@@ -368,15 +369,15 @@ class Budget {
         .firstWhereOrNull((element) => element.index == duration);
     switch (type) {
       case BudgetDurationType.CUSTOM:
-        return 'Personalizado';
+        return FiicoLocale.custom;
       case BudgetDurationType.MONTH:
-        return 'Un mes';
+        return FiicoLocale.oneMonth;
       case BudgetDurationType.THREE_MONTH:
-        return 'Tres meses';
+        return FiicoLocale.threeMonth;
       case BudgetDurationType.SIX_MONTH:
-        return 'Seis meses';
+        return FiicoLocale.sixMonth;
       case BudgetDurationType.ANNUAL:
-        return 'Un año';
+        return FiicoLocale.oneYear;
       default:
         return '';
     }
@@ -392,7 +393,13 @@ class Budget {
     final type = BudgetDurationType.values
         .firstWhereOrNull((element) => element.index == duration);
 
+    final isCycle = isCycleBudget();
     var date = startDate?.toDate() ?? DateTime.now();
+    var endDate = finishDate?.toDate() ?? DateTime.now();
+
+    if (isCycle) {
+      return Timestamp.fromDate(endDate);
+    }
 
     switch (type) {
       case BudgetDurationType.MONTH:
@@ -411,7 +418,7 @@ class Budget {
         return Timestamp.fromDate(finishDate?.toDate() ?? date);
 
       default:
-        return Timestamp.fromDate(date);
+        return Timestamp.fromDate(endDate);
     }
   }
 

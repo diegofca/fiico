@@ -14,7 +14,7 @@ class FiicoAlert {
     this.active = false,
     this.type = FiicoAlert.SIMPLE_TYPE,
     this.day,
-    this.dates = const [],
+    this.dates,
   });
 
   factory FiicoAlert.fromJson(Map<String, dynamic>? json) {
@@ -26,9 +26,10 @@ class FiicoAlert {
     );
   }
 
-  static List<DateTime> toDatesList(Map<String, dynamic>? json) {
+  static List<DateTime>? toDatesList(Map<String, dynamic>? json) {
     List<DateTime> dates = [];
-    json?['dates'].forEach((date) {
+    final jDates = json?['dates'] ?? [];
+    jDates.forEach((date) {
       dates.add((date as Timestamp).toDate());
     });
     return dates;

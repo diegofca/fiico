@@ -2,16 +2,17 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/duration.dart';
 import 'package:flutter/material.dart';
 
 class CreateBudgetDurationSelectorView {
   final _options = [
-    BudgetDuration.month(),
-    BudgetDuration.threeMonths(),
-    BudgetDuration.sixMonths(),
-    BudgetDuration.annual(),
-    BudgetDuration.custom(),
+    BudgetDuration.month(name: FiicoLocale.oneMonth),
+    BudgetDuration.threeMonths(name: FiicoLocale.threeMonth),
+    BudgetDuration.sixMonths(name: FiicoLocale.sixMonth),
+    BudgetDuration.annual(name: FiicoLocale.oneYear),
+    BudgetDuration.custom(name: FiicoLocale.custom),
   ];
 
   void show(

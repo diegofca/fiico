@@ -2,6 +2,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/budgets/bloc/budgets_bloc.dart';
@@ -27,7 +28,7 @@ class BudgetsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: "Budgets",
+        text: FiicoLocale.myBudgets,
         textColor: FiicoColors.black,
         actions: [_addBudgetButton(context)],
         isShowBack: false,

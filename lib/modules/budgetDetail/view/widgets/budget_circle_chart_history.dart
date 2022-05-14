@@ -6,6 +6,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/indicator.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/budget_cycle_history.dart';
 import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
@@ -168,13 +169,13 @@ class BudgetChartCircleViewState extends State<BudgetChartCircleView> {
   String _getTitle(BudgetChartCircleSections section) {
     switch (section) {
       case BudgetChartCircleSections.PEDING_PAY:
-        return 'Pendiente por pagar';
+        return FiicoLocale.pendingPayable;
       case BudgetChartCircleSections.PENDING_RECEIVED:
-        return 'Pendiente por recibir';
+        return FiicoLocale.pendingToReceive;
       case BudgetChartCircleSections.TOTAL_PAY:
-        return 'Total pagado';
+        return FiicoLocale.totalPaid;
       case BudgetChartCircleSections.TOTAL_RECEIVED:
-        return 'Total recibido';
+        return FiicoLocale.totalReceived;
     }
   }
 

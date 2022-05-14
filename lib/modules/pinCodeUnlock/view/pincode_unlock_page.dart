@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/menu/menu.dart';
 import 'package:control/modules/pinCodeUnlock/bloc/pincode_unlock_bloc.dart';
@@ -21,8 +22,8 @@ class PinCodeUnlockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: const GenericAppBar(
-        text: "PIN de seguridad",
+      appBar: GenericAppBar(
+        text: FiicoLocale.securityPinTitle,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),
@@ -69,8 +70,8 @@ class PinCodeUnlockView extends StatelessWidget {
   void _showErrorAuthLogged(BuildContext context) {
     FiicoAlertDialog.showWarnning(
       context,
-      title: 'PIN no válido',
-      message: 'El PIN que ingresaste no es válido, intenta de nuevo.',
+      title: FiicoLocale.invalidPin,
+      message: FiicoLocale.invalidPinEnteredIsInvalid,
     );
   }
 }

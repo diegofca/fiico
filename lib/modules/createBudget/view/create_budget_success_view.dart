@@ -7,6 +7,7 @@ import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
@@ -15,6 +16,9 @@ import 'package:control/modules/createBudget/view/create_budget_cycle_view.dart'
 import 'package:control/modules/createBudget/view/headerView/create_budget_header_view.dart';
 import 'package:control/modules/createBudget/view/listView/create_budget_movement_item_list_view.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
+import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
+import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
+import 'package:control/modules/editMovement/view/edit_movement_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:currency_picker/currency_picker.dart';
@@ -129,7 +133,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             vertical: FiicoPaddings.sixteen,
           ),
           child: Text(
-            'Moneda',
+            FiicoLocale.currency,
             textAlign: TextAlign.start,
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.sm,
@@ -195,7 +199,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Income',
+                  FiicoLocale.incomes,
                   textAlign: TextAlign.start,
                   style: Style.subtitle.copyWith(
                     fontSize: FiicoFontSize.sm,
@@ -252,7 +256,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Outcome',
+                FiicoLocale.outcomes,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -334,7 +338,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             vertical: FiicoPaddings.thirtyTwo,
           ),
           child: Text(
-            'Puedes crear tus tableros y compartirlos con tus amigos y familiares, si estan tregistrados en Fiico podrán modificar tu tablero en cualquier momento.',
+            FiicoLocale.youCanCreateAndShareBoards,
             textAlign: TextAlign.start,
             maxLines: FiicoMaxLines.ten,
             style: Style.desc.copyWith(
@@ -386,7 +390,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
                       left: FiicoPaddings.eight,
                     ),
                     child: Text(
-                      'Share',
+                      FiicoLocale.shareButton,
                       textAlign: TextAlign.start,
                       style: Style.desc.copyWith(
                         fontSize: FiicoFontSize.xm,
@@ -417,7 +421,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         top: FiicoPaddings.eight,
       ),
       child: FiicoButton.pink(
-        title: 'Crear presupuesto',
+        title: FiicoLocale.createBudget,
         ontap: () => _onCreateBudgetIntent(context),
       ),
     );
@@ -431,9 +435,8 @@ class CreateBudgetSuccessView extends StatelessWidget {
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: 'Campos vacios',
-        message:
-            'Completa los campos faltantes para poder crear tu presupuesto.',
+        title: FiicoLocale.emptyFields,
+        message: FiicoLocale.completeFieldsWithCreateBudget,
       );
     }
   }
@@ -452,7 +455,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
               bottom: FiicoPaddings.eight,
             ),
             child: Text(
-              'Integrantes',
+              FiicoLocale.members,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -510,25 +513,55 @@ class CreateBudgetSuccessView extends StatelessWidget {
   }
 
   void _addedMovement(BuildContext context, MovementType type) async {
-    final bloc = context.read<CreateBudgetBloc>();
-
     if (budgetToCreate.isCompleteByCreate()) {
-      Movement movement = await FiicoRoute.send(
+      DefaultMovementPage().show(
         context,
-        CreateMovementPage(
-          budget: budgetToCreate,
-          addedinBudget: true,
-          type: type,
-        ),
+        budget: budgetToCreate,
+        list: MovementsList.getListBy(type: type),
+        onMovementSelected: (movement) =>
+            _selectPredefinedMovement(context, movement),
+        onNewItemSelected: () => _addNewMovement(context, type),
       );
-      bloc.add(CreateBudgetAddedmovement(movement: movement));
     } else {
-      FiicoAlertDialog.showWarnning(
-        context,
-        title: 'Campos vacios',
-        message:
-            'Completa los campos faltantes para poder agregar tus movimientos.',
-      );
+      _showErrorIncompleteBudgetData(context);
     }
+  }
+
+  // Se crearia un movimiento desde una plantilla predefinida
+  void _selectPredefinedMovement(
+      BuildContext context, Movement movement) async {
+    final bloc = context.read<CreateBudgetBloc>();
+    Movement newMovement = await FiicoRoute.send(
+      context,
+      EditMovementPage(
+        budget: budgetToCreate,
+        movementToEdit: movement,
+        addedinBudget: true,
+      ),
+    );
+    bloc.add(CreateBudgetAddedmovement(movement: newMovement));
+  }
+
+  // Se crearia un movimiento desde cero.
+  void _addNewMovement(BuildContext context, MovementType type) async {
+    final bloc = context.read<CreateBudgetBloc>();
+    Movement movement = await FiicoRoute.send(
+      context,
+      CreateMovementPage(
+        budget: budgetToCreate,
+        addedinBudget: true,
+        type: type,
+      ),
+    );
+    bloc.add(CreateBudgetAddedmovement(movement: movement));
+  }
+
+  void _showErrorIncompleteBudgetData(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      title: 'Campos vacios',
+      message:
+          'Completa los campos faltantes para poder agregar tus movimientos.',
+    );
   }
 }

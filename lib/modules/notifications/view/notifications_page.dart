@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/fiico_notification.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/notifications/bloc/notifications_bloc.dart';
@@ -21,8 +22,8 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: const GenericAppBar(
-        text: "Notifications",
+      appBar: GenericAppBar(
+        text: FiicoLocale.notifications,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),

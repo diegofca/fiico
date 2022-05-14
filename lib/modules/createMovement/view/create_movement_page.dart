@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/alert.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/fiico_icon.dart';
@@ -60,7 +61,7 @@ class CreateMovementPage extends StatelessWidget {
         highlightColor: Colors.transparent,
         onPressed: () {
           FiicoAlertDialog.showSuccess(context,
-              title: 'Movimiento',
+              title: FiicoLocale.movement,
               message:
                   'Los movimientos son acciones que modifican tu saldo total, en este puede estar un gasto, ahorro o ingreso.');
         },
@@ -133,6 +134,7 @@ class CreateMovementPageView extends StatelessWidget {
       value: state.value,
       icon: state.icon ?? const FiicoIcon.empty(),
       alert: state.alert ?? FiicoAlert.empty(),
+      recurrencyDates: state.recurrencyDates ?? [],
       description: state.description,
       createdAt: Timestamp.now(),
       recurrencyAt: recurrencyDay,

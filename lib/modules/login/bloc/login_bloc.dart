@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
@@ -121,8 +122,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<FiicoUser?> _getLoginIntentByProvider(
       SocialCredential? credential, Emitter<LoginState> emit) async {
     if (credential == null) {
-      _mapErrorToIntentLogin(
-          emit, 'Error', 'Intento de inicio de sesión cancelado.');
+      _mapErrorToIntentLogin(emit, 'Error', FiicoLocale.loginAttemptAborted);
       return null;
     }
 
@@ -134,8 +134,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         _mapErrorToIntentLogin(emit, eType, eMssg);
       });
     }
-    _mapErrorToIntentLogin(emit, '',
-        'Ya tienes una cuenta con este correo, intenta iniciar sesión de otra manera');
+    _mapErrorToIntentLogin(emit, '', FiicoLocale.youAlreadyHaveAccount);
     return null;
   }
 

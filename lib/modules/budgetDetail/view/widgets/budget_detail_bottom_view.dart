@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +16,8 @@ enum BudgetDetailBottomOption {
 
 class BudgetDetailBottomView {
   final _ownerOptions = {
-    BudgetDetailBottomOption.delete_budget: 'Eliminar presupuesto',
-    BudgetDetailBottomOption.add_friend: 'Agregar amigo',
+    BudgetDetailBottomOption.delete_budget: FiicoLocale.deleteBudget,
+    BudgetDetailBottomOption.add_friend: FiicoLocale.shareWithFriend,
   };
 
   final _inviteOptions = {

@@ -2,6 +2,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/bloc/search_users_bloc.dart';
 import 'package:control/modules/searchUsers/repository/search_users_repository.dart';
@@ -87,7 +88,7 @@ class SearchUsersPageView extends StatelessWidget {
       children: [
         Expanded(
           child: FiicoTextfield(
-            hintText: "Busca usuarios aquí ...",
+            hintText: FiicoLocale.findYourFriendsHere,
             textInputAction: TextInputAction.search,
             onChanged: (text) {
               bloc.add(SearchUsersFilterRequest(text));

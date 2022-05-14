@@ -19,6 +19,14 @@ class SearchUsersState extends Equatable {
 
   List<FiicoUser> getFilteredUsers(List<FiicoUser>? users, String query) {
     final _users = users ?? [];
+
+    selectedUsers?.forEach((e) {
+      if (_users.contains(e)) {
+        _users.remove(e);
+      }
+    });
+    _users.addAll(selectedUsers ?? []);
+
     return _users
         .where(
           (e) =>

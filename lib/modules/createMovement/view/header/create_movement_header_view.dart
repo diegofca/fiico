@@ -122,7 +122,9 @@ class CreateMovementHeaderViewState extends State<CreateMovementHeaderView> {
               ),
             ),
             Text(
-              widget.movement.getAlertDate(),
+              widget.budget!.isCycleBudget()
+                  ? widget.movement.getAlertDay()
+                  : widget.movement.getAlertDates(),
               style: Style.subtitle.copyWith(
                 color: FiicoColors.graySoft,
                 fontSize: FiicoFontSize.xs,

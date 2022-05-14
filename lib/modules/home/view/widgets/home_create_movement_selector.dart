@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 
 enum HomeCreateMovementBottomOption {
@@ -13,8 +14,8 @@ enum HomeCreateMovementBottomOption {
 
 class HomeCreateMovementBottomView {
   final _options = {
-    HomeCreateMovementBottomOption.add_entry: 'Agregar ingreso',
-    HomeCreateMovementBottomOption.add_debt: 'Agregar gasto',
+    HomeCreateMovementBottomOption.add_entry: FiicoLocale.addIncome,
+    HomeCreateMovementBottomOption.add_debt: FiicoLocale.addOutcome,
   };
 
   void show(
