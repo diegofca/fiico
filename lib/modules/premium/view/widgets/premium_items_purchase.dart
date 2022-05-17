@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/plan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,7 +50,7 @@ class PremiumItemsPageView extends StatelessWidget {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       decoration: const BoxDecoration(
-        color: FiicoColors.white,
+        color: FiicoColors.grayNightDark,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(FiicoPaddings.twenyFour),
           topRight: Radius.circular(FiicoPaddings.twenyFour),
@@ -57,6 +58,7 @@ class PremiumItemsPageView extends StatelessWidget {
       ),
       child: SafeArea(
         child: Wrap(
+          alignment: WrapAlignment.center,
           children: [
             _title(),
             _movementListView(plans, onPlanSelected),
@@ -74,10 +76,11 @@ class PremiumItemsPageView extends StatelessWidget {
         bottom: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "Ahorra con PREMIUM UNLIMITED",
-        style: Style.title.copyWith(
-          color: FiicoColors.black,
-          fontSize: FiicoFontSize.md,
+        FiicoLocale().saveMoreWhitPremiumUnlimited,
+        textAlign: TextAlign.center,
+        style: Style.desc.copyWith(
+          color: FiicoColors.white,
+          fontSize: FiicoFontSize.xm,
         ),
       ),
     );
@@ -85,7 +88,7 @@ class PremiumItemsPageView extends StatelessWidget {
 
   Widget _movementListView(List<Plan> plans, Function(Plan) onPlanSelected) {
     return SizedBox(
-      height: plans.length * 75,
+      height: plans.length * 85,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: plans.length,
@@ -112,10 +115,11 @@ class PremiumItemsPageView extends StatelessWidget {
         width: double.maxFinite,
         padding: const EdgeInsets.all(FiicoPaddings.eight),
         decoration: BoxDecoration(
-          color: FiicoColors.purpleLite,
+          color:
+              plan.unlimited! ? FiicoColors.black : FiicoColors.grayNightDark,
           border: Border.all(
-            color: FiicoColors.pink,
-            width: 2,
+            color: plan.unlimited! ? FiicoColors.gold : FiicoColors.pink,
+            width: 1,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(FiicoPaddings.twelve),
@@ -127,12 +131,12 @@ class PremiumItemsPageView extends StatelessWidget {
           children: [
             SvgPicture.asset(
               plan.icon!,
-              width: 30,
+              width: 40,
             ),
             Text(
-              plan.name ?? '',
+              plan.getPlanTitle(),
               style: Style.title.copyWith(
-                color: FiicoColors.black,
+                color: FiicoColors.white,
                 fontSize: FiicoFontSize.sm,
               ),
               maxLines: FiicoMaxLines.four,
@@ -141,12 +145,21 @@ class PremiumItemsPageView extends StatelessWidget {
             Text(
               plan.priceDetail ?? '',
               style: Style.title.copyWith(
-                color: FiicoColors.purpleDark,
-                fontSize: FiicoFontSize.xs,
+                color: plan.unlimited! ? FiicoColors.gold : FiicoColors.pink,
+                fontSize: FiicoFontSize.xm,
               ),
               maxLines: FiicoMaxLines.four,
               textAlign: TextAlign.center,
             ),
+            Text(
+              plan.getDurationTitle(),
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.graySoft,
+                fontSize: FiicoFontSize.xxs,
+              ),
+              maxLines: FiicoMaxLines.four,
+              textAlign: TextAlign.center,
+            )
           ],
         ),
       ),

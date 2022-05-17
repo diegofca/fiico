@@ -20,6 +20,7 @@ class FiicoColors {
   static const graySoft = Color(0xFFD9D9D9);
   static const grayLite = Color(0xFFF5F6F8);
   static const grayBackground = Color(0xFFF6FBFD);
+  static const grayNightDark = Color.fromARGB(255, 45, 44, 44);
 
   static var grayShadow = const Color(0xff5C5C5C).withOpacity(0.1);
 

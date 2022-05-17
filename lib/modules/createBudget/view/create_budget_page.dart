@@ -4,6 +4,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
@@ -50,9 +51,9 @@ class CreateBudgetPage extends StatelessWidget {
         highlightColor: Colors.transparent,
         onPressed: () {
           FiicoAlertDialog.showSuccess(context,
-              title: 'Presupuesto',
+              title: FiicoLocale().myBudgets,
               message:
-                  'Los presupuestos o tableros son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.');
+                  'Los presupuestos son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.');
         },
         icon: const Icon(
           MdiIcons.informationOutline,

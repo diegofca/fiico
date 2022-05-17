@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/premium/view/widgets/premium_items_purchase.dart';
@@ -171,7 +172,7 @@ class PremiumSuccessView extends StatelessWidget {
 
   Widget _benefictsTitleView() {
     return Text(
-      'Beneficios',
+      FiicoLocale().benefics,
       style: Style.subtitle.copyWith(
         color: FiicoColors.white,
         fontSize: FiicoFontSize.xl,
@@ -181,11 +182,11 @@ class PremiumSuccessView extends StatelessWidget {
 
   Widget _benefictsListView() {
     return ListView.builder(
-      itemCount: PremiumRepository.benefics.length,
+      itemCount: PremiumRepository().benefics.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final benefic = PremiumRepository.benefics[index];
+        final benefic = PremiumRepository().benefics[index];
         return _beneficItemView(benefic);
       },
     );
@@ -229,7 +230,7 @@ class PremiumSuccessView extends StatelessWidget {
         top: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        '¿Tienes dudas?',
+        FiicoLocale().youHaveDoubts,
         style: Style.subtitle.copyWith(
           color: FiicoColors.white.withOpacity(0.5),
           fontSize: FiicoFontSize.xl,
@@ -247,7 +248,7 @@ class PremiumSuccessView extends StatelessWidget {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Contactanos',
+        title: FiicoLocale().contactUs,
         color: FiicoColors.white.withOpacity(0.2),
         textColor: FiicoColors.white.withOpacity(0.3),
         onTap: () {},
@@ -261,7 +262,7 @@ class PremiumSuccessView extends StatelessWidget {
         bottom: FiicoPaddings.sixtyTwo,
       ),
       child: Text(
-        'Tu puedes cancelar tu subscripción en el momento que quieras',
+        FiicoLocale().youCanCancelSubsAtAnyTime,
         maxLines: FiicoMaxLines.four,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -297,7 +298,7 @@ class PremiumSuccessView extends StatelessWidget {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: 'Ver planes',
+        title: FiicoLocale().seePlans,
         color: FiicoColors.white,
         textColor: FiicoColors.purpleNeutral,
         onTap: () async {
@@ -320,7 +321,7 @@ class PremiumSuccessView extends StatelessWidget {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        'Restaurar compras',
+        FiicoLocale().restorePurchases,
         maxLines: FiicoMaxLines.four,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -340,7 +341,7 @@ class PremiumSuccessView extends StatelessWidget {
           top: FiicoPaddings.eight,
         ),
         child: Text(
-          'Politica de privadad y Terminos de uso',
+          FiicoLocale().termsAndConditionsOfUse,
           maxLines: FiicoMaxLines.four,
           textAlign: TextAlign.center,
           style: Style.subtitle.copyWith(

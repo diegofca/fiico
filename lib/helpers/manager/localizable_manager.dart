@@ -160,4 +160,33 @@ class FiicoLocale {
   final inviteFriendButton = "invite_friend_button".tr();
   final english = "english".tr();
   final spanish = "spanish".tr();
+  final logOut = "log_out".tr();
+  final editUser = "edit_user".tr();
+  final shareQR = "share_qr".tr();
+  final helpCenter = "help_center".tr();
+  final sendSuggestion = "send_suggestion".tr();
+  final rateValiu = "rate_valiu".tr();
+  final iHaveSuggestion = "i_have_suggestion".tr();
+  final pleaseTellUsMore = "please_tell_us_more".tr();
+  final weLoveToKnowFeatureLooking = "we_love_to_know_feature_looking".tr();
+  final youMustAddMinimumCharacters = "you_must_add_minimum_characters".tr();
+  final madeWithLove = "made_with_love".tr();
+  final createMoreThanOneBudget = "create_more_than_one_budget".tr();
+  final createMoreExpenses = "create_more_expenses".tr();
+  final createMoreIncomes = "create_more_incomes".tr();
+  final shareYourQuotesWithFriends = "share_your_quotes_whit_your_friends".tr();
+  final financialSupportThatWillHelp = "financial_support_that_will_help".tr();
+  final moreThanTwoDifferentLanguages =
+      "more_than_two_different_languages".tr();
+  final newBenefitsWithoutHavingToPayMore =
+      "new_benefits_without_having_to_pay_more".tr();
+  final termsAndConditionsOfUse = "terms_and_conditions_of_use".tr();
+  final youCanCancelSubsAtAnyTime =
+      "you_can_cancel_your_subscription_at_any_time".tr();
+  final benefics = "benefics".tr();
+  final youHaveDoubts = "you_have_doubts".tr();
+  final contactUs = "contact_us".tr();
+  final seePlans = "see_plans".tr();
+  final restorePurchases = "restore_purchases".tr();
+  final saveMoreWhitPremiumUnlimited = "save_more_whit_premium_unlimited".tr();
 }

@@ -79,16 +79,12 @@ class FiicoTextfield extends Container {
 }
 
 class FiicoEditingController extends TextEditingController {
-  // @override
-  // set text(String newText) {
-  //   if (initalizate) {
-  //     initalizate = false;
-  //   }
-  //   value = value.copyWith(
-  //     text: newText,
-  //     selection:
-  //         initalizate ? TextSelection.collapsed(offset: newText.length) : null,
-  //     composing: TextRange.empty,
-  //   );
-  // }
+  @override
+  set text(String newText) {
+    value = value.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+      composing: TextRange.empty,
+    );
+  }
 }

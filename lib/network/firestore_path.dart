@@ -2,6 +2,7 @@ class Firestore {
   static const usersPath = 'users';
   static const budgetsPath = 'budgets';
   static const notificationssPath = 'notifications';
+  static const suggestionsPath = 'suggestions';
 
   static const statusField = 'status';
   static const nameField = 'name';
@@ -10,4 +11,5 @@ class Firestore {
   static const usersField = 'users';
   static const readedField = 'readed';
   static const histories = 'histories';
+  static const paymentsHistory = 'payments';
 }

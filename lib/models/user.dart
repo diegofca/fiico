@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/models/budget.dart';
+import 'package:control/models/payment_history.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:equatable/equatable.dart';
@@ -17,6 +18,7 @@ class FiicoUser extends Equatable {
   final bool? vip;
   final Plan? currentPlan;
   final List<Budget>? budgets;
+  final List<PaymentPremium>? payments;
   final String? budgetPermission;
   final String? securityCode;
   final bool? authBiometric;
@@ -38,6 +40,7 @@ class FiicoUser extends Equatable {
     this.budgetPermission,
     this.securityCode,
     this.authBiometric,
+    this.payments,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -51,6 +54,7 @@ class FiicoUser extends Equatable {
       deviceTokens: List.castFrom(json?['deviceTokens']),
       currentPlan: Plan.fromJson(json?['currentPlan']),
       budgets: Budget.toList(json?['budgets']),
+      payments: PaymentPremium.toList(json),
       showTutorial: json?['showTutorial'],
       budgetPermission: json?['budgetPermission'],
       authBiometric: json?['authBiometric'],
@@ -75,6 +79,7 @@ class FiicoUser extends Equatable {
       'budgetPermission': budgetPermission ?? '',
       'authBiometric': authBiometric ?? false,
       'securityCode': securityCode ?? '',
+      'payments': payments?.map((e) => e.toJson()).toList() ?? [],
       'vip': vip ?? false,
     };
   }
@@ -99,6 +104,7 @@ class FiicoUser extends Equatable {
     bool? vip,
     Plan? currentPlan,
     List<Budget>? budgets,
+    List<PaymentPremium>? payments,
     String? budgetPermission,
     String? securityCode,
     bool? authBiometric,
@@ -118,6 +124,7 @@ class FiicoUser extends Equatable {
       budgetPermission: budgetPermission ?? this.budgetPermission,
       securityCode: securityCode ?? this.securityCode,
       authBiometric: authBiometric ?? this.authBiometric,
+      payments: payments ?? this.payments,
       showTutorial: showTutorial,
     );
   }
@@ -155,7 +162,7 @@ class FiicoUser extends Equatable {
   }
 
   bool isPremium() {
-    return isActivePlan() && currentPlan?.name != 'Free';
+    return isActivePlan() && currentPlan?.id != 'Free';
   }
 
   bool isActivePlan() {

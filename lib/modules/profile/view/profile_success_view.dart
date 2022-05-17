@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/profile/model/profile_option.dart';
 import 'package:control/modules/profile/view/listView/profile_list_item.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,11 @@ class ProfileSuccessView extends StatelessWidget {
   final items = 10;
 
   final List<ProfileOption> options = [
-    ProfileOption("Editar usuario", false),
-    ProfileOption("Notificaciones", true),
-    ProfileOption("Código de seguridad", false),
-    ProfileOption("Compartir QR", false),
-    ProfileOption("Centro de ayuda", false),
+    ProfileOption(FiicoLocale().editUser, false),
+    ProfileOption(FiicoLocale().notifications, true),
+    ProfileOption(FiicoLocale().securityPinTitle, false),
+    ProfileOption(FiicoLocale().shareQR, false),
+    ProfileOption(FiicoLocale().helpCenter, false),
   ];
 
   @override
@@ -98,7 +99,7 @@ class ProfileSuccessView extends StatelessWidget {
 
   Widget _logOutButton(BuildContext context) {
     return FiicoButton(
-      title: "Cerrar sesión",
+      title: FiicoLocale().logOut,
       color: FiicoColors.pink,
       onTap: () {
         Preferences.get.logOut(context);

@@ -88,7 +88,7 @@ class FirebaseManager {
 
   void unsuscribe(String topic) async {
     await FirebaseMessaging.instance
-        .unsubscribeFromTopic('$topic')
+        .unsubscribeFromTopic(topic)
         .catchError((error) {
       print(error.toString());
     }).then((value) {

@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/constants.dart';
 import 'package:control/helpers/genericViews/fiico_giff_dialog.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
@@ -75,7 +76,7 @@ class HomePageView extends StatelessWidget {
         urlImage: FiicoConstants.tutorialGiffUrl,
         title: 'Crea tu primer\npresupuesto',
         desc: 'Paso a paso para crear tu presupuesto y',
-        okBtnText: 'Crear presupuesto',
+        okBtnText: FiicoLocale().createBudget,
         voidCallback: () => _addBudgetClickedAction(context),
       );
       context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));

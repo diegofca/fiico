@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -103,7 +104,7 @@ class AboutOfSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        'Hecho con ❤️ en Bogotá, Co.',
+        FiicoLocale().madeWithLove,
         maxLines: FiicoMaxLines.two,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(

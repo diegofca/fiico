@@ -15,6 +15,7 @@ class Plan {
   Timestamp? startDate = Timestamp.now();
   Timestamp? endDate = Timestamp.now();
   String? priceDetail;
+  String? paymentID;
 
   Plan({
     required this.id,
@@ -25,7 +26,32 @@ class Plan {
     this.enable,
     this.unlimited,
     this.priceDetail,
+    this.paymentID,
   });
+
+  Plan copyWith({
+    String? id,
+    String? name,
+    String? icon,
+    bool? enable,
+    bool? unlimited,
+    Timestamp? startDate,
+    Timestamp? endDate,
+    String? priceDetail,
+    String? paymentID,
+  }) {
+    return Plan(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      enable: enable ?? this.enable,
+      unlimited: unlimited ?? this.unlimited,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      priceDetail: priceDetail ?? this.priceDetail,
+      paymentID: paymentID ?? this.paymentID,
+    );
+  }
 
   Plan.free({
     this.id = 'free',
@@ -37,26 +63,29 @@ class Plan {
 
   Plan.premiumUnlimited({
     this.id = 'valiu_premium_unlimited',
-    this.name = 'Plan Premium sin limites',
-    this.icon = SVGImages.addBudget,
+    this.name = 'Plan Premium',
+    this.icon = SVGImages.unlimitedPremium,
     this.enable = true,
-    this.unlimited = false,
+    this.unlimited = true,
+    this.endDate,
   });
 
   Plan.goldPremium({
     this.id = 'valiu_premium_gold',
     this.name = 'Plan Premium Oro',
-    this.icon = SVGImages.addBudget,
+    this.icon = SVGImages.goldPremium,
     this.enable = true,
     this.unlimited = false,
+    this.endDate,
   });
 
   Plan.diamondPremium({
     this.id = 'valiu_premium_diamond',
     this.name = 'Plan Premium Diamante',
-    this.icon = SVGImages.addBudget,
+    this.icon = SVGImages.diamondPremium,
     this.enable = true,
     this.unlimited = false,
+    this.endDate,
   });
 
   void addPrice(String priceDetail) {
@@ -68,9 +97,17 @@ class Plan {
       case 'valiu_premium_unlimited':
         return Plan.premiumUnlimited();
       case 'valiu_premium_gold':
-        return Plan.goldPremium();
+        return Plan.goldPremium(
+          endDate: Timestamp.fromDate(
+            DateTime.now().add(const Duration(days: 30)),
+          ),
+        );
       case 'valiu_premium_diamond':
-        return Plan.diamondPremium();
+        return Plan.diamondPremium(
+          endDate: Timestamp.fromDate(
+            DateTime.now().add(const Duration(days: 180)),
+          ),
+        );
       default:
         return Plan.free();
     }
@@ -119,7 +156,7 @@ class Plan {
 
   String getPlanTitle() {
     final unlimited = isUnlimited() ? FiicoLocale().unlimited : '';
-    return 'Plan $name $unlimited';
+    return '$name $unlimited';
   }
 
   String getStatusTitle() {
@@ -137,6 +174,19 @@ class Plan {
 
   String getFinisthDateTitle() {
     return isPremium() && !isUnlimited() ? 'Vence el' : '';
+  }
+
+  String getDurationTitle() {
+    switch (id) {
+      case 'valiu_premium_unlimited':
+        return 'Ahorra mucho más, unica compra';
+      case 'valiu_premium_gold':
+        return 'valor por 1 mes';
+      case 'valiu_premium_diamond':
+        return 'valor por 6 meses';
+      default:
+        return '';
+    }
   }
 
   Color getStatusColor() {

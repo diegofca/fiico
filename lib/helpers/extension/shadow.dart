@@ -9,10 +9,10 @@ extension FiicoShadow on BoxShadow {
     offset: const Offset(0, 20),
   );
 
-  static var centerShadow = const BoxShadow(
-    color: FiicoColors.graySoft,
+  static var centerShadow = BoxShadow(
+    color: FiicoColors.grayShadow,
     blurRadius: 10,
     spreadRadius: 5,
-    offset: Offset(0, 0),
+    offset: const Offset(0, 0),
   );
 }

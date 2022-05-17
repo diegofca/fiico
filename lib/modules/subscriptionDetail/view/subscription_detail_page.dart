@@ -8,7 +8,6 @@ import 'package:control/modules/subscriptionDetail/bloc/subscription_detail_bloc
 import 'package:control/modules/subscriptionDetail/view/subscription_detail_sucess_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SubscriptionDetailPage extends StatelessWidget {
   const SubscriptionDetailPage({
@@ -51,29 +50,10 @@ class BudgetDetailPageView extends StatelessWidget {
   Widget _bodyContainer(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: GenericAppBar(
-        actions: [_infoButton(context)],
+      appBar: const GenericAppBar(
         bottomHeigth: FiicoPaddings.zero,
       ),
       body: SubscriptionDetailSuccessView(user: user),
     );
   }
-
-  Widget _infoButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-      ),
-      child: IconButton(
-        highlightColor: Colors.transparent,
-        onPressed: () {},
-        icon: const Icon(
-          MdiIcons.informationOutline,
-          color: Colors.black,
-        ),
-      ),
-    );
-  }
-
-  void _selectedOption(BuildContext context) {}
 }

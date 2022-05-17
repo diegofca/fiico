@@ -3,12 +3,11 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/subscriptionDetail/view/header/subscription_detail_header.dart';
-import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -100,7 +99,6 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
         _expirateDate(),
         _pricePlanText(),
         _unlimitedPlanText(),
-        _buyPlanView(context),
         _separatorLineView(),
         _benefictsListView(),
         _bottomTextsDescription(context),
@@ -235,7 +233,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
 
   Widget _benefictsListView() {
     return ListView.builder(
-      itemCount: 5,
+      itemCount: PremiumRepository().benefics.length,
       shrinkWrap: true,
       padding: const EdgeInsets.only(
         top: FiicoPaddings.thirtyTwo,
@@ -243,12 +241,13 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
       ),
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return _beneficItemView();
+        final benefic = PremiumRepository().benefics[index];
+        return _beneficItemView(benefic);
       },
     );
   }
 
-  Widget _beneficItemView() {
+  Widget _beneficItemView(String benefic) {
     return SizedBox(
       height: 40,
       child: Row(
@@ -263,7 +262,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
                 left: FiicoPaddings.sixteen,
               ),
               child: Text(
-                'Podrás crear mas de un presupuesto',
+                benefic,
                 maxLines: FiicoMaxLines.two,
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.grayDark,
@@ -295,7 +294,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(FiicoPaddings.eight),
         child: Text(
-          'Terminos y condiciones de uso',
+          FiicoLocale().termsAndConditionsOfUse,
           maxLines: FiicoMaxLines.two,
           textAlign: TextAlign.center,
           style: Style.subtitle.copyWith(
@@ -308,32 +307,11 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _buyPlanView(BuildContext context) {
-    return Visibility(
-      visible: !(user?.isPremium() ?? false),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          bottom: FiicoPaddings.eight,
-          right: FiicoPaddings.eight,
-          left: FiicoPaddings.eight,
-        ),
-        child: SizedBox(
-          width: double.maxFinite,
-          child: FiicoButton(
-            title: 'Comprar plan PREMIUM',
-            color: FiicoColors.gold,
-            onTap: () => FiicoRoute.send(context, PremiumPage(user: user)),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _cancelTextConditions() {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
       child: Text(
-        'Puedes cancelar tu suscripción en cualquier momento.',
+        FiicoLocale().youCanCancelSubsAtAnyTime,
         maxLines: FiicoMaxLines.two,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(

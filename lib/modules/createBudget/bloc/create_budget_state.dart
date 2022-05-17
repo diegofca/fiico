@@ -22,7 +22,7 @@ class CreateBudgetState extends Equatable {
     this.initDate,
     this.finishDate,
     this.addedBudgetID,
-    this.icon,
+    this.icon = const FiicoIcon.empty(),
   });
 
   final CreateBudgetStatus status;

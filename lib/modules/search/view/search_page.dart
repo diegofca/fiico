@@ -3,6 +3,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/search/bloc/search_bloc.dart';
 import 'package:control/modules/search/repository/search_repository.dart';
 import 'package:control/modules/search/view/search_success_view.dart';
@@ -76,9 +77,9 @@ class SearchPageView extends StatelessWidget {
         onPressed: () {
           FiicoAlertDialog.showInfo(
             context,
-            title: 'Presupuesto',
+            title: FiicoLocale().myBudgets,
             message:
-                'Los presupuestos o tableros son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.',
+                'Los presupuestos son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.',
           );
         },
         icon: const Icon(

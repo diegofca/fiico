@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:control/helpers/extension/num.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -11,12 +12,14 @@ class FiicoProductWrapper {
     if (Platform.isIOS) {
       if (detail is AppStoreProductDetails) {
         SKProductWrapper skProduct = detail.skProduct;
-        return '${skProduct.priceLocale.currencySymbol}${skProduct.price} ${skProduct.priceLocale.currencyCode}';
+        final price = int.parse(skProduct.price).toCurrency();
+        return '$price ${skProduct.priceLocale.currencyCode}';
       }
     }
     if (detail is GooglePlayProductDetails) {
       SkuDetailsWrapper skProduct = detail.skuDetails;
-      return '${skProduct.priceCurrencySymbol}${skProduct.price} ${skProduct.priceCurrencyCode}';
+      final price = int.parse(skProduct.price).toCurrency();
+      return '$price ${skProduct.priceCurrencyCode}';
     }
     return '';
   }

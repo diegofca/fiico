@@ -1,5 +1,7 @@
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/constants.dart';
+import 'package:control/helpers/genericViews/fiico_giff_dialog.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:control/modules/premium/view/premium_page.dart';
@@ -61,7 +63,25 @@ class SettingsConfiguration {
           if (isPremium) {
             FiicoRoute.send(context, SubscriptionDetailPage(user: user));
           } else {
-            FiicoRoute.present(context, PremiumPage(user: user));
+            FiicoRoute.present(
+              context,
+              PremiumPage(
+                user: user,
+                showPlan: () async {
+                  final updateUser = await Preferences.get.getUser();
+                  FiicoGiffAlertDialog.show(
+                    context: context,
+                    urlImage: FiicoConstants.tutorialGiffUrl,
+                    title: '!Bievenido!',
+                    desc:
+                        'Ahora eres parte importante de Valiu, esperamos que disfrutres todos los beneficios.',
+                    okBtnText: "Ver mi plan",
+                    voidCallback: () => FiicoRoute.sendReplace(
+                        context, SubscriptionDetailPage(user: updateUser)),
+                  );
+                },
+              ),
+            );
           }
         },
       );

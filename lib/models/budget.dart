@@ -130,7 +130,6 @@ class Budget {
       'currency': currency,
       'cycle': cycle,
       'duration': duration,
-      'icon': icon?.toJson(),
       'totalBalance': getTotalBalance(),
       'totalDebt': getTotalDebt(),
       'totalEntry': getTotalEntry(),
@@ -139,6 +138,7 @@ class Budget {
       'startDate': startDate,
       'finishDate': getFinishDate(),
       'ownerName': ownerName,
+      'icon': icon?.toJson(),
       'histories': FieldValue.arrayUnion(
           histories?.map((e) => e.toJson()).toList() ?? []),
       'movements': FieldValue.arrayUnion(

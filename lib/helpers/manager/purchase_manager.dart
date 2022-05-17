@@ -3,11 +3,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:control/helpers/database/shared_preference.dart';
-import 'package:control/helpers/extension/toast.dart';
+import 'package:control/models/payment_history.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/models/purchase_price_extension.dart';
+import 'package:control/modules/premium/bloc/premium_bloc.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -36,17 +38,23 @@ class PurchaseManager {
       applicationUserName: user?.userName,
       productDetails: _products.firstWhere((e) => e.id == plan.id),
     );
-    inAppPurchase.buyConsumable(purchaseParam: params);
+
+    _finishiOSTransactions();
+    if (plan.id == "valiu_premium_unlimited") {
+      inAppPurchase.buyConsumable(purchaseParam: params);
+    } else {
+      inAppPurchase.buyNonConsumable(purchaseParam: params);
+    }
   }
 
   /// --------------------------------------------------------------------------
 
   Future<void> _initStoreInfo() async {
-    final bool isAvailable = await inAppPurchase.isAvailable();
-    if (!isAvailable) {
-      _products = [];
-      return;
-    }
+    // final bool isAvailable = await inAppPurchase.isAvailable();
+    // if (!isAvailable) {
+    //   _products = [];
+    //   return;
+    // }
 
     _finishiOSTransactions();
     final ProductDetailsResponse productDetailResponse =
@@ -114,8 +122,13 @@ class PurchaseManager {
       await inAppPurchase.completePurchase(purchaseDetails);
 
       final productPurchased = Plan.getPlanByID(purchaseDetails.productID);
-      FiicoRoute.hideLoader(context);
-      FiicoToast.showInfoToast("Compra Correcta!!");
+      PaymentPremium paymentPremium = PaymentPremium(
+        paymentID: purchaseDetails.purchaseID,
+        plan: productPurchased,
+      );
+      context
+          .read<PremiumBloc>()
+          .add(PremiumCompletePurchase(paymentPremium: paymentPremium));
 
       if (Platform.isAndroid) {
         final InAppPurchaseAndroidPlatformAddition androidAddition =
@@ -130,19 +143,18 @@ class PurchaseManager {
 
   /// PAGO ERRONEO.
   void handleError(IAPError? error) async {
+    FiicoRoute.hideLoader(context);
     _finishiOSTransactions();
   }
 
   /// PAGO CANCELADO.
   void handleCanceled() {
-    FiicoToast.showInfoToast("Compra cancelada");
     FiicoRoute.hideLoader(context);
     _finishiOSTransactions();
   }
 
   /// PAGO INVALIDO.
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
-    FiicoToast.showInfoToast("Compra invalida");
     FiicoRoute.hideLoader(context);
     _finishiOSTransactions();
   }
@@ -156,24 +168,5 @@ class PurchaseManager {
         SKPaymentQueueWrapper().finishTransaction(skPaymentTransactionWrapper);
       }
     }
-  }
-
-  Future<void> confirmPriceChange() async {
-    // if (Platform.isAndroid) {
-    //   final InAppPurchaseAndroidPlatformAddition androidAddition = inAppPurchase
-    //       .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
-    //   var priceChangeConfirmationResult =
-    //       await androidAddition.launchPriceChangeConfirmationFlow(
-    //     sku: 'purchaseId',
-    //   );
-    //   if (priceChangeConfirmationResult.responseCode == BillingResponse.ok) {
-    //     print('Price change accepted');
-    //   } else {
-    //     print(
-    //       priceChangeConfirmationResult.debugMessage ??
-    //           "Price change failed with code ${priceChangeConfirmationResult.responseCode}",
-    //     );
-    //   }
-    // }
   }
 }
