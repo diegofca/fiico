@@ -14,8 +14,8 @@ enum HomeCreateMovementBottomOption {
 
 class HomeCreateMovementBottomView {
   final _options = {
-    HomeCreateMovementBottomOption.add_entry: FiicoLocale.addIncome,
-    HomeCreateMovementBottomOption.add_debt: FiicoLocale.addOutcome,
+    HomeCreateMovementBottomOption.add_entry: FiicoLocale().addIncome,
+    HomeCreateMovementBottomOption.add_debt: FiicoLocale().addOutcome,
   };
 
   void show(

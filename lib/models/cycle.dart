@@ -17,11 +17,11 @@ class BudgetCycle {
   factory BudgetCycle.from({required int cycle}) {
     switch (cycle) {
       case 0:
-        return BudgetCycle.twoWeeks(name: FiicoLocale.biweekly);
+        return BudgetCycle.twoWeeks(name: FiicoLocale().biweekly);
       case 1:
-        return BudgetCycle.month(name: FiicoLocale.monthly);
+        return BudgetCycle.month(name: FiicoLocale().monthly);
       default:
-        return BudgetCycle.annual(name: FiicoLocale.annual);
+        return BudgetCycle.annual(name: FiicoLocale().annual);
     }
   }
 }

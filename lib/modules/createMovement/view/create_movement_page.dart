@@ -61,7 +61,7 @@ class CreateMovementPage extends StatelessWidget {
         highlightColor: Colors.transparent,
         onPressed: () {
           FiicoAlertDialog.showSuccess(context,
-              title: FiicoLocale.movement,
+              title: FiicoLocale().movement,
               message:
                   'Los movimientos son acciones que modifican tu saldo total, en este puede estar un gasto, ahorro o ingreso.');
         },

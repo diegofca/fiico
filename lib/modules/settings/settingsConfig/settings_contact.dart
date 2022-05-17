@@ -10,7 +10,7 @@ class SettingsContactConfiguration {
 // SECURITY GROUP SETTINGS  ----------------------------------------------------
   /// CONTACT GROUP INFORMATION ------------------------------------------------
   SettingItem contact() => SettingItem(
-        name: FiicoLocale.contact.toUpperCase(),
+        name: FiicoLocale().contact.toUpperCase(),
         childs: [
           SettingItem(
             name: 'Centro de ayuda',

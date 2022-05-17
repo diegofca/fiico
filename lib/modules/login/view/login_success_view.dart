@@ -106,7 +106,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
               top: FiicoPaddings.thirtyTwo,
             ),
             child: Text(
-              FiicoLocale.youWillAbleControlMoney,
+              FiicoLocale().youWillAbleControlMoney,
               maxLines: FiicoMaxLines.ten,
               textAlign: TextAlign.center,
               style: Style.subtitle.copyWith(
@@ -145,8 +145,8 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: email.length),
           ),
-        labelText: FiicoLocale.email,
-        errorText: FiicoLocale.invalidEmailFormat,
+        labelText: FiicoLocale().email,
+        errorText: FiicoLocale().invalidEmailFormat,
         prefixIcon: widget.state?.email?.getStatusIcon,
         suffixIcon: widget.state?.email?.getRigthStatusIcon,
         onChanged: (text) {
@@ -171,8 +171,8 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         ..selection = TextSelection.fromPosition(
           TextPosition(offset: password.length),
         ),
-      labelText: FiicoLocale.password,
-      errorText: FiicoLocale.invalidPasswordFormat,
+      labelText: FiicoLocale().password,
+      errorText: FiicoLocale().invalidPasswordFormat,
       maxLines: 1,
       obscureText: !isShowPassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
@@ -203,7 +203,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       onTap: () {
         FiicoAlertDialog.showCustom(
           context,
-          title: FiicoLocale.enterEmail,
+          title: FiicoLocale().enterEmail,
           body: FiicoTopStyleTextfield(
             labelText: '',
             keyboardType: TextInputType.emailAddress,
@@ -222,7 +222,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         ),
         alignment: Alignment.centerRight,
         child: Text(
-          FiicoLocale.forgotPassword,
+          FiicoLocale().forgotPassword,
           style: Style.subtitle.copyWith(
             color: FiicoColors.purpleDark,
           ),
@@ -238,7 +238,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: FiicoLocale.logIn,
+        title: FiicoLocale().logIn,
         color: FiicoColors.purpleDark,
         onTap: () => context.read<LoginBloc>().add(
               const LoginIntentRequest(
@@ -272,7 +272,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           const Expanded(child: SeparatorView()),
           Expanded(
             child: Text(
-              FiicoLocale.or,
+              FiicoLocale().or,
               textAlign: TextAlign.center,
             ),
           ),
@@ -289,7 +289,7 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: FiicoLocale.signUp,
+        title: FiicoLocale().signUp,
         color: FiicoColors.white,
         textColor: FiicoColors.grayDark,
         borderColor: FiicoColors.grayDark,

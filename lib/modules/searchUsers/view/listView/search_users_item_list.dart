@@ -30,8 +30,8 @@ class SearchUserListItemView extends StatefulWidget {
 
 class SearchUserListItemViewState extends State<SearchUserListItemView> {
   final _segmentOptions = {
-    0: FiicoLocale.readOnly,
-    1: FiicoLocale.readingAndWriting
+    0: FiicoLocale().readOnly,
+    1: FiicoLocale().readingAndWriting
   };
 
   var selectedSegment = 0;

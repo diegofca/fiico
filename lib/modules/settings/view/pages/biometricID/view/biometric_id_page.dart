@@ -72,8 +72,8 @@ class BiometricIDPageView extends StatelessWidget {
   void _showCorrectLoggedAlert(BuildContext context) {
     FiicoAlertDialog.showSuccess(
       context,
-      title: FiicoLocale.successfulUpdate,
-      message: FiicoLocale.changePinMessage,
+      title: FiicoLocale().successfulUpdate,
+      message: FiicoLocale().changePinMessage,
       onOkAction: () => FiicoRoute.back(context),
     );
   }

@@ -54,7 +54,7 @@ class BudgetCycleHistory {
 
   String titleCircleOption(int? id) {
     if (id == 0) {
-      return FiicoLocale.today;
+      return FiicoLocale().today;
     }
     return titleBarOption();
   }

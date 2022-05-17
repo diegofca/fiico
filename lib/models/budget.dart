@@ -325,11 +325,11 @@ class Budget {
   String getCycleText() {
     switch (getCycleType()) {
       case BudgetCycleType.TWO_WEEKS:
-        return FiicoLocale.biweekly;
+        return FiicoLocale().biweekly;
       case BudgetCycleType.MONTH:
-        return FiicoLocale.monthly;
+        return FiicoLocale().monthly;
       case BudgetCycleType.ANNUAL:
-        return FiicoLocale.annual;
+        return FiicoLocale().annual;
       default:
         return '';
     }
@@ -337,31 +337,31 @@ class Budget {
 
   String getDurationBudgetDescription() {
     if (!(isCycle ?? false)) {
-      return '${FiicoLocale.duration} ${getDurationText()}';
+      return '${FiicoLocale().duration} ${getDurationText()}';
     }
 
-    return '${FiicoLocale.cycleDuration} ${getCycleText()}';
+    return '${FiicoLocale().cycleDuration} ${getCycleText()}';
   }
 
   String getCycleDescription() {
-    var description = FiicoLocale.youtBudgetIsRepeatingMode;
+    var description = FiicoLocale().youtBudgetIsRepeatingMode;
 
     if (isCycle ?? false) {
       final type = BudgetCycleType.values
           .firstWhereOrNull((element) => element.index == cycle);
       switch (type) {
         case BudgetCycleType.TWO_WEEKS:
-          return description + FiicoLocale.biweekly;
+          return description + FiicoLocale().biweekly;
         case BudgetCycleType.MONTH:
-          return description + FiicoLocale.monthly;
+          return description + FiicoLocale().monthly;
         case BudgetCycleType.ANNUAL:
-          return description + FiicoLocale.annual;
+          return description + FiicoLocale().annual;
         default:
           return '';
       }
     }
 
-    return FiicoLocale.youCanDefineDurationDates;
+    return FiicoLocale().youCanDefineDurationDates;
   }
 
   String getDurationText() {
@@ -369,15 +369,15 @@ class Budget {
         .firstWhereOrNull((element) => element.index == duration);
     switch (type) {
       case BudgetDurationType.CUSTOM:
-        return FiicoLocale.custom;
+        return FiicoLocale().custom;
       case BudgetDurationType.MONTH:
-        return FiicoLocale.oneMonth;
+        return FiicoLocale().oneMonth;
       case BudgetDurationType.THREE_MONTH:
-        return FiicoLocale.threeMonth;
+        return FiicoLocale().threeMonth;
       case BudgetDurationType.SIX_MONTH:
-        return FiicoLocale.sixMonth;
+        return FiicoLocale().sixMonth;
       case BudgetDurationType.ANNUAL:
-        return FiicoLocale.oneYear;
+        return FiicoLocale().oneYear;
       default:
         return '';
     }

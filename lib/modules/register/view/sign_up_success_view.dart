@@ -47,7 +47,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       appBar: GenericAppBar(
         textColor: FiicoColors.purpleDark,
         bgColor: FiicoColors.clear,
-        text: FiicoLocale.signUp,
+        text: FiicoLocale().signUp,
       ),
       body: _body(context),
     );
@@ -96,8 +96,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: name.length),
           ),
-        labelText: FiicoLocale.name,
-        errorText: FiicoLocale.invalidNameFormat,
+        labelText: FiicoLocale().name,
+        errorText: FiicoLocale().invalidNameFormat,
         prefixIcon: widget.state?.name?.getStatusIcon,
         onChanged: (text) {
           var name = NameValidatorModel(text);
@@ -120,8 +120,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: lastName.length),
           ),
-        labelText: FiicoLocale.lastName,
-        errorText: FiicoLocale.invalidLastNameFormat,
+        labelText: FiicoLocale().lastName,
+        errorText: FiicoLocale().invalidLastNameFormat,
         prefixIcon: widget.state?.lastName?.getStatusIcon,
         onChanged: (text) {
           var lastName = LastNameValidatorModel(text);
@@ -144,8 +144,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ..selection = TextSelection.fromPosition(
             TextPosition(offset: email.length),
           ),
-        labelText: FiicoLocale.email,
-        errorText: FiicoLocale.invalidEmailFormat,
+        labelText: FiicoLocale().email,
+        errorText: FiicoLocale().invalidEmailFormat,
         prefixIcon: widget.state?.email?.getStatusIcon,
         onChanged: (text) {
           var email = EmailValidatorModel(text);
@@ -169,8 +169,8 @@ class SignSuccesViewState extends State<SignSuccesView> {
         ..selection = TextSelection.fromPosition(
           TextPosition(offset: password.length),
         ),
-      labelText: FiicoLocale.password,
-      errorText: FiicoLocale.invalidPasswordFormat,
+      labelText: FiicoLocale().password,
+      errorText: FiicoLocale().invalidPasswordFormat,
       maxLines: FiicoMaxLines.one,
       obscureText: !isShowPassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
@@ -205,7 +205,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: FiicoLocale.signUp,
+        title: FiicoLocale().signUp,
         color: FiicoColors.purpleDark,
         onTap: () => context.read<SignBloc>().add(const SignUpIntentRequest()),
       ),
@@ -224,7 +224,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           const Expanded(child: SeparatorView()),
           Expanded(
             child: Text(
-              FiicoLocale.or,
+              FiicoLocale().or,
               textAlign: TextAlign.center,
             ),
           ),
@@ -241,7 +241,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       ),
       width: double.maxFinite,
       child: FiicoButton(
-        title: FiicoLocale.logIn,
+        title: FiicoLocale().logIn,
         color: FiicoColors.white,
         textColor: FiicoColors.grayDark,
         borderColor: FiicoColors.grayDark,

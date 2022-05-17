@@ -149,7 +149,7 @@ class DebtDetailHeaderViewState extends State<DebtDetailHeaderView> {
             ),
           ),
           Text(
-            " ${FiicoLocale.active}: ${widget.budget!.isCycleBudget() ? widget.movement?.getAlertDay() : widget.movement?.getAlertDates()}",
+            " ${FiicoLocale().active}: ${widget.budget!.isCycleBudget() ? widget.movement?.getAlertDay() : widget.movement?.getAlertDates()}",
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

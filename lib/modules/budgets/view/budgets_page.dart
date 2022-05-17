@@ -28,7 +28,7 @@ class BudgetsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: FiicoLocale.myBudgets,
+        text: FiicoLocale().myBudgets,
         textColor: FiicoColors.black,
         actions: [_addBudgetButton(context)],
         isShowBack: false,

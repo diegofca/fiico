@@ -81,7 +81,7 @@ class CreateMovementDatesSelectorView {
           ),
         ),
         FiicoButton.pink(
-          title: FiicoLocale.selectButton,
+          title: FiicoLocale().selectButton,
           ontap: () {
             if (_selectedDates.isNotEmpty) {
               onDatesSelected(_selectedDates);
@@ -94,6 +94,6 @@ class CreateMovementDatesSelectorView {
   }
 
   String _getTitle() {
-    return FiicoLocale.selectAday;
+    return FiicoLocale().selectAday;
   }
 }

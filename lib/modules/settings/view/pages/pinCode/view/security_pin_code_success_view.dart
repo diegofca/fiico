@@ -104,7 +104,7 @@ class SecurityPinCodeSuccessViewState
         left: FiicoPaddings.sixteen,
       ),
       child: Text(
-        FiicoLocale.changePinMessage,
+        FiicoLocale().changePinMessage,
         style: Style.subtitle,
         maxLines: FiicoMaxLines.four,
       ),
@@ -137,7 +137,7 @@ class SecurityPinCodeSuccessViewState
         child: SizedBox(
           width: double.maxFinite,
           child: FiicoButton.pink(
-            title: FiicoLocale.saveButton,
+            title: FiicoLocale().saveButton,
             ontap: () => _savePinCode(context),
           ),
         ),
@@ -155,7 +155,7 @@ class SecurityPinCodeSuccessViewState
         child: SizedBox(
           width: double.maxFinite,
           child: FiicoButton.pink(
-            title: FiicoLocale.changePin,
+            title: FiicoLocale().changePin,
             ontap: () => context
                 .read<SecurityPinCodeBloc>()
                 .add(const SecurityPinCodeChangeUnLockRequest(isUnLock: true)),
@@ -184,12 +184,12 @@ class SecurityPinCodeSuccessViewState
 
   String _titleStatusChangePin() {
     return !isUserContentPin()
-        ? FiicoLocale.addPin
+        ? FiicoLocale().addPin
         : !isUnlockChangeActive()
-            ? FiicoLocale.changeYourPin
+            ? FiicoLocale().changeYourPin
             : isChangeCodeActive()
-                ? FiicoLocale.enterOldPin
-                : FiicoLocale.enterNewPin;
+                ? FiicoLocale().enterOldPin
+                : FiicoLocale().enterNewPin;
   }
 
   void _changePinCode(BuildContext context, String pinCode) {
@@ -221,7 +221,7 @@ class SecurityPinCodeSuccessViewState
   void _showErrorPinDialog() {
     FiicoAlertDialog.showWarnning(
       context,
-      title: FiicoLocale.errorUpdatingYourPin,
+      title: FiicoLocale().errorUpdatingYourPin,
       message:
           'El PIN que has ingresado no es el correcto, intentalo de nuevo.',
     );

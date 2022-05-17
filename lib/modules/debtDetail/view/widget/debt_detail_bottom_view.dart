@@ -14,8 +14,8 @@ enum DebtDetailBottomOption {
 
 class DebtDetailBottomView {
   final _options = {
-    DebtDetailBottomOption.delete_movement: FiicoLocale.deleteMovement,
-    DebtDetailBottomOption.modify_movement: FiicoLocale.editMovement,
+    DebtDetailBottomOption.delete_movement: FiicoLocale().deleteMovement,
+    DebtDetailBottomOption.modify_movement: FiicoLocale().editMovement,
   };
 
   void show(

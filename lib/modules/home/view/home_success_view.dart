@@ -20,7 +20,6 @@ import 'package:control/modules/home/view/widgets/home_bottom_view.dart';
 import 'package:control/modules/home/view/widgets/home_create_movement_selector.dart';
 import 'package:control/modules/search/view/search_page.dart';
 import 'package:control/navigation/navigator.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -63,7 +62,6 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     _controller.addListener(() {
       setState(() {
         opacity = _controller.offset;
-        context.setLocale(Locale('en', 'US'));
       });
     });
   }
@@ -85,8 +83,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       backgroundColor: FiicoColors.white,
       appBar: HomeAppBar(
         title: HomeTitleAppBar(
-          title: "${FiicoLocale.hi}, ${widget.user?.firstName}",
-          subtitle: FiicoLocale.controlYourMoneyInTheBestWay,
+          title: "${FiicoLocale().hi}, ${widget.user?.firstName}",
+          subtitle: FiicoLocale().controlYourMoneyInTheBestWay,
           user: widget.user,
         ),
       ),
@@ -179,7 +177,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
                   Padding(
                     padding: const EdgeInsets.only(left: FiicoPaddings.eight),
                     child: Text(
-                      FiicoLocale.myMovements,
+                      FiicoLocale().myMovements,
                       style: Style.subtitle.copyWith(
                         fontSize: FiicoFontSize.xm,
                       ),
@@ -349,8 +347,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   void _showEmptyBudgetAction(BuildContext context) {
     FiicoAlertDialog.showWarnning(
       context,
-      message: FiicoLocale.youMustCreateNewBudget,
-      confirmBtnText: FiicoLocale.createNewBudget,
+      message: FiicoLocale().youMustCreateNewBudget,
+      confirmBtnText: FiicoLocale().createNewBudget,
       onOkAction: () => _addBudgetClickedAction(context),
     );
   }

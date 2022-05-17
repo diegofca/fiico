@@ -39,8 +39,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
   final Budget budget;
 
   final _segmentOptions = {
-    0: ' ${FiicoLocale.summaryPerCycle} ',
-    1: ' ${FiicoLocale.linearGraph} '
+    0: ' ${FiicoLocale().summaryPerCycle} ',
+    1: ' ${FiicoLocale().linearGraph} '
   };
   final ScrollController controller = ScrollController();
 
@@ -265,7 +265,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                       left: FiicoPaddings.twenyFour,
                     ),
                     child: Text(
-                      FiicoLocale.incomes,
+                      FiicoLocale().incomes,
                       style: Style.desc.copyWith(
                         color: FiicoColors.grayNeutral,
                         fontSize: FiicoFontSize.xxs,
@@ -308,7 +308,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                       left: FiicoPaddings.twenyFour,
                     ),
                     child: Text(
-                      FiicoLocale.outcomes,
+                      FiicoLocale().outcomes,
                       style: Style.desc.copyWith(
                         color: FiicoColors.grayNeutral,
                         fontSize: FiicoFontSize.xxs,
@@ -342,7 +342,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              FiicoLocale.balanceTodayIs,
+              FiicoLocale().balanceTodayIs,
               maxLines: FiicoMaxLines.two,
               overflow: TextOverflow.fade,
               style: Style.subtitle.copyWith(
@@ -428,7 +428,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${FiicoLocale.finalDate} ${budget.startDate?.toDate().toDateFormat2()}',
+                  '${FiicoLocale().finalDate} ${budget.startDate?.toDate().toDateFormat2()}',
                   maxLines: FiicoMaxLines.two,
                   overflow: TextOverflow.fade,
                   style: Style.subtitle.copyWith(
@@ -456,7 +456,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '${FiicoLocale.finalDate}:  ${budget.finishDate?.toDate().toDateFormat2()}',
+                    '${FiicoLocale().finalDate}:  ${budget.finishDate?.toDate().toDateFormat2()}',
                     maxLines: FiicoMaxLines.two,
                     overflow: TextOverflow.fade,
                     style: Style.subtitle.copyWith(
@@ -492,7 +492,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  FiicoLocale.incomes,
+                  FiicoLocale().incomes,
                   textAlign: TextAlign.start,
                   style: Style.subtitle.copyWith(
                     fontSize: FiicoFontSize.sm,
@@ -534,7 +534,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
               bottom: FiicoPaddings.thirtyTwo,
             ),
             child: BudgetDetailAddMovementView(
-              title: FiicoLocale.addNewIncome,
+              title: FiicoLocale().addNewIncome,
               onAdded: () => DefaultMovementPage().show(
                 context,
                 budget: budget,
@@ -569,7 +569,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                   top: FiicoPaddings.thirtyTwo,
                 ),
                 child: Text(
-                  FiicoLocale.outcomes,
+                  FiicoLocale().outcomes,
                   textAlign: TextAlign.start,
                   style: Style.subtitle.copyWith(
                     fontSize: FiicoFontSize.sm,
@@ -616,7 +616,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                 bottom: FiicoPaddings.thirtyTwo,
               ),
               child: BudgetDetailAddMovementView(
-                title: FiicoLocale.addNewOutcome,
+                title: FiicoLocale().addNewOutcome,
                 onAdded: () => DefaultMovementPage().show(
                   context,
                   budget: budget,
@@ -646,7 +646,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
         return BottomDialog().show(
           context,
           title: '¿Deseas eliminar ${movement.name} de ${movement.budgetName}?',
-          titleButton: FiicoLocale.deleteButton,
+          titleButton: FiicoLocale().deleteButton,
           onTapAction: () {
             Navigator.pop(context, true);
           },
@@ -683,8 +683,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
           height: 90,
           child: Text(
             budget.isOwner
-                ? FiicoLocale.shareThisBudget
-                : '${budget.ownerName} ${FiicoLocale.hasSharedBudgetWithYou}',
+                ? FiicoLocale().shareThisBudget
+                : '${budget.ownerName} ${FiicoLocale().hasSharedBudgetWithYou}',
             textAlign: TextAlign.start,
             maxLines: FiicoMaxLines.ten,
             style: Style.desc.copyWith(
@@ -735,7 +735,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                       left: FiicoPaddings.eight,
                     ),
                     child: Text(
-                      FiicoLocale.shareButton,
+                      FiicoLocale().shareButton,
                       textAlign: TextAlign.start,
                       style: Style.desc.copyWith(
                         fontSize: FiicoFontSize.xm,
@@ -773,7 +773,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
               bottom: FiicoPaddings.eight,
             ),
             child: Text(
-              FiicoLocale.members,
+              FiicoLocale().members,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,

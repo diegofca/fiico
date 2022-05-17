@@ -81,8 +81,8 @@ class EditMovementPage extends StatelessWidget {
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: FiicoLocale.emptyFields,
-        message: FiicoLocale.completeMissingFieldsAddMovement,
+        title: FiicoLocale().emptyFields,
+        message: FiicoLocale().completeMissingFieldsAddMovement,
       );
     }
   }

@@ -138,7 +138,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
       child: SizedBox(
         width: double.maxFinite,
         child: FiicoButton.pink(
-          title: FiicoLocale.validateButtonTitle,
+          title: FiicoLocale().validateButtonTitle,
           ontap: () => _savePinCode(context),
         ),
       ),
@@ -147,7 +147,7 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
 
   //Generic functions
   String _titleStatusChangePin() {
-    return FiicoLocale.enterYourPinTitle;
+    return FiicoLocale().enterYourPinTitle;
   }
 
   void _changePinCode(BuildContext context, String pinCode) {

@@ -58,7 +58,7 @@ class BudgetLinearChartHistoryState extends State<BudgetLinearChartHistory> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                '${FiicoLocale.summaryPerCycle}:  ${FiicoLocale.incomes} vs ${FiicoLocale.outcomes}',
+                '${FiicoLocale().summaryPerCycle}:  ${FiicoLocale().incomes} vs ${FiicoLocale().outcomes}',
                 style: Style.subtitle,
               ),
             ],

@@ -133,7 +133,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             vertical: FiicoPaddings.sixteen,
           ),
           child: Text(
-            FiicoLocale.currency,
+            FiicoLocale().currency,
             textAlign: TextAlign.start,
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.sm,
@@ -199,7 +199,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  FiicoLocale.incomes,
+                  FiicoLocale().incomes,
                   textAlign: TextAlign.start,
                   style: Style.subtitle.copyWith(
                     fontSize: FiicoFontSize.sm,
@@ -256,7 +256,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                FiicoLocale.outcomes,
+                FiicoLocale().outcomes,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -338,7 +338,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
             vertical: FiicoPaddings.thirtyTwo,
           ),
           child: Text(
-            FiicoLocale.youCanCreateAndShareBoards,
+            FiicoLocale().youCanCreateAndShareBoards,
             textAlign: TextAlign.start,
             maxLines: FiicoMaxLines.ten,
             style: Style.desc.copyWith(
@@ -390,7 +390,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
                       left: FiicoPaddings.eight,
                     ),
                     child: Text(
-                      FiicoLocale.shareButton,
+                      FiicoLocale().shareButton,
                       textAlign: TextAlign.start,
                       style: Style.desc.copyWith(
                         fontSize: FiicoFontSize.xm,
@@ -421,7 +421,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         top: FiicoPaddings.eight,
       ),
       child: FiicoButton.pink(
-        title: FiicoLocale.createBudget,
+        title: FiicoLocale().createBudget,
         ontap: () => _onCreateBudgetIntent(context),
       ),
     );
@@ -435,8 +435,8 @@ class CreateBudgetSuccessView extends StatelessWidget {
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: FiicoLocale.emptyFields,
-        message: FiicoLocale.completeFieldsWithCreateBudget,
+        title: FiicoLocale().emptyFields,
+        message: FiicoLocale().completeFieldsWithCreateBudget,
       );
     }
   }
@@ -455,7 +455,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
               bottom: FiicoPaddings.eight,
             ),
             child: Text(
-              FiicoLocale.members,
+              FiicoLocale().members,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,

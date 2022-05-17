@@ -16,8 +16,8 @@ enum BudgetDetailBottomOption {
 
 class BudgetDetailBottomView {
   final _ownerOptions = {
-    BudgetDetailBottomOption.delete_budget: FiicoLocale.deleteBudget,
-    BudgetDetailBottomOption.add_friend: FiicoLocale.shareWithFriend,
+    BudgetDetailBottomOption.delete_budget: FiicoLocale().deleteBudget,
+    BudgetDetailBottomOption.add_friend: FiicoLocale().shareWithFriend,
   };
 
   final _inviteOptions = {

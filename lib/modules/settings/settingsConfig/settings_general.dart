@@ -18,7 +18,7 @@ class SettingsConfiguration {
   SettingsConfiguration(this.context);
 
   SettingItem get setting => SettingItem(
-        name: FiicoLocale.settings,
+        name: FiicoLocale().settings,
         childs: [
           _general(),
           SettingsInfoConfiguration(context).info(),
@@ -34,7 +34,7 @@ class SettingsConfiguration {
 
   // Security item
   SettingItem _security() => SettingItem(
-        name: FiicoLocale.security,
+        name: FiicoLocale().security,
         onTap: () async {
           final user = await Preferences.get.getUser();
           FiicoRoute.send(

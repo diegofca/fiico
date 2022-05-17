@@ -88,7 +88,7 @@ class SearchUsersPageView extends StatelessWidget {
       children: [
         Expanded(
           child: FiicoTextfield(
-            hintText: FiicoLocale.findYourFriendsHere,
+            hintText: FiicoLocale().findYourFriendsHere,
             textInputAction: TextInputAction.search,
             onChanged: (text) {
               bloc.add(SearchUsersFilterRequest(text));

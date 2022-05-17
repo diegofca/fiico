@@ -218,7 +218,7 @@ class EntryDetailSuccessView extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            FiicoLocale.rememberMarkIncomeMovement,
+            FiicoLocale().rememberMarkIncomeMovement,
             style: Style.subtitle.copyWith(
               color: FiicoColors.grayNeutral,
               fontSize: FiicoFontSize.xm,
@@ -229,7 +229,7 @@ class EntryDetailSuccessView extends StatelessWidget {
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
             child: FiicoButton(
-              title: FiicoLocale.markAsReceived,
+              title: FiicoLocale().markAsReceived,
               color: FiicoColors.greenNeutral,
               image: SVGImages.checkMarkIcon,
               onTap: () {

@@ -122,7 +122,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<FiicoUser?> _getLoginIntentByProvider(
       SocialCredential? credential, Emitter<LoginState> emit) async {
     if (credential == null) {
-      _mapErrorToIntentLogin(emit, 'Error', FiicoLocale.loginAttemptAborted);
+      _mapErrorToIntentLogin(emit, 'Error', FiicoLocale().loginAttemptAborted);
       return null;
     }
 
@@ -134,7 +134,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         _mapErrorToIntentLogin(emit, eType, eMssg);
       });
     }
-    _mapErrorToIntentLogin(emit, '', FiicoLocale.youAlreadyHaveAccount);
+    _mapErrorToIntentLogin(emit, '', FiicoLocale().youAlreadyHaveAccount);
     return null;
   }
 

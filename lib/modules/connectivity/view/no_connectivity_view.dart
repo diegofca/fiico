@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,14 @@ class NoConnectivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: "Sin Conexíon",
+        text: FiicoLocale().withOutConnection,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),
-      body: NoConnectivityView(),
+      body: const NoConnectivityView(),
     );
   }
 }
@@ -83,7 +84,7 @@ class NoConnectivityView extends StatelessWidget {
         horizontal: FiicoPaddings.sixteen,
       ),
       child: Text(
-        'Por favor, revisa tu conexión a internet e intenta nuevamente.',
+        FiicoLocale().pleaseCheckYourInternet,
         style: Style.subtitle.copyWith(
           fontSize: FiicoFontSize.xm,
         ),

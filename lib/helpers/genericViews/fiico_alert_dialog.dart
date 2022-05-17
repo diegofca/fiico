@@ -18,7 +18,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.success,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.continueButton} ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale().continueButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.purpleNeutral,
       confirmBtnColor: FiicoColors.greenNeutral,
@@ -46,7 +46,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.warning,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale().acceptButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
@@ -74,7 +74,7 @@ class FiicoAlertDialog {
       type: CoolAlertType.info,
       title: title,
       text: '\n\n$message\n',
-      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale().acceptButton} ',
       loopAnimation: false,
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
@@ -105,7 +105,7 @@ class FiicoAlertDialog {
       backgroundColor: FiicoColors.grayLite,
       confirmBtnColor: FiicoColors.purpleDark,
       animType: CoolAlertAnimType.slideInUp,
-      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale.acceptButton} ',
+      confirmBtnText: ' ${confirmBtnText ?? FiicoLocale().acceptButton} ',
       onConfirmBtnTap: () {
         Navigator.of(context).pop();
         onOkAction?.call();

@@ -141,7 +141,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        FiicoLocale.incomes,
+                        FiicoLocale().incomes,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -186,7 +186,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        FiicoLocale.outcomes,
+                        FiicoLocale().outcomes,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -231,7 +231,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         left: FiicoPaddings.twenyFour,
                       ),
                       child: Text(
-                        FiicoLocale.balance,
+                        FiicoLocale().balance,
                         style: Style.desc.copyWith(
                           color: FiicoColors.purpleSoft,
                           fontSize: FiicoFontSize.xxs,
@@ -306,7 +306,7 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
                         top: FiicoPaddings.six,
                       ),
                       child: FiicoTextfield(
-                        hintText: FiicoLocale.findYourUserOrMovements,
+                        hintText: FiicoLocale().findYourUserOrMovements,
                         textEditingController: _controller,
                         focusNode: _focusNode,
                         textInputAction: TextInputAction.search,
@@ -357,25 +357,25 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
             _buttonAction(
               context,
               SVGImages.addEntry,
-              FiicoLocale.addIncome,
+              FiicoLocale().addIncome,
               () => widget.optionTapped(HomeSliverButtonOptions.addEntry),
             ),
             _buttonAction(
               context,
               SVGImages.addDebt,
-              FiicoLocale.addOutcome,
+              FiicoLocale().addOutcome,
               () => widget.optionTapped(HomeSliverButtonOptions.addDebt),
             ),
             _buttonAction(
               context,
               SVGImages.addBudget,
-              FiicoLocale.addBudget,
+              FiicoLocale().addBudget,
               () => widget.optionTapped(HomeSliverButtonOptions.addGroup),
             ),
             _buttonAction(
               context,
               SVGImages.budgetList,
-              FiicoLocale.myBudgets,
+              FiicoLocale().myBudgets,
               () => widget.optionTapped(HomeSliverButtonOptions.myGroups),
             ),
           ],

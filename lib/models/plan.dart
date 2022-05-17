@@ -118,21 +118,21 @@ class Plan {
   }
 
   String getPlanTitle() {
-    final unlimited = isUnlimited() ? FiicoLocale.unlimited : '';
+    final unlimited = isUnlimited() ? FiicoLocale().unlimited : '';
     return 'Plan $name $unlimited';
   }
 
   String getStatusTitle() {
-    return enable ?? false ? FiicoLocale.active : FiicoLocale.inactive;
+    return enable ?? false ? FiicoLocale().active : FiicoLocale().inactive;
   }
 
   String getFinisthDate() {
     final _endDate = endDate?.toDate().toDateFormat2() ?? '';
     return isUnlimited()
-        ? FiicoLocale.yourPlanIsUnlimited
+        ? FiicoLocale().yourPlanIsUnlimited
         : isPremium()
             ? _endDate
-            : FiicoLocale.dareToImproveYourPlan;
+            : FiicoLocale().dareToImproveYourPlan;
   }
 
   String getFinisthDateTitle() {

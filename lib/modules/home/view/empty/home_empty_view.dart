@@ -58,7 +58,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        FiicoLocale.addAllYourExpensesAndSiezeThem,
+        FiicoLocale().addAllYourExpensesAndSiezeThem,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -73,8 +73,8 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
           ? widget.onTapNewItem!.call()
           : widget.onTapNewBudget!.call(),
       title: widget.isContaintBudgets
-          ? FiicoLocale.addMovement
-          : FiicoLocale.createBudget,
+          ? FiicoLocale().addMovement
+          : FiicoLocale().createBudget,
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }

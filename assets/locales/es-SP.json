@@ -141,5 +141,12 @@
     "save_button": "Guardar",
     "enter_old_pin": "Ingresa tu antiguo PIN",
     "enter_new_pin": "Ingresa tu nuevo PIN",
-    "error_updating_your_pin": "Error al actualizar tu PIN"
+    "error_updating_your_pin": "Error al actualizar tu PIN",
+    "try_to_create_new_one": "Intenta crear uno nuevo",
+    "please_check_your_internet": "Por favor, revisa tu conexión a internet e intenta nuevamente.",
+    "without_connection": "Sin Conexíon",
+    "try_inviting_a_friend_to_your_board": "Intenta invitar a algún amigo a tu board",
+    "invite_friend_button": "Invitar amigo",
+    "spanish": "Español",
+    "english": "Ingles"
 }

@@ -159,7 +159,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
                   keyboardType: TextInputType.number,
-                  hintText: FiicoLocale.enterAmount,
+                  hintText: FiicoLocale().enterAmount,
                   textColor: widget.movement.getTypeColor(),
                   textEditingController: _priceController,
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
@@ -191,7 +191,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.name,
+              FiicoLocale().name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -202,7 +202,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
-                hintText: FiicoLocale.enterName,
+                hintText: FiicoLocale().enterName,
                 textEditingController: _nameController,
                 onChanged: (name) {
                   context
@@ -230,7 +230,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.description,
+              FiicoLocale().description,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -240,7 +240,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
           BorderContainer(
             heigth: 100,
             child: FiicoTextfield(
-              hintText: FiicoLocale.enterDescription,
+              hintText: FiicoLocale().enterDescription,
               keyboardType: TextInputType.multiline,
               textEditingController: _descController,
               onChanged: (description) {
@@ -326,7 +326,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.categories,
+              FiicoLocale().categories,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -340,7 +340,7 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
                 Expanded(
                   child: FiicoTextfield(
                     textEditingController: _categoriesController,
-                    hintText: FiicoLocale.exampleCategory,
+                    hintText: FiicoLocale().exampleCategory,
                     onSubmitted: (text) => _addedTagCategory(context),
                   ),
                 ),

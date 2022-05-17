@@ -46,7 +46,7 @@ class HomeEmptyWithFilterViewState extends State<HomeEmptyWithFilterView> {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        "${FiicoLocale.youHaveNot} ${HomeFilterMovement.itemsFilter[widget.indexFilter]} ${FiicoLocale.forNow}!",
+        "${FiicoLocale().youHaveNot} ${HomeFilterMovement.itemsFilter[widget.indexFilter]} ${FiicoLocale().forNow}!",
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -59,7 +59,7 @@ class HomeEmptyWithFilterViewState extends State<HomeEmptyWithFilterView> {
   Widget _bodyButton() {
     return FiicoButton.pink(
       ontap: () => widget.onTapNewItem!.call(),
-      title: ' ${FiicoLocale.addMovement} ',
+      title: ' ${FiicoLocale().addMovement} ',
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
     );
   }

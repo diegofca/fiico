@@ -177,9 +177,9 @@ class Movement {
   String getTypeDescription() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return FiicoLocale.income;
+        return FiicoLocale().income;
       case MovementType.DEBT:
-        return FiicoLocale.outcomes;
+        return FiicoLocale().outcomes;
       default:
         return 'Safe';
     }
@@ -199,9 +199,9 @@ class Movement {
   String getDateTitleText() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return FiicoLocale.averageDayOfAdmission;
+        return FiicoLocale().averageDayOfAdmission;
       case MovementType.DEBT:
-        return FiicoLocale.averageDayOfPayment;
+        return FiicoLocale().averageDayOfPayment;
       default:
         return '';
     }
@@ -239,9 +239,9 @@ class Movement {
 
     switch (getType()) {
       case MovementType.ENTRY:
-        return '${days.join(',').toString()} ${FiicoLocale.everyOfMonth}';
+        return '${days.join(',').toString()} ${FiicoLocale().everyOfMonth}';
       case MovementType.DEBT:
-        return '${days.join(',').toString()} ${FiicoLocale.everyOfMonth}';
+        return '${days.join(',').toString()} ${FiicoLocale().everyOfMonth}';
       default:
         return '';
     }
@@ -250,7 +250,7 @@ class Movement {
   String getRecurrencyDateDescription() {
     switch (getType()) {
       case MovementType.ENTRY:
-        return '${FiicoLocale.income}: ${getRecurrencyDate()}';
+        return '${FiicoLocale().income}: ${getRecurrencyDate()}';
       case MovementType.DEBT:
         return 'Pago oportuno: ${getRecurrencyDate()}';
       default:
@@ -281,14 +281,14 @@ class Movement {
     switch (getType()) {
       case MovementType.ENTRY:
         return getPaymentType() == MovementPaymentType.PENDING
-            ? FiicoLocale.pending
-            : FiicoLocale.received;
+            ? FiicoLocale().pending
+            : FiicoLocale().received;
       case MovementType.DEBT:
         return getPaymentType() == MovementPaymentType.PENDING
-            ? FiicoLocale.pending
-            : FiicoLocale.paid;
+            ? FiicoLocale().pending
+            : FiicoLocale().paid;
       default:
-        return FiicoLocale.received;
+        return FiicoLocale().received;
     }
   }
 

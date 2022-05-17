@@ -13,9 +13,9 @@ class SettingsSecurityConfiguration {
 
 // SECURITY GROUP SETTINGS  ----------------------------------------------------
   SettingItem security() => SettingItem(
-        name: FiicoLocale.security,
+        name: FiicoLocale().security,
         childs: [
-          SettingItem(name: FiicoLocale.securitySettings, childs: [
+          SettingItem(name: FiicoLocale().securitySettings, childs: [
             _pinCode(),
             _faceID(),
           ]),
@@ -24,7 +24,7 @@ class SettingsSecurityConfiguration {
 
   // Pincode item
   SettingItem _pinCode() => SettingItem(
-        name: FiicoLocale.securityPinTitle,
+        name: FiicoLocale().securityPinTitle,
         onTap: () async {
           final user = await Preferences.get.getUser();
           FiicoRoute.send(context, SecurityPinCodePage(user: user));

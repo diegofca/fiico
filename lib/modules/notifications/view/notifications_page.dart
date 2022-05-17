@@ -23,7 +23,7 @@ class NotificationsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: FiicoLocale.notifications,
+        text: FiicoLocale().notifications,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),

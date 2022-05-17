@@ -90,7 +90,7 @@ class AlertSelectorView {
 
   Widget _dateTitleView() {
     return Text(
-      FiicoLocale.addNotificationDate,
+      FiicoLocale().addNotificationDate,
       style: Style.title.copyWith(
         fontSize: FiicoFontSize.md,
       ),
@@ -110,7 +110,7 @@ class AlertSelectorView {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            FiicoLocale.intensiveMode,
+            FiicoLocale().intensiveMode,
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.xm,
             ),
@@ -118,8 +118,8 @@ class AlertSelectorView {
           IconButton(
             onPressed: () => FiicoAlertDialog.showInfo(
               context,
-              title: FiicoLocale.intensiveNotification,
-              message: FiicoLocale.intensiveNotificationMsg,
+              title: FiicoLocale().intensiveNotification,
+              message: FiicoLocale().intensiveNotificationMsg,
             ),
             icon: const Icon(MdiIcons.information),
           ),
@@ -196,7 +196,7 @@ class AlertSelectorView {
     final dates = state.dates ?? movement?.alert?.dates ?? [];
 
     return FiicoButton.pink(
-      title: FiicoLocale.selectButton,
+      title: FiicoLocale().selectButton,
       ontap: () {
         final alert = FiicoAlert(
           active: true,

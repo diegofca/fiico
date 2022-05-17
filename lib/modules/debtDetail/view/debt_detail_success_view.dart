@@ -218,7 +218,7 @@ class DebtDetailSuccessView extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            FiicoLocale.rememberMarkOutcomeMovement,
+            FiicoLocale().rememberMarkOutcomeMovement,
             style: Style.subtitle.copyWith(
               color: FiicoColors.grayNeutral,
               fontSize: FiicoFontSize.xm,
@@ -229,7 +229,7 @@ class DebtDetailSuccessView extends StatelessWidget {
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
             child: FiicoButton(
-              title: FiicoLocale.markAsPaid,
+              title: FiicoLocale().markAsPaid,
               color: FiicoColors.pinkRed,
               image: SVGImages.checkMarkIcon,
               onTap: () {

@@ -54,7 +54,7 @@ class CreateBottomView {
 
   Widget _title() {
     return Text(
-      FiicoLocale.createNewBudget,
+      FiicoLocale().createNewBudget,
       style: Style.title.copyWith(
         color: FiicoColors.black,
       ),
@@ -74,7 +74,7 @@ class CreateBottomView {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.name,
+              FiicoLocale().name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.md,
@@ -86,7 +86,7 @@ class CreateBottomView {
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
                 textEditingController: _textController,
-                hintText: FiicoLocale.enterBudgetName,
+                hintText: FiicoLocale().enterBudgetName,
                 textColor: FiicoColors.black,
               ),
             ),
@@ -105,7 +105,7 @@ class CreateBottomView {
         horizontal: FiicoPaddings.fourtySix,
       ),
       child: FiicoButton.pink(
-        title: FiicoLocale.createBudget,
+        title: FiicoLocale().createBudget,
         ontap: () {
           Navigator.of(context).pop();
           if (_textController.text.isNotEmpty) {

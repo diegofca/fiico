@@ -66,7 +66,7 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
     return Padding(
       padding: const EdgeInsets.all(FiicoPaddings.eight),
       child: Text(
-        FiicoLocale.youHaveNoActiveBudgets,
+        FiicoLocale().youHaveNoActiveBudgets,
         style: Style.subtitle.copyWith(
           fontSize: FiicoFontSize.xm,
           color: FiicoColors.graySoft,
@@ -80,7 +80,7 @@ class BudgetsEmtpyViewState extends State<BudgetsEmptyView> {
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: SizedBox(
         child: FiicoButton.pink(
-          title: FiicoLocale.createNewBudget,
+          title: FiicoLocale().createNewBudget,
           ontap: () => widget.onTapNewItem.call(),
         ),
       ),

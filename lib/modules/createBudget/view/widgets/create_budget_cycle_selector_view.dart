@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 
 class CreateBudgetCycleSelectorView {
   final _options = [
-    BudgetCycle.twoWeeks(name: FiicoLocale.biweekly),
-    BudgetCycle.month(name: FiicoLocale.monthly),
-    BudgetCycle.annual(name: FiicoLocale.annual),
+    BudgetCycle.twoWeeks(name: FiicoLocale().biweekly),
+    BudgetCycle.month(name: FiicoLocale().monthly),
+    BudgetCycle.annual(name: FiicoLocale().annual),
   ];
 
   void show(

@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 
 class CreateBudgetDurationSelectorView {
   final _options = [
-    BudgetDuration.month(name: FiicoLocale.oneMonth),
-    BudgetDuration.threeMonths(name: FiicoLocale.threeMonth),
-    BudgetDuration.sixMonths(name: FiicoLocale.sixMonth),
-    BudgetDuration.annual(name: FiicoLocale.oneYear),
-    BudgetDuration.custom(name: FiicoLocale.custom),
+    BudgetDuration.month(name: FiicoLocale().oneMonth),
+    BudgetDuration.threeMonths(name: FiicoLocale().threeMonth),
+    BudgetDuration.sixMonths(name: FiicoLocale().sixMonth),
+    BudgetDuration.annual(name: FiicoLocale().oneYear),
+    BudgetDuration.custom(name: FiicoLocale().custom),
   ];
 
   void show(

@@ -23,7 +23,7 @@ class SecurityPinCodePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: FiicoLocale.securityPinTitle,
+        text: FiicoLocale().securityPinTitle,
         textColor: FiicoColors.black,
       ),
       body: BlocProvider(
@@ -67,7 +67,7 @@ class SecurityPinCodePageView extends StatelessWidget {
         if (state.isPinUpdated) {
           FiicoAlertDialog.showSuccess(
             context,
-            title: FiicoLocale.successfulUpdate,
+            title: FiicoLocale().successfulUpdate,
             message:
                 'Hemos actualizado tu PIN de seguridad, recuerda actualizarlo continuamente para tener tus datos seguros.',
             onOkAction: () => FiicoRoute.back(context),

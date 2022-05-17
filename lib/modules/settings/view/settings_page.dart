@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/setting.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/settings/view/settings_success_view.dart';
@@ -48,7 +49,7 @@ class SettingsPage extends StatelessWidget {
         onPressed: () {
           FiicoAlertDialog.showInfo(
             context,
-            title: 'Configuración',
+            title: FiicoLocale().settings,
             message: 'Recuerda mejorar la seguridad de tu aplicación.',
           );
         },

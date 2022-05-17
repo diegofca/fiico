@@ -23,7 +23,7 @@ class PinCodeUnlockPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: FiicoLocale.securityPinTitle,
+        text: FiicoLocale().securityPinTitle,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),
@@ -70,8 +70,8 @@ class PinCodeUnlockView extends StatelessWidget {
   void _showErrorAuthLogged(BuildContext context) {
     FiicoAlertDialog.showWarnning(
       context,
-      title: FiicoLocale.invalidPin,
-      message: FiicoLocale.invalidPinEnteredIsInvalid,
+      title: FiicoLocale().invalidPin,
+      message: FiicoLocale().invalidPinEnteredIsInvalid,
     );
   }
 }

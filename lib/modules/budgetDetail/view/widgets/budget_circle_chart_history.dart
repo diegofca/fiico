@@ -169,13 +169,13 @@ class BudgetChartCircleViewState extends State<BudgetChartCircleView> {
   String _getTitle(BudgetChartCircleSections section) {
     switch (section) {
       case BudgetChartCircleSections.PEDING_PAY:
-        return FiicoLocale.pendingPayable;
+        return FiicoLocale().pendingPayable;
       case BudgetChartCircleSections.PENDING_RECEIVED:
-        return FiicoLocale.pendingToReceive;
+        return FiicoLocale().pendingToReceive;
       case BudgetChartCircleSections.TOTAL_PAY:
-        return FiicoLocale.totalPaid;
+        return FiicoLocale().totalPaid;
       case BudgetChartCircleSections.TOTAL_RECEIVED:
-        return FiicoLocale.totalReceived;
+        return FiicoLocale().totalReceived;
     }
   }
 

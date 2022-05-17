@@ -15,15 +15,15 @@ class FiicoSelectorIcon {
   static Future<FiicoIcon?> select(BuildContext context) async {
     final icon = await FlutterIconPicker.showIconPicker(
       context,
-      title: Text(FiicoLocale.selectAicon),
+      title: Text(FiicoLocale().selectAicon),
       closeChild: FiicoButton.pink(
-        title: FiicoLocale.cancelButton,
+        title: FiicoLocale().cancelButton,
         ontap: () {
           Navigator.of(context).pop();
         },
       ),
-      noResultsText: FiicoLocale.notResultFoundFor,
-      searchHintText: FiicoLocale.searchButton,
+      noResultsText: FiicoLocale().notResultFoundFor,
+      searchHintText: FiicoLocale().searchButton,
       iconColor: FiicoColors.grayDark,
       adaptiveDialog: false,
       showTooltips: true,

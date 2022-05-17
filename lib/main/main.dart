@@ -3,8 +3,10 @@ import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/helpers/manager/purchase_manager.dart';
+import 'package:control/modules/changeLanguage/repository/languages_list.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/modules/connectivity/repository/connectivity_repository.dart';
+import 'package:control/modules/menu/menu.dart';
 import 'package:control/modules/splash/view/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
@@ -21,10 +23,8 @@ void main() async {
   await initFirebase();
   runApp(EasyLocalization(
     path: 'assets/locales',
-    supportedLocales: const [
-      Locale('en', 'US'),
-      Locale('es', 'SP'),
-    ],
+    supportedLocales: Languages().items.map((e) => e.locale).toList(),
+    fallbackLocale: Languages().items.first.locale,
     child: const ValiuApp(),
   ));
 }
@@ -57,6 +57,9 @@ class ValiuApp extends StatelessWidget {
           create: (_) => ConnectivityBloc(
             connectivityRepository: ConnectivityRepository(),
           )..add(const ConnectivityStartListening()),
+        ),
+        BlocProvider(
+          create: (_) => MenuBloc(),
         )
       ],
       child: OverlaySupport.global(

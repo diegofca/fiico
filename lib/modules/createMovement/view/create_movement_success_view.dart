@@ -140,7 +140,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: FiicoTextfield(
                   keyboardType: TextInputType.number,
-                  hintText: FiicoLocale.enterAmount,
+                  hintText: FiicoLocale().enterAmount,
                   textColor: movement.getTypeColor(),
                   inputFormatters: <TextInputFormatter>[_currencyFormarted],
                   onChanged: (value) {
@@ -171,7 +171,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.name,
+              FiicoLocale().name,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -182,7 +182,7 @@ class CreateMovementSuccessView extends StatelessWidget {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: FiicoTextfield(
-                hintText: FiicoLocale.enterName,
+                hintText: FiicoLocale().enterName,
                 onChanged: (name) => context
                     .read<CreateMovementBloc>()
                     .add(CreateMovementInfoRequest(name: name)),
@@ -207,7 +207,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.description,
+              FiicoLocale().description,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -217,7 +217,7 @@ class CreateMovementSuccessView extends StatelessWidget {
           BorderContainer(
             heigth: 100,
             child: FiicoTextfield(
-              hintText: FiicoLocale.enterDescription,
+              hintText: FiicoLocale().enterDescription,
               keyboardType: TextInputType.multiline,
               onChanged: (description) {
                 context
@@ -302,7 +302,7 @@ class CreateMovementSuccessView extends StatelessWidget {
               vertical: FiicoPaddings.sixteen,
             ),
             child: Text(
-              FiicoLocale.categories,
+              FiicoLocale().categories,
               textAlign: TextAlign.start,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.sm,
@@ -316,7 +316,7 @@ class CreateMovementSuccessView extends StatelessWidget {
                 Expanded(
                   child: FiicoTextfield(
                     textEditingController: _categoriesController,
-                    hintText: FiicoLocale.exampleCategory,
+                    hintText: FiicoLocale().exampleCategory,
                     onSubmitted: (text) => _addedTagCategory(context),
                   ),
                 ),
@@ -355,8 +355,8 @@ class CreateMovementSuccessView extends StatelessWidget {
       ),
       child: FiicoButton(
         title: movement.getType() == MovementType.ENTRY
-            ? FiicoLocale.addIncome
-            : FiicoLocale.addOutcome,
+            ? FiicoLocale().addIncome
+            : FiicoLocale().addOutcome,
         color: movement.getTypeColor(),
         onTap: () => _createdMovement(context),
       ),
@@ -374,8 +374,8 @@ class CreateMovementSuccessView extends StatelessWidget {
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: FiicoLocale.emptyFields,
-        message: FiicoLocale.completeMissingFieldsAddMovement,
+        title: FiicoLocale().emptyFields,
+        message: FiicoLocale().completeMissingFieldsAddMovement,
       );
     }
   }

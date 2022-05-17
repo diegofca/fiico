@@ -56,7 +56,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
           Padding(
             padding: const EdgeInsets.all(FiicoPaddings.eight),
             child: Text(
-              FiicoLocale.youDontHaveNot,
+              FiicoLocale().youDontHaveNot,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.xm,
                 color: FiicoColors.graySoft,
@@ -64,7 +64,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
             ),
           ),
           Text(
-            "Intenta invitar a algun amigo a tu board.",
+            FiicoLocale().tryInvitingAfriendToYourBoard,
             style: Style.subtitle.copyWith(
               fontSize: FiicoFontSize.xm,
               color: FiicoColors.graySoft,
@@ -81,7 +81,7 @@ class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {
       padding: const EdgeInsets.only(top: FiicoPaddings.twenyFour),
       child: SizedBox(
         child: FiicoButton.pink(
-          title: "Invitar amigo",
+          title: FiicoLocale().inviteFriendButton,
           ontap: () => widget.onTapNewBudget.call(),
         ),
       ),

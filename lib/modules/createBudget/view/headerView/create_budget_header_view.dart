@@ -116,7 +116,7 @@ class CreateBudgetHeaderViewState extends State<CreateBudgetHeaderView> {
             ),
           ),
           Text(
-            FiicoLocale.inProgress,
+            FiicoLocale().inProgress,
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xs,

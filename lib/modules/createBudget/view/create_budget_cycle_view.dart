@@ -75,7 +75,7 @@ class CreateBudgetCycleView extends StatelessWidget {
             child: Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                FiicoLocale.repetitive,
+                FiicoLocale().repetitive,
                 textAlign: TextAlign.left,
                 maxLines: FiicoMaxLines.ten,
                 style: Style.subtitle.copyWith(
@@ -116,7 +116,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.sixteen,
               ),
               child: Text(
-                FiicoLocale.repeatForm,
+                FiicoLocale().repeatForm,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -186,7 +186,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.eight,
               ),
               child: Text(
-                FiicoLocale.duration,
+                FiicoLocale().duration,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -264,7 +264,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.eight,
               ),
               child: Text(
-                FiicoLocale.startDate,
+                FiicoLocale().startDate,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
@@ -346,7 +346,7 @@ class CreateBudgetCycleView extends StatelessWidget {
                 vertical: FiicoPaddings.sixteen,
               ),
               child: Text(
-                FiicoLocale.finalDate,
+                FiicoLocale().finalDate,
                 textAlign: TextAlign.start,
                 style: Style.subtitle.copyWith(
                   fontSize: FiicoFontSize.sm,
