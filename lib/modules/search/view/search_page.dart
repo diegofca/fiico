@@ -55,7 +55,7 @@ class SearchPageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: "Resultados de ${state.query}",
+        text: "${FiicoLocale().resultsOf} ${state.query}",
         textColor: FiicoColors.graySoft,
         actions: [_infoButton(context)],
       ),

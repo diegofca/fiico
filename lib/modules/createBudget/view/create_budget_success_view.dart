@@ -193,7 +193,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
           _separatorLineView(),
           Container(
             alignment: Alignment.center,
-            height: 90,
+            height: 75,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -229,7 +229,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         alignment: Alignment.center,
         margin: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
         width: double.maxFinite,
-        height: 80.0 * _mEntrys.length,
+        height: 75.0 * _mEntrys.length,
         child: ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemCount: _mEntrys.length,
@@ -250,7 +250,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         _separatorLineView(),
         Container(
           alignment: Alignment.center,
-          height: 90,
+          height: 75,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -285,7 +285,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
         alignment: Alignment.center,
         margin: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
         width: double.maxFinite,
-        height: 80.0 * _mDebts.length,
+        height: 75.0 * _mDebts.length,
         child: ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemCount: _mDebts.length,
@@ -429,9 +429,13 @@ class CreateBudgetSuccessView extends StatelessWidget {
 
   void _onCreateBudgetIntent(BuildContext context) {
     if (budgetToCreate.isCompleteByCreate()) {
+      final movements = budgetToCreate.movements
+          ?.map((e) => e.copyWith(currency: budgetToCreate.currency))
+          .toList();
+      final finalBudget = budgetToCreate.copyWith(movements: movements);
       context
           .read<CreateBudgetBloc>()
-          .add(CreateBudgetAdded(budget: budgetToCreate));
+          .add(CreateBudgetAdded(budget: finalBudget));
     } else {
       FiicoAlertDialog.showWarnning(
         context,

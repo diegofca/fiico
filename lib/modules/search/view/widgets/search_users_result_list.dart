@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/searchUsers/view/listView/search_users_item_list.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class SearchUsersListView extends StatelessWidget {
       height: 40,
       alignment: Alignment.topLeft,
       child: Text(
-        'Usuarios encontrados (${users.length})',
+        '${FiicoLocale().foundUsers} (${users.length})',
         style: Style.subtitle,
       ),
     );

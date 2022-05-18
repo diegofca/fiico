@@ -174,5 +174,20 @@
     "contact_us": "Contact us",
     "see_plans": "See plans",
     "restore_purchases": "Restore purchases",
-    "save_more_whit_premium_unlimited": "Save more with PREMIUM UNLIMITED"
+    "save_more_whit_premium_unlimited": "Save more with PREMIUM UNLIMITED",
+    "timely_payment": "Timely payment",
+    "dates": "Dates",
+    "without_date": "Without date",
+    "payments_made": "Payments made",
+    "variable_value": "Variable value",
+    "paid_by": "Paid by",
+    "no_description": "No description",
+    "amount_acquier_diffrent_value": "The movement may acquire a different value in each cycle, if this action is disabled, the value of the movement will be static and cannot be modified when trying to generate a payment or collection.",
+    "there_no_results_for_your_search": "There are no results for your search",
+    "all": "All",
+    "users": "Users",
+    "results_of": "Results of",
+    "found_users": "Found users",
+    "found_movements": "Found movements",
+    "found_budgets": "Found budgets" 
 }   

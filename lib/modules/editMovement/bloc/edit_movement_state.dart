@@ -7,6 +7,7 @@ class EditMovementState extends Equatable {
     this.status = EditMovementStatus.loading,
     this.onAddedCompleted,
     this.recurrencyDates,
+    this.isVariableValue,
     this.name,
     this.description,
     this.tags,
@@ -26,6 +27,7 @@ class EditMovementState extends Equatable {
   final FiicoIcon? icon;
   final FiicoAlert? alert;
   final List<Timestamp>? recurrencyDates;
+  final bool? isVariableValue;
 
   bool get isAdded => onAddedCompleted ?? false;
 
@@ -44,11 +46,13 @@ class EditMovementState extends Equatable {
     FiicoIcon? icon,
     FiicoAlert? alert,
     List<Timestamp>? recurrencyDates,
+    bool? isVariableValue,
   }) {
     return EditMovementState(
       status: status ?? this.status,
       onAddedCompleted: onAddedCompleted ?? this.onAddedCompleted,
       recurrencyDates: recurrencyDates ?? this.recurrencyDates,
+      isVariableValue: isVariableValue ?? this.isVariableValue,
       name: name ?? this.name,
       description: description ?? this.description,
       value: value ?? this.value,

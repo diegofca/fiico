@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
@@ -25,7 +26,11 @@ class SearchSuccessView extends StatelessWidget {
   final Stream<List<Budget>>? budgetsStream;
   final Stream<List<Movement>>? movementsStream;
 
-  final _segmentOptions = {0: ' Todo ', 1: ' Usuarios ', 2: ' Presupuesto '};
+  final _segmentOptions = {
+    0: ' ${FiicoLocale().all} ',
+    1: ' ${FiicoLocale().users} ',
+    2: ' ${FiicoLocale().myBudgets} '
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +53,11 @@ class SearchSuccessView extends StatelessWidget {
   }
 
   Widget _emptySearchView() {
-    return const Center(
+    return Center(
       child: Text(
-        'No se encontraron resultados en la busqueda.',
+        FiicoLocale().thereNoResultsForYourSearch,
         style: Style.subtitle,
-        maxLines: 2,
+        maxLines: FiicoMaxLines.ten,
       ),
     );
   }

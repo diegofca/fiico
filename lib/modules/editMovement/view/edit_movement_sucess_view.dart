@@ -3,7 +3,9 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
@@ -122,6 +124,8 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _entryPriceView(context),
+        _valueVariableView(context),
+        _separatorLineView(),
         _entryNameView(context),
         _entryDescriptionView(context),
         _entryDateView(context),
@@ -178,10 +182,56 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
     );
   }
 
+  Widget _valueVariableView(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiicoPaddings.eight,
+          ),
+          child: Text(
+            FiicoLocale().varaibleValue,
+            textAlign: TextAlign.start,
+            style: Style.subtitle.copyWith(
+              fontSize: FiicoFontSize.xm,
+              color: FiicoColors.grayNeutral,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => FiicoAlertDialog.showInfo(
+            context,
+            title: FiicoLocale().varaibleValue,
+            message: FiicoLocale().amountAcquierDiffrentValue,
+          ),
+          child: const Icon(
+            Icons.info_outline,
+            color: FiicoColors.grayNeutral,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.centerRight,
+            child: Switch.adaptive(
+              value: widget.movement.isVariableValue ?? false,
+              activeColor: widget.movement.getTypeColor(),
+              onChanged: (value) {
+                context
+                    .read<EditMovementBloc>()
+                    .add(EditMovementInfoRequest(isVariableValue: value));
+              },
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _entryNameView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.eight,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,25 +414,36 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
       child: FiicoTagsView(
-        tags: widget.movement.tags,
+        tags: widget.movement.tags ?? [],
         isDeleteTag: true,
         onDeleteTag: (int index) => _removedTagCategory(context, index),
       ),
     );
   }
 
+  Widget _separatorLineView() {
+    return const Padding(
+      padding: EdgeInsets.only(
+        top: FiicoPaddings.sixteen,
+        bottom: FiicoPaddings.eight,
+      ),
+      child: SeparatorView(),
+    );
+  }
+
+  //Class functs
   void _addedTagCategory(BuildContext context) {
     if (_categoriesController.text.length > 2) {
       final category = _categoriesController.text;
-      widget.movement.tags.add(category);
+      var newTags = [...?widget.movement.tags, category];
       context
           .read<EditMovementBloc>()
-          .add(EditMovementInfoRequest(tags: widget.movement.tags));
+          .add(EditMovementInfoRequest(tags: newTags));
     }
   }
 
   void _removedTagCategory(BuildContext context, int index) {
-    widget.movement.tags.removeAt(index);
+    widget.movement.tags?.removeAt(index);
     context
         .read<EditMovementBloc>()
         .add(EditMovementInfoRequest(tags: widget.movement.tags));

@@ -14,7 +14,7 @@ part 'create_budget_event.dart';
 class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
   CreateBudgetBloc(this.repository) : super(CreateBudgetState()) {
     // - Observers
-    on<CreateBudgetInfoSelected>(_mapCurrencySelectedState);
+    on<CreateBudgetInfoSelected>(_mapBudgetInfoSelectedState);
     on<CreateBudgetAddedmovement>(_mapAddedmovementToState);
     on<CreateBudgetRemovedMovement>(_mapRemovedMovementToState);
     on<CreateBudgetSearchUsersSelected>(_mapUsersSearchToState);
@@ -39,7 +39,7 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
     }
   }
 
-  void _mapCurrencySelectedState(
+  void _mapBudgetInfoSelectedState(
     CreateBudgetInfoSelected event,
     Emitter<CreateBudgetState> emit,
   ) async {

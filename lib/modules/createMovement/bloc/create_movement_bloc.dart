@@ -44,6 +44,7 @@ class CreateMovementBloc
       status: CreateMovementStatus.success,
       description: event.description,
       recurrencyDates: event.recurrencyDates,
+      isVariableValue: event.isVariableValue,
       markDays: event.markDays,
       name: event.name,
       value: event.value,

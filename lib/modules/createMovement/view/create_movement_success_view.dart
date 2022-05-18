@@ -6,6 +6,7 @@ import 'package:control/helpers/genericViews/border_container.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
+import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
@@ -102,6 +103,8 @@ class CreateMovementSuccessView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _entryPriceView(context),
+        _valueVariableView(context),
+        _separatorLineView(),
         _entryNameView(context),
         _entryDescriptionView(context),
         _entryDateView(context),
@@ -158,10 +161,56 @@ class CreateMovementSuccessView extends StatelessWidget {
     );
   }
 
+  Widget _valueVariableView(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: FiicoPaddings.eight,
+          ),
+          child: Text(
+            FiicoLocale().varaibleValue,
+            textAlign: TextAlign.start,
+            style: Style.subtitle.copyWith(
+              fontSize: FiicoFontSize.xm,
+              color: FiicoColors.grayNeutral,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => FiicoAlertDialog.showInfo(
+            context,
+            title: FiicoLocale().varaibleValue,
+            message: FiicoLocale().amountAcquierDiffrentValue,
+          ),
+          child: const Icon(
+            Icons.info_outline,
+            color: FiicoColors.grayNeutral,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.centerRight,
+            child: Switch.adaptive(
+              value: movement.isVariableValue ?? false,
+              activeColor: movement.getTypeColor(),
+              onChanged: (value) {
+                context
+                    .read<CreateMovementBloc>()
+                    .add(CreateMovementInfoRequest(isVariableValue: value));
+              },
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _entryNameView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.eight,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,7 +389,7 @@ class CreateMovementSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
       child: FiicoTagsView(
-        tags: movement.tags,
+        tags: movement.tags ?? [],
         isDeleteTag: true,
         onDeleteTag: (int index) => _removedTagCategory(context, index),
       ),
@@ -363,6 +412,18 @@ class CreateMovementSuccessView extends StatelessWidget {
     );
   }
 
+  Widget _separatorLineView() {
+    return const Padding(
+      padding: EdgeInsets.only(
+        top: FiicoPaddings.sixteen,
+        bottom: FiicoPaddings.eight,
+      ),
+      child: SeparatorView(),
+    );
+  }
+
+  // class functs ----
+
   void _createdMovement(BuildContext context) {
     if (movement.isCompleteByCreate()) {
       if (movement.isAddedWithBudget) {
@@ -383,7 +444,7 @@ class CreateMovementSuccessView extends StatelessWidget {
   void _addedTagCategory(BuildContext context) {
     if (_categoriesController.text.length > 2) {
       final category = _categoriesController.text;
-      movement.tags.add(category);
+      movement.tags?.add(category);
       context
           .read<CreateMovementBloc>()
           .add(CreateMovementInfoRequest(tags: movement.tags));
@@ -391,7 +452,7 @@ class CreateMovementSuccessView extends StatelessWidget {
   }
 
   void _removedTagCategory(BuildContext context, int index) {
-    movement.tags.removeAt(index);
+    movement.tags?.removeAt(index);
     context
         .read<CreateMovementBloc>()
         .add(CreateMovementInfoRequest(tags: movement.tags));

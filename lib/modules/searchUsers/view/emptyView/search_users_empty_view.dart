@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -51,7 +52,7 @@ class SearchUsersEmptyViewState extends State<SearchUsersEmptyView> {
           Padding(
             padding: const EdgeInsets.all(FiicoPaddings.eight),
             child: Text(
-              "No hay Resultados de tu busqueda",
+              FiicoLocale().thereNoResultsForYourSearch,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.xm,
                 color: FiicoColors.graySoft,

@@ -120,7 +120,7 @@ class EntryDetailSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.thirtyTwo,
+        bottom: FiicoPaddings.eight,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

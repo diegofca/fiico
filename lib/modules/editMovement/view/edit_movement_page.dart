@@ -155,6 +155,7 @@ class EditMovementPageView extends StatelessWidget {
       createdAt: Timestamp.now(),
       recurrencyAt: state.markDays,
       recurrencyDates: state.recurrencyDates,
+      isVariableValue: state.isVariableValue,
       typeDescription: typeDescription,
       isAddedWithBudget: addedinBudget,
       paymentStatus: movement?.paymentStatus,

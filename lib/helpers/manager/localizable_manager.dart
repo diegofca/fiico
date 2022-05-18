@@ -189,4 +189,19 @@ class FiicoLocale {
   final seePlans = "see_plans".tr();
   final restorePurchases = "restore_purchases".tr();
   final saveMoreWhitPremiumUnlimited = "save_more_whit_premium_unlimited".tr();
+  final timleyPayment = "timely_payment".tr();
+  final dates = "dates".tr();
+  final withoutDate = "without_date".tr();
+  final paymentsMade = "payments_made".tr();
+  final varaibleValue = "variable_value".tr();
+  final paidBy = "paid_by".tr();
+  final noDescription = "no_description".tr();
+  final amountAcquierDiffrentValue = "amount_acquier_diffrent_value".tr();
+  final thereNoResultsForYourSearch = "there_no_results_for_your_search".tr();
+  final all = "all".tr();
+  final users = "users".tr();
+  final resultsOf = "results_of".tr();
+  final foundUsers = "found_users".tr();
+  final foundMovements = "found_movements".tr();
+  final foundBudgets = "found_budgets".tr();
 }

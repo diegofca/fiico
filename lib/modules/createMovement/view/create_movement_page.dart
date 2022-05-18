@@ -135,6 +135,7 @@ class CreateMovementPageView extends StatelessWidget {
       icon: state.icon ?? const FiicoIcon.empty(),
       alert: state.alert ?? FiicoAlert.empty(),
       recurrencyDates: state.recurrencyDates ?? [],
+      isVariableValue: state.isVariableValue,
       description: state.description,
       createdAt: Timestamp.now(),
       recurrencyAt: recurrencyDay,

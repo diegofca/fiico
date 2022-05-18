@@ -27,6 +27,7 @@ class EditMovementInfoRequest extends EditMovementEvent {
     this.icon,
     this.alert,
     this.recurrencyDates,
+    this.isVariableValue,
   });
 
   final String? name;
@@ -37,10 +38,20 @@ class EditMovementInfoRequest extends EditMovementEvent {
   final FiicoIcon? icon;
   final FiicoAlert? alert;
   final List<Timestamp>? recurrencyDates;
+  final bool? isVariableValue;
 
   @override
-  List<Object?> get props =>
-      [name, description, tags, value, markDays, icon, alert, recurrencyDates];
+  List<Object?> get props => [
+        name,
+        description,
+        tags,
+        value,
+        markDays,
+        icon,
+        alert,
+        recurrencyDates,
+        isVariableValue
+      ];
 }
 
 class EditMovementToEditRequest extends EditMovementEvent {

@@ -99,7 +99,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement?.description ?? 'No hay descripción',
+        movement?.description ?? FiicoLocale().noDescription,
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -117,7 +117,6 @@ class DebtDetailSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.thirtyTwo,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,7 +254,7 @@ class DebtDetailSuccessView extends StatelessWidget {
           Padding(
             padding: EdgeInsets.zero,
             child: Text(
-              'Pagos realizados:',
+              '${FiicoLocale().paymentsMade}:',
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
@@ -311,7 +310,7 @@ class DebtDetailSuccessView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: FiicoPaddings.eight),
               child: Text(
-                'Payment by ${markMovement?.userName}',
+                '${FiicoLocale().paidBy} ${markMovement?.userName}',
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.grayNeutral,
                 ),

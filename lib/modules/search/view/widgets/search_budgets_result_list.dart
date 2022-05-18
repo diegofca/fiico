@@ -1,6 +1,7 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/modules/budgets/view/listView/budgets_list_item_view.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class SearchBudgetsListView extends StatelessWidget {
       height: 40,
       alignment: Alignment.topLeft,
       child: Text(
-        'Presupuestos encontrados (${budgets.length})',
+        '${FiicoLocale().foundBudgets} (${budgets.length})',
         style: Style.subtitle,
       ),
     );

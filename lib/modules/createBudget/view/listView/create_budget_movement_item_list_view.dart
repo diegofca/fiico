@@ -5,10 +5,11 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
-import 'package:control/modules/debtDetail/view/debt_detail_page.dart';
-import 'package:control/modules/entryDetail/view/detail/entry_detail_page.dart';
+import 'package:control/modules/createBudget/bloc/create_budget_bloc.dart';
+import 'package:control/modules/editMovement/view/edit_movement_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateBudgetMovementListItemView extends StatefulWidget {
   const CreateBudgetMovementListItemView({
@@ -35,7 +36,7 @@ class CreateBudgetMovementListItemViewState
       onTap: () => _onDetailViewed(),
       child: Container(
         color: Colors.white,
-        height: 90,
+        height: 75,
         width: double.maxFinite,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,8 +53,8 @@ class CreateBudgetMovementListItemViewState
   Widget _icon() {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.sixteen,
+        top: FiicoPaddings.eight,
+        bottom: FiicoPaddings.eight,
         right: FiicoPaddings.sixteen,
       ),
       child: Container(
@@ -149,25 +150,19 @@ class CreateBudgetMovementListItemViewState
     );
   }
 
-  void _onDetailViewed() {
-    switch (widget.movement.getType()) {
-      case MovementType.ENTRY:
-        FiicoRoute.send(
-            context,
-            EntryDetailPage(
-              movement: widget.movement,
-              budget: widget.budget,
-            ));
-        break;
-      case MovementType.DEBT:
-        FiicoRoute.send(
-            context,
-            DebtDetailPage(
-              movement: widget.movement,
-              budget: widget.budget,
-            ));
-        break;
-      default:
+  void _onDetailViewed() async {
+    final bloc = context.read<CreateBudgetBloc>();
+    final movement = await FiicoRoute.send(
+      context,
+      EditMovementPage(
+        movementToEdit: widget.movement,
+        budget: widget.budget,
+        addedinBudget: true,
+      ),
+    );
+    if (movement != null) {
+      bloc.add(CreateBudgetRemovedMovement(movement: widget.movement));
+      bloc.add(CreateBudgetAddedmovement(movement: movement));
     }
   }
 }
