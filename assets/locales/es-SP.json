@@ -189,5 +189,11 @@
     "results_of": "Resultados de",
     "found_users": "Usuarios encontrados",
     "found_movements": "Movimientos encontrados",
-    "found_budgets": "Presupuestos encontrados"
+    "found_budgets": "Presupuestos encontrados",
+    "the_new_value_will_beUpdated": "Se actualizará el nuevo valor al movimiento pero podrás modificarlo en el siguiente ciclo",
+    "add_the_new_value_of": "Agrega el nuevo valor de",
+    "for_this_cycle": "para este ciclo",
+    "payment_received": "Pagos recibidos",
+    "save_changes": "Guardar cambios",
+    "user_name": "Nombre de usuario"
 }

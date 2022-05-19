@@ -189,5 +189,11 @@
     "results_of": "Results of",
     "found_users": "Found users",
     "found_movements": "Found movements",
-    "found_budgets": "Found budgets" 
+    "found_budgets": "Found budgets",
+    "the_new_value_will_beUpdated": "The new value will be updated to the movement but you can modify it in the next cycle",
+    "add_the_new_value_of": "Add the new value of",
+    "for_this_cycle": "for this cycle",
+    "payment_received": "Payment received",
+    "save_changes": "Save changes",
+    "user_name": "Username"
 }   

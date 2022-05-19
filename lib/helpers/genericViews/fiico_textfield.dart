@@ -11,6 +11,7 @@ class FiicoTextfield extends Container {
     this.textEditingController,
     this.textColor = FiicoColors.grayNeutral,
     this.hintColor = FiicoColors.graySoft,
+    this.maxLines = FiicoMaxLines.ten,
     this.keyboardType,
     this.hintText,
     this.focusNode,
@@ -31,6 +32,7 @@ class FiicoTextfield extends Container {
   final TextStyle? textStyle;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  final int? maxLines;
   List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
@@ -44,7 +46,7 @@ class FiicoTextfield extends Container {
         top: FiicoPaddings.four,
       ),
       child: TextField(
-        maxLines: FiicoMaxLines.ten,
+        maxLines: maxLines,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
         controller: textEditingController,

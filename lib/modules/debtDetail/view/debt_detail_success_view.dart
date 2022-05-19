@@ -15,6 +15,7 @@ import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/view/headerView/debt_detail_header_view.dart';
+import 'package:control/modules/debtDetail/view/widget/variable_valiu_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -231,11 +232,7 @@ class DebtDetailSuccessView extends StatelessWidget {
               title: FiicoLocale().markAsPaid,
               color: FiicoColors.pinkRed,
               image: SVGImages.checkMarkIcon,
-              onTap: () {
-                context
-                    .read<DebtDetailBloc>()
-                    .add(DebtDetailMarkPayedMovement(movement: movement));
-              },
+              onTap: () => _paymentIntentAction(context),
             ),
           ),
         ],
@@ -371,5 +368,21 @@ class DebtDetailSuccessView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _paymentIntentAction(BuildContext context) {
+    final bloc = context.read<DebtDetailBloc>();
+    if (movement?.isVariableValue ?? false) {
+      VariableValueBottoView().show(
+        context,
+        movement,
+        callbackValue: (value) {
+          bloc.add(DebtDetailMarkPayedMovement(
+              movement: movement?.copyWith(value: value)));
+        },
+      );
+    } else {
+      bloc.add(DebtDetailMarkPayedMovement(movement: movement));
+    }
   }
 }

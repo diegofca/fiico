@@ -1,7 +1,13 @@
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
+import 'package:control/modules/editProfile/view/edit_profile_page.dart';
+import 'package:control/modules/helpCenter/view/help_center_dart.dart';
 import 'package:control/modules/profile/model/profile_option.dart';
+import 'package:control/modules/settings/view/pages/pinCode/view/security_pin_code_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 
 class ProfileListItemView extends StatefulWidget {
@@ -20,7 +26,7 @@ class ProfileListItemViewState extends State<ProfileListItemView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _onOptionTapClicked(context),
       child: Container(
         height: 60,
         width: double.maxFinite,
@@ -64,16 +70,13 @@ class ProfileListItemViewState extends State<ProfileListItemView> {
   }
 
   Widget _arrowView() {
-    return Padding(
-      padding: const EdgeInsets.only(
+    return const Padding(
+      padding: EdgeInsets.only(
         right: FiicoPaddings.eight,
       ),
-      child: IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          Icons.keyboard_arrow_right,
-          color: FiicoColors.grayDark,
-        ),
+      child: Icon(
+        Icons.keyboard_arrow_right,
+        color: FiicoColors.grayDark,
       ),
     );
   }
@@ -83,16 +86,26 @@ class ProfileListItemViewState extends State<ProfileListItemView> {
       width: 10,
       child: Visibility(
         visible: widget.option.isActiveBadge,
-        child: IconButton(
-          onPressed: () {},
-          padding: EdgeInsets.zero,
-          icon: const Icon(
-            Icons.circle,
-            color: FiicoColors.pinkRed,
-            size: 10,
-          ),
+        child: const Icon(
+          Icons.circle,
+          color: FiicoColors.pinkRed,
+          size: 10,
         ),
       ),
     );
+  }
+
+  void _onOptionTapClicked(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    if (widget.option.name == FiicoLocale().securityPinTitle) {
+      FiicoRoute.send(context, SecurityPinCodePage(user: user));
+    }
+    if (widget.option.name == FiicoLocale().shareQR) {}
+    if (widget.option.name == FiicoLocale().editUser) {
+      FiicoRoute.send(context, EditProfilePage(user: user));
+    }
+    if (widget.option.name == FiicoLocale().helpCenter) {
+      FiicoRoute.send(context, HelpCenterPage(user: user));
+    }
   }
 }

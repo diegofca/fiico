@@ -13,6 +13,7 @@ import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/modules/debtDetail/view/widget/variable_valiu_bottom.dart';
 import 'package:control/modules/entryDetail/bloc/entry_detail_bloc.dart';
 import 'package:control/modules/entryDetail/view/detail/header/entry_detail_item_header.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class EntryDetailSuccessView extends StatelessWidget {
         vertical: FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        movement?.description ?? 'No hay descripción',
+        movement?.description ?? FiicoLocale().noDescription,
         maxLines: FiicoMaxLines.unlimited,
         style: Style.subtitle.copyWith(
           color: FiicoColors.grayNeutral,
@@ -186,7 +187,7 @@ class EntryDetailSuccessView extends StatelessWidget {
             ),
             Text(
               movement?.getRecurrencyDateDescription() ?? '',
-              maxLines: 2,
+              maxLines: FiicoMaxLines.four,
               overflow: TextOverflow.fade,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
@@ -232,11 +233,7 @@ class EntryDetailSuccessView extends StatelessWidget {
               title: FiicoLocale().markAsReceived,
               color: FiicoColors.greenNeutral,
               image: SVGImages.checkMarkIcon,
-              onTap: () {
-                context
-                    .read<EntryDetailBloc>()
-                    .add(EntryDetailMarkPayedMovement(movement: movement));
-              },
+              onTap: () => _paymentIntentAction(context),
             ),
           ),
         ],
@@ -255,7 +252,7 @@ class EntryDetailSuccessView extends StatelessWidget {
           Padding(
             padding: EdgeInsets.zero,
             child: Text(
-              'Pagos recibidos:',
+              FiicoLocale().paymentReceived,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
                 fontSize: FiicoFontSize.xm,
@@ -311,7 +308,7 @@ class EntryDetailSuccessView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: FiicoPaddings.eight),
               child: Text(
-                'Payment by ${markMovement?.userName}',
+                '${FiicoLocale().paidBy} ${markMovement?.userName}',
                 style: Style.subtitle.copyWith(
                   color: FiicoColors.grayNeutral,
                 ),
@@ -372,5 +369,21 @@ class EntryDetailSuccessView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _paymentIntentAction(BuildContext context) {
+    final bloc = context.read<EntryDetailBloc>();
+    if (movement?.isVariableValue ?? false) {
+      VariableValueBottoView().show(
+        context,
+        movement,
+        callbackValue: (value) {
+          bloc.add(EntryDetailMarkPayedMovement(
+              movement: movement?.copyWith(value: value)));
+        },
+      );
+    } else {
+      bloc.add(EntryDetailMarkPayedMovement(movement: movement));
+    }
   }
 }

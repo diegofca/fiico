@@ -204,4 +204,10 @@ class FiicoLocale {
   final foundUsers = "found_users".tr();
   final foundMovements = "found_movements".tr();
   final foundBudgets = "found_budgets".tr();
+  final theNewValueWillBeUpdated = "the_new_value_will_beUpdated".tr();
+  final addTheNewValueOf = "add_the_new_value_of".tr();
+  final forThisCycle = "for_this_cycle".tr();
+  final paymentReceived = "payment_received".tr();
+  final saveChanges = "save_changes".tr();
+  final userName = "user_name".tr();
 }
