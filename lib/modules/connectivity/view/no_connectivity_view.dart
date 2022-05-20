@@ -100,7 +100,7 @@ class NoConnectivityView extends StatelessWidget {
         top: FiicoPaddings.thirtyTwo,
       ),
       child: FiicoButton(
-        title: 'Reload',
+        title: FiicoLocale().reload,
         color: FiicoColors.pink,
         onTap: () => context
             .read<ConnectivityBloc>()

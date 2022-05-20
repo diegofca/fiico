@@ -435,13 +435,14 @@ class Budget {
 
   //  Ger Orders by movements
   List<Movement>? getMovementsBy(int key) {
-    final filterSelected =
-        HomeFilterMovement.itemsFilter.entries.firstWhere((e) => e.key == key);
+    final filterSelected = HomeFilterMovement.itemsFilter.entries
+        .firstWhereOrNull((e) => e.key == key);
 
-    switch (filterSelected.key) {
+    switch (filterSelected?.key) {
       case 0: // Mas recientes
         return movements?.sorted(
-            (a, b) => b.createdAt!.toDate().compareTo(a.createdAt!.toDate()));
+          (a, b) => b.createdAt!.toDate().compareTo(a.createdAt!.toDate()),
+        );
       case 1: // De menor a mayor
         return movements?.sortedBy<num>((e) => e.value ?? 0);
       case 2: // De mayor a menor
@@ -449,10 +450,14 @@ class Budget {
       case 3: // Solo ingresos
         return movements
             ?.where((e) => e.getType() == MovementType.ENTRY)
+            .sortedBy((e) => e.name!)
+            .sortedBy((e) => e.paymentStatus!)
             .toList();
       case 4: // Solo gastos
         return movements
             ?.where((e) => e.getType() == MovementType.DEBT)
+            .sortedBy((e) => e.name!)
+            .sortedBy((e) => e.paymentStatus!)
             .toList();
       case 5: // Solo gastos pendientes
         return movements
@@ -465,7 +470,10 @@ class Budget {
                 e.getType() == MovementType.DEBT && !e.isPaymentPendingState())
             .toList();
       default:
-        return movements;
+        return movements
+            ?.sortedBy((e) => e.name!)
+            .sortedBy((e) => e.paymentStatus!)
+            .toList();
     }
   }
 }

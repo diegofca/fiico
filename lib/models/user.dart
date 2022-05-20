@@ -4,6 +4,7 @@ import 'package:control/models/budget.dart';
 import 'package:control/models/payment_history.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/network/firestore_path.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:equatable/equatable.dart';
 
 class FiicoUser extends Equatable {
@@ -22,6 +23,7 @@ class FiicoUser extends Equatable {
   final String? budgetPermission;
   final String? securityCode;
   final bool? authBiometric;
+  final Currency? defaultCurrency;
   bool? showTutorial;
 
   FiicoUser({
@@ -41,6 +43,7 @@ class FiicoUser extends Equatable {
     this.securityCode,
     this.authBiometric,
     this.payments,
+    this.defaultCurrency,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -53,6 +56,7 @@ class FiicoUser extends Equatable {
       profileImage: json?['profileImage'],
       deviceTokens: List.castFrom(json?['deviceTokens']),
       currentPlan: Plan.fromJson(json?['currentPlan']),
+      defaultCurrency: Currency.from(json: json?['defaultCurrency']),
       budgets: Budget.toList(json?['budgets']),
       payments: PaymentPremium.toList(json),
       showTutorial: json?['showTutorial'],
@@ -79,6 +83,7 @@ class FiicoUser extends Equatable {
       'budgetPermission': budgetPermission ?? '',
       'authBiometric': authBiometric ?? false,
       'securityCode': securityCode ?? '',
+      'defaultCurrency': defaultCurrency?.toJson(),
       'payments': payments?.map((e) => e.toJson()).toList() ?? [],
       'vip': vip ?? false,
     };
@@ -108,6 +113,7 @@ class FiicoUser extends Equatable {
     String? budgetPermission,
     String? securityCode,
     bool? authBiometric,
+    Currency? defaultCurrency,
   }) {
     return FiicoUser(
       id: id ?? this.id,
@@ -125,6 +131,7 @@ class FiicoUser extends Equatable {
       securityCode: securityCode ?? this.securityCode,
       authBiometric: authBiometric ?? this.authBiometric,
       payments: payments ?? this.payments,
+      defaultCurrency: defaultCurrency ?? this.defaultCurrency,
       showTutorial: showTutorial,
     );
   }
@@ -162,7 +169,11 @@ class FiicoUser extends Equatable {
   }
 
   bool isPremium() {
-    return isActivePlan() && currentPlan?.id != 'Free';
+    return currentPlan?.isPremium() ?? false;
+  }
+
+  bool isUnlimited() {
+    return currentPlan?.isUnlimited() ?? false;
   }
 
   bool isActivePlan() {

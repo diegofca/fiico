@@ -4,6 +4,7 @@ import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/profile_image.dart';
 import 'package:control/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
   const ProfileAppBar({
@@ -91,10 +92,11 @@ class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(
-              user?.currentPlan?.getStatusIcon(),
+            SvgPicture.asset(
+              user?.currentPlan?.icon ?? '',
               color: user?.currentPlan?.getStatusIconColor(),
-              size: 25,
+              width: 30,
+              height: 20,
             ),
             Text(
               user?.currentPlan?.getPlanTitle() ?? '',

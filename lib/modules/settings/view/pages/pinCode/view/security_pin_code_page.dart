@@ -68,8 +68,7 @@ class SecurityPinCodePageView extends StatelessWidget {
           FiicoAlertDialog.showSuccess(
             context,
             title: FiicoLocale().successfulUpdate,
-            message:
-                'Hemos actualizado tu PIN de seguridad, recuerda actualizarlo continuamente para tener tus datos seguros.',
+            message: FiicoLocale().weHaveUpdatedPin,
             onOkAction: () => FiicoRoute.back(context),
           );
         }

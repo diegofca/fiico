@@ -8,12 +8,14 @@ class FiicoImageNetwork extends StatelessWidget {
   final String? url;
   final double? size;
   final IconData? iconData;
+  final Color? iconColor;
 
   const FiicoImageNetwork({
     Key? key,
     this.url,
     this.size = 40,
     this.iconData,
+    this.iconColor = FiicoColors.grayDark,
   }) : super(key: key);
 
   /// Movement image
@@ -22,6 +24,7 @@ class FiicoImageNetwork extends StatelessWidget {
     this.url,
     this.size = 40,
     this.iconData = MdiIcons.arrowDownBold,
+    this.iconColor = FiicoColors.grayDark,
   }) : super(key: key);
 
   /// Movement image
@@ -30,6 +33,7 @@ class FiicoImageNetwork extends StatelessWidget {
     this.url,
     this.size = 40,
     this.iconData = MdiIcons.arrowUpBold,
+    this.iconColor = FiicoColors.grayDark,
   }) : super(key: key);
 
   /// Budget image
@@ -38,6 +42,7 @@ class FiicoImageNetwork extends StatelessWidget {
     this.url,
     this.size = 40,
     this.iconData = MdiIcons.sack,
+    this.iconColor = FiicoColors.grayDark,
   }) : super(key: key);
 
   @override
@@ -53,7 +58,7 @@ class FiicoImageNetwork extends StatelessWidget {
     return Icon(
       iconData ?? MdiIcons.sack,
       size: size,
-      color: FiicoColors.grayDark,
+      color: iconColor,
     );
   }
 }

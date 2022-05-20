@@ -55,8 +55,8 @@ class Plan {
 
   Plan.free({
     this.id = 'free',
-    this.name = 'Plan Gratis',
-    this.icon = 'material_design_icons_flutter',
+    this.name = 'Plan Free',
+    this.icon = SVGImages.valiuIcon,
     this.enable = true,
     this.unlimited = false,
   });
@@ -72,7 +72,7 @@ class Plan {
 
   Plan.goldPremium({
     this.id = 'valiu_premium_gold',
-    this.name = 'Plan Premium Oro',
+    this.name = 'Plan Premium Gold',
     this.icon = SVGImages.goldPremium,
     this.enable = true,
     this.unlimited = false,
@@ -81,7 +81,7 @@ class Plan {
 
   Plan.diamondPremium({
     this.id = 'valiu_premium_diamond',
-    this.name = 'Plan Premium Diamante',
+    this.name = 'Plan Premium Diamond',
     this.icon = SVGImages.diamondPremium,
     this.enable = true,
     this.unlimited = false,
@@ -115,7 +115,7 @@ class Plan {
 
   factory Plan.fromJson(Map<String, dynamic>? json) {
     return Plan(
-      id: json?['id'] ?? 0,
+      id: json?['id'] ?? "0",
       name: json?['name'] ?? '',
       icon: json?['icon'] ?? '',
       enable: json?['enable'] ?? false,
@@ -147,7 +147,7 @@ class Plan {
   /// Generic class functions
 
   bool isPremium() {
-    return name != 'Free';
+    return id != 'free';
   }
 
   bool isUnlimited() {
@@ -173,7 +173,11 @@ class Plan {
   }
 
   String getFinisthDateTitle() {
-    return isPremium() && !isUnlimited() ? 'Vence el' : '';
+    return isPremium()
+        ? isUnlimited()
+            ? ''
+            : FiicoLocale().due
+        : '';
   }
 
   String getDurationTitle() {
@@ -194,13 +198,13 @@ class Plan {
   }
 
   Color getStatusIconColor() {
-    return (enable ?? false) && (name != 'Free')
+    return (enable ?? false) && (id != 'free')
         ? FiicoColors.gold
         : FiicoColors.purpleSoft;
   }
 
   IconData getStatusIcon() {
-    return (enable ?? false) && (name != 'Free')
+    return (enable ?? false) && (id != 'free')
         ? MdiIcons.crownOutline
         : Icons.savings_rounded;
   }

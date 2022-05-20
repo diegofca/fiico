@@ -1,3 +1,4 @@
+import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/premium/bloc/premium_bloc.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
@@ -14,7 +15,7 @@ class PremiumPage extends StatelessWidget {
   }) : super(key: key);
 
   final FiicoUser? user;
-  final Function showPlan;
+  final Function(Plan?) showPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +34,19 @@ class PremiumPageView extends StatelessWidget {
   }) : super(key: key);
 
   final FiicoUser? user;
-  final Function showPlan;
+  final Function(Plan?) showPlan;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PremiumBloc, PremiumState>(
       builder: (context, state) {
-        return const PremiumSuccessView();
+        return PremiumSuccessView(user: user);
       },
       listener: (context, state) async {
         if (state.isCompletePayment) {
           FiicoRoute.hideLoader(context);
           FiicoRoute.back(context);
-          showPlan();
+          showPlan(state.paymentPremium?.plan);
         }
       },
     );

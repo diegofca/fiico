@@ -1,10 +1,13 @@
 import 'package:control/helpers/SVGImages.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/helpers/manager/purchase_manager.dart';
+import 'package:control/models/user.dart';
+import 'package:control/modules/helpCenter/view/help_center_dart.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/premium/view/widgets/premium_items_purchase.dart';
 import 'package:control/navigation/navigator.dart';
@@ -15,7 +18,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class PremiumSuccessView extends StatelessWidget {
   const PremiumSuccessView({
     Key? key,
+    required this.user,
   }) : super(key: key);
+
+  final FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +64,7 @@ class PremiumSuccessView extends StatelessWidget {
           _benefictsTitleView(),
           _benefictsListView(),
           _dudesTitleView(),
-          _dudesButtonView(),
+          _dudesButtonView(context),
           _cancelDescriptionView(),
           _payAndSafeTitleView(),
           _showPlansButtonView(context),
@@ -149,7 +155,7 @@ class PremiumSuccessView extends StatelessWidget {
         FiicoPaddings.thirtyTwo,
       ),
       child: Text(
-        'Activa la cuenta premium y con ella podrás mejorar y agregar más presupuestos.',
+        FiicoLocale().activeThePremiumAccount,
         maxLines: FiicoMaxLines.ten,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -239,7 +245,7 @@ class PremiumSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _dudesButtonView() {
+  Widget _dudesButtonView(BuildContext context) {
     return Container(
       height: 80,
       margin: const EdgeInsets.symmetric(
@@ -251,7 +257,10 @@ class PremiumSuccessView extends StatelessWidget {
         title: FiicoLocale().contactUs,
         color: FiicoColors.white.withOpacity(0.2),
         textColor: FiicoColors.white.withOpacity(0.3),
-        onTap: () {},
+        onTap: () async {
+          final user = await Preferences.get.getUser();
+          FiicoRoute.send(context, HelpCenterPage(user: user));
+        },
       ),
     );
   }
@@ -279,7 +288,7 @@ class PremiumSuccessView extends StatelessWidget {
         top: FiicoPaddings.twenyFour,
       ),
       child: Text(
-        'Ahorra hasta 56% con el Premium Ilimitado',
+        FiicoLocale().saveMoreThat50Percentage,
         maxLines: FiicoMaxLines.four,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -305,6 +314,7 @@ class PremiumSuccessView extends StatelessWidget {
           final plans = PurchaseManager.get.getPlans();
           PremiumItemsPage().show(
             context,
+            user: user,
             plans: plans,
             onPlanSelected: (plan) {
               PurchaseManager.get.purchase(context, plan);

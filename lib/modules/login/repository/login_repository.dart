@@ -6,6 +6,7 @@ import 'package:control/models/user.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/providers/login_social_provider.dart';
 import 'package:control/network/firestore_path.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -107,6 +108,7 @@ class LoginRepository extends LoginRepositoryAbs {
       profileImage: userCredential.user?.photoURL,
       userName: userCredential.user?.displayName,
       currentPlan: Plan.free(),
+      defaultCurrency: CurrencyService().getAll().first,
       deviceTokens: [token],
       socialToken: credential?.accessToken,
     );

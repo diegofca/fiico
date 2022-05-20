@@ -6,6 +6,7 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
+import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
@@ -21,6 +22,7 @@ import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
 import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
 import 'package:control/modules/editMovement/view/edit_movement_page.dart';
+import 'package:control/modules/movementList/view/movement_list_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,12 +119,13 @@ class BudgetDetailSuccessView extends StatelessWidget {
         _infoResumeBalanceView(context),
         _historyFinalCycles(context),
         _historySwitchOption(context),
+        _movementsDetailView(context),
         _infoCycleDetailView(context),
         _infoPeriodDurationDetailView(context),
-        _entrysView(context),
-        _entryListView(context),
         _entrysDebtsView(context),
         _entrysDebtsListView(context),
+        _entrysView(context),
+        _entryListView(context),
         _infoView(),
         _entryUsersListView(context),
         _shareButtonView(context),
@@ -473,7 +476,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entrysView(BuildContext context) {
+  Widget _movementsDetailView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.twenyFour,
@@ -485,17 +488,22 @@ class BudgetDetailSuccessView extends StatelessWidget {
           const SeparatorView(),
           Container(
             alignment: Alignment.center,
-            height: 60,
+            width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  FiicoLocale().incomes,
-                  textAlign: TextAlign.start,
-                  style: Style.subtitle.copyWith(
-                    fontSize: FiicoFontSize.sm,
+                Expanded(
+                  child: FiicoButton(
+                    title: FiicoLocale().showMovements,
+                    color: FiicoColors.white,
+                    borderColor: FiicoColors.grayDark,
+                    textColor: FiicoColors.grayDark,
+                    onTap: () => FiicoRoute.send(
+                      context,
+                      MovementsListPage(budget: budget),
+                    ),
                   ),
                 ),
               ],
@@ -503,6 +511,34 @@ class BudgetDetailSuccessView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _entrysView(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SeparatorView(),
+        Container(
+          alignment: Alignment.center,
+          height: 60,
+          padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                FiicoLocale().incomes,
+                textAlign: TextAlign.start,
+                style: Style.subtitle.copyWith(
+                  fontSize: FiicoFontSize.sm,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -540,7 +576,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                 budget: budget,
                 list: MovementsList.getListBy(type: MovementType.ENTRY),
                 onMovementSelected: (movement) =>
-                    _editMovement(context, movement),
+                    _editDefaultMovement(context, movement),
                 onNewItemSelected: () =>
                     _addedMovement(context, MovementType.ENTRY),
               ),
@@ -552,34 +588,39 @@ class BudgetDetailSuccessView extends StatelessWidget {
   }
 
   Widget _entrysDebtsView(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SeparatorView(),
-        Container(
-          alignment: Alignment.center,
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: FiicoPaddings.thirtyTwo,
-                ),
-                child: Text(
-                  FiicoLocale().outcomes,
-                  textAlign: TextAlign.start,
-                  style: Style.subtitle.copyWith(
-                    fontSize: FiicoFontSize.sm,
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.twenyFour,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SeparatorView(),
+          Container(
+            alignment: Alignment.center,
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: FiicoPaddings.thirtyTwo,
+                  ),
+                  child: Text(
+                    FiicoLocale().outcomes,
+                    textAlign: TextAlign.start,
+                    style: Style.subtitle.copyWith(
+                      fontSize: FiicoFontSize.sm,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -622,7 +663,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
                   budget: budget,
                   list: MovementsList.getListBy(type: MovementType.DEBT),
                   onMovementSelected: (movement) =>
-                      _editMovement(context, movement),
+                      _editDefaultMovement(context, movement),
                   onNewItemSelected: () =>
                       _addedMovement(context, MovementType.DEBT),
                 ),
@@ -645,7 +686,8 @@ class BudgetDetailSuccessView extends StatelessWidget {
       confirmDismiss: (direction) async {
         return BottomDialog().show(
           context,
-          title: '¿Deseas eliminar ${movement.name} de ${movement.budgetName}?',
+          title:
+              '${FiicoLocale().doYouWantToDelete} ${movement.name} ${FiicoLocale().of} ${movement.budgetName}?',
           titleButton: FiicoLocale().deleteButton,
           onTapAction: () {
             Navigator.pop(context, true);
@@ -831,7 +873,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
     }
   }
 
-  void _editMovement(BuildContext context, Movement movement) async {
+  void _editDefaultMovement(BuildContext context, Movement movement) async {
     final newMovement = await FiicoRoute.send(
       context,
       EditMovementPage(

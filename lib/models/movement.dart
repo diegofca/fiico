@@ -185,7 +185,7 @@ class Movement {
       case MovementType.ENTRY:
         return FiicoLocale().income;
       case MovementType.DEBT:
-        return FiicoLocale().outcomes;
+        return FiicoLocale().outcome;
       default:
         return 'Safe';
     }

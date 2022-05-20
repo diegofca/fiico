@@ -74,8 +74,8 @@ class HomePageView extends StatelessWidget {
       FiicoGiffAlertDialog.show(
         context: context,
         urlImage: FiicoConstants.tutorialGiffUrl,
-        title: 'Crea tu primer\npresupuesto',
-        desc: 'Paso a paso para crear tu presupuesto y',
+        title: FiicoLocale().createNewBudget,
+        desc: FiicoLocale().startByCreatingYourFirstBudget,
         okBtnText: FiicoLocale().createBudget,
         voidCallback: () => _addBudgetClickedAction(context),
       );

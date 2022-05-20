@@ -45,7 +45,7 @@ class FiicoCycleCalendarState extends State<FiicoCycleCalendar> {
       },
       datePickerStyles: _style,
       datePickerLayoutSettings: const DatePickerLayoutSettings(
-        // hideMonthNavigationRow: true,
+        hideMonthNavigationRow: true,
         contentPadding: EdgeInsets.zero,
         dayPickerRowHeight: 50,
       ),
@@ -102,8 +102,7 @@ class FiicoCycleCalendarState extends State<FiicoCycleCalendar> {
   }
 
   DateTime _getFinalDate() {
-    return DateTime(DateTime.now().year,
-        DateTime.now().add(const Duration(days: 30)).month, 1);
+    return DateTime(DateTime.now().year, DateTime.now().month, 31);
   }
 
   DatePickerRangeStyles get _style => DatePickerRangeStyles(

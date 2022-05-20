@@ -1,6 +1,4 @@
 import 'package:control/helpers/extension/colors.dart';
-import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
@@ -9,7 +7,6 @@ import 'package:control/modules/search/repository/search_repository.dart';
 import 'package:control/modules/search/view/search_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({
@@ -57,35 +54,11 @@ class SearchPageView extends StatelessWidget {
       appBar: GenericAppBar(
         text: "${FiicoLocale().resultsOf} ${state.query}",
         textColor: FiicoColors.graySoft,
-        actions: [_infoButton(context)],
       ),
       body: SearchSuccessView(
         usersStream: state.users,
         budgetsStream: state.budgets,
         movementsStream: state.movements,
-      ),
-    );
-  }
-
-  Widget _infoButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-      ),
-      child: IconButton(
-        highlightColor: Colors.transparent,
-        onPressed: () {
-          FiicoAlertDialog.showInfo(
-            context,
-            title: FiicoLocale().myBudgets,
-            message:
-                'Los presupuestos son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.',
-          );
-        },
-        icon: const Icon(
-          MdiIcons.informationOutline,
-          color: FiicoColors.grayDark,
-        ),
       ),
     );
   }

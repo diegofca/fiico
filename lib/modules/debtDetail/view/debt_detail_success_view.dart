@@ -323,7 +323,7 @@ class DebtDetailSuccessView extends StatelessWidget {
   Widget _datesPaymentList() {
     final items = movement?.recurrencyDates ?? [];
     return Visibility(
-      visible: !(budget?.isCycleBudget() ?? false),
+      visible: !(budget?.isCycleBudget() ?? false) && items.length > 1,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

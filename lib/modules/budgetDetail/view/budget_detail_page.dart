@@ -72,7 +72,7 @@ class BudgetDetailPageView extends StatelessWidget {
             ),
           );
         }
-        return const LoadingView(); // add failed view
+        return const LoadingView();
       },
     );
   }

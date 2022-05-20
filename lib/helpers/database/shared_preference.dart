@@ -13,9 +13,6 @@ class Preferences {
   int maxBudgetsFree = 0;
   int maxMovementsFree = 0;
   bool isShareBudgetFree = false;
-
-  //  <-
-
   String? getID = '';
 
   void saveUser(FiicoUser? user) async {

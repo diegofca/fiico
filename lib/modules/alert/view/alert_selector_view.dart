@@ -157,9 +157,9 @@ class AlertSelectorView {
         [];
 
     return Container(
-      margin: const EdgeInsets.only(top: FiicoPaddings.sixteen),
+      margin: const EdgeInsets.only(top: FiicoPaddings.eight),
       child: SizedBox(
-        height: 200,
+        height: 240,
         child: isCycle
             ? FiicoCycleCalendar(
                 selectedDays: [date],

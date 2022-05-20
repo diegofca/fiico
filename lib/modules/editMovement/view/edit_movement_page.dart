@@ -142,8 +142,9 @@ class EditMovementPageView extends StatelessWidget {
 
   Movement getMovementToBloc(EditMovementState state) {
     final type = movement?.getType() == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
-    final typeDescription =
-        movement?.getType() == MovementType.ENTRY ? 'Income' : 'Outcome';
+    final typeDescription = movement?.getType() == MovementType.ENTRY
+        ? FiicoLocale().income
+        : FiicoLocale().outcome;
 
     final newMovement = Movement(
       id: movement?.id,

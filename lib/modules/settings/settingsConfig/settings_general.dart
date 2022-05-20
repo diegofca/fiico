@@ -67,15 +67,14 @@ class SettingsConfiguration {
               context,
               PremiumPage(
                 user: user,
-                showPlan: () async {
+                showPlan: (plan) async {
                   final updateUser = await Preferences.get.getUser();
                   FiicoGiffAlertDialog.show(
                     context: context,
                     urlImage: FiicoConstants.tutorialGiffUrl,
-                    title: '!Bievenido!',
-                    desc:
-                        'Ahora eres parte importante de Valiu, esperamos que disfrutres todos los beneficios.',
-                    okBtnText: "Ver mi plan",
+                    title: FiicoLocale().welcome,
+                    desc: FiicoLocale().nowThatImportPartOfValiu,
+                    okBtnText: FiicoLocale().seeMyPlan,
                     voidCallback: () => FiicoRoute.sendReplace(
                         context, SubscriptionDetailPage(user: updateUser)),
                   );

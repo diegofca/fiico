@@ -5,6 +5,7 @@ import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/network/firestore_path.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -35,6 +36,7 @@ class SignUpRepository extends SignUpRepositoryAbs {
         lastName: state.lastName?.lastName,
         userName: '${state.name?.name} ${state.lastName?.lastName}',
         currentPlan: Plan.free(),
+        defaultCurrency: CurrencyService().getAll().first,
         deviceTokens: [token],
       );
 

@@ -222,8 +222,7 @@ class SecurityPinCodeSuccessViewState
     FiicoAlertDialog.showWarnning(
       context,
       title: FiicoLocale().errorUpdatingYourPin,
-      message:
-          'El PIN que has ingresado no es el correcto, intentalo de nuevo.',
+      message: FiicoLocale().invalidPinEnteredIsInvalid,
     );
   }
 }

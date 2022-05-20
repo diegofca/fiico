@@ -85,7 +85,7 @@ class BudgetsPageView extends StatelessWidget {
                 }
                 return const LoadingView(
                   backgroundColor: FiicoColors.white,
-                ); // add failed view
+                );
               },
             );
         }

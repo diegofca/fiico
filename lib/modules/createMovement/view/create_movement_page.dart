@@ -123,8 +123,9 @@ class CreateMovementPageView extends StatelessWidget {
 
   Movement getMovementToBloc(CreateMovementState state) {
     final type = this.type == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
-    final typeDescription =
-        this.type == MovementType.ENTRY ? 'Income' : 'Outcome';
+    final typeDescription = this.type == MovementType.ENTRY
+        ? FiicoLocale().income
+        : FiicoLocale().outcome;
     final recurrencyDay = state.markDays;
     const paymentStatus = 'Pending';
 

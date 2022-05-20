@@ -3,12 +3,17 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
+import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/subscriptionDetail/bloc/subscription_detail_bloc.dart';
 import 'package:control/modules/subscriptionDetail/view/header/subscription_detail_header.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SubscriptionDetailSuccessView extends StatelessWidget {
@@ -98,7 +103,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
         _crownImage(context),
         _expirateDate(),
         _pricePlanText(),
-        _unlimitedPlanText(),
+        _unlimitedPlanText(context),
         _separatorLineView(),
         _benefictsListView(),
         _bottomTextsDescription(context),
@@ -155,7 +160,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Por tan solo  ',
+              FiicoLocale().asLowAs,
               maxLines: FiicoMaxLines.two,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
@@ -163,7 +168,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
               ),
             ),
             Text(
-              '\$29,99',
+              ' \$16,99 ',
               maxLines: FiicoMaxLines.two,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.purpleNeutral,
@@ -172,7 +177,7 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
               ),
             ),
             Text(
-              ' mensuales',
+              FiicoLocale().perMonth,
               maxLines: FiicoMaxLines.two,
               style: Style.subtitle.copyWith(
                 color: FiicoColors.grayNeutral,
@@ -185,44 +190,48 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _unlimitedPlanText() {
+  Widget _unlimitedPlanText(BuildContext context) {
     return Visibility(
-      visible: !(user?.isPremium() ?? false),
+      visible: !(user?.isUnlimited() ?? false),
       child: Padding(
         padding: const EdgeInsets.only(
           bottom: FiicoPaddings.twenyFour,
         ),
-        child: Wrap(
-          alignment: WrapAlignment.center,
+        child: Column(
           children: [
-            Text(
-              'O compra tu plan Ilimitado',
-              maxLines: FiicoMaxLines.four,
-              textAlign: TextAlign.center,
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayNeutral,
-                fontSize: FiicoFontSize.xs,
-              ),
-            ),
-            Text(
-              ' y no tendrás que pagar una mensualidad para tener los mejores beneficios por tan solo...',
-              maxLines: FiicoMaxLines.four,
-              textAlign: TextAlign.center,
-              style: Style.subtitle.copyWith(
-                color: FiicoColors.grayNeutral,
-                fontSize: FiicoFontSize.xs,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                '\$99,99',
-                maxLines: FiicoMaxLines.two,
-                style: Style.subtitle.copyWith(
-                  color: FiicoColors.gold,
-                  fontSize: FiicoFontSize.xl,
-                  fontWeight: FiicoFontWeight.bold,
+            Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                Text(
+                  FiicoLocale().buyYourUnlimitedPlan,
+                  maxLines: FiicoMaxLines.four,
+                  textAlign: TextAlign.center,
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.grayNeutral,
+                    fontSize: FiicoFontSize.xs,
+                  ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    '\$36,99',
+                    maxLines: FiicoMaxLines.two,
+                    style: Style.subtitle.copyWith(
+                      color: FiicoColors.gold,
+                      fontSize: FiicoFontSize.xl,
+                      fontWeight: FiicoFontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              width: double.maxFinite,
+              padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
+              child: FiicoButton(
+                title: FiicoLocale().buy,
+                color: FiicoColors.gold,
+                onTap: () => _buyPremiumAction(context),
               ),
             ),
           ],
@@ -324,5 +333,20 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
 
   Widget _separatorLineView() {
     return const SeparatorView();
+  }
+
+  void _buyPremiumAction(BuildContext context) {
+    FiicoRoute.present(
+      context,
+      PremiumPage(
+        user: user,
+        showPlan: (plan) async {
+          context
+              .read<SubscriptionDetailBloc>()
+              .add(UpdateSubscriptionDetail(newPlan: plan));
+          Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 }

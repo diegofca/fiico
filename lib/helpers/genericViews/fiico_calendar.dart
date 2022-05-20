@@ -44,9 +44,8 @@ class FiicoMovementCalendarState extends State<FiicoUniqueCalendar> {
       },
       datePickerStyles: _style,
       datePickerLayoutSettings: const DatePickerLayoutSettings(
-        hideMonthNavigationRow: true,
         contentPadding: EdgeInsets.zero,
-        dayPickerRowHeight: 50,
+        dayPickerRowHeight: 40,
       ),
     );
   }

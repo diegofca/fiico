@@ -210,4 +210,24 @@ class FiicoLocale {
   final paymentReceived = "payment_received".tr();
   final saveChanges = "save_changes".tr();
   final userName = "user_name".tr();
+  final showMovements = "show_movements".tr();
+  final movementsOf = "movements_of".tr();
+  final outcome = "outcome".tr();
+  final buy = "buy".tr();
+  final buyYourUnlimitedPlan = "buy_your_unlimited_plan".tr();
+  final due = "due".tr();
+  final asLowAs = "as_low_as".tr();
+  final perMonth = "per_month".tr();
+  final welcome = "welcome".tr();
+  final nowThatImportPartOfValiu = "now_that_import_part_of_valiu".tr();
+  final seeMyPlan = "see_my_plan".tr();
+  final activeThePremiumAccount = "active_the_premium_account".tr();
+  final saveMoreThat50Percentage = "save_more_that_50_percentage".tr();
+  final weHaveUpdatedPin = "we_have_updated_pin".tr();
+  final budgetsAreControlledList = "budgets_are_controlled_list".tr();
+  final reload = "reload".tr();
+  final doYouWantToDelete = "do_you_want_to_delete".tr();
+  final of = "of".tr();
+  final startByCreatingYourFirstBudget =
+      "start_by_creating_your_first_budget".tr();
 }

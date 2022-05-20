@@ -50,10 +50,11 @@ class CreateBudgetPage extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          FiicoAlertDialog.showSuccess(context,
-              title: FiicoLocale().myBudgets,
-              message:
-                  'Los presupuestos son el listado controlado de tus ingresos, gastos y ahorros en un tiempo determinado.');
+          FiicoAlertDialog.showSuccess(
+            context,
+            title: FiicoLocale().myBudgets,
+            message: FiicoLocale().budgetsAreControlledList,
+          );
         },
         icon: const Icon(
           MdiIcons.informationOutline,
@@ -119,8 +120,8 @@ class CreateBudgetPageView extends StatelessWidget {
     final user = await Preferences.get.getUser();
     return Budget.create(
       id: const Uuid().v1(),
+      currency: state.currencySelected?.code ?? user?.defaultCurrency?.code,
       name: budgetName,
-      currency: state.currencySelected?.code,
       ownerName: user?.userName,
       isCycle: state.isCycle,
       cycle: state.cycle,

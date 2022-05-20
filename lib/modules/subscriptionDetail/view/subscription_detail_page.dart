@@ -1,3 +1,6 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
@@ -30,12 +33,12 @@ class SubscriptionDetailPage extends StatelessWidget {
 }
 
 class BudgetDetailPageView extends StatelessWidget {
-  const BudgetDetailPageView({
+  BudgetDetailPageView({
     Key? key,
     this.user,
   }) : super(key: key);
 
-  final FiicoUser? user;
+  FiicoUser? user;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,12 @@ class BudgetDetailPageView extends StatelessWidget {
       builder: (context, state) {
         return _bodyContainer(context);
       },
-      listener: (context, state) {},
+      listener: (context, state) async {
+        if (state.isUpdatePlan) {
+          user = user?.copyWith(currentPlan: state.plan);
+          Preferences.get.saveUser(user);
+        }
+      },
     );
   }
 

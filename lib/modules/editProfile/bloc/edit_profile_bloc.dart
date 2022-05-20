@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/editProfile/repository/edit_profile_repository.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:equatable/equatable.dart';
 
 part 'edit_profile_event.dart';
@@ -40,6 +41,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         firstName: state.name,
         lastName: state.lastName,
         userName: state.userName,
+        defaultCurrency: state.currency,
       );
       await repository.updateProfile(newUser);
       emit(state.copyWith(
@@ -62,6 +64,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       name: event.name,
       lastName: event.lastName,
       userName: event.userName,
+      currency: event.currency,
     ));
   }
 }

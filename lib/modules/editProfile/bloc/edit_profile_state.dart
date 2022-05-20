@@ -8,6 +8,7 @@ class EditProfileState extends Equatable {
     this.name,
     this.lastName,
     this.userName,
+    this.currency,
     this.updatedUser,
     this.user,
   });
@@ -16,6 +17,7 @@ class EditProfileState extends Equatable {
   final String? name;
   final String? lastName;
   final String? userName;
+  final Currency? currency;
   final bool? updatedUser;
   final FiicoUser? user;
 
@@ -29,6 +31,7 @@ class EditProfileState extends Equatable {
     String? name,
     String? lastName,
     String? userName,
+    Currency? currency,
     bool? updatedUser,
     FiicoUser? user,
   }) {
@@ -37,6 +40,7 @@ class EditProfileState extends Equatable {
       name: name ?? this.name,
       lastName: lastName ?? this.lastName,
       userName: userName ?? this.userName,
+      currency: currency ?? this.currency,
       updatedUser: updatedUser,
       user: user,
     );

@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
@@ -26,6 +27,7 @@ class VariableValueBottoView {
     required Function(num) callbackValue,
   }) {
     _priceController.text = movement?.value?.toExactlyCurrency() ?? '';
+    _currencyFormarted.format(_priceController.text);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -52,7 +54,7 @@ class VariableValueBottoView {
                 child: Wrap(
                   children: [
                     _entryNameView(movement),
-                    _createButtonView(context, callbackValue),
+                    _createButtonView(context, movement, callbackValue),
                   ],
                 ),
               ),
@@ -134,16 +136,19 @@ class VariableValueBottoView {
     );
   }
 
-  Widget _createButtonView(BuildContext context, Function(num) callbackValue) {
+  Widget _createButtonView(
+      BuildContext context, Movement? movement, Function(num) callbackValue) {
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.symmetric(
         vertical: FiicoPaddings.sixteen,
-        horizontal: FiicoPaddings.fourtySix,
+        horizontal: FiicoPaddings.sixteen,
       ),
-      child: FiicoButton.pink(
+      child: FiicoButton(
         title: FiicoLocale().markAsPaid,
-        ontap: () {
+        color: movement?.getTypeColor() ?? FiicoColors.gold,
+        image: SVGImages.checkMarkIcon,
+        onTap: () {
           Navigator.of(context).pop();
           final value = _currencyFormarted.getUnformattedValue();
           if (value > 0) {

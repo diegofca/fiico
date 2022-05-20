@@ -27,12 +27,14 @@ class EditProfileInfoRequest extends EditProfileEvent {
     this.name,
     this.lastName,
     this.userName,
+    this.currency,
   });
 
   final String? name;
   final String? lastName;
   final String? userName;
+  final Currency? currency;
 
   @override
-  List<Object?> get props => [name, lastName, userName];
+  List<Object?> get props => [name, lastName, userName, currency];
 }

@@ -9,6 +9,7 @@ import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/editProfile/bloc/edit_profile_bloc.dart';
 import 'package:control/modules/editProfile/view/widget/edit_profile_header_view.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,6 +30,7 @@ class _EditProfileSuccessViewState extends State<EditProfileSuccessView> {
   final _nameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _userNameController = TextEditingController();
+  Currency? _currency;
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _EditProfileSuccessViewState extends State<EditProfileSuccessView> {
     _nameController.text = widget.user?.firstName ?? '';
     _lastNameController.text = widget.user?.lastName ?? '';
     _userNameController.text = widget.user?.userName ?? '';
+    _currency = widget.user?.defaultCurrency;
   }
 
   @override
@@ -104,6 +107,7 @@ class _EditProfileSuccessViewState extends State<EditProfileSuccessView> {
         _entryNameView(context),
         _entryLastNameView(context),
         _entryUserNameView(context),
+        _entryMoneyView(context),
         _saveProfileInfo(context),
       ],
     );
@@ -222,6 +226,89 @@ class _EditProfileSuccessViewState extends State<EditProfileSuccessView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _entryMoneyView(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.eight,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: FiicoPaddings.sixteen,
+            ),
+            child: Text(
+              FiicoLocale().currency,
+              textAlign: TextAlign.start,
+              style: Style.subtitle.copyWith(
+                fontSize: FiicoFontSize.sm,
+              ),
+            ),
+          ),
+          BorderContainer(
+            alignment: Alignment.center,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      left: FiicoPaddings.sixteen,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _currency?.code ?? '',
+                      textAlign: TextAlign.left,
+                      style: Style.subtitle.copyWith(
+                        color: FiicoColors.grayNeutral,
+                        fontSize: FiicoFontSize.sm,
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => _showCurrencyPicker(context),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: FiicoColors.pink,
+                    size: 34,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCurrencyPicker(BuildContext context) {
+    showCurrencyPicker(
+      context: context,
+      showFlag: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      onSelect: (currency) {
+        _currency = currency;
+        context
+            .read<EditProfileBloc>()
+            .add(EditProfileInfoRequest(currency: currency));
+      },
+      theme: CurrencyPickerThemeData(
+        titleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.sm,
+        ),
+        subtitleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayNeutral,
+          fontSize: FiicoFontSize.xs,
+        ),
       ),
     );
   }
