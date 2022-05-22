@@ -87,7 +87,7 @@ class DefaultMovementSuccessView extends StatelessWidget {
   ) {
     return Expanded(
       child: RawScrollbar(
-        isAlwaysShown: true,
+        thumbVisibility: true,
         controller: _scrollController,
         thickness: 3,
         child: Padding(
