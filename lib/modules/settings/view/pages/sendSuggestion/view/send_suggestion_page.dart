@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:control/helpers/pages_names.dart';
 import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/settings/view/pages/sendSuggestion/bloc/send_suggestion_bloc.dart';

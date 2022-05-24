@@ -24,6 +24,7 @@ void main() async {
   runApp(EasyLocalization(
     path: 'assets/locales',
     supportedLocales: Languages().items.map((e) => e.locale).toList(),
+    saveLocale: true,
     child: const ValiuApp(),
   ));
 }

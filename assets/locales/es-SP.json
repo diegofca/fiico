@@ -214,5 +214,7 @@
     "reload": "Recargar",
     "do_you_want_to_delete": "¿Deseas eliminar",
     "of": "de",
-    "start_by_creating_your_first_budget": "Inicia creando tu primer presupuesto, agrega tus ingresos y gastos y empieza a controlar tu dinero de manera eficaz. Comparte tus presupuesto con tu familia y amigos."
+    "start_by_creating_your_first_budget": "Inicia creando tu primer presupuesto, agrega tus ingresos y gastos y empieza a controlar tu dinero de manera eficaz. Comparte tus presupuesto con tu familia y amigos.",
+    "send_new_message": "Enviar nuevo mensaje",
+    "do_you_have_any_concerns": "¿Tienes alguna inquietud?, Envianos un mensaje para poder ayudarte"
 }

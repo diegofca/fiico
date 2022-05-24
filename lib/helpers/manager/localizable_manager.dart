@@ -230,4 +230,6 @@ class FiicoLocale {
   final of = "of".tr();
   final startByCreatingYourFirstBudget =
       "start_by_creating_your_first_budget".tr();
+  final sendNewMessage = "send_new_message".tr();
+  final doYouHaveAnyConcerns = "do_you_have_any_concerns".tr();
 }

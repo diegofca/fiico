@@ -2,9 +2,13 @@
 
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
+import 'package:control/models/helpCenterConversation.dart';
+import 'package:control/models/helpCenterMessage.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/editProfile/bloc/edit_profile_bloc.dart';
-import 'package:control/modules/editProfile/repository/edit_profile_repository.dart';
+import 'package:control/modules/helpCenter/bloc/help_center_bloc.dart';
+import 'package:control/modules/helpCenter/repository/help_center_repository.dart';
 import 'package:control/modules/helpCenter/view/help_center_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,13 +25,14 @@ class HelpCenterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
-      appBar: const GenericAppBar(
-        text: 'Help center',
+      appBar: GenericAppBar(
+        text: FiicoLocale().helpCenter,
         textColor: FiicoColors.black,
       ),
       body: BlocProvider(
-        create: (context) => EditProfileBloc(EditProfileRepository())
-          ..add(EditProfileInitDataRequest(user: user)),
+        create: (context) => HelpCenterBloc(
+          HelpCenterRepository(),
+        )..add(HelpCenterConversationFetchRequest(uID: user?.id)),
         child: HelpCenterView(user: user),
       ),
     );
@@ -44,14 +49,43 @@ class HelpCenterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EditProfileBloc, EditProfileState>(
+    final bloc = context.read<HelpCenterBloc>();
+    return BlocBuilder<HelpCenterBloc, HelpCenterState>(
       builder: (context, state) {
-        return HelpCenterSuccessView(user: user);
+        return StreamBuilder<List<HelpCenterConversation>>(
+          stream: state.conversation,
+          builder: (context, snapshot) {
+            switch (snapshot.hasData) {
+              case true:
+                HelpCenterConversation? conversation = snapshot.data?.first;
+                if (state.haveConversation && !state.isloadConversation) {
+                  bloc.add(HelpCenterMessagesConversationFetchRequest(
+                    uID: user?.id,
+                    conversationID: conversation?.id,
+                  ));
+                }
+                return _messagesStream(state, conversation);
+              default:
+                return const LoadingView();
+            }
+          },
+        );
       },
-      listener: (context, state) {
-        if (state.onUpdateComplete) {
-          user = state.user;
-        }
+    );
+  }
+
+  Widget _messagesStream(
+    HelpCenterState state,
+    HelpCenterConversation? conversation,
+  ) {
+    return StreamBuilder<List<HelpCenterMessage>>(
+      stream: state.messages,
+      builder: (context, msgsSnapshot) {
+        final _conversation = conversation?..addMessages(msgsSnapshot.data);
+        return HelpCenterSuccessView(
+          conversation: _conversation,
+          user: user,
+        );
       },
     );
   }

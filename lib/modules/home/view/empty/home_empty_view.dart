@@ -32,6 +32,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
       color: FiicoColors.white,
       padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
       alignment: Alignment.center,
+      height: MediaQuery.of(context).size.height / 2,
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         alignment: WrapAlignment.center,

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls
+// ignore_for_file: avoid_function_literals_in_foreach_calls, unnecessary_null_comparison
 
 import 'dart:async';
 import 'dart:io';
@@ -118,7 +118,7 @@ class PurchaseManager {
   /// PAGO CORRECTO.
   void handleSuccess(PurchaseDetails purchaseDetails) async {
     bool valid = _verifyPurchase(purchaseDetails);
-    if (valid && purchaseDetails.pendingCompletePurchase) {
+    if (valid && purchaseDetails.pendingCompletePurchase && context != null) {
       await inAppPurchase.completePurchase(purchaseDetails);
 
       final productPurchased = Plan.getPlanByID(purchaseDetails.productID);

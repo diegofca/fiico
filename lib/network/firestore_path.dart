@@ -3,6 +3,8 @@ class Firestore {
   static const budgetsPath = 'budgets';
   static const notificationssPath = 'notifications';
   static const suggestionsPath = 'suggestions';
+  static const helpCenterPath = 'helpCenter';
+  static const helpCenterMessagesPath = 'messages';
 
   static const statusField = 'status';
   static const nameField = 'name';
