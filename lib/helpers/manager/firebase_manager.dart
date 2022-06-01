@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/firebase_options.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/extension/toast.dart';
@@ -21,9 +20,7 @@ class FirebaseManager {
   static late BuildContext _context;
 
   static Future<void> init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
     await FiicoRemoteConfig.fetch();
     _initFirestore();
     _initRemoteConfig();
