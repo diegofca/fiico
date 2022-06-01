@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
+import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -12,10 +13,10 @@ class HomeEmptyView extends StatefulWidget {
     Key? key,
     this.onTapNewItem,
     this.onTapNewBudget,
-    required this.isContaintBudgets,
+    required this.budget,
   }) : super(key: key);
 
-  final bool isContaintBudgets;
+  final Budget? budget;
   final VoidCallback? onTapNewItem;
   final VoidCallback? onTapNewBudget;
 
@@ -32,7 +33,7 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
       color: FiicoColors.white,
       padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 2,
+      height: MediaQuery.of(context).size.height / 2.5,
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         alignment: WrapAlignment.center,
@@ -69,14 +70,17 @@ class HomeEmtpyViewState extends State<HomeEmptyView> {
   }
 
   Widget _bodyButton() {
-    return FiicoButton.pink(
-      ontap: () => widget.isContaintBudgets
-          ? widget.onTapNewItem!.call()
-          : widget.onTapNewBudget!.call(),
-      title: widget.isContaintBudgets
-          ? FiicoLocale().addMovement
-          : FiicoLocale().createBudget,
-      padding: const EdgeInsets.all(FiicoPaddings.sixteen),
+    return Visibility(
+      visible: widget.budget?.isReadAndWriteOnly ?? false,
+      child: FiicoButton.pink(
+        ontap: () => widget.budget == null
+            ? widget.onTapNewBudget!.call()
+            : widget.onTapNewItem!.call(),
+        title: widget.budget == null
+            ? FiicoLocale().createBudget
+            : FiicoLocale().addMovement,
+        padding: const EdgeInsets.all(FiicoPaddings.sixteen),
+      ),
     );
   }
 }

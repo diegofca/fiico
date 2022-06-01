@@ -1,4 +1,5 @@
 import 'package:control/helpers/SVGImages.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -6,6 +7,7 @@ import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/bottom_afirmative_dialog.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_profile_image.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
@@ -203,20 +205,6 @@ class BudgetDetailSuccessView extends StatelessWidget {
             ? FiicoColors.black
             : FiicoColors.grayNeutral,
       ),
-    );
-  }
-
-  void _scrollTo(BuildContext context, int? index) {
-    context
-        .read<BudgetDetailBloc>()
-        .add(BudgetSegmentIndexRequest(index: index));
-    final posistion = index == 0
-        ? controller.position.minScrollExtent
-        : controller.position.maxScrollExtent;
-    controller.animateTo(
-      posistion,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
     );
   }
 
@@ -477,39 +465,42 @@ class BudgetDetailSuccessView extends StatelessWidget {
   }
 
   Widget _movementsDetailView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.twenyFour,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SeparatorView(),
-          Container(
-            alignment: Alignment.center,
-            width: double.maxFinite,
-            padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: FiicoButton(
-                    title: FiicoLocale().showMovements,
-                    color: FiicoColors.white,
-                    borderColor: FiicoColors.grayDark,
-                    textColor: FiicoColors.grayDark,
-                    onTap: () => FiicoRoute.send(
-                      context,
-                      MovementsListPage(budget: budget),
+    return Visibility(
+      visible: !budget.isEmptyMovements(),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.twenyFour,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SeparatorView(),
+            Container(
+              alignment: Alignment.center,
+              width: double.maxFinite,
+              padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: FiicoButton(
+                      title: FiicoLocale().showMovements,
+                      color: FiicoColors.white,
+                      borderColor: FiicoColors.grayDark,
+                      textColor: FiicoColors.grayDark,
+                      onTap: () => FiicoRoute.send(
+                        context,
+                        MovementsListPage(budget: budget),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -740,18 +731,10 @@ class BudgetDetailSuccessView extends StatelessWidget {
   }
 
   Widget _shareButtonView(BuildContext context) {
-    final users = budget.users ?? [];
     return Visibility(
       visible: budget.isOwner,
       child: GestureDetector(
-        onTap: () => FiicoRoute.send(
-          context,
-          SearchUsersPage(
-            users: users,
-            onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
-                BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
-          ),
-        ),
+        onTap: () => _onShareBudgetWithUsers(context),
         child: Padding(
           padding: const EdgeInsets.only(
             top: FiicoPaddings.sixteen,
@@ -886,5 +869,45 @@ class BudgetDetailSuccessView extends StatelessWidget {
       context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
           newMovement: newMovement, budget: budget));
     }
+  }
+
+  void _onShareBudgetWithUsers(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    final users = budget.users ?? [];
+    if (user?.isPremium() ?? false) {
+      FiicoRoute.send(
+        context,
+        SearchUsersPage(
+          users: users,
+          onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
+              BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
+        ),
+      );
+    } else {
+      _showErrorUserNotPremium(context);
+    }
+  }
+
+  void _showErrorUserNotPremium(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      title: 'Actualiza tu plan a Premium!',
+      message:
+          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
+    );
+  }
+
+  void _scrollTo(BuildContext context, int? index) {
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetSegmentIndexRequest(index: index));
+    final posistion = index == 0
+        ? controller.position.minScrollExtent
+        : controller.position.maxScrollExtent;
+    controller.animateTo(
+      posistion,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 }

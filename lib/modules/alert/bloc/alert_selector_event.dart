@@ -7,14 +7,14 @@ abstract class AlertSelectorEvent extends Equatable {
 class AlertSelectorInfoRequest extends AlertSelectorEvent {
   const AlertSelectorInfoRequest({
     this.isIntensive,
-    this.day,
+    this.days,
     this.dates,
   });
 
   final bool? isIntensive;
-  final int? day;
+  final List<int>? days;
   final List<DateTime>? dates;
 
   @override
-  List<Object?> get props => [isIntensive, day, dates];
+  List<Object?> get props => [isIntensive, days, dates];
 }

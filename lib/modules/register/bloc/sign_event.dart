@@ -10,15 +10,17 @@ class SignUpInfoRequest extends SignEvent {
     this.lastName,
     this.email,
     this.password,
+    this.currency,
   });
 
   final NameValidatorModel? name;
   final LastNameValidatorModel? lastName;
   final EmailValidatorModel? email;
   final PasswordValidatorModel? password;
+  final Currency? currency;
 
   @override
-  List<Object?> get props => [name, lastName, email, password];
+  List<Object?> get props => [name, lastName, email, password, currency];
 }
 
 class SignUpPasswordIsShowRequest extends SignEvent {

@@ -14,6 +14,7 @@ class BudgetGenericRepository {
 
     // Se actualiza budget a usuarios compartidos.
     budget?.users?.forEach((u) async {
+      final userBudget = budget.copyWith(editBudget: budget.isEdited(u.id));
       final getDoc = await usersCollections
           .doc(u.id)
           .collection(Firestore.budgetsPath)
@@ -27,19 +28,22 @@ class BudgetGenericRepository {
             .collection(Firestore.budgetsPath)
             .add(budget.toJson());
       } else {
-        // Se actualiza budget a dueño
         usersCollections
             .doc(u.id)
             .collection(Firestore.budgetsPath)
             .doc(docID)
-            .update(budget.toJson());
+            .update(userBudget.toJson());
       }
     });
 
+    final ownerBudget = budget!.copyWith(
+      editBudget: budget.isEdited(userID),
+    );
+    // Se actualiza budget a dueño
     return usersCollections
         .doc(userID)
         .collection(Firestore.budgetsPath)
-        .doc(budget?.id)
-        .update(budget!.toJson());
+        .doc(ownerBudget.id)
+        .update(ownerBudget.toJson());
   }
 }

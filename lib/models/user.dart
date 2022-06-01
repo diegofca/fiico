@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/models/budget.dart';
+import 'package:control/models/notification_center_option.dart';
 import 'package:control/models/payment_history.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/network/firestore_path.dart';
@@ -20,10 +21,12 @@ class FiicoUser extends Equatable {
   final Plan? currentPlan;
   final List<Budget>? budgets;
   final List<PaymentPremium>? payments;
+  final List<NotificationCenterOption>? notificationsOptions;
   final String? budgetPermission;
   final String? securityCode;
   final bool? authBiometric;
   final Currency? defaultCurrency;
+  final int? totalBudgets;
   bool? showTutorial;
 
   FiicoUser({
@@ -44,6 +47,8 @@ class FiicoUser extends Equatable {
     this.authBiometric,
     this.payments,
     this.defaultCurrency,
+    this.notificationsOptions,
+    this.totalBudgets,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -54,11 +59,12 @@ class FiicoUser extends Equatable {
       userName: json?['userName'],
       socialToken: json?['socialToken'],
       profileImage: json?['profileImage'],
+      totalBudgets: json?['totalBudgets'],
       deviceTokens: List.castFrom(json?['deviceTokens']),
       currentPlan: Plan.fromJson(json?['currentPlan']),
       defaultCurrency: Currency.from(json: json?['defaultCurrency']),
-      budgets: Budget.toList(json?['budgets']),
       payments: PaymentPremium.toList(json),
+      notificationsOptions: NotificationCenterOption.toList(json),
       showTutorial: json?['showTutorial'],
       budgetPermission: json?['budgetPermission'],
       authBiometric: json?['authBiometric'],
@@ -85,6 +91,9 @@ class FiicoUser extends Equatable {
       'securityCode': securityCode ?? '',
       'defaultCurrency': defaultCurrency?.toJson(),
       'payments': payments?.map((e) => e.toJson()).toList() ?? [],
+      'totalBudgets': totalBudgets,
+      'notificationsOptions':
+          notificationsOptions?.map((e) => e.toJson()).toList() ?? [],
       'vip': vip ?? false,
     };
   }
@@ -110,10 +119,12 @@ class FiicoUser extends Equatable {
     Plan? currentPlan,
     List<Budget>? budgets,
     List<PaymentPremium>? payments,
+    List<NotificationCenterOption>? notificationsOptions,
     String? budgetPermission,
     String? securityCode,
     bool? authBiometric,
     Currency? defaultCurrency,
+    int? totalBudgets,
   }) {
     return FiicoUser(
       id: id ?? this.id,
@@ -124,10 +135,12 @@ class FiicoUser extends Equatable {
       socialToken: socialToken ?? this.socialToken,
       profileImage: profileImage ?? this.profileImage,
       deviceTokens: deviceTokens ?? this.deviceTokens,
+      totalBudgets: totalBudgets ?? this.totalBudgets,
       vip: vip ?? this.vip,
       currentPlan: currentPlan ?? this.currentPlan,
       budgets: budgets ?? this.budgets,
       budgetPermission: budgetPermission ?? this.budgetPermission,
+      notificationsOptions: notificationsOptions ?? this.notificationsOptions,
       securityCode: securityCode ?? this.securityCode,
       authBiometric: authBiometric ?? this.authBiometric,
       payments: payments ?? this.payments,

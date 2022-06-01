@@ -37,7 +37,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: UniqueKey(),
-      direction: DismissDirection.endToStart,
+      direction: _dismissableDirection(),
       onDismissed: (direction) {
         context
             .read<HomeBloc>()
@@ -219,5 +219,12 @@ class HomeListItemViewState extends State<HomeListItemView> {
         break;
       default:
     }
+  }
+
+  DismissDirection _dismissableDirection() {
+    if (widget.budget?.isReadAndWriteOnly ?? false) {
+      return DismissDirection.endToStart;
+    }
+    return DismissDirection.none;
   }
 }

@@ -1,11 +1,21 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-// ignore: constant_identifier_names
-enum FiicoNotificationType { DEFAULT, INVITATION, EDITED, BANNER }
+enum FiicoNotificationType {
+  DEFAULT,
+  INVITE,
+  ALERT_DEBT,
+  ALERT_ENTRY,
+  EDITED,
+  BANNER,
+  PREMIUM,
+  HELPCENTER,
+}
 
 class FiicoNotification extends Equatable {
   final String? id;
@@ -69,10 +79,16 @@ class FiicoNotification extends Equatable {
   // Generic functions
   FiicoNotificationType getType() {
     switch (type) {
-      case 'INVITATION':
-        return FiicoNotificationType.INVITATION;
+      case 'INVITE':
+        return FiicoNotificationType.INVITE;
       case 'BANNER':
         return FiicoNotificationType.BANNER;
+      case 'EDITED':
+        return FiicoNotificationType.EDITED;
+      case 'PREMIUM':
+        return FiicoNotificationType.PREMIUM;
+      case 'HELPCENTER':
+        return FiicoNotificationType.HELPCENTER;
       default:
         return FiicoNotificationType.DEFAULT;
     }
@@ -80,7 +96,7 @@ class FiicoNotification extends Equatable {
 
   String getAcceptButtonText() {
     switch (getType()) {
-      case FiicoNotificationType.INVITATION:
+      case FiicoNotificationType.INVITE:
         return 'Ver invitación';
       default:
         return 'Aceptar';

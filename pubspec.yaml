@@ -45,6 +45,8 @@ dependencies:
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.12
   firebase_messaging: ^11.2.12
+  firebase_analytics: ^9.1.8
+  firebase_crashlytics: ^2.8.0
   firebase_remote_config: 
   cloud_firestore:
 
@@ -133,6 +135,12 @@ dependencies:
 
   #BubbleChat
   chat_bubbles: ^1.2.0
+
+  #SmartLook
+  flutter_smartlook: 3.0.9
+
+  #Badge
+  flutter_app_badger: ^1.4.0
 
   #Giff
   giffy_dialog:

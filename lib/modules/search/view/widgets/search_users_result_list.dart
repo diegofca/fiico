@@ -70,7 +70,11 @@ class SearchUsersListView extends StatelessWidget {
         itemCount: users.length,
         itemBuilder: (context, index) {
           final user = users[index];
-          return SearchUserListItemView(user: user, isSelected: false);
+          return SearchUserListItemView(
+            user: user,
+            isSelected: false,
+            isClickeable: false,
+          );
         },
       ),
     );

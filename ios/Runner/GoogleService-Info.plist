@@ -19,15 +19,15 @@
 	<key>STORAGE_BUCKET</key>
 	<string>control-c0466.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<true/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:732937293793:ios:0cf879dc2c6169eaf74ca0</string>
 </dict>

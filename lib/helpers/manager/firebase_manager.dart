@@ -1,20 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/firebase_options.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/extension/toast.dart';
+import 'package:control/helpers/manager/badgeManager.dart';
+import 'package:control/models/notification_center_option.dart';
+import 'package:control/modules/home/repository/home_repository.dart';
+import 'package:control/modules/movementList/view/movement_list_page.dart';
+import 'package:control/modules/notifications/view/notifications_page.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/view/help_center_dart.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseManager {
   static late BuildContext _context;
 
   static Future<void> init() async {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await FiicoRemoteConfig.fetch();
     _initFirestore();
     _initRemoteConfig();
     _initMessaging();
+    _initCrashlytics();
+    _initAnalytics();
   }
 
   static void addContext(BuildContext context) {
@@ -26,6 +41,15 @@ class FirebaseManager {
       sslEnabled: false,
       persistenceEnabled: false,
     );
+  }
+
+  static void _initAnalytics() {
+    FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
+  }
+
+  static void _initCrashlytics() {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
 
   static void _initRemoteConfig() {
@@ -47,6 +71,7 @@ class FirebaseManager {
     // Mensaje nuevo
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       FirebaseManager._receivedNotification(message);
+      BadgeManager.updateBadge(1);
     });
     // Mensaje nuevo en cola
     FirebaseMessaging.instance.getInitialMessage().then((message) {
@@ -55,15 +80,31 @@ class FirebaseManager {
     // Mensaje abierto
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       FirebaseManager._openNotification(message);
+      BadgeManager.removeBadge();
     });
   }
 
-  static void _openNotification(RemoteMessage? message) {
+  static void _openNotification(RemoteMessage? message) async {
+    final user = await Preferences.get.getUser();
     if (message != null) {
-      FiicoToast.showPushNotificationClicked(
-        message,
-        onTap: () => FiicoRoute.changeTab(_context, TabOption.notifications),
-      );
+      switch (message.data['action']) {
+        case "ALERT_ENTRY":
+        case "ALERT_DEBT":
+          final budgetID = message.data['actionId'];
+          final budget = await HomeRepository().getBudget(budgetID);
+          FiicoRoute.send(_context, MovementsListPage(budget: budget));
+          break;
+        case "PREMIUM":
+          FiicoRoute.send(_context, SubscriptionDetailPage(user: user));
+          break;
+        case "NEWS":
+          FiicoRoute.send(_context, NotificationsPage(user: user));
+          break;
+        case "HELPCENTER":
+          FiicoRoute.send(_context, HelpCenterPage(user: user));
+          break;
+        default:
+      }
     }
   }
 
@@ -76,23 +117,21 @@ class FirebaseManager {
     }
   }
 
-  void suscribe(String topic) async {
-    await FirebaseMessaging.instance
-        .subscribeToTopic(topic)
-        .catchError((error) {
-      print(error.toString());
-    }).then((value) {
-      print("Correct subscribe");
-    });
+  static void topic(NotificationCenterOption? topic) async {
+    final user = await Preferences.get.getUser();
+    var topicValue = topic?.key ?? '';
+    if (!(topic?.generic ?? false)) {
+      topicValue = '$topicValue${user?.id}';
+    }
+
+    if (topic?.enable ?? false) {
+      await FirebaseMessaging.instance.subscribeToTopic(topicValue);
+    } else {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topicValue);
+    }
   }
 
-  void unsuscribe(String topic) async {
-    await FirebaseMessaging.instance
-        .unsubscribeFromTopic(topic)
-        .catchError((error) {
-      print(error.toString());
-    }).then((value) {
-      print("Correct unsubscribe");
-    });
+  static void removeTopics() {
+    FirebaseMessaging.instance.deleteToken();
   }
 }

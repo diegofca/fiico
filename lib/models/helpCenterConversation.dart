@@ -40,7 +40,6 @@ class HelpCenterConversation {
       'status': status,
       'createdAt': createdAt,
       'blocked': blocked,
-      'messages': messages,
     };
   }
 

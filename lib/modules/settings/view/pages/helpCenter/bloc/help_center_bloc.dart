@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/helpCenterConversation.dart';
 import 'package:control/models/helpCenterMessage.dart';
-import 'package:control/modules/helpCenter/repository/help_center_repository.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/repository/help_center_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'help_center_event.dart';

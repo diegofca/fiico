@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
@@ -75,9 +76,19 @@ class EditMovementPage extends StatelessWidget {
     );
   }
 
-  void _editMovement(BuildContext context) {
-    if (movementToEdit?.isCompleteByCreate() ?? false) {
+  void _editMovement(BuildContext context) async {
+    final type = movementToEdit?.getType();
+    final isCreateAvailable =
+        await FiicoRemoteConfig.isCanCreateMovement(type, budget);
+    if ((movementToEdit?.isCompleteByCreate() ?? false) && isCreateAvailable) {
       Navigator.of(context).pop(movementToEdit);
+    } else if (!isCreateAvailable) {
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: 'Actualiza tu plan a Premium!',
+        message:
+            'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
+      );
     } else {
       FiicoAlertDialog.showWarnning(
         context,

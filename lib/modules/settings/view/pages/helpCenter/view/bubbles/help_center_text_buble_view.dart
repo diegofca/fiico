@@ -1,7 +1,7 @@
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/helpCenterMessage.dart';
-import 'package:control/modules/helpCenter/view/bubbles/help_buble_test.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/view/bubbles/help_buble_test.dart';
 import 'package:flutter/material.dart';
 
 class HelpCenterTextView extends StatelessWidget {

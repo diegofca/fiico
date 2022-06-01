@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_top_title_textfield.dart';
@@ -12,6 +13,7 @@ import 'package:control/modules/login/model/login_validator_password_model.dart'
 import 'package:control/modules/register/bloc/sign_bloc.dart';
 import 'package:control/modules/register/model/last_name_validator_model.dart';
 import 'package:control/modules/register/model/name_validator_model.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -73,6 +75,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           _lastnameTextfieldView(context),
           _emailTextfieldView(context),
           _passwordTextfieldView(context),
+          _entryMoneyView(context),
           _signUpButton(),
           _orSeparateView(),
           _logInButton(),
@@ -99,6 +102,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
         labelText: FiicoLocale().name,
         errorText: FiicoLocale().invalidNameFormat,
         prefixIcon: widget.state?.name?.getStatusIcon,
+        keyboardType: TextInputType.name,
         onChanged: (text) {
           var name = NameValidatorModel(text);
           context.read<SignBloc>().add(SignUpInfoRequest(name: name));
@@ -123,6 +127,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
         labelText: FiicoLocale().lastName,
         errorText: FiicoLocale().invalidLastNameFormat,
         prefixIcon: widget.state?.lastName?.getStatusIcon,
+        keyboardType: TextInputType.name,
         onChanged: (text) {
           var lastName = LastNameValidatorModel(text);
           context.read<SignBloc>().add(SignUpInfoRequest(lastName: lastName));
@@ -146,6 +151,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
           ),
         labelText: FiicoLocale().email,
         errorText: FiicoLocale().invalidEmailFormat,
+        keyboardType: TextInputType.emailAddress,
         prefixIcon: widget.state?.email?.getStatusIcon,
         onChanged: (text) {
           var email = EmailValidatorModel(text);
@@ -173,6 +179,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
       errorText: FiicoLocale().invalidPasswordFormat,
       maxLines: FiicoMaxLines.one,
       obscureText: !isShowPassword,
+      keyboardType: TextInputType.visiblePassword,
       prefixIcon: widget.state?.password?.getStatusIcon,
       suffixIcon: IconButton(
         focusColor: FiicoColors.clear,
@@ -193,6 +200,101 @@ class SignSuccesViewState extends State<SignSuccesView> {
         context.read<SignBloc>().add(SignUpInfoRequest(password: pass));
       },
       containError: containtError,
+    );
+  }
+
+  Widget _entryMoneyView(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _showCurrencyPicker(context),
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.eight,
+          left: FiicoPaddings.twenty,
+          right: FiicoPaddings.twenty,
+        ),
+        color: FiicoColors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: FiicoPaddings.eight),
+                  child: _flagIcon(),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      left: FiicoPaddings.sixteen,
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.state?.currency?.code ?? FiicoLocale().currency,
+                      textAlign: TextAlign.left,
+                      style: Style.subtitle.copyWith(
+                        color: FiicoColors.purpleDark,
+                        fontSize: FiicoFontSize.xs,
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => _showCurrencyPicker(context),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: FiicoColors.purpleDark,
+                    size: 34,
+                  ),
+                ),
+              ],
+            ),
+            const SeparatorView(
+              color: FiicoColors.purpleDark,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _flagIcon() {
+    if (widget.state?.currency == null) {
+      return const Icon(
+        Icons.flag,
+        color: FiicoColors.purpleDark,
+        size: 25,
+      );
+    }
+
+    return Text(
+      CurrencyUtils.currencyToEmoji(
+        widget.state?.currency,
+      ),
+      style: Style.title,
+    );
+  }
+
+  void _showCurrencyPicker(BuildContext context) {
+    showCurrencyPicker(
+      context: context,
+      showFlag: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      onSelect: (currency) {
+        context.read<SignBloc>().add(SignUpInfoRequest(currency: currency));
+      },
+      theme: CurrencyPickerThemeData(
+        titleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayDark,
+          fontSize: FiicoFontSize.sm,
+        ),
+        subtitleTextStyle: Style.subtitle.copyWith(
+          color: FiicoColors.grayNeutral,
+          fontSize: FiicoFontSize.xs,
+        ),
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:control/helpers/manager/badgeManager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/budgets/view/budgets_page.dart';
 import 'package:control/modules/home/home.dart';
@@ -28,7 +29,7 @@ List<BottomNavBarItem> onCreateTabs(FiicoUser? user, BuildContext context) {
     ),
     BottomNavBarItem(
       icon: MdiIcons.bell,
-      badgeVisible: true,
+      badgeVisible: BadgeManager.pendingBadge,
       screen: NotificationsPage(
         key: const Key('_MenuHome.notifications'),
         user: user,

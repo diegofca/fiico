@@ -1,12 +1,13 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/credentials_manager.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/helpers/manager/purchase_manager.dart';
-import 'package:control/modules/changeLanguage/repository/languages_list.dart';
 import 'package:control/modules/connectivity/bloc%20/connectivity_bloc.dart';
 import 'package:control/modules/connectivity/repository/connectivity_repository.dart';
 import 'package:control/modules/menu/menu.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
 import 'package:control/modules/splash/view/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
@@ -14,11 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter_smartlook/flutter_smartlook.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initFacebook();
   initPurchase();
+  initSmartLook();
   await initEasyLocation();
   await initFirebase();
   runApp(EasyLocalization(
@@ -45,6 +48,15 @@ void initPurchase() {
   PurchaseManager.get.configureStore();
 }
 
+void initSmartLook() {
+  final SetupOptions options = (SetupOptionsBuilder(
+    CredentialsManager.smartLook,
+  )..StartNewSession = true)
+      .build();
+  Smartlook.setup(options);
+  Smartlook.enableCrashlytics(true);
+}
+
 class ValiuApp extends StatelessWidget {
   const ValiuApp({Key? key}) : super(key: key);
 
@@ -69,12 +81,14 @@ class ValiuApp extends StatelessWidget {
           overlayWidget: const LoadingView(
             backgroundColor: FiicoColors.purpleDark,
           ),
-          child: MaterialApp(
-            title: 'Valiu',
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            home: const SplashPage(),
+          child: SmartlookHelperWidget(
+            child: MaterialApp(
+              title: 'Valiu',
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              home: const SplashPage(),
+            ),
           ),
         ),
       ),

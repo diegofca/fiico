@@ -5,6 +5,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/defaultsMovement/bloc/default_movement_bloc.dart';
@@ -112,7 +113,7 @@ class DefaultMovementPageView extends StatelessWidget {
         left: FiicoPaddings.sixteen,
       ),
       child: Text(
-        "${list.name} predefinidos",
+        list.name,
         style: Style.title.copyWith(
           color: FiicoColors.black,
           fontSize: FiicoFontSize.md,
@@ -129,7 +130,7 @@ class DefaultMovementPageView extends StatelessWidget {
         horizontal: FiicoPaddings.sixteen,
       ),
       child: FiicoButton(
-        title: 'Crear uno nuevo',
+        title: FiicoLocale().createNewMovement,
         color: FiicoColors.white,
         borderColor: FiicoColors.purpleDark,
         textColor: FiicoColors.purpleDark,

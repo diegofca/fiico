@@ -51,13 +51,6 @@ class ProfileSuccessView extends StatelessWidget {
       decoration: BoxDecoration(
         color: FiicoColors.grayBackground,
         borderRadius: BorderRadius.circular(FiicoPaddings.sixteen),
-        boxShadow: const [
-          BoxShadow(
-            color: FiicoColors.grayLite,
-            blurRadius: 5,
-            spreadRadius: 20,
-          )
-        ],
       ),
       child: ListView.builder(
         itemCount: options.length,

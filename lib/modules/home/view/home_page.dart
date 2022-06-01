@@ -1,4 +1,5 @@
 import 'package:control/helpers/extension/constants.dart';
+import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/genericViews/fiico_giff_dialog.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
@@ -8,6 +9,7 @@ import 'package:control/modules/createBudget/view/create_budget_page.dart';
 import 'package:control/modules/home/bloc/home_bloc.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
 import 'package:control/modules/home/view/home_success_view.dart';
+import 'package:control/modules/updateApp/view/update_app_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,8 +25,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeBloc(HomeRepository())
-        ..add(HomeBudgetsFetchRequest(uID: user?.id)),
+      create: (_) => HomeBloc(
+        HomeRepository()..getListenerUser(),
+      )..add(HomeBudgetsFetchRequest(uID: user?.id)),
       child: HomePageView(user: user),
     );
   }
@@ -55,6 +58,7 @@ class HomePageView extends StatelessWidget {
     }, listener: (context, state) {
       _validateStatusView(context, state);
       _validateIfShowTutorial(context, state);
+      _validateIfCanUpdateApp(context, state);
     });
   }
 
@@ -80,6 +84,24 @@ class HomePageView extends StatelessWidget {
         voidCallback: () => _addBudgetClickedAction(context),
       );
       context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));
+    }
+  }
+
+  void _validateIfCanUpdateApp(BuildContext context, HomeState state) async {
+    switch (state.status) {
+      case HomeStatus.loading:
+        final isupdate = await FiicoRemoteConfig.isShowUpdateVersion();
+        final forceUpdate = FiicoRemoteConfig.isForceUpdateVersion();
+        if (isupdate) {
+          UpdateAppPage().show(
+            context,
+            onCancelAction: () => Navigator.of(context).pop(),
+            onUpdateAction: () {},
+            forceUpdate: forceUpdate,
+          );
+        }
+        break;
+      default:
     }
   }
 

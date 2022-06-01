@@ -90,16 +90,19 @@ class MovementsListPageView extends StatelessWidget {
   }
 
   Widget _addMovementButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-      ),
-      child: IconButton(
-        highlightColor: Colors.transparent,
-        onPressed: () => _addMovementClickedAction(context),
-        icon: const Icon(
-          MdiIcons.plusCircleOutline,
-          color: FiicoColors.grayDark,
+    return Visibility(
+      visible: newBudget.isReadAndWriteOnly,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: FiicoPaddings.sixteen,
+        ),
+        child: IconButton(
+          highlightColor: Colors.transparent,
+          onPressed: () => _addMovementClickedAction(context),
+          icon: const Icon(
+            MdiIcons.plusCircleOutline,
+            color: FiicoColors.grayDark,
+          ),
         ),
       ),
     );

@@ -67,10 +67,8 @@ class FiicoCycleCalendarState extends State<FiicoCycleCalendar> {
         break;
     }
     setState(() {
-      if (_dates.isNotEmpty) {
-        widget.selectedDays = _dates;
-        widget.onDaysSelected(_dates);
-      }
+      widget.selectedDays = _dates;
+      widget.onDaysSelected(_dates);
     });
   }
 

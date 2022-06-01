@@ -29,10 +29,10 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
   ) async {
     try {
       emit(state.copyWith(status: CreateBudgetStatus.loading));
-      final added = await repository.addNewBudget(event.budget);
+      await repository.addNewBudget(event.budget);
       emit(state.copyWith(
         status: CreateBudgetStatus.success,
-        addedBudgetID: added.id,
+        addedBudgetID: event.budget.id,
       ));
     } catch (_) {
       emit(state.copyWith(status: CreateBudgetStatus.failure));

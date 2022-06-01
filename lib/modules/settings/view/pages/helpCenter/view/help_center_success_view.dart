@@ -4,14 +4,15 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/helpCenterConversation.dart';
 import 'package:control/models/helpCenterMessage.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/helpCenter/bloc/help_center_bloc.dart';
-import 'package:control/modules/helpCenter/view/bubbles/help_center_date_bubble_view.dart';
-import 'package:control/modules/helpCenter/view/bubbles/help_center_text_buble_view.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/bloc/help_center_bloc.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/view/bubbles/help_center_date_bubble_view.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/view/bubbles/help_center_text_buble_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -38,7 +39,9 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
   @override
   void initState() {
     super.initState();
-    _messageFocus.requestFocus();
+    if (widget.user?.isPremium() ?? false) {
+      _messageFocus.requestFocus();
+    }
   }
 
   @override
@@ -168,7 +171,7 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
                       focusNode: _messageFocus,
                       textInputAction: TextInputAction.send,
                       onChanged: (_) => setState(() {}),
-                      onSubmitted: (_) => _sendNewMessage(),
+                      onSubmitted: (_) => _sendNewMessage(context),
                     ),
                   ),
                 ),
@@ -177,7 +180,7 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
                     horizontal: FiicoPaddings.sixteen,
                   ),
                   child: GestureDetector(
-                    onTap: () => _sendNewMessage(),
+                    onTap: () => _sendNewMessage(context),
                     child: Icon(
                       Icons.send,
                       color: _messageController.text.isEmpty
@@ -217,13 +220,25 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
     return messagesViews;
   }
 
-  void _sendNewMessage() {
+  void _sendNewMessage(BuildContext context) {
     final text = _messageController.text;
-    if (text.isNotEmpty) {
+    final isAvailable = widget.user?.isPremium() ?? false;
+    if (text.isNotEmpty && isAvailable) {
       context
           .read<HelpCenterBloc>()
           .add(HelpCenterNeMessageFetchRequest(text: text));
       _messageController.clear();
+    } else if (!isAvailable) {
+      _showErrorUserNotPremium(context);
     }
+  }
+
+  void _showErrorUserNotPremium(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      title: 'Actualiza tu plan a Premium!',
+      message:
+          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
+    );
   }
 }

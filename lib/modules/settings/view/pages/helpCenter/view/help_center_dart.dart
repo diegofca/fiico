@@ -7,11 +7,12 @@ import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/helpCenterConversation.dart';
 import 'package:control/models/helpCenterMessage.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/helpCenter/bloc/help_center_bloc.dart';
-import 'package:control/modules/helpCenter/repository/help_center_repository.dart';
-import 'package:control/modules/helpCenter/view/help_center_success_view.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/bloc/help_center_bloc.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/repository/help_center_repository.dart';
+import 'package:control/modules/settings/view/pages/helpCenter/view/help_center_success_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 
 class HelpCenterPage extends StatelessWidget {
   HelpCenterPage({
@@ -57,7 +58,8 @@ class HelpCenterView extends StatelessWidget {
           builder: (context, snapshot) {
             switch (snapshot.hasData) {
               case true:
-                HelpCenterConversation? conversation = snapshot.data?.first;
+                HelpCenterConversation? conversation =
+                    snapshot.data?.firstOrNull;
                 if (state.haveConversation && !state.isloadConversation) {
                   bloc.add(HelpCenterMessagesConversationFetchRequest(
                     uID: user?.id,

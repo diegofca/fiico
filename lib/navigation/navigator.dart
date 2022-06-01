@@ -1,5 +1,6 @@
 // ignore_for_file: implementation_imports
 
+import 'package:control/helpers/manager/analytics_manager.dart';
 import 'package:control/modules/menu/bloc/menu_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/src/overlay_controller_widget_extension.dart';
@@ -14,30 +15,36 @@ enum TabOption {
 
 extension FiicoRoute on Navigator {
   static Future<dynamic> sendFade(BuildContext context, Widget page) {
+    AnalyticsManager().screenView(page.toString());
     return Navigator.pushReplacement(context, FiicoRouteTransitions.fade(page));
   }
 
   static Future<dynamic> send(BuildContext context, Widget page) {
+    AnalyticsManager().screenView(page.toString());
     return Navigator.push(
         context, MaterialPageRoute(builder: (context) => page));
   }
 
   static Future<dynamic> present(BuildContext context, Widget page) {
+    AnalyticsManager().screenView(page.toString());
     return Navigator.push(context, FiicoRouteTransitions.present(page));
   }
 
   static Future<dynamic> sendReplace(BuildContext context, Widget page) {
+    AnalyticsManager().screenView(page.toString());
     return Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => page));
   }
 
   static void back(BuildContext context) {
+    AnalyticsManager().backView();
     return Navigator.pop(context);
   }
 
   static void changeTab(BuildContext context, TabOption tabOption) {
     var tabIndex = tabOption.index;
     context.read<MenuBloc>().add(MenuIndexSelected(index: tabIndex));
+    AnalyticsManager().screenView(tabOption.toString());
   }
 
   static void showLoader(BuildContext context) {

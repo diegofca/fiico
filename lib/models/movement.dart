@@ -9,6 +9,7 @@ import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 enum MovementType { ENTRY, DEBT, SAFE }
 enum MovementPaymentType { PENDING, PAYED }
@@ -214,7 +215,7 @@ class Movement {
   }
 
   String getAlertDay() {
-    final day = alert?.day ?? recurrencyAt?.first ?? 1;
+    final day = alert?.days?.firstOrNull ?? recurrencyAt?.firstOrNull ?? 1;
     final recurrencyDate =
         DateTime(DateTime.now().year, DateTime.now().month, day);
     return recurrencyDate.toDateFormat1();
@@ -265,7 +266,7 @@ class Movement {
   }
 
   Color getBellColor() {
-    if (alert?.day == null) {
+    if (alert?.days == null) {
       return FiicoColors.grayNeutral;
     }
     if (alert?.isIntensive() ?? false) {

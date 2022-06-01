@@ -149,7 +149,7 @@ class NotificationDetailSuccessView extends StatelessWidget {
 
   void _onAcceptClicked(BuildContext context) async {
     switch (notification?.getType()) {
-      case FiicoNotificationType.INVITATION:
+      case FiicoNotificationType.INVITE:
         Navigator.of(context).pop();
         context.read<NotificationDetailBloc>().add(
             NotificationGetBudgetRequest(budgetID: notification?.budgetID));

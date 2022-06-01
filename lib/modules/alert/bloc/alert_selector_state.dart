@@ -7,12 +7,12 @@ class AlertSelectorState extends Equatable {
     this.status = AlertSelectorStatus.waiting,
     this.isIntensive,
     this.dates,
-    this.day,
+    this.days,
   });
 
   final AlertSelectorStatus status;
   final bool? isIntensive;
-  final int? day;
+  final List<int>? days;
   final List<DateTime>? dates;
 
   // FiicoAlert get alert => onAddedCompleted ?? false;
@@ -24,13 +24,13 @@ class AlertSelectorState extends Equatable {
     AlertSelectorStatus? status,
     bool? isIntensive,
     List<DateTime>? dates,
-    int? day,
+    List<int>? days,
   }) {
     return AlertSelectorState(
       status: status ?? this.status,
       isIntensive: isIntensive ?? this.isIntensive,
       dates: dates ?? this.dates,
-      day: day ?? this.day,
+      days: days ?? this.days,
     );
   }
 }

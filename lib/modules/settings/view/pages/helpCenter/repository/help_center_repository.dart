@@ -51,11 +51,23 @@ class HelpCenterRepository extends HelpCenterRepositoryAbs {
   }
 
   @override
-  Future<void> newMessage(
+  Future<DocumentReference<Map<String, dynamic>>> newMessage(
     HelpCenterMessage message,
     String? conversationID,
     String? userID,
-  ) {
+  ) async {
+    final collection = await messagesCollections
+        .doc(userID)
+        .collection(Firestore.helpCenterPath)
+        .get();
+
+    if (collection.docs.isEmpty) {
+      final conversation = await messagesCollections
+          .doc(userID)
+          .collection(Firestore.helpCenterPath)
+          .add(HelpCenterConversation(id: conversationID).toJson());
+      conversationID = conversation.id;
+    }
     return messagesCollections
         .doc(userID)
         .collection(Firestore.helpCenterPath)

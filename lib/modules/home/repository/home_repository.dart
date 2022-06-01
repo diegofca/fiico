@@ -4,6 +4,7 @@ import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/generic_repository.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
+import 'package:control/models/user.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class HomeRepositoryAbs {
@@ -45,8 +46,13 @@ class HomeRepository extends HomeRepositoryAbs {
     });
 
     await Future.delayed(const Duration(seconds: 1));
-    final _budget = await getBudget(budget!.id);
-    return updateBudget(_budget);
+    if (budget?.isOwner ?? false) {
+      final _budget = await getBudget(budget!.id);
+      return updateBudget(_budget);
+    } else {
+      final _budget = await getShareBudget(budget?.userID, budget!);
+      return updateBudget(_budget);
+    }
   }
 
   //Generic ----------------------------------------------------------
@@ -85,5 +91,15 @@ class HomeRepository extends HomeRepositoryAbs {
         .map((snapshot) {
       return Budget.fromJson(snapshot.data());
     }).first;
+  }
+
+  void getListenerUser() async {
+    var user = await Preferences.get.getUser();
+    budgetCollections.doc(user?.id).snapshots().listen((value) {
+      if (value.exists) {
+        final updateUser = FiicoUser.fromJson(value.data());
+        Preferences.get.saveUser(updateUser);
+      }
+    });
   }
 }

@@ -18,7 +18,7 @@ class AlertSelectorBloc extends Bloc<AlertSelectorEvent, AlertSelectorState> {
       status: AlertSelectorStatus.addedLoading,
       isIntensive: event.isIntensive,
       dates: event.dates,
-      day: event.day,
+      days: event.days,
     ));
   }
 }

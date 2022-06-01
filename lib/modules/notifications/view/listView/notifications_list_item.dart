@@ -60,7 +60,7 @@ class NotificationsListItemViewState extends State<NotificationsListItemView> {
         FiicoPaddings.twelve,
       ),
       child: CachedNetworkImage(
-        imageUrl: widget.notification.imageUrl!,
+        imageUrl: widget.notification.imageUrl ?? '',
         fit: BoxFit.contain,
       ),
     );

@@ -17,8 +17,6 @@ class NotificationsEmptyView extends StatefulWidget {
 
   @override
   State<NotificationsEmptyView> createState() => NotificationsEmtpyViewState();
-
-  Size get preferredSize => throw UnimplementedError();
 }
 
 class NotificationsEmtpyViewState extends State<NotificationsEmptyView> {

@@ -16,6 +16,7 @@ class SignState extends Equatable {
     this.userLogged,
     this.errorType,
     this.errorMgs,
+    this.currency,
   });
 
   final SignStatus status;
@@ -23,6 +24,7 @@ class SignState extends Equatable {
   final PasswordValidatorModel? password;
   final NameValidatorModel? name;
   final LastNameValidatorModel? lastName;
+  final Currency? currency;
 
   final bool? isShowPassword;
   final FiicoUser? userLogged;
@@ -39,6 +41,7 @@ class SignState extends Equatable {
         password,
         name,
         lastName,
+        currency,
         isShowPassword,
         userLogged,
         errorType,
@@ -51,6 +54,7 @@ class SignState extends Equatable {
     PasswordValidatorModel? password,
     NameValidatorModel? name,
     LastNameValidatorModel? lastName,
+    Currency? currency,
     bool? isShowPassword,
     FiicoUser? userLogged,
     SignUpError? errorType,
@@ -60,6 +64,7 @@ class SignState extends Equatable {
       status: status ?? this.status,
       password: password ?? this.password,
       isShowPassword: isShowPassword ?? this.isShowPassword,
+      currency: currency ?? this.currency,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       name: name ?? this.name,

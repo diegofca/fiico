@@ -1,5 +1,6 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
@@ -424,14 +425,25 @@ class CreateMovementSuccessView extends StatelessWidget {
 
   // class functs ----
 
-  void _createdMovement(BuildContext context) {
-    if (movement.isCompleteByCreate()) {
+  void _createdMovement(BuildContext context) async {
+    final type = movement.getType();
+    final isCreateAvailable =
+        await FiicoRemoteConfig.isCanCreateMovement(type, budget);
+
+    if (movement.isCompleteByCreate() && isCreateAvailable) {
       if (movement.isAddedWithBudget) {
         Navigator.of(context).pop(movement);
       } else {
         context.read<CreateMovementBloc>().add(
             CreateMovementAddedRequest(newMovement: movement, budget: budget));
       }
+    } else if (!isCreateAvailable) {
+      FiicoAlertDialog.showWarnning(
+        context,
+        title: 'Actualiza tu plan a Premium!',
+        message:
+            'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
+      );
     } else {
       FiicoAlertDialog.showWarnning(
         context,

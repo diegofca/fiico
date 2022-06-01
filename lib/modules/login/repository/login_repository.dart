@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/providers/login_social_provider.dart';
+import 'package:control/modules/settings/view/pages/notificationCenter/repository/notification_center_repository.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,6 +84,11 @@ class LoginRepository extends LoginRepositoryAbs {
       return true;
     }
 
+    final email = credential?.email ?? '';
+    if (email.isEmpty) {
+      return true;
+    }
+
     final providers = await FirebaseAuth.instance
         .fetchSignInMethodsForEmail(credential?.email ?? '');
     return providers.isEmpty || providers.contains(currentCredential);
@@ -109,6 +116,7 @@ class LoginRepository extends LoginRepositoryAbs {
       userName: userCredential.user?.displayName,
       currentPlan: Plan.free(),
       defaultCurrency: CurrencyService().getAll().first,
+      notificationsOptions: NotificationCenterRepository().options,
       deviceTokens: [token],
       socialToken: credential?.accessToken,
     );
@@ -129,6 +137,13 @@ class LoginRepository extends LoginRepositoryAbs {
     });
     final user = await userStream.first;
     Preferences.get.saveUser(user);
+    _suscribesTopicsUpdate(user);
     return user;
+  }
+
+  void _suscribesTopicsUpdate(FiicoUser user) async {
+    user.notificationsOptions?.forEach((topic) {
+      FirebaseManager.topic(topic);
+    });
   }
 }

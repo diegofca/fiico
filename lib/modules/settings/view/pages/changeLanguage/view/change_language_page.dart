@@ -4,8 +4,8 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/changeLanguage/repository/languages_list.dart';
-import 'package:control/modules/changeLanguage/view/change_language_success_view.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/view/change_language_success_view.dart';
 import 'package:flutter/material.dart';
 
 class ChangeLanguagePage extends StatelessWidget {

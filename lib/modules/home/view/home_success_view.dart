@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:collection/collection.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
@@ -44,7 +45,7 @@ class HomeSuccesView extends StatefulWidget {
   final int dropdownvalue;
 
   // List of items in our dropdown menu
-  var itemsFilter = HomeFilterMovement.itemsFilter;
+  var itemsFilter = HomeFilterMovement().itemsFilter;
 
   @override
   State<HomeSuccesView> createState() => HomeSuccessViewState();
@@ -66,11 +67,22 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     });
   }
 
+  @override
+  void didUpdateWidget(covariant HomeSuccesView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateBudgetsInUser();
+  }
+
+  void _updateBudgetsInUser() async {
+    var user = widget.user?.copyWith(totalBudgets: widget.budgets?.length);
+    Preferences.get.saveUser(user);
+  }
+
   Budget? get currentBudget {
     final budgets = widget.budgets ?? [];
     final budget =
         budgets.firstWhereOrNull((e) => e.id == widget.budgetSelected?.id) ??
-            widget.budgets?.firstOrNull;
+            budgets.firstOrNull;
     if (budgets.isNotEmpty && widget.budgetSelected == null) {
       context.read<HomeBloc>().add(HomeBudgetSelected(budget: budget));
     }
@@ -241,7 +253,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
         delegate: SliverChildBuilderDelegate(
           (_, index) {
             return HomeEmptyView(
-              isContaintBudgets: currentBudget != null,
+              budget: currentBudget,
               onTapNewItem: () => _addMovementButtonClickedAction(context),
               onTapNewBudget: () => _addBudgetClickedAction(context),
             );
@@ -316,6 +328,12 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       _showEmptyBudgetAction(context);
       return;
     }
+
+    final isWritePermission = currentBudget?.isReadAndWriteOnly ?? false;
+    if (!isWritePermission) {
+      _showNotSufficientPermissionsAction(context);
+      return;
+    }
     FiicoRoute.send(
       context,
       CreateMovementPage(budget: currentBudget, type: MovementType.ENTRY),
@@ -325,6 +343,12 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   void _addDebtButtonClickedAction(BuildContext context) {
     if (currentBudget == null) {
       _showEmptyBudgetAction(context);
+      return;
+    }
+
+    final isWritePermission = currentBudget?.isReadAndWriteOnly ?? false;
+    if (!isWritePermission) {
+      _showNotSufficientPermissionsAction(context);
       return;
     }
     FiicoRoute.send(
@@ -350,6 +374,14 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
       message: FiicoLocale().youMustCreateNewBudget,
       confirmBtnText: FiicoLocale().createNewBudget,
       onOkAction: () => _addBudgetClickedAction(context),
+    );
+  }
+
+  void _showNotSufficientPermissionsAction(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      message: FiicoLocale().youDoNotHaveSufficientPermission,
+      confirmBtnText: FiicoLocale().acceptButton,
     );
   }
 }

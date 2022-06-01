@@ -1,5 +1,7 @@
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/pages_names.dart';
@@ -120,22 +122,44 @@ class BudgetDetailPageView extends StatelessWidget {
       BuildContext context, Budget budget, BudgetDetailBottomOption option) {
     switch (option) {
       case BudgetDetailBottomOption.delete_budget:
-        context
-            .read<BudgetDetailBloc>()
-            .add(BudgetDetailDeleteRequest(budget: budget));
+        _onDeleteBudget(budget, context);
         break;
       case BudgetDetailBottomOption.add_friend:
-        FiicoRoute.send(
-          context,
-          SearchUsersPage(
-            users: budget.users,
-            onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
-                BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
-          ),
-        );
+        _onShareBudgetWithUsers(budget, context);
         break;
       case BudgetDetailBottomOption.exit_budget:
         break;
     }
+  }
+
+  void _onDeleteBudget(Budget budget, BuildContext context) {
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetDetailDeleteRequest(budget: budget));
+  }
+
+  void _onShareBudgetWithUsers(Budget budget, BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    if (user?.isPremium() ?? false) {
+      FiicoRoute.send(
+        context,
+        SearchUsersPage(
+          users: budget.users,
+          onUsersSelected: (users) => context.read<BudgetDetailBloc>().add(
+              BudgetUpdateDetailUsersSelected(users: users, budget: budget)),
+        ),
+      );
+    } else {
+      _showErrorUserNotPremium(context);
+    }
+  }
+
+  void _showErrorUserNotPremium(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      title: 'Actualiza tu plan a Premium!',
+      message:
+          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
+    );
   }
 }

@@ -1,24 +1,27 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/modules/changeLanguage/repository/languages_list.dart';
-import 'package:control/modules/changeLanguage/view/itemList/change_language_item_list.dart';
+import 'package:control/models/notification_center_option.dart';
+import 'package:control/modules/settings/view/pages/notificationCenter/repository/notification_center_repository.dart';
+import 'package:control/modules/settings/view/pages/notificationCenter/view/itemList/notification_center_item_list.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
-class ChangeLanguageView extends StatefulWidget {
-  const ChangeLanguageView({
+class NotificationCenterSuccessView extends StatefulWidget {
+  const NotificationCenterSuccessView({
     Key? key,
-    required this.languages,
-    required this.onSelectLanguage,
+    required this.options,
+    required this.onUpdateOption,
   }) : super(key: key);
 
-  final List<Language> languages;
-  final Function(Language) onSelectLanguage;
-
+  final List<NotificationCenterOption>? options;
+  final Function(NotificationCenterOption?) onUpdateOption;
   @override
-  State<ChangeLanguageView> createState() => ChangeLanguageViewState();
+  State<NotificationCenterSuccessView> createState() =>
+      NotificationCenterSuccessViewState();
 }
 
-class ChangeLanguageViewState extends State<ChangeLanguageView> {
+class NotificationCenterSuccessViewState
+    extends State<NotificationCenterSuccessView> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,12 +55,16 @@ class ChangeLanguageViewState extends State<ChangeLanguageView> {
           left: FiicoPaddings.sixteen,
         ),
         child: ListView.builder(
-          itemCount: widget.languages.length,
+          itemCount: widget.options?.length,
           itemBuilder: (context, index) {
-            final language = widget.languages[index];
-            return ChangeListItemView(
-              onSelectLanguage: widget.onSelectLanguage,
-              language: language,
+            final option = widget.options?[index];
+            final _option = NotificationCenterRepository()
+                .options
+                .firstWhereOrNull((e) => e.id == option?.id);
+
+            return NotificationCenterListItemView(
+              onUpdateOption: widget.onUpdateOption,
+              option: _option?.copyWith(enable: option?.enable),
             );
           },
         ),

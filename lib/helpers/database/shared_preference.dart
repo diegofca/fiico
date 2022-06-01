@@ -1,9 +1,11 @@
 import 'dart:convert';
-
+import 'package:control/helpers/manager/analytics_manager.dart';
+import 'package:control/helpers/manager/firebase_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/view/login_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smartlook/flutter_smartlook.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -16,6 +18,7 @@ class Preferences {
   String? getID = '';
 
   void saveUser(FiicoUser? user) async {
+    AnalyticsManager().setUserID(user?.id);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final userDecode = json.encode(user?.toJson());
     await prefs.setString('user', userDecode);
@@ -34,6 +37,7 @@ class Preferences {
   }
 
   void _deleteUser() async {
+    getID = '';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
   }
@@ -41,6 +45,9 @@ class Preferences {
   //LogOut
   void logOut(BuildContext context) {
     _deleteUser();
+    FirebaseManager.removeTopics();
+    Smartlook.stopRecording();
+    Smartlook.resetSession(true);
     FiicoRoute.send(context, const LoginPage());
   }
 }

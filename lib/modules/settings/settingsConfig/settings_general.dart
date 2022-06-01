@@ -8,6 +8,7 @@ import 'package:control/modules/premium/view/premium_page.dart';
 import 'package:control/modules/settings/settingsConfig/settings_contact.dart';
 import 'package:control/modules/settings/settingsConfig/settings_info.dart';
 import 'package:control/modules/settings/settingsConfig/settings_security.dart';
+import 'package:control/modules/settings/view/pages/notificationCenter/view/notification_center_page.dart';
 import 'package:control/modules/settings/view/settings_page.dart';
 import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
@@ -32,6 +33,7 @@ class SettingsConfiguration {
   SettingItem _general() => SettingItem(name: 'GENERAL', childs: [
         _security(),
         _valiuPremium(),
+        _notificationCenter(),
       ]);
 
   // Security item
@@ -82,6 +84,18 @@ class SettingsConfiguration {
               ),
             );
           }
+        },
+      );
+
+  // Notification center item
+  SettingItem _notificationCenter() => SettingItem(
+        name: FiicoLocale().notifications,
+        onTap: () async {
+          final user = await Preferences.get.getUser();
+          FiicoRoute.send(
+            context,
+            NotificationCenterPage(user: user),
+          );
         },
       );
 }

@@ -13,6 +13,7 @@ import 'package:control/modules/splash/repository/splash_repository.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_smartlook/flutter_smartlook.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({
@@ -77,5 +78,6 @@ class SplashPageView extends StatelessWidget {
     final page =
         activePinCode ? PinCodeUnlockPage(user: user) : MenuPage(user: user);
     FiicoRoute.sendFade(context, page);
+    Smartlook.startRecording();
   }
 }

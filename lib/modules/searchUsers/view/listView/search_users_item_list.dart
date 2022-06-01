@@ -17,8 +17,10 @@ class SearchUserListItemView extends StatefulWidget {
     Key? key,
     required this.user,
     required this.isSelected,
+    this.isClickeable = true,
   }) : super(key: key);
 
+  final bool isClickeable;
   final bool isSelected;
   FiicoUser user;
 
@@ -39,9 +41,13 @@ class SearchUserListItemViewState extends State<SearchUserListItemView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context
-          .read<SearchUsersBloc>()
-          .add(SearchSelectUserRequest(widget.user)),
+      onTap: () {
+        if (widget.isClickeable) {
+          context
+              .read<SearchUsersBloc>()
+              .add(SearchSelectUserRequest(widget.user));
+        }
+      },
       child: AnimatedContainer(
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),

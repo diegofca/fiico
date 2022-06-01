@@ -33,6 +33,7 @@ class Budget {
   final List<FiicoUser>? users;
   final String? ownerName;
   final List<BudgetCycleHistory>? histories;
+  final bool? editBudget;
 
   Budget({
     required this.id,
@@ -53,6 +54,7 @@ class Budget {
     this.users,
     this.ownerName,
     this.histories,
+    this.editBudget,
   });
 
   Budget.create({
@@ -74,6 +76,7 @@ class Budget {
     this.users = const [],
     this.ownerName,
     this.histories = const [],
+    this.editBudget = false,
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -96,6 +99,7 @@ class Budget {
       movements: Movement.toList(json),
       histories: BudgetCycleHistory.toList(json),
       users: FiicoUser.toList(json),
+      editBudget: json?['editBudget'] ?? false,
     );
   }
 
@@ -116,6 +120,7 @@ class Budget {
       'finishDate': finishDate,
       'icon': icon?.toJson(),
       'ownerName': ownerName,
+      'editBudget': editBudget,
       'movements': movements?.map((e) => e.toJson()).toList() ?? [],
       'histories': histories?.map((e) => e.toJson()).toList() ?? [],
       'users': users?.map((e) => e.toJson()).toList() ?? [],
@@ -138,6 +143,7 @@ class Budget {
       'startDate': startDate,
       'finishDate': getFinishDate(),
       'ownerName': ownerName,
+      'editBudget': editBudget,
       'icon': icon?.toJson(),
       'histories': FieldValue.arrayUnion(
           histories?.map((e) => e.toJson()).toList() ?? []),
@@ -176,6 +182,7 @@ class Budget {
     bool? isOwner,
     String? ownerName,
     List<BudgetCycleHistory>? histories,
+    bool? editBudget,
   }) {
     return Budget(
       id: id ?? this.id,
@@ -190,6 +197,7 @@ class Budget {
       totalEntry: totalEntry ?? this.totalEntry,
       userID: userID ?? this.userID,
       isCycle: isCycle ?? this.isCycle,
+      editBudget: editBudget ?? this.editBudget,
       startDate: startDate ?? this.startDate,
       finishDate: finishDate ?? this.finishDate,
       movements: movements ?? this.movements,
@@ -204,6 +212,11 @@ class Budget {
   String? getPropertiedID() {
     final currentID = Preferences.get.getID;
     return userID ?? currentID;
+  }
+
+  bool isEdited(String? userID) {
+    final currentID = Preferences.get.getID;
+    return userID == currentID;
   }
 
   bool isCycleBudget() {
@@ -435,7 +448,9 @@ class Budget {
 
   //  Ger Orders by movements
   List<Movement>? getMovementsBy(int key) {
-    final filterSelected = HomeFilterMovement.itemsFilter.entries
+    final filterSelected = HomeFilterMovement()
+        .itemsFilter
+        .entries
         .firstWhereOrNull((e) => e.key == key);
 
     switch (filterSelected?.key) {

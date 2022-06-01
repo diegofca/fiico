@@ -14,4 +14,5 @@ class Firestore {
   static const readedField = 'readed';
   static const histories = 'histories';
   static const paymentsHistory = 'payments';
+  static const notificationOptions = 'notificationsOptions';
 }

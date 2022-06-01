@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
@@ -31,14 +33,14 @@ class NotificationsPage extends StatelessWidget {
         create: (context) => NotificationsBloc(
           NotificationsRepository(),
         )..add(NotificationssFetchRequest(uID: user?.id)),
-        child: const NotificationsPageView(),
+        child: NotificationsPageView(),
       ),
     );
   }
 }
 
 class NotificationsPageView extends StatelessWidget {
-  const NotificationsPageView({
+  NotificationsPageView({
     Key? key,
   }) : super(key: key);
 

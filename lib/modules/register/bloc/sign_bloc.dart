@@ -5,6 +5,7 @@ import 'package:control/modules/login/model/login_validator_password_model.dart'
 import 'package:control/modules/register/model/last_name_validator_model.dart';
 import 'package:control/modules/register/model/name_validator_model.dart';
 import 'package:control/modules/register/repository/sign_up_repository.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:equatable/equatable.dart';
 
 part 'sign_state.dart';
@@ -29,6 +30,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
       email: event.email,
       lastName: event.lastName,
       name: event.name,
+      currency: event.currency,
     ));
   }
 

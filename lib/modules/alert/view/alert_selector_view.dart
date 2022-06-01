@@ -13,7 +13,6 @@ import 'package:control/modules/alert/bloc/alert_selector_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:collection/collection.dart';
 
 class AlertSelectorView {
   void show(
@@ -147,10 +146,8 @@ class AlertSelectorView {
     final state = context.read<AlertSelectorBloc>().state;
     final isCycle = budget?.isCycle ?? false;
 
-    final date = state.day ??
-        movement?.alert?.day ??
-        movement?.recurrencyAt?.firstOrNull ??
-        1;
+    final days =
+        state.days ?? movement?.alert?.days ?? movement?.recurrencyAt ?? [1];
     final dates = state.dates ??
         movement?.alert?.dates ??
         movement?.recurrencyDates?.map((e) => e.toDate()).toList() ??
@@ -162,12 +159,12 @@ class AlertSelectorView {
         height: 240,
         child: isCycle
             ? FiicoCycleCalendar(
-                selectedDays: [date],
+                selectedDays: days,
                 budget: budget,
-                onDaysSelected: (val) {
+                onDaysSelected: (days) {
                   context
                       .read<AlertSelectorBloc>()
-                      .add(AlertSelectorInfoRequest(day: val.first));
+                      .add(AlertSelectorInfoRequest(days: days));
                 },
               )
             : FiicoUniqueCalendar(
@@ -187,7 +184,7 @@ class AlertSelectorView {
       Function(FiicoAlert) onSelected) {
     final state = context.read<AlertSelectorBloc>().state;
 
-    final day = state.day ?? movement?.alert?.day ?? 1;
+    final days = state.days ?? movement?.alert?.days ?? [1];
     final isIntesive =
         state.isIntensive ?? movement?.alert?.isIntensive() ?? false;
     final type =
@@ -201,7 +198,7 @@ class AlertSelectorView {
         final alert = FiicoAlert(
           active: true,
           dates: dates,
-          day: day,
+          days: days,
           type: type,
         );
         onSelected(alert);

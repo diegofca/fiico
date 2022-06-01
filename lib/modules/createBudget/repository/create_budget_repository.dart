@@ -3,7 +3,7 @@ import 'package:control/models/budget.dart';
 import 'package:control/network/firestore_path.dart';
 
 abstract class CreatebudgetRepositoryAbs {
-  Future<DocumentReference<Map<String, dynamic>>> addNewBudget(Budget budget);
+  Future<void> addNewBudget(Budget budget);
   Future<void> addUsersShareBudget(Budget budget);
 }
 
@@ -12,16 +12,15 @@ class CreateBudgetRepository extends CreatebudgetRepositoryAbs {
       FirebaseFirestore.instance.collection(Firestore.usersPath);
 
   @override
-  Future<DocumentReference<Map<String, dynamic>>> addNewBudget(
-      Budget budget) async {
+  Future<void> addNewBudget(Budget budget) async {
     final userID = budget.getPropertiedID();
     var _budget = budget.copyWith(userID: userID);
     final documentAdded = await _usersCollections
         .doc(userID)
         .collection(Firestore.budgetsPath)
-        .add(_budget.toCreateJson());
+        .doc(budget.id)
+        .set(budget.toCreateJson());
 
-    _budget = _budget.copyWith(id: documentAdded.id);
     await updateIDBudget(_budget);
     await addUsersShareBudget(_budget);
     return documentAdded;
@@ -33,7 +32,8 @@ class CreateBudgetRepository extends CreatebudgetRepositoryAbs {
       await _usersCollections
           .doc(u.id)
           .collection(Firestore.budgetsPath)
-          .add(budget.toCreateJson());
+          .doc(budget.id)
+          .set(budget.toCreateJson());
     });
   }
 

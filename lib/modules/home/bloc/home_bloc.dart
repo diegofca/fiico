@@ -25,6 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBudgetsFetchRequest event,
     Emitter<HomeState> emit,
   ) async {
+    emit(state.copyWith(status: HomeStatus.loading));
     emit(state.copyWith(
       status: HomeStatus.init,
       budgets: repository.budgets(event.uID),

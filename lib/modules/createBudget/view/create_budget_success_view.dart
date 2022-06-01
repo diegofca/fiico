@@ -1,5 +1,7 @@
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
@@ -353,17 +355,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
 
   Widget _shareButtonView(BuildContext context) {
     return GestureDetector(
-      onTap: () => FiicoRoute.send(
-        context,
-        SearchUsersPage(
-          users: users,
-          onUsersSelected: (users) {
-            context
-                .read<CreateBudgetBloc>()
-                .add(CreateBudgetSearchUsersSelected(users: users));
-          },
-        ),
-      ),
+      onTap: () => _onShareBudgetWithUsers(context),
       child: Padding(
         padding: const EdgeInsets.only(
           top: FiicoPaddings.sixteen,
@@ -427,24 +419,6 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  void _onCreateBudgetIntent(BuildContext context) {
-    if (budgetToCreate.isCompleteByCreate()) {
-      final movements = budgetToCreate.movements
-          ?.map((e) => e.copyWith(currency: budgetToCreate.currency))
-          .toList();
-      final finalBudget = budgetToCreate.copyWith(movements: movements);
-      context
-          .read<CreateBudgetBloc>()
-          .add(CreateBudgetAdded(budget: finalBudget));
-    } else {
-      FiicoAlertDialog.showWarnning(
-        context,
-        title: FiicoLocale().emptyFields,
-        message: FiicoLocale().completeFieldsWithCreateBudget,
-      );
-    }
-  }
-
   Widget _entryUsersListView(BuildContext context) {
     final users = context.read<CreateBudgetBloc>().state.users ?? [];
     return Visibility(
@@ -490,6 +464,42 @@ class CreateBudgetSuccessView extends StatelessWidget {
 
   Widget _separatorLineView() {
     return const SeparatorView();
+  }
+
+  void _onCreateBudgetIntent(BuildContext context) async {
+    final isCreateAvailable = await FiicoRemoteConfig.isCanCreateBudget();
+    if (budgetToCreate.isCompleteByCreate() && isCreateAvailable) {
+      final movements = budgetToCreate.movements
+          ?.map((e) => e.copyWith(currency: budgetToCreate.currency))
+          .toList();
+      final finalBudget = budgetToCreate.copyWith(movements: movements);
+      context
+          .read<CreateBudgetBloc>()
+          .add(CreateBudgetAdded(budget: finalBudget));
+    } else if (!isCreateAvailable) {
+      _showErrorUserNotPremium(context);
+    } else {
+      _showErrorIncompleteBudgetData(context);
+    }
+  }
+
+  void _onShareBudgetWithUsers(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    if (user?.isPremium() ?? false) {
+      FiicoRoute.send(
+        context,
+        SearchUsersPage(
+          users: users,
+          onUsersSelected: (users) {
+            context
+                .read<CreateBudgetBloc>()
+                .add(CreateBudgetSearchUsersSelected(users: users));
+          },
+        ),
+      );
+    } else {
+      _showErrorUserNotPremium(context);
+    }
   }
 
   void _showCurrencyPicker(BuildContext context) {
@@ -563,9 +573,17 @@ class CreateBudgetSuccessView extends StatelessWidget {
   void _showErrorIncompleteBudgetData(BuildContext context) {
     FiicoAlertDialog.showWarnning(
       context,
-      title: 'Campos vacios',
+      title: FiicoLocale().emptyFields,
+      message: FiicoLocale().completeMissingFieldsAddMovement,
+    );
+  }
+
+  void _showErrorUserNotPremium(BuildContext context) {
+    FiicoAlertDialog.showWarnning(
+      context,
+      title: 'Actualiza tu plan a Premium!',
       message:
-          'Completa los campos faltantes para poder agregar tus movimientos.',
+          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
     );
   }
 }

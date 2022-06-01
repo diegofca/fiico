@@ -1,7 +1,7 @@
 import 'package:control/helpers/manager/localizable_manager.dart';
 
 class HomeFilterMovement {
-  static final itemsFilter = {
+  final itemsFilter = {
     0: FiicoLocale().mostRecent,
     1: FiicoLocale().fromSmallestToLargest,
     2: FiicoLocale().fromLargesttToSmallest,

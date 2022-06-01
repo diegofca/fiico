@@ -63,56 +63,6 @@ class FiicoToast {
     );
   }
 
-  static void showPushNotificationClicked(
-    RemoteMessage message, {
-    required VoidCallback onTap,
-  }) {
-    HapticFeedback.vibrate();
-    overlay = showSimpleNotification(
-      GestureDetector(
-        onTap: () {
-          onTap.call();
-          overlay.dismiss();
-        },
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: FiicoPaddings.twenyFour,
-              bottom: FiicoPaddings.sixteen,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    message.notification?.body ?? '',
-                    style: Style.subtitle.copyWith(
-                      color: FiicoColors.grayDark,
-                      fontSize: FiicoFontSize.xm,
-                    ),
-                    maxLines: FiicoMaxLines.ten,
-                  ),
-                ),
-                const Icon(
-                  Icons.double_arrow_rounded,
-                  color: FiicoColors.purpleDark,
-                  size: 30,
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-      elevation: 20,
-      background: FiicoColors.white,
-      position: NotificationPosition.bottom,
-      slideDismissDirection: DismissDirection.down,
-      autoDismiss: false,
-    );
-  }
-
   static void showLocalNotification(
     RemoteMessage message, {
     required VoidCallback onTap,
@@ -124,7 +74,8 @@ class FiicoToast {
           onTap.call();
           overlay.dismiss();
         },
-        child: Padding(
+        child: Container(
+          color: FiicoColors.purpleNeutral,
           padding: const EdgeInsets.symmetric(
             vertical: FiicoPaddings.sixteen,
           ),
@@ -169,7 +120,7 @@ class FiicoToast {
       background: FiicoColors.purpleNeutral,
       position: NotificationPosition.top,
       slideDismissDirection: DismissDirection.up,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 10),
     );
   }
 }

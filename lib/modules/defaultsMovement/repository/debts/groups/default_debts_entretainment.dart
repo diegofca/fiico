@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/fiico_icons.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
@@ -9,7 +10,7 @@ import 'package:uuid/uuid.dart';
 
 class EntretaimentDebtsMovements implements MovementGroup {
   @override
-  final name = 'Entretenimiento';
+  final name = FiicoLocale().entretainment;
 
   @override
   final id = 2;
@@ -47,7 +48,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(MdiIcons.netflix),
     type: MovementType.DEBT.name,
-    description: 'Saldo de susripcion en Netflix',
+    description: FiicoLocale().netflixDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -64,7 +65,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(AppIcon.disneyPlus),
     type: MovementType.DEBT.name,
-    description: 'Saldo de susripcion en Netflix',
+    description: FiicoLocale().disneyDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -81,7 +82,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.amazon),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Prime',
+    description: FiicoLocale().amazonPrimeDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -98,7 +99,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.spotify),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Spotify',
+    description: FiicoLocale().spotifyDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -115,7 +116,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.hbo),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en HBO',
+    description: FiicoLocale().hboDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -125,13 +126,13 @@ class EntretaimentDebtsMovements implements MovementGroup {
 
   static final _youtube = Movement(
     id: const Uuid().v1(),
-    name: 'Youtube Premium',
+    name: 'Youtube Music',
     value: null,
     createdAt: Timestamp.now(),
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.youtube),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Youtube Premium',
+    description: FiicoLocale().youtubeDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -147,7 +148,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.applemusic),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Apple Music',
+    description: FiicoLocale().appleMusicDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -163,7 +164,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.xbox),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Xbox Game Pass',
+    description: FiicoLocale().xboxDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -179,7 +180,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.playstation),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en PlayStation Plus',
+    description: FiicoLocale().psplusDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -189,13 +190,13 @@ class EntretaimentDebtsMovements implements MovementGroup {
 
   static final _magazine = Movement(
     id: const Uuid().v1(),
-    name: 'Revista',
+    name: FiicoLocale().magazine,
     value: null,
     createdAt: Timestamp.now(),
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(MdiIcons.magazinePistol),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Revista',
+    description: FiicoLocale().magazineDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -211,7 +212,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.amazonaws),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Amazon AWS',
+    description: FiicoLocale().amazonAwsDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -227,7 +228,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(MdiIcons.truckDelivery),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Rappi Prime',
+    description: FiicoLocale().rappiPrimeDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -237,7 +238,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
 
   static final _deezer = Movement(
     id: const Uuid().v1(),
-    name: 'Deezer Premium',
+    name: 'Deezer',
     value: null,
     createdAt: Timestamp.now(),
     recurrencyAt: null,
@@ -259,7 +260,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.dropbox),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en DropBox',
+    description: FiicoLocale().dropboxDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -275,7 +276,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.icloud),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en iCloud',
+    description: FiicoLocale().icloudDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -291,7 +292,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.slack),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en Slack',
+    description: FiicoLocale().slackDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,
@@ -307,7 +308,7 @@ class EntretaimentDebtsMovements implements MovementGroup {
     recurrencyAt: null,
     icon: FiicoIcon.fromIcon(SimpleIcons.tmobile),
     type: MovementType.DEBT.name,
-    description: 'Saldo de suscripción en T-Mobile',
+    description: FiicoLocale().tMobileDescription,
     typeDescription: null,
     currency: null,
     budgetName: null,

@@ -2,7 +2,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
-import 'package:control/modules/changeLanguage/repository/languages_list.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class ChangeListItemViewState extends State<ChangeListItemView> {
       widget.language.name,
       style: Style.subtitle.copyWith(
         fontSize: FiicoFontSize.xs,
-        color: FiicoColors.grayNeutral,
+        color: FiicoColors.grayDark,
       ),
     );
   }

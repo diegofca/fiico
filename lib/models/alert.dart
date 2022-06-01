@@ -4,24 +4,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FiicoAlert {
   final bool? active;
-  final int? day;
+  final List<int>? days;
   final String? type;
   final List<DateTime>? dates;
 
-  FiicoAlert({this.active, this.day, this.type, this.dates});
+  FiicoAlert({this.active, this.days, this.type, this.dates});
 
   FiicoAlert.empty({
     this.active = false,
     this.type = FiicoAlert.SIMPLE_TYPE,
-    this.day,
+    this.days,
     this.dates,
   });
 
   factory FiicoAlert.fromJson(Map<String, dynamic>? json) {
     return FiicoAlert(
       active: json?['active'],
-      day: json?['day'],
       type: json?['type'],
+      days: FiicoAlert.toDaysList(json),
       dates: FiicoAlert.toDatesList(json),
     );
   }
@@ -35,10 +35,19 @@ class FiicoAlert {
     return dates;
   }
 
+  static List<int>? toDaysList(Map<String, dynamic>? json) {
+    List<int> days = [];
+    final jDays = json?['days'] ?? [];
+    jDays.forEach((day) {
+      days.add(day);
+    });
+    return days;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'active': active,
-      'day': day,
+      'days': days,
       'type': type,
       'dates': dates,
     };
