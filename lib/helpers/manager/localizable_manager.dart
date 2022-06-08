@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 
 class FiicoLocale {
-  static var locale = const Locale('en', 'UK');
+  static var locale = const Locale('en', 'US');
 
   final securityPinTitle = 'security_pin_title'.tr();
   final enterYourPinTitle = 'enter_your_pin_title'.tr();
@@ -302,4 +302,10 @@ class FiicoLocale {
   final update = "update".tr();
   final after = "after".tr();
   final updateDescription = "update_description".tr();
+  final updateYourPremiumPlan = "update_your_premium_plan".tr();
+  final learnAboutYourPremiumPlan = "learn_about_your_premium_plan".tr();
+  final recoverBudget = "recover_budget".tr();
+  final archiveBudget = "archive_budget".tr();
+  final getOutBudget = "get_out_budget".tr();
+  final archivedBudgets = "archived_budgets".tr();
 }

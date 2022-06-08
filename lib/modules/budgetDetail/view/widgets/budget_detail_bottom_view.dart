@@ -9,19 +9,26 @@ import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 
 enum BudgetDetailBottomOption {
+  archive_budget,
   delete_budget,
+  recover_budget,
   exit_budget,
   add_friend,
 }
 
 class BudgetDetailBottomView {
-  final _ownerOptions = {
-    BudgetDetailBottomOption.delete_budget: FiicoLocale().deleteBudget,
+  final _ownerEnableOptions = {
+    BudgetDetailBottomOption.archive_budget: FiicoLocale().archiveBudget,
     BudgetDetailBottomOption.add_friend: FiicoLocale().shareWithFriend,
   };
 
+  final _ownerDisableOptions = {
+    BudgetDetailBottomOption.recover_budget: FiicoLocale().recoverBudget,
+    BudgetDetailBottomOption.delete_budget: FiicoLocale().deleteBudget,
+  };
+
   final _inviteOptions = {
-    BudgetDetailBottomOption.exit_budget: 'Salir del presupuesto',
+    BudgetDetailBottomOption.exit_budget: FiicoLocale().getOutBudget,
   };
 
   void show(
@@ -34,7 +41,7 @@ class BudgetDetailBottomView {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        final _options = budget.isOwner ? _ownerOptions : _inviteOptions;
+        final _options = getOptions(budget);
         return StatefulBuilder(
           builder: (context, setState) {
             return AnimatedContainer(
@@ -67,7 +74,7 @@ class BudgetDetailBottomView {
 
   Widget _budgetListView(
       Budget budget, Function(BudgetDetailBottomOption) onOptionSelected) {
-    final _options = budget.isOwner ? _ownerOptions : _inviteOptions;
+    final _options = getOptions(budget);
     return ListView.builder(
       itemCount: _options.length,
       itemBuilder: (context, index) {
@@ -116,5 +123,13 @@ class BudgetDetailBottomView {
       ),
       child: SeparatorView(),
     );
+  }
+
+  Map<BudgetDetailBottomOption, String> getOptions(Budget budget) {
+    return budget.isOwner
+        ? budget.isActive()
+            ? _ownerEnableOptions
+            : _ownerDisableOptions
+        : _inviteOptions;
   }
 }

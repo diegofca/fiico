@@ -13,6 +13,9 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
   BudgetDetailBloc(this.repository) : super(const BudgetDetailState()) {
     on<BudgetDetailFetchRequest>(_mapBudgetsToState);
     on<BudgetDetailDeleteRequest>(_mapDeleteBudgetToState);
+    on<BudgetDetailArchiveRequest>(_mapArchiveBudgetToState);
+    on<BudgetDetailRecoverRequest>(_mapRecoverBudgetToState);
+    on<BudgetDetailRemoveUserRequest>(_mapRemoveToUserToState);
     on<BudgetDetailMovementAddedRequest>(_mapAddedMovementToState);
     on<BudgetDetailMovementRemoveRequest>(_mapRemoveMovementToState);
     on<BudgetUpdateDetailRequest>(_mapUpdateBudgetToState);
@@ -34,6 +37,22 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     ));
   }
 
+  void _mapArchiveBudgetToState(
+    BudgetDetailArchiveRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    try {
+      await repository.archiveBudget(event.budget);
+      emit(state.copyWith(
+        status: BudgetDetailStatus.success,
+        deleteBudget: event.budget,
+      ));
+    } catch (_) {
+      emit(state.copyWith(status: BudgetDetailStatus.failed));
+    }
+  }
+
   void _mapDeleteBudgetToState(
     BudgetDetailDeleteRequest event,
     Emitter<BudgetDetailState> emit,
@@ -41,6 +60,22 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     emit(state.copyWith(status: BudgetDetailStatus.loading));
     try {
       await repository.deleteBudget(event.budget);
+      emit(state.copyWith(
+        status: BudgetDetailStatus.success,
+        deleteBudget: event.budget,
+      ));
+    } catch (_) {
+      emit(state.copyWith(status: BudgetDetailStatus.failed));
+    }
+  }
+
+  void _mapRecoverBudgetToState(
+    BudgetDetailRecoverRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+    try {
+      await repository.recoverBudget(event.budget);
       emit(state.copyWith(
         status: BudgetDetailStatus.success,
         deleteBudget: event.budget,
@@ -96,6 +131,28 @@ class BudgetDetailBloc extends Bloc<BudgetDetailEvent, BudgetDetailState> {
     } catch (_) {
       emit(state.copyWith(status: BudgetDetailStatus.failed));
     }
+  }
+
+  void _mapRemoveToUserToState(
+    BudgetDetailRemoveUserRequest event,
+    Emitter<BudgetDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: BudgetDetailStatus.loading));
+
+    var budget = event.budget;
+    for (var u in budget.users ?? []) {
+      final isEntry = event.users?.firstWhereOrNull((e) => e.id == u.id);
+      if (isEntry == null) {
+        await repository.removeUserToBudget(u, budget);
+      }
+    }
+
+    budget = budget.copyWith(users: event.users);
+    await repository.updateBudget(budget);
+    emit(state.copyWith(
+      status: BudgetDetailStatus.success,
+      deleteBudget: budget,
+    ));
   }
 
   void _mapChangeUsersToState(

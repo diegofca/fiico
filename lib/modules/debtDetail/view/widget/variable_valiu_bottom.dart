@@ -71,8 +71,8 @@ class VariableValueBottoView {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            top: 8,
-            bottom: 16,
+            top: FiicoPaddings.eight,
+            bottom: FiicoPaddings.sixteen,
           ),
           child: Text(
             "${FiicoLocale().addTheNewValueOf} ${movement?.name} ${FiicoLocale().forThisCycle}",

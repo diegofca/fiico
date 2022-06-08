@@ -47,7 +47,7 @@
     "final_Date": "Fecha final",
     "you_can_define_duration_dates": "Podrás definir una duración, fecha inicial y fecha final",
     "share_button": "Compartir",
-    "you_can_create_and_share_boards": "Puedes crear tus tableros y compartirlos con tus amigos y familiares, si estan tregistrados en Fiico podrán modificar tu tablero en cualquier momento.",
+    "you_can_create_and_share_boards": "Puedes crear tus tableros y compartirlos con tus amigos y familiares, si estan registrados en Valiu podrán modificar tu tablero en cualquier momento.",
     "select_a_icon": "Seleccione un icono",
     "cancel_button": "Cancelar",
     "search_button": "Buscar",
@@ -284,5 +284,11 @@
     "new_update_requiered": "¡Nueva actualización requerida! 🥳",
     "update": "Actualizar",
     "after": "Después",
-    "update_description": "¡Una nueva versión de la aplicación está ahora disponible!.\nMejoramos día a día para brindarte el mejor servicio."
+    "update_description": "¡Una nueva versión de la aplicación está ahora disponible!.\nMejoramos día a día para brindarte el mejor servicio.",
+    "update_your_premium_plan": "¡Actualiza tu plan Premium!",
+    "learn_about_your_premium_plan": "Conoce los beneficios de ser Valiu Premium, desbloquea todas las actuales y futuras funcionalidades",
+    "recover_budget": "Recuperar presupuesto",
+    "archive_budget": "Archivar presupuesto",
+    "get_out_budget": "Salir del presupuesto",
+    "archived_budgets": "Presupuestos archivados"
 }

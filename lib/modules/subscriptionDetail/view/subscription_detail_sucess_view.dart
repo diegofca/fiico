@@ -11,6 +11,7 @@ import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/premium/view/premium_page.dart';
 import 'package:control/modules/subscriptionDetail/bloc/subscription_detail_bloc.dart';
 import 'package:control/modules/subscriptionDetail/view/header/subscription_detail_header.dart';
+import 'package:control/modules/webView/view/web_view_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -291,15 +292,19 @@ class SubscriptionDetailSuccessView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: FiicoPaddings.thirtyTwo),
       child: Column(
         children: [
-          _termsAndConditions(),
+          _termsAndConditions(context),
           _cancelTextConditions(),
         ],
       ),
     );
   }
 
-  Widget _termsAndConditions() {
+  Widget _termsAndConditions(BuildContext context) {
     return GestureDetector(
+      onTap: () => FiicoRoute.send(
+        context,
+        const WebviewPage(url: "www.google.com"),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(FiicoPaddings.eight),
         child: Text(

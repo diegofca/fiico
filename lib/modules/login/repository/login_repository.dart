@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/plan.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
@@ -116,6 +117,7 @@ class LoginRepository extends LoginRepositoryAbs {
       userName: userCredential.user?.displayName,
       currentPlan: Plan.free(),
       defaultCurrency: CurrencyService().getAll().first,
+      languageCode: FiicoLocale.locale.toLanguageTag(),
       notificationsOptions: NotificationCenterRepository().options,
       deviceTokens: [token],
       socialToken: credential?.accessToken,

@@ -27,6 +27,7 @@ class FiicoUser extends Equatable {
   final bool? authBiometric;
   final Currency? defaultCurrency;
   final int? totalBudgets;
+  final String? languageCode;
   bool? showTutorial;
 
   FiicoUser({
@@ -49,6 +50,7 @@ class FiicoUser extends Equatable {
     this.defaultCurrency,
     this.notificationsOptions,
     this.totalBudgets,
+    this.languageCode,
   });
 
   factory FiicoUser.fromJson(Map<String, dynamic>? json) {
@@ -70,6 +72,7 @@ class FiicoUser extends Equatable {
       authBiometric: json?['authBiometric'],
       securityCode: json?['securityCode'],
       email: json?['email'],
+      languageCode: json?['languageCode'],
       vip: json?['vip'],
     );
   }
@@ -88,6 +91,7 @@ class FiicoUser extends Equatable {
       'showTutorial': showTutorial ?? false,
       'budgetPermission': budgetPermission ?? '',
       'authBiometric': authBiometric ?? false,
+      'languageCode': languageCode ?? '',
       'securityCode': securityCode ?? '',
       'defaultCurrency': defaultCurrency?.toJson(),
       'payments': payments?.map((e) => e.toJson()).toList() ?? [],
@@ -125,6 +129,7 @@ class FiicoUser extends Equatable {
     bool? authBiometric,
     Currency? defaultCurrency,
     int? totalBudgets,
+    String? languageCode,
   }) {
     return FiicoUser(
       id: id ?? this.id,
@@ -145,6 +150,7 @@ class FiicoUser extends Equatable {
       authBiometric: authBiometric ?? this.authBiometric,
       payments: payments ?? this.payments,
       defaultCurrency: defaultCurrency ?? this.defaultCurrency,
+      languageCode: languageCode ?? this.languageCode,
       showTutorial: showTutorial,
     );
   }
@@ -159,7 +165,8 @@ class FiicoUser extends Equatable {
         currentPlan,
         profileImage,
         securityCode,
-        authBiometric
+        authBiometric,
+        languageCode,
       ];
 
   @override

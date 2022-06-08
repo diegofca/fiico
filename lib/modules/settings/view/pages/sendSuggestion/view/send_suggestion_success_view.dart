@@ -161,6 +161,7 @@ class SendSuggestionSuccessView extends StatelessWidget {
             : FiicoColors.graySoft,
         onTap: () {
           if (isSendSuggestionAvailable()) {
+            _controller.clear();
             context
                 .read<SendSuggestionBloc>()
                 .add(const SendSuggetionRequest());

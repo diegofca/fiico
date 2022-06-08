@@ -57,7 +57,6 @@ class PinCodeUnlockView extends StatelessWidget {
           case PinCodeUnlockStatus.init:
             if (state.isCorrectPin) {
               FiicoRoute.sendFade(context, MenuPage(user: user));
-              throw Exception();
             } else {
               _showErrorAuthLogged(context);
             }

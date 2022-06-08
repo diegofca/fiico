@@ -22,6 +22,37 @@ class BudgetDetailDeleteRequest extends BudgetDetailEvent {
   List<Object?> get props => [budget];
 }
 
+class BudgetDetailArchiveRequest extends BudgetDetailEvent {
+  const BudgetDetailArchiveRequest({required this.budget});
+
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [budget];
+}
+
+class BudgetDetailRecoverRequest extends BudgetDetailEvent {
+  const BudgetDetailRecoverRequest({required this.budget});
+
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [budget];
+}
+
+class BudgetDetailRemoveUserRequest extends BudgetDetailEvent {
+  const BudgetDetailRemoveUserRequest({
+    required this.users,
+    required this.budget,
+  });
+
+  final List<FiicoUser>? users;
+  final Budget budget;
+
+  @override
+  List<Object?> get props => [users, budget];
+}
+
 class BudgetDetailMovementAddedRequest extends BudgetDetailEvent {
   const BudgetDetailMovementAddedRequest({
     required this.newMovement,

@@ -9,6 +9,8 @@ import 'package:control/network/firestore_path.dart';
 abstract class BudgetDetailRepositoryAbs {
   Future<void> addNewMovement(Movement movement, Budget? budget);
   Future<void> deleteMovement(Movement movement, Budget? budget);
+  Future<void> archiveBudget(Budget budget);
+  Future<void> recoverBudget(Budget budget);
   Future<void> removeUserToBudget(FiicoUser? user, Budget budget);
   Future<void> deleteBudget(Budget budget);
   Stream<Budget> getBudget(String? userID);
@@ -74,9 +76,32 @@ class BudgetDetailRepository extends BudgetDetailRepositoryAbs {
   }
 
   @override
-  Future<void> deleteBudget(Budget budget) async {
+  Future<void> recoverBudget(Budget budget) async {
+    final _budget = budget.copyWith(status: 'Active');
+    return updateBudget(_budget);
+  }
+
+  @override
+  Future<void> archiveBudget(Budget budget) async {
     final _budget = budget.copyWith(status: 'Disable');
     return updateBudget(_budget);
+  }
+
+  @override
+  Future<void> deleteBudget(Budget budget) async {
+    final userID = budget.getPropertiedID();
+    budget.users?.forEach((u) async {
+      await _movementsCollections
+          .doc(u.id)
+          .collection(Firestore.budgetsPath)
+          .doc(budget.id)
+          .delete();
+    });
+    return _movementsCollections
+        .doc(userID)
+        .collection(Firestore.budgetsPath)
+        .doc(budgetID)
+        .delete();
   }
 
   @override

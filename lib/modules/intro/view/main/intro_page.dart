@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:control/helpers/SVGImages.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
@@ -143,7 +144,10 @@ class IntroPageViewState extends State<IntroPageView> {
                 ],
               ),
               GestureDetector(
-                onTap: () => FiicoRoute.sendFade(context, const LoginPage()),
+                onTap: () async {
+                  final lang = await Preferences.get.getLang();
+                  FiicoRoute.sendFade(context, LoginPage(lang: lang));
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: FiicoPaddings.sixteen,

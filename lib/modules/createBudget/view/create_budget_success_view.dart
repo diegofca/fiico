@@ -21,7 +21,10 @@ import 'package:control/modules/createMovement/view/create_movement_page.dart';
 import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
 import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
 import 'package:control/modules/editMovement/view/edit_movement_page.dart';
+import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/premiumUpdate/view/premium_update_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
@@ -578,12 +581,19 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  void _showErrorUserNotPremium(BuildContext context) {
-    FiicoAlertDialog.showWarnning(
-      context,
-      title: 'Actualiza tu plan a Premium!',
-      message:
-          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
-    );
+  void _showErrorUserNotPremium(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    PremiumUpdatePage().show(context, onUpdateIntent: () {
+      FiicoRoute.send(
+        context,
+        PremiumPage(
+          user: user,
+          showPlan: (plan) {
+            final newUser = user?.copyWith(currentPlan: plan);
+            FiicoRoute.send(context, SubscriptionDetailPage(user: newUser));
+          },
+        ),
+      );
+    });
   }
 }

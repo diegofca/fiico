@@ -4,15 +4,18 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
-import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/helpCenterConversation.dart';
 import 'package:control/models/helpCenterMessage.dart';
 import 'package:control/models/user.dart';
+import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/premiumUpdate/view/premium_update_page.dart';
 import 'package:control/modules/settings/view/pages/helpCenter/bloc/help_center_bloc.dart';
 import 'package:control/modules/settings/view/pages/helpCenter/view/bubbles/help_center_date_bubble_view.dart';
 import 'package:control/modules/settings/view/pages/helpCenter/view/bubbles/help_center_text_buble_view.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -234,11 +237,21 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
   }
 
   void _showErrorUserNotPremium(BuildContext context) {
-    FiicoAlertDialog.showWarnning(
-      context,
-      title: 'Actualiza tu plan a Premium!',
-      message:
-          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
-    );
+    PremiumUpdatePage().show(context, onUpdateIntent: () {
+      FiicoRoute.send(
+        context,
+        PremiumPage(
+          user: widget.user,
+          showPlan: (plan) {
+            final newUser = widget.user?.copyWith(currentPlan: plan);
+            FiicoRoute.back(context);
+            FiicoRoute.send(
+              context,
+              SubscriptionDetailPage(user: newUser),
+            );
+          },
+        ),
+      );
+    });
   }
 }

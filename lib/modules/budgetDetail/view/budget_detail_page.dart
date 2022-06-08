@@ -1,7 +1,6 @@
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/helpers/pages_names.dart';
@@ -11,7 +10,10 @@ import 'package:control/modules/budgetDetail/repository/budget_detail_repository
 import 'package:control/modules/budgetDetail/view/budget_detail_success_view.dart';
 import 'package:control/modules/budgetDetail/view/widgets/budget_detail_bottom_view.dart';
 import 'package:control/modules/connectivity/view/connectivity_builder.dart';
+import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/premiumUpdate/view/premium_update_page.dart';
 import 'package:control/modules/searchUsers/view/search_users_page.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,13 +123,20 @@ class BudgetDetailPageView extends StatelessWidget {
   void _selectedOption(
       BuildContext context, Budget budget, BudgetDetailBottomOption option) {
     switch (option) {
+      case BudgetDetailBottomOption.archive_budget:
+        _onArchiveBudget(budget, context);
+        break;
       case BudgetDetailBottomOption.delete_budget:
         _onDeleteBudget(budget, context);
         break;
+      case BudgetDetailBottomOption.exit_budget:
+        _onExitBudget(budget, context);
+        break;
+      case BudgetDetailBottomOption.recover_budget:
+        _onRecoverBudget(budget, context);
+        break;
       case BudgetDetailBottomOption.add_friend:
         _onShareBudgetWithUsers(budget, context);
-        break;
-      case BudgetDetailBottomOption.exit_budget:
         break;
     }
   }
@@ -136,6 +145,27 @@ class BudgetDetailPageView extends StatelessWidget {
     context
         .read<BudgetDetailBloc>()
         .add(BudgetDetailDeleteRequest(budget: budget));
+  }
+
+  void _onArchiveBudget(Budget budget, BuildContext context) {
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetDetailArchiveRequest(budget: budget));
+  }
+
+  void _onRecoverBudget(Budget budget, BuildContext context) {
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetDetailRecoverRequest(budget: budget));
+  }
+
+  void _onExitBudget(Budget budget, BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    final users = (budget.users ?? []).toList();
+    users.removeWhere((e) => e.id == user?.id);
+    context
+        .read<BudgetDetailBloc>()
+        .add(BudgetDetailRemoveUserRequest(users: users, budget: budget));
   }
 
   void _onShareBudgetWithUsers(Budget budget, BuildContext context) async {
@@ -154,12 +184,19 @@ class BudgetDetailPageView extends StatelessWidget {
     }
   }
 
-  void _showErrorUserNotPremium(BuildContext context) {
-    FiicoAlertDialog.showWarnning(
-      context,
-      title: 'Actualiza tu plan a Premium!',
-      message:
-          'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
-    );
+  void _showErrorUserNotPremium(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    PremiumUpdatePage().show(context, onUpdateIntent: () {
+      FiicoRoute.send(
+        context,
+        PremiumPage(
+          user: user,
+          showPlan: (plan) {
+            final newUser = user?.copyWith(currentPlan: plan);
+            FiicoRoute.send(context, SubscriptionDetailPage(user: newUser));
+          },
+        ),
+      );
+    });
   }
 }

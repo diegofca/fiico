@@ -1,3 +1,4 @@
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/remote_config.dart';
@@ -16,6 +17,10 @@ import 'package:control/modules/createMovement/bloc/create_movement_bloc.dart';
 import 'package:control/modules/createMovement/view/header/create_movement_header_view.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_dates_selector.dart';
 import 'package:control/modules/createMovement/view/widgets/create_movement_day_selector.dart';
+import 'package:control/modules/premium/view/premium_page.dart';
+import 'package:control/modules/premiumUpdate/view/premium_update_page.dart';
+import 'package:control/modules/subscriptionDetail/view/subscription_detail_page.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -438,12 +443,7 @@ class CreateMovementSuccessView extends StatelessWidget {
             CreateMovementAddedRequest(newMovement: movement, budget: budget));
       }
     } else if (!isCreateAvailable) {
-      FiicoAlertDialog.showWarnning(
-        context,
-        title: 'Actualiza tu plan a Premium!',
-        message:
-            'Actualiza tu plan para poder disfrutar de todos los beneficios sin limite',
-      );
+      _showErrorUserNotPremium(context);
     } else {
       FiicoAlertDialog.showWarnning(
         context,
@@ -495,5 +495,21 @@ class CreateMovementSuccessView extends StatelessWidget {
         },
       );
     }
+  }
+
+  void _showErrorUserNotPremium(BuildContext context) async {
+    final user = await Preferences.get.getUser();
+    PremiumUpdatePage().show(context, onUpdateIntent: () {
+      FiicoRoute.send(
+        context,
+        PremiumPage(
+          user: user,
+          showPlan: (plan) {
+            final newUser = user?.copyWith(currentPlan: plan);
+            FiicoRoute.send(context, SubscriptionDetailPage(user: newUser));
+          },
+        ),
+      );
+    });
   }
 }

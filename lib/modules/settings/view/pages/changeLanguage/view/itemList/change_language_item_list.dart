@@ -1,11 +1,14 @@
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/manager/language_manager.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/bloc/change_language_bloc.dart';
 import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class ChangeListItemView extends StatefulWidget {
@@ -28,12 +31,7 @@ class ChangeListItemViewState extends State<ChangeListItemView> {
     return Padding(
       padding: const EdgeInsets.all(FiicoPaddings.eight),
       child: GestureDetector(
-        onTap: () async {
-          FiicoLocale.locale = widget.language.locale;
-          await context.setLocale(FiicoLocale.locale);
-          widget.onSelectLanguage(widget.language);
-          FiicoRoute.back(context);
-        },
+        onTap: () => _onChangeLanguage(context),
         child: Container(
           color: FiicoColors.white,
           child: Row(
@@ -71,5 +69,16 @@ class ChangeListItemViewState extends State<ChangeListItemView> {
         size: 40,
       ),
     );
+  }
+
+  void _onChangeLanguage(BuildContext context) async {
+    context
+        .read<ChangeLanguageBloc>()
+        .add(ChangeLanguagerRequest(language: widget.language));
+
+    widget.onSelectLanguage(widget.language);
+    LanguageManager.setLanguage(widget.language);
+    await context.setLocale(FiicoLocale.locale);
+    FiicoRoute.back(context);
   }
 }

@@ -6,6 +6,7 @@ import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/budgets/bloc/budgets_bloc.dart';
+import 'package:control/modules/budgetsArchiveds/view/budgets_archived_page.dart';
 import 'package:control/modules/createBudget/view/create_budget_bottom_view.dart';
 import 'package:control/modules/createBudget/view/create_budget_page.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
@@ -30,7 +31,10 @@ class BudgetsPage extends StatelessWidget {
       appBar: GenericAppBar(
         text: FiicoLocale().myBudgets,
         textColor: FiicoColors.black,
-        actions: [_addBudgetButton(context)],
+        actions: [
+          _archivesButton(context),
+          _addBudgetButton(context),
+        ],
         isShowBack: false,
       ),
       body: BlocProvider(
@@ -53,6 +57,20 @@ class BudgetsPage extends StatelessWidget {
           MdiIcons.plusCircleOutline,
           color: FiicoColors.grayDark,
         ),
+      ),
+    );
+  }
+
+  Widget _archivesButton(BuildContext context) {
+    return IconButton(
+      highlightColor: Colors.transparent,
+      onPressed: () => FiicoRoute.send(
+        context,
+        BudgetsArchivedPage(user: user),
+      ),
+      icon: const Icon(
+        MdiIcons.archiveArrowDownOutline,
+        color: FiicoColors.grayDark,
       ),
     );
   }

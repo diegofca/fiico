@@ -1,10 +1,12 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
+import 'package:control/helpers/manager/language_manager.dart';
 import 'package:control/modules/login/bloc/login_bloc.dart';
 import 'package:control/modules/login/repository/login_repository.dart';
 import 'package:control/modules/login/view/login_success_view.dart';
 import 'package:control/modules/menu/view/view.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +14,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({
     Key? key,
+    required this.lang,
   }) : super(key: key);
+
+  final Language lang;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class LoginPage extends StatelessWidget {
       create: (_) => LoginBloc(
         LoginRepository(),
       )..add(const LoginInitEvent()),
-      child: const LoginPageView(),
+      child: LoginPageView(lang: lang),
     );
   }
 }
@@ -28,7 +33,10 @@ class LoginPage extends StatelessWidget {
 class LoginPageView extends StatelessWidget {
   const LoginPageView({
     Key? key,
+    required this.lang,
   }) : super(key: key);
+
+  final Language lang;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class LoginPageView extends StatelessWidget {
       builder: (context, state) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: LoginSuccesView(state: state),
+          child: LoginSuccesView(state: state, lang: lang),
         );
       },
       listener: (context, state) async {
@@ -58,8 +66,9 @@ class LoginPageView extends StatelessWidget {
     }
   }
 
-  void _validateIfLoginComplete(BuildContext context, LoginState state) {
+  void _validateIfLoginComplete(BuildContext context, LoginState state) async {
     if (state.loginComplete) {
+      LanguageManager.setLanguageLogged(context, state.userLogged);
       FiicoRoute.sendReplace(context, MenuPage(user: state.userLogged));
     }
   }

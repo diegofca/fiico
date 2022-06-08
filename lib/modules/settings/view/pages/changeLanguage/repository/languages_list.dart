@@ -8,6 +8,22 @@ class Language {
   final Locale locale;
 
   Language({required this.name, required this.flag, required this.locale});
+
+  factory Language.fromJson(Map<String, dynamic>? json) {
+    return Language(
+      name: json?['name'],
+      flag: json?['flag'],
+      locale: Locale.fromSubtags(countryCode: json?['locale']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name.toString(),
+      'flag': flag,
+      'locale': locale.toLanguageTag(),
+    };
+  }
 }
 
 class Languages {

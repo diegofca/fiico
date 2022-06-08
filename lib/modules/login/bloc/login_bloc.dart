@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/user.dart';

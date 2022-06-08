@@ -15,19 +15,24 @@ import 'package:control/modules/login/model/login_validator_email_model.dart';
 import 'package:control/modules/login/model/login_validator_password_model.dart';
 import 'package:control/modules/login/view/login_social_buttons_view.dart';
 import 'package:control/modules/register/view/sign_up_page.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
+import 'package:control/modules/settings/view/pages/changeLanguage/view/change_language_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LoginSuccesView extends StatefulWidget {
-  const LoginSuccesView({
+  LoginSuccesView({
     Key? key,
     this.state,
+    required this.lang,
   }) : super(key: key);
 
   final LoginState? state;
+  Language? lang;
 
   @override
   State<LoginSuccesView> createState() => LoginSuccesViewState();
@@ -49,9 +54,10 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GenericAppBar(
+      appBar: GenericAppBar(
         bgColor: FiicoColors.clear,
         isShowBack: false,
+        actions: [_flagHeaderView(context)],
       ),
       extendBodyBehindAppBar: true,
       body: _body(context),
@@ -66,14 +72,14 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _headerView(),
+          _headerView(context),
           _bodyContainer(context),
         ],
       ),
     );
   }
 
-  Widget _headerView() {
+  Widget _headerView(BuildContext context) {
     return AspectRatio(
       aspectRatio: 3 / 3,
       child: Stack(
@@ -85,6 +91,18 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           ),
           _titleHeaderView(),
         ],
+      ),
+    );
+  }
+
+  Widget _flagHeaderView(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _showlanguagePicker(context),
+      child: Container(
+        padding: const EdgeInsets.only(
+          right: FiicoPaddings.sixteen,
+        ),
+        child: FlagIcon(widget.lang?.flag),
       ),
     );
   }
@@ -298,6 +316,16 @@ class LoginSuccesViewState extends State<LoginSuccesView> {
           const SignUpPage(),
         ),
       ),
+    );
+  }
+
+  void _showlanguagePicker(BuildContext context) {
+    FiicoRoute.send(
+      context,
+      ChangeLanguagePage(onSelectLanguage: (lang) {
+        widget.lang = lang;
+        setState(() {});
+      }),
     );
   }
 }

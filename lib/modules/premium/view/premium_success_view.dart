@@ -10,6 +10,7 @@ import 'package:control/models/user.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/premium/view/widgets/premium_items_purchase.dart';
 import 'package:control/modules/settings/view/pages/helpCenter/view/help_center_dart.dart';
+import 'package:control/modules/webView/view/web_view_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -69,7 +70,7 @@ class PremiumSuccessView extends StatelessWidget {
           _payAndSafeTitleView(),
           _showPlansButtonView(context),
           _restoreShopsButton(),
-          _politicsAndPrivacityButton(),
+          _politicsAndPrivacityButton(context),
         ],
       ),
     );
@@ -342,22 +343,28 @@ class PremiumSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _politicsAndPrivacityButton() {
+  Widget _politicsAndPrivacityButton(BuildContext context) {
     return SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          bottom: FiicoPaddings.sixteen,
-          top: FiicoPaddings.eight,
+      child: GestureDetector(
+        onTap: () => FiicoRoute.send(
+          context,
+          const WebviewPage(url: "https://www.google.com"),
         ),
-        child: Text(
-          FiicoLocale().termsAndConditionsOfUse,
-          maxLines: FiicoMaxLines.four,
-          textAlign: TextAlign.center,
-          style: Style.subtitle.copyWith(
-            color: FiicoColors.white.withOpacity(0.3),
-            fontSize: FiicoFontSize.xs,
-            decoration: TextDecoration.underline,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            bottom: FiicoPaddings.sixteen,
+            top: FiicoPaddings.eight,
+          ),
+          child: Text(
+            FiicoLocale().termsAndConditionsOfUse,
+            maxLines: FiicoMaxLines.four,
+            textAlign: TextAlign.center,
+            style: Style.subtitle.copyWith(
+              color: FiicoColors.white.withOpacity(0.3),
+              fontSize: FiicoFontSize.xs,
+              decoration: TextDecoration.underline,
+            ),
           ),
         ),
       ),

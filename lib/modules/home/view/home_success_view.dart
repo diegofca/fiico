@@ -74,8 +74,9 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   }
 
   void _updateBudgetsInUser() async {
-    var user = widget.user?.copyWith(totalBudgets: widget.budgets?.length);
-    Preferences.get.saveUser(user);
+    var user = await Preferences.get.getUser();
+    var newUser = user?.copyWith(totalBudgets: widget.budgets?.length);
+    Preferences.get.saveUser(newUser);
   }
 
   Budget? get currentBudget {

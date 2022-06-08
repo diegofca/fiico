@@ -5,6 +5,7 @@ import 'package:control/helpers/GIFImages.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
+import 'package:control/helpers/manager/badgeManager.dart';
 import 'package:control/modules/intro/view/main/intro_page.dart';
 import 'package:control/modules/menu/view/view.dart';
 import 'package:control/modules/pinCodeUnlock/view/pincode_unlock_page.dart';
@@ -63,7 +64,7 @@ class SplashPageView extends StatelessWidget {
   }
 
   void _validateIfLogged(BuildContext context, SplashState state) {
-    Timer(const Duration(milliseconds: 2700), () async {
+    Timer(const Duration(milliseconds: 2500), () async {
       if (state.isLogged) {
         _processLogged(context);
       } else {
@@ -79,5 +80,6 @@ class SplashPageView extends StatelessWidget {
         activePinCode ? PinCodeUnlockPage(user: user) : MenuPage(user: user);
     FiicoRoute.sendFade(context, page);
     Smartlook.startRecording();
+    BadgeManager.removeBadge();
   }
 }

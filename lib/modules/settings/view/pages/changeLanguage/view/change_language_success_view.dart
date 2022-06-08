@@ -4,8 +4,8 @@ import 'package:control/modules/settings/view/pages/changeLanguage/repository/la
 import 'package:control/modules/settings/view/pages/changeLanguage/view/itemList/change_language_item_list.dart';
 import 'package:flutter/material.dart';
 
-class ChangeLanguageView extends StatefulWidget {
-  const ChangeLanguageView({
+class ChangeLanguageSuccessView extends StatefulWidget {
+  const ChangeLanguageSuccessView({
     Key? key,
     required this.languages,
     required this.onSelectLanguage,
@@ -15,10 +15,11 @@ class ChangeLanguageView extends StatefulWidget {
   final Function(Language) onSelectLanguage;
 
   @override
-  State<ChangeLanguageView> createState() => ChangeLanguageViewState();
+  State<ChangeLanguageSuccessView> createState() =>
+      ChangeLanguageSuccessViewState();
 }
 
-class ChangeLanguageViewState extends State<ChangeLanguageView> {
+class ChangeLanguageSuccessViewState extends State<ChangeLanguageSuccessView> {
   @override
   Widget build(BuildContext context) {
     return Container(

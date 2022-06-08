@@ -225,8 +225,8 @@ exports.helpCenterMessage = functions.firestore
   });
 
 exports.premiumUpdates = functions.pubsub
-.schedule('every 2 minutes')
-.onRun(async (context) => {
+  .schedule('0 8 * * *')
+  .onRun(async (context) => {
     const users = await firestore.collection('users').get()
     users.forEach( snapshot => {
       const userData = snapshot.data();
@@ -248,10 +248,28 @@ exports.premiumUpdates = functions.pubsub
         currentPlan.name = "Plan Free"
 
         snapshot.ref.update({ currentPlan: currentPlan });
-
         sendMessage(title, text, topic, "PREMIUM", '');
       }
     })
+  });
+
+exports.recordingMarkDebts = functions.pubsub
+  .schedule('0 22 * * *')
+  .onRun(async (context) => {
+    const topic = 'news'
+    const title = "Recordatorio 💸"
+    const text = "¡No olvides marcar tus gastos de hoy!"
+    sendMessage(title, text, topic, "NEWS", '');
+  });
+
+
+exports.recordingAdd = functions.pubsub
+  .schedule('0 20 * * *')
+  .onRun(async (context) => {
+    const topic = 'news'
+    const title = "Recordatorio 💸"
+    const text = "¿Ya agregastes tus gastos de hoy?"
+    sendMessage(title, text, topic, "NEWS", '');
   });
 
 /**
