@@ -87,7 +87,6 @@ class SignSuccesViewState extends State<SignSuccesView> {
   Widget _nameTextfieldView(BuildContext context) {
     final name = widget.state?.name?.name ?? '';
     final containtError = widget.state?.name?.isError ?? false;
-    _nameEditingController.text = name;
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -115,7 +114,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
   Widget _lastnameTextfieldView(BuildContext context) {
     final lastName = widget.state?.lastName?.lastName ?? '';
     final containtError = widget.state?.lastName?.isError ?? false;
-    _lastNameEditingController.text = lastName;
+    // _lastNameEditingController.text = lastName;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
@@ -140,7 +139,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
   Widget _emailTextfieldView(BuildContext context) {
     final email = widget.state?.email?.email ?? '';
     final containtError = widget.state?.email?.isError ?? false;
-    _emailEditingController.text = email;
+    // _emailEditingController.text = email;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.eight),
@@ -270,7 +269,7 @@ class SignSuccesViewState extends State<SignSuccesView> {
 
     return Text(
       CurrencyUtils.currencyToEmoji(
-        widget.state?.currency,
+        widget.state!.currency!,
       ),
       style: Style.title,
     );

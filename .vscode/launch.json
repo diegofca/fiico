@@ -11,7 +11,8 @@
 			"program": "lib/main/main.dart",
 			"args": [
                 "--no-sound-null-safety"
-            ]
+            ],
+			"flutterMode": "profile"
 		},
 		{
 			"name": "production",

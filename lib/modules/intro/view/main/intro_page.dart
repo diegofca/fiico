@@ -8,6 +8,7 @@ import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
+import 'package:control/helpers/genericViews/loading_view.dart';
 import 'package:control/modules/login/view/login_page.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';
 import 'package:control/modules/splash/repository/splash_repository.dart';
@@ -60,8 +61,8 @@ class IntroPageViewState extends State<IntroPageView> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   void initControllerState() {
@@ -71,10 +72,13 @@ class IntroPageViewState extends State<IntroPageView> {
 
     var element = videos[Random().nextInt(videos.length)];
     _controller = VideoPlayerController.asset(element);
-    _controller.initialize().then((_) {
-      _controller.setLooping(true);
-      _controller.play();
-    });
+  }
+
+  Future<bool> started() async {
+    await _controller.initialize();
+    await _controller.play();
+    _controller.setLooping(true);
+    return true;
   }
 
   @override
@@ -95,7 +99,18 @@ class IntroPageViewState extends State<IntroPageView> {
   Widget _getVideoBackground(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
-      child: VideoPlayer(_controller),
+      child: FutureBuilder(
+          future: started(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              );
+            } else {
+              return const LoadingView();
+            }
+          }),
     );
   }
 

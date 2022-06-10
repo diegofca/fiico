@@ -208,7 +208,7 @@ class HomeDebtsMovements implements MovementGroup {
     value: null,
     createdAt: Timestamp.now(),
     recurrencyAt: null,
-    icon: FiicoIcon.fromIcon(FontAwesomeIcons.university),
+    icon: FiicoIcon.fromIcon(FontAwesomeIcons.buildingColumns),
     type: MovementType.DEBT.name,
     description: FiicoLocale().university,
     typeDescription: null,

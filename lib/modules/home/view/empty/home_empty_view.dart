@@ -29,20 +29,22 @@ class HomeEmptyView extends StatefulWidget {
 class HomeEmtpyViewState extends State<HomeEmptyView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: FiicoColors.white,
-      padding: const EdgeInsets.only(top: FiicoPaddings.thirtyTwo),
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 2.5,
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        alignment: WrapAlignment.center,
-        direction: Axis.vertical,
-        children: [
-          _imageTop(),
-          _emptyText(),
-          _bodyButton(),
-        ],
+    return AspectRatio(
+      aspectRatio: 1 / 1.2,
+      child: Container(
+        color: FiicoColors.white,
+        padding: const EdgeInsets.only(bottom: FiicoPaddings.oneHundredTwenty),
+        alignment: Alignment.center,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          alignment: WrapAlignment.center,
+          direction: Axis.vertical,
+          children: [
+            _imageTop(),
+            _emptyText(),
+            _bodyButton(),
+          ],
+        ),
       ),
     );
   }

@@ -12,13 +12,14 @@ import 'package:control/modules/splash/view/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_smartlook/flutter_smartlook.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  initApp();
   initFacebook();
   initPurchase();
   initSmartLook();
@@ -30,6 +31,10 @@ void main() async {
     saveLocale: true,
     child: const ValiuApp(),
   ));
+}
+
+void initApp() {
+  WidgetsFlutterBinding.ensureInitialized();
 }
 
 Future<void> initEasyLocation() async {

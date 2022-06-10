@@ -93,7 +93,7 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiicoColors.white,
+      backgroundColor: FiicoColors.purpleDark,
       appBar: HomeAppBar(
         title: HomeTitleAppBar(
           title: "${FiicoLocale().hi}, ${widget.user?.firstName}",
