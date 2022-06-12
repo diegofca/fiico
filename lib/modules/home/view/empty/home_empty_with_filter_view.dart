@@ -26,8 +26,8 @@ class HomeEmptyWithFilterViewState extends State<HomeEmptyWithFilterView> {
   Widget build(BuildContext context) {
     return Container(
       color: FiicoColors.white,
-      padding: const EdgeInsets.only(top: FiicoPaddings.sixtyTwo),
       alignment: Alignment.center,
+      height: 300,
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         alignment: WrapAlignment.center,

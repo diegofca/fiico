@@ -290,5 +290,10 @@
     "recover_budget": "Recover budget",
     "archive_budget": "Archive budget",
     "get_out_budget": "Get out of budget",
-    "archived_budgets": "Archived budgets"
+    "archived_budgets": "Archived budgets",
+    "outcomes_of": "Outcomes of",
+    "incomes_of": "Incomes of",
+    "create_budgets_and_control": "Create budgets and control all your expenses and incomes",
+    "now_you_wont_have_problems": "Now you won't have problems controlling your money",
+    "review_the_history_of_each_cycle": "Review the history of each cycle of your budget, and set savings goals"
 }   

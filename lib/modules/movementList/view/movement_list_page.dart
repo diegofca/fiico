@@ -9,7 +9,6 @@ import 'package:control/helpers/pages_names.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
-import 'package:control/modules/budgetDetail/bloc/budget_detail_bloc.dart';
 import 'package:control/modules/budgetDetail/repository/budget_detail_repository.dart';
 import 'package:control/modules/connectivity/view/connectivity_builder.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
@@ -17,7 +16,9 @@ import 'package:control/modules/defaultsMovement/repository/default_movements_li
 import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
 import 'package:control/modules/editMovement/view/edit_movement_page.dart';
 import 'package:control/modules/home/view/widgets/home_create_movement_selector.dart';
+import 'package:control/modules/movementList/bloc/bloc/movement_list_bloc.dart';
 import 'package:control/modules/movementList/view/movement_list_success_view.dart';
+import 'package:control/modules/movementList/view/movement_list_type_selector.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,9 +37,9 @@ class MovementsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (blocContext) => BudgetDetailBloc(
+      create: (blocContext) => MovementListBloc(
         BudgetDetailRepository(budget.id),
-      )..add(BudgetDetailFetchRequest(budget: budget)),
+      )..add(MovementListFetchRequest(budget: budget)),
       child: ConnectivityBuilder.noConnection(
         pageName: PageNames.budgetPage,
         child: MovementsListPageView(newBudget: budget),
@@ -57,20 +58,19 @@ class MovementsListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BudgetDetailBloc, BudgetDetailState>(
+    return BlocConsumer<MovementListBloc, MovementListState>(
       builder: (context, state) {
-        return _bodyContainer(state.budget);
+        return _bodyContainer(state);
       },
       listener: (context, state) {
         _validateStatusView(context, state);
-        _validateIfDeleteBudget(context, state);
       },
     );
   }
 
-  Widget _bodyContainer(Stream<Budget>? budget) {
+  Widget _bodyContainer(MovementListState state) {
     return StreamBuilder<Budget>(
-      stream: budget,
+      stream: state.budget,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           newBudget = snapshot.requireData;
@@ -78,10 +78,16 @@ class MovementsListPageView extends StatelessWidget {
             backgroundColor: FiicoColors.grayBackground,
             appBar: GenericAppBar(
               textColor: FiicoColors.black,
-              actions: [_addMovementButton(context)],
-              text: '${FiicoLocale().movementsOf} ${newBudget.name}',
+              actions: [
+                _addMovementButton(context),
+                _changeMovementsTypeButton(context)
+              ],
+              text: _getTitleText(context),
             ),
-            body: MovementListSuccessView(budget: newBudget),
+            body: MovementListSuccessView(
+              dropDownValue: state.value,
+              budget: newBudget,
+            ),
           );
         }
         return const LoadingView();
@@ -94,7 +100,7 @@ class MovementsListPageView extends StatelessWidget {
       visible: newBudget.isReadAndWriteOnly,
       child: Padding(
         padding: const EdgeInsets.only(
-          right: FiicoPaddings.sixteen,
+          left: FiicoPaddings.sixteen,
         ),
         child: IconButton(
           highlightColor: Colors.transparent,
@@ -108,9 +114,28 @@ class MovementsListPageView extends StatelessWidget {
     );
   }
 
-  void _validateStatusView(BuildContext context, BudgetDetailState state) {
+  Widget _changeMovementsTypeButton(BuildContext context) {
+    return Visibility(
+      visible: newBudget.isReadAndWriteOnly,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          right: FiicoPaddings.sixteen,
+        ),
+        child: IconButton(
+          highlightColor: Colors.transparent,
+          onPressed: () => _changeMovementTypeClickedAction(context),
+          icon: const Icon(
+            MdiIcons.arrowDownDropCircle,
+            color: FiicoColors.grayDark,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _validateStatusView(BuildContext context, MovementListState state) {
     switch (state.status) {
-      case BudgetDetailStatus.loading:
+      case MovementListStatus.loading:
         FiicoRoute.showLoader(context);
         break;
       default:
@@ -118,16 +143,31 @@ class MovementsListPageView extends StatelessWidget {
     }
   }
 
-  void _validateIfDeleteBudget(BuildContext context, BudgetDetailState state) {
-    if (state.isDeletedBudget) {
-      Navigator.of(context).pop();
-    }
-  }
-
   void _addMovementClickedAction(BuildContext context) {
     HomeCreateMovementBottomView().show(
       context,
       onOptionSelected: (option) => _selectedOption(context, option),
+    );
+  }
+
+  void _changeMovementTypeClickedAction(BuildContext context) {
+    MovementListTypeBottomView().show(
+      context,
+      onOptionSelected: (option) {
+        var value = 4;
+        switch (option) {
+          case MovementListTypeOption.all:
+            value = 7;
+            break;
+          case MovementListTypeOption.entry:
+            value = 3;
+            break;
+          default:
+        }
+        context
+            .read<MovementListBloc>()
+            .add(MovementListSelectedTypeRequest(value: value));
+      },
     );
   }
 
@@ -160,7 +200,7 @@ class MovementsListPageView extends StatelessWidget {
       ),
     );
     if (movement is Movement) {
-      context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
+      context.read<MovementListBloc>().add(MovementListMovementAddedRequest(
           newMovement: movement, budget: newBudget));
     }
   }
@@ -175,8 +215,20 @@ class MovementsListPageView extends StatelessWidget {
       ),
     );
     if (newMovement is Movement) {
-      context.read<BudgetDetailBloc>().add(BudgetDetailMovementAddedRequest(
+      context.read<MovementListBloc>().add(MovementListMovementAddedRequest(
           newMovement: newMovement, budget: newBudget));
+    }
+  }
+
+  String _getTitleText(BuildContext context) {
+    final value = context.read<MovementListBloc>().state.value;
+    switch (value) {
+      case 3:
+        return '${FiicoLocale().incomesOf} ${newBudget.name}';
+      case 4:
+        return '${FiicoLocale().outcomesOf} ${newBudget.name}';
+      default:
+        return '${FiicoLocale().movementsOf} ${newBudget.name}';
     }
   }
 }

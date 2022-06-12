@@ -308,4 +308,9 @@ class FiicoLocale {
   final archiveBudget = "archive_budget".tr();
   final getOutBudget = "get_out_budget".tr();
   final archivedBudgets = "archived_budgets".tr();
+  final outcomesOf = "outcomes_of".tr();
+  final incomesOf = "incomes_of".tr();
+  final createBudgetsAndControl = "create_budgets_and_control".tr();
+  final nowYouWontHaveProblems = "now_you_wont_have_problems".tr();
+  final reviewTheHistoryOfEachCycle = "review_the_history_of_each_cycle".tr();
 }

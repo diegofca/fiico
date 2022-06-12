@@ -26,7 +26,7 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       key: key,
-      backgroundColor: FiicoColors.clear,
+      backgroundColor: FiicoColors.purpleDark,
       shadowColor: Colors.transparent,
       toolbarHeight: heigth,
       leading: leading,

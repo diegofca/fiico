@@ -55,6 +55,7 @@ class HomeDebtsMovements implements MovementGroup {
     budgetName: null,
     alert: null,
     paymentStatus: 'Pending',
+    isVariableValue: true,
   );
 
   // Arriendo
@@ -104,6 +105,7 @@ class HomeDebtsMovements implements MovementGroup {
     budgetName: null,
     alert: null,
     paymentStatus: 'Pending',
+    isVariableValue: true,
   );
 
   static final _waterService = Movement(
@@ -120,6 +122,7 @@ class HomeDebtsMovements implements MovementGroup {
     budgetName: null,
     alert: null,
     paymentStatus: 'Pending',
+    isVariableValue: true,
   );
 
   static final _lightService = Movement(
@@ -136,6 +139,7 @@ class HomeDebtsMovements implements MovementGroup {
     budgetName: null,
     alert: null,
     paymentStatus: 'Pending',
+    isVariableValue: true,
   );
 
   static final _schoolSuplies = Movement(
@@ -264,6 +268,7 @@ class HomeDebtsMovements implements MovementGroup {
     budgetName: null,
     alert: null,
     paymentStatus: 'Pending',
+    isVariableValue: true,
   );
 
   static final _kinderGarden = Movement(

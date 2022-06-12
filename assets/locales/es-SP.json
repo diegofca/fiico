@@ -290,5 +290,10 @@
     "recover_budget": "Recuperar presupuesto",
     "archive_budget": "Archivar presupuesto",
     "get_out_budget": "Salir del presupuesto",
-    "archived_budgets": "Presupuestos archivados"
+    "archived_budgets": "Presupuestos archivados",
+    "outcomes_of": "Gastos de",
+    "incomes_of": "Ingresos de",
+    "create_budgets_and_control": "Crea presupuestos y controla todos tus gastos e ingresos",
+    "now_you_wont_have_problems": "Ahora no tendrás problemas para controlar tu dinero",
+    "review_the_history_of_each_cycle": "Revise el historial de cada ciclo de su presupuesto y establezca metas de ahorro"
 }

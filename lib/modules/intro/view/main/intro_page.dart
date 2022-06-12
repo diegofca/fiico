@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, import_of_legacy_library_into_null_safe
 
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
@@ -9,6 +8,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/loading_view.dart';
+import 'package:control/modules/intro/repository/intro_repository.dart';
 import 'package:control/modules/login/view/login_page.dart';
 import 'package:control/modules/splash/bloc/splash_bloc.dart';
 import 'package:control/modules/splash/repository/splash_repository.dart';
@@ -134,57 +134,65 @@ class IntroPageViewState extends State<IntroPageView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SvgPicture.asset(
-                SVGImages.valiuIcon,
-                alignment: Alignment.topCenter,
-                fit: BoxFit.cover,
-              ),
-              AnimatedTextKit(
-                repeatForever: true,
-                animatedTexts: [
-                  FadeAnimatedText(
-                    'Ahora podras ahorrar con Fiico y controlar tus gastos e ingresos.',
-                    textAlign: TextAlign.center,
-                    duration: const Duration(seconds: 3),
-                    fadeOutBegin: 0.8,
-                    fadeInEnd: 0.2,
-                  ),
-                  FadeAnimatedText(
-                    'y comenzar de nuevo',
-                    textAlign: TextAlign.center,
-                    duration: const Duration(seconds: 3),
-                    fadeOutBegin: 0.8,
-                    fadeInEnd: 0.2,
-                  ),
-                ],
-              ),
-              GestureDetector(
-                onTap: () async {
-                  final lang = await Preferences.get.getLang();
-                  FiicoRoute.sendFade(context, LoginPage(lang: lang));
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: FiicoPaddings.sixteen,
-                    vertical: FiicoPaddings.sixteen,
-                  ),
-                  margin: const EdgeInsets.only(
-                    bottom: FiicoPaddings.sixteen,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      FiicoPaddings.thirtyTwo,
-                    ),
-                    color: FiicoColors.purpleDark.withOpacity(0.3),
-                  ),
-                  child: const Icon(
-                    MdiIcons.arrowRightBold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              _valiuIcon(),
+              _textList(),
+              _skipButtonView(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _valiuIcon() {
+    return SvgPicture.asset(
+      SVGImages.valiuIcon,
+      alignment: Alignment.topCenter,
+      fit: BoxFit.cover,
+    );
+  }
+
+  Widget _textList() {
+    return AnimatedTextKit(
+      repeatForever: true,
+      animatedTexts: IntroRepository()
+          .texts
+          .map(
+            (benefic) => FadeAnimatedText(
+              benefic,
+              textAlign: TextAlign.center,
+              duration: const Duration(seconds: 6),
+              fadeOutBegin: 0.8,
+              fadeInEnd: 0.2,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _skipButtonView() {
+    return GestureDetector(
+      onTap: () async {
+        final lang = await Preferences.get.getLang();
+        FiicoRoute.sendFade(context, LoginPage(lang: lang));
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: FiicoPaddings.sixteen,
+          vertical: FiicoPaddings.sixteen,
+        ),
+        margin: const EdgeInsets.only(
+          bottom: FiicoPaddings.sixteen,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            FiicoPaddings.thirtyTwo,
+          ),
+          color: FiicoColors.pink.withOpacity(0.3),
+        ),
+        child: const Icon(
+          MdiIcons.arrowRightBold,
+          color: FiicoColors.white,
         ),
       ),
     );

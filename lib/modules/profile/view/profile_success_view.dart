@@ -20,7 +20,7 @@ class ProfileSuccessView extends StatelessWidget {
   final List<ProfileOption> options = [
     ProfileOption(FiicoLocale().editUser, false),
     ProfileOption(FiicoLocale().securityPinTitle, false),
-    ProfileOption(FiicoLocale().shareQR, false),
+    // ProfileOption(FiicoLocale().shareQR, false),
     ProfileOption(FiicoLocale().helpCenter, false),
   ];
 

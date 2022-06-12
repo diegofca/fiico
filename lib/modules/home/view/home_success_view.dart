@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
@@ -93,7 +94,8 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FiicoColors.purpleDark,
+      backgroundColor:
+          Platform.isIOS ? FiicoColors.purpleDark : FiicoColors.white,
       appBar: HomeAppBar(
         title: HomeTitleAppBar(
           title: "${FiicoLocale().hi}, ${widget.user?.firstName}",
@@ -121,15 +123,18 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
           _refreshController.refreshCompleted();
         });
       },
-      child: CustomScrollView(
-        physics: isEmpty ? const NeverScrollableScrollPhysics() : null,
-        controller: _controller,
-        slivers: [
-          _mainAppBar(context),
-          _emptySliverView(context),
-          _headerListItemsView(),
-          _listItemsView(),
-        ],
+      child: Container(
+        color: FiicoColors.white,
+        child: CustomScrollView(
+          physics: isEmpty ? const NeverScrollableScrollPhysics() : null,
+          controller: _controller,
+          slivers: [
+            _mainAppBar(context),
+            _emptySliverView(context),
+            _headerListItemsView(),
+            _listItemsView(),
+          ],
+        ),
       ),
     );
   }

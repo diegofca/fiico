@@ -47,10 +47,11 @@ class GenericAppBar extends StatelessWidget with PreferredSizeWidget {
       onTap: () => Navigator.pop(context),
       child: Visibility(
         visible: isShowBack ?? true,
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.only(
             left: FiicoPaddings.sixteen,
           ),
+          color: FiicoColors.clear,
           child: Icon(
             Icons.arrow_back_ios_new,
             color: backColor,

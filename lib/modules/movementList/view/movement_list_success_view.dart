@@ -8,9 +8,11 @@ class MovementListSuccessView extends StatelessWidget {
   const MovementListSuccessView({
     Key? key,
     required this.budget,
+    required this.dropDownValue,
   }) : super(key: key);
 
   final Budget? budget;
+  final int dropDownValue;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class MovementListSuccessView extends StatelessWidget {
   }
 
   Widget _budgetsList() {
-    final movements = budget?.getMovementsBy(7) ?? [];
+    final movements = budget?.getMovementsBy(dropDownValue) ?? [];
     return Container(
       alignment: Alignment.center,
       width: double.maxFinite,
