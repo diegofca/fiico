@@ -45,7 +45,7 @@ class FirebaseManager {
   }
 
   static void _initCrashlytics() {
-    // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
 
