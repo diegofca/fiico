@@ -313,4 +313,10 @@ class FiicoLocale {
   final createBudgetsAndControl = "create_budgets_and_control".tr();
   final nowYouWontHaveProblems = "now_you_wont_have_problems".tr();
   final reviewTheHistoryOfEachCycle = "review_the_history_of_each_cycle".tr();
+  final movementsDenifition = "movements_definition".tr();
+  final activateBiometricUnlock = "activate_biometric_unlock".tr();
+  final activate = "activate".tr();
+  final turnBiometricUnlock = "Turn_biometric_unlock".tr();
+  final isNotPossibleEnableBiometric = "is_not_possible_enable_biometric".tr();
+  final disableBiometricID = "disable_biometric_id".tr();
 }

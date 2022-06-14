@@ -60,10 +60,11 @@ class CreateMovementPage extends StatelessWidget {
       child: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
-          FiicoAlertDialog.showSuccess(context,
-              title: FiicoLocale().movement,
-              message:
-                  'Los movimientos son acciones que modifican tu saldo total, en este puede estar un gasto, ahorro o ingreso.');
+          FiicoAlertDialog.showSuccess(
+            context,
+            title: FiicoLocale().movement,
+            message: FiicoLocale().movementsDenifition,
+          );
         },
         icon: const Icon(
           MdiIcons.informationOutline,

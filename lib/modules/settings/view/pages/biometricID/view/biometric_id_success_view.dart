@@ -5,7 +5,9 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_alert_dialog.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/settings/view/pages/biometricID/bloc/biometric_id_bloc.dart';
+import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,8 +64,8 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
         top: FiicoPaddings.twenyFour,
       ),
       height: 80,
-      child: const Text(
-        'Activar desbloqueo biometrico',
+      child: Text(
+        FiicoLocale().activateBiometricUnlock,
         style: Style.title,
         maxLines: FiicoMaxLines.four,
         textAlign: TextAlign.center,
@@ -81,7 +83,7 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
         child: SizedBox(
           width: double.maxFinite,
           child: FiicoButton.pink(
-            title: 'Activar',
+            title: FiicoLocale().activate,
             ontap: () => _getAvailableBiometrics(context),
           ),
         ),
@@ -106,10 +108,10 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
                 onChanged: (isEnable) => _enableBiometrics(context, isEnable),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: FiicoPaddings.sixteen),
+            Padding(
+              padding: const EdgeInsets.only(top: FiicoPaddings.sixteen),
               child: Text(
-                'Activa o desactiva el desbloqueo biometrico',
+                FiicoLocale().turnBiometricUnlock,
                 style: Style.subtitle,
                 maxLines: FiicoMaxLines.four,
                 textAlign: TextAlign.center,
@@ -133,17 +135,17 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
 
     if (availableBiometrics.isNotEmpty) {
       bool didAuthenticate = await auth.authenticate(
-          localizedReason: 'Please authenticate to show account balance');
-
+        localizedReason: FiicoLocale().activateBiometricUnlock,
+      );
       context
           .read<BiometricIDBloc>()
           .add(BiometricIDEnableRequest(isEnable: didAuthenticate));
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: 'Disable biometric ID',
-        message:
-            'No es posible configurar tu desbloqueo de sesión mediante tu dispositivo.',
+        title: FiicoLocale().disableBiometricID,
+        message: FiicoLocale().isNotPossibleEnableBiometric,
+        onOkAction: () => FiicoRoute.back(context),
       );
     }
   }
@@ -158,7 +160,8 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
 
     if (availableBiometrics.isNotEmpty) {
       bool didAuthenticate = await auth.authenticate(
-          localizedReason: 'Please authenticate to show account balance');
+        localizedReason: FiicoLocale().activateBiometricUnlock,
+      );
 
       if (didAuthenticate) {
         context
@@ -168,9 +171,9 @@ class BiometricIDSuccessViewState extends State<BiometricIDSuccessView> {
     } else {
       FiicoAlertDialog.showWarnning(
         context,
-        title: 'Disable biometric ID',
-        message:
-            'No es posible configurar tu desbloqueo de sesión mediante tu dispositivo.',
+        title: FiicoLocale().disableBiometricID,
+        message: FiicoLocale().isNotPossibleEnableBiometric,
+        onOkAction: () => FiicoRoute.back(context),
       );
     }
   }

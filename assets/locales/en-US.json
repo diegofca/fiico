@@ -291,9 +291,15 @@
     "archive_budget": "Archive budget",
     "get_out_budget": "Get out of budget",
     "archived_budgets": "Archived budgets",
-    "outcomes_of": "Outcomes of",
+    "outcomes_of": "Expenses of",
     "incomes_of": "Incomes of",
     "create_budgets_and_control": "Create budgets and control all your expenses and incomes",
     "now_you_wont_have_problems": "Now you won't have problems controlling your money",
-    "review_the_history_of_each_cycle": "Review the history of each cycle of your budget, and set savings goals"
+    "review_the_history_of_each_cycle": "Review the history of each cycle of your budget, and set savings goals",
+    "movements_definition": "The movements are transactions that modify your total balance, these can be divided into three: \n\nExpenses \nSavings \nIncome",
+    "activate_biometric_unlock": "Activate biometric unlock",
+    "activate": "Activate",
+    "Turn_biometric_unlock": "Turn biometric unlock on or off",
+    "is_not_possible_enable_biometric": "It is not possible to set up your session unlock through your device.",
+    "disable_biometric_id": "Disable biometric ID"
 }   

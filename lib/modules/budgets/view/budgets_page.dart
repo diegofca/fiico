@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
@@ -40,7 +42,7 @@ class BudgetsPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) => BudgetsBloc(HomeRepository())
           ..add(BudgetsFetchRequest(uID: user?.id)),
-        child: const BudgetsPageView(),
+        child: BudgetsPageView(),
       ),
     );
   }
@@ -83,7 +85,7 @@ class BudgetsPage extends StatelessWidget {
 }
 
 class BudgetsPageView extends StatelessWidget {
-  const BudgetsPageView({
+  BudgetsPageView({
     Key? key,
   }) : super(key: key);
 

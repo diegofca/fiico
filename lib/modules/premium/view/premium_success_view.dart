@@ -1,5 +1,4 @@
 import 'package:control/helpers/SVGImages.dart';
-import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
@@ -9,7 +8,7 @@ import 'package:control/helpers/manager/purchase_manager.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/premium/repository/premium_repository.dart';
 import 'package:control/modules/premium/view/widgets/premium_items_purchase.dart';
-import 'package:control/modules/settings/view/pages/helpCenter/view/help_center_dart.dart';
+import 'package:control/modules/settings/view/pages/sendSuggestion/view/send_suggestion_page.dart';
 import 'package:control/modules/webView/view/web_view_page.dart';
 import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
@@ -258,10 +257,10 @@ class PremiumSuccessView extends StatelessWidget {
         title: FiicoLocale().contactUs,
         color: FiicoColors.white.withOpacity(0.2),
         textColor: FiicoColors.white.withOpacity(0.3),
-        onTap: () async {
-          final user = await Preferences.get.getUser();
-          FiicoRoute.send(context, HelpCenterPage(user: user));
-        },
+        onTap: () async => FiicoRoute.send(
+          context,
+          const SendSuggestionPage(),
+        ),
       ),
     );
   }

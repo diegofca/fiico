@@ -21,10 +21,14 @@ class SearchRepository extends SearchRepositoryAbs {
           .map((doc) => FiicoUser.fromJson(doc.data()))
           .where((e) =>
               (e.id != userID) &&
-              ((e.email?.contains(query) ?? false) ||
-                  (e.firstName?.contains(query) ?? false) ||
-                  (e.userName?.contains(query) ?? false) ||
-                  (e.lastName?.contains(query) ?? false)))
+              ((e.firstName?.toLowerCase().contains(query.toLowerCase()) ??
+                      false) ||
+                  (e.email?.toLowerCase().contains(query.toLowerCase()) ??
+                      false) ||
+                  (e.userName?.toLowerCase().contains(query.toLowerCase()) ??
+                      false) ||
+                  (e.lastName?.toLowerCase().contains(query.toLowerCase()) ??
+                      false)))
           .toList();
     });
   }
@@ -39,7 +43,9 @@ class SearchRepository extends SearchRepositoryAbs {
       return snapshot.docs // Filter budgets with query
           .map((doc) => Budget.fromJson(doc.data()))
           .toList()
-          .where((e) => (e.name?.contains(query) ?? false) && (e.isActive()))
+          .where((e) =>
+              (e.name?.toLowerCase().contains(query.toLowerCase()) ?? false) &&
+              (e.isActive()))
           .toList();
     });
   }
@@ -60,7 +66,8 @@ class SearchRepository extends SearchRepositoryAbs {
     streamResult.forEach((e) async {
       if (e.isNotEmpty) {
         if (e.first.movements?.isNotEmpty ?? false) {
-          final b = e.first.movements!.where((e) => e.name!.contains(query));
+          final b = e.first.movements!.where(
+              (e) => e.name!.toLowerCase().contains(query.toLowerCase()));
           movements.addAll(b);
         }
       }

@@ -295,5 +295,11 @@
     "incomes_of": "Ingresos de",
     "create_budgets_and_control": "Crea presupuestos y controla todos tus gastos e ingresos",
     "now_you_wont_have_problems": "Ahora no tendrás problemas para controlar tu dinero",
-    "review_the_history_of_each_cycle": "Revise el historial de cada ciclo de su presupuesto y establezca metas de ahorro"
+    "review_the_history_of_each_cycle": "Revise el historial de cada ciclo de su presupuesto y establezca metas de ahorro",
+    "movements_definition": "Los movimientos son transacciones que modifican tu saldo total, estos se pueden dividir en tres: \n\nGastos \nAhorros \nIngresos",
+    "activate_biometric_unlock": "Activar desbloqueo biométrico",
+    "activate": "Activar",
+    "Turn_biometric_unlock": "Activar o desactivar el desbloqueo biométrico",
+    "is_not_possible_enable_biometric": "No es posible configurar tu desbloqueo de sesión mediante tu dispositivo.",
+    "disable_biometric_id": "Deshabilitar identificación biométrica"
 }
