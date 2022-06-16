@@ -54,15 +54,15 @@ class UpdateAppSuccessView extends StatelessWidget {
       padding: const EdgeInsets.only(
         top: FiicoPaddings.sixteen,
         bottom: FiicoPaddings.thirtyTwo,
-        left: FiicoPaddings.thirtyTwo,
-        right: FiicoPaddings.thirtyTwo,
+        left: FiicoPaddings.sixteen,
+        right: FiicoPaddings.sixteen,
       ),
       child: Text(
         FiicoLocale().updateDescription,
         style: Style.subtitle.copyWith(
           fontSize: FiicoFontSize.xm,
         ),
-        maxLines: FiicoMaxLines.four,
+        maxLines: FiicoMaxLines.ten,
         textAlign: TextAlign.center,
       ),
     );

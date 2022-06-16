@@ -68,7 +68,7 @@ exports.resetBiMonthCycles = functions.pubsub
 
         for (const userSnapShot of users.docs) {
           const users = firestore.collection('users')
-          const budgets = await users.doc(userSnapShot.id).collection('budgets').where('isCycle', '==', true).where( 'cycle', '==', 1).get()
+          const budgets = await users.doc(userSnapShot.id).collection('budgets').where('isCycle', '==', true).where( 'cycle', '==', 0).get()
           if (budgets.empty) { return; }
 
           budgets.forEach(snapshot => {
@@ -123,6 +123,8 @@ exports.resetBiMonthCycles = functions.pubsub
           const budgets = await usersCol.doc(userSnapShot.id).collection('budgets').where('status', '==', 'Active').get()
           if (budgets.empty) { return; }
 
+
+          var isPendingMovementToMark = false;
           budgets.forEach(snapshot => {
             const budget = snapshot.data()
             const movements = budget['movements']
@@ -134,29 +136,30 @@ exports.resetBiMonthCycles = functions.pubsub
                
               if (movement.paymentStatus == 'Payed') { return; }
 
-              const type = movement['type']
+              const days = movement['alert']['days'];
+              const dates = movement['alert']['dates'];
+              const intensive = movement['alert']['type'] == 'INTENSIVE';
 
-              users.forEach( user => {
-                const days = movement['alert']['days'];
-                const dates = movement['alert']['dates'];
-                const topic = "movement" + user.id;
-
-                days.forEach( day => { 
-                  if (day == today.getDate()) {
-                    return sendMessage('Recordatorio!', 'No olvides pagar \'' + movement.name + '\', y marcarlo como pagado en tus movimientos.' , topic, "ALERT_" + type, budget.id);
-                  }
-                })
-  
-                dates.forEach( date => {
-                  if (date.day == today.getDay() && date.month == today.getMonth()) {
-                    return sendMessage('Recordatorio!', 'No olvides pagar \'' + movement.name + '\', y marcarlo como pagado en tus movimientos.' , topic, "ALERT_" + type, budget.id);
-                  }
-                })
+              days.forEach( day => { 
+                if (day == today.getDate()) {
+                  isPendingMovementToMark = true;
+                }
               })
 
-              const ownerTopic = "movement" + budget.userID;
-              return sendMessage('Recordatorio!', 'No olvides pagar \'' + movement.name + '\', y marcarlo como pagado en tus movimientos.' , ownerTopic, "ALERT_" + type, budget.id);
+              dates.forEach( date => {
+                if (date.day == today.getDay() && date.month == today.getMonth()) {
+                  isPendingMovementToMark = true;
+                }
+              })
             })
+            if (isPendingMovementToMark) {
+              users.forEach( user => {
+                 const topic = "movement" + user.id;
+                 sendMessage('Recordatorio!', 'No olvides pagar tus movimientos pendientes y marcarlos como pagados.' , topic, "ALERT_MOVEMENT", budget.id);
+              })
+              const ownerTopic = "movement" + budget.userID;
+              return sendMessage('Recordatorio!', 'No olvides pagar tus movimientos pendientes y marcarlos como pagados.' , ownerTopic, "ALERT_MOVEMENT", budget.id);
+            }
           });
         }
     });
@@ -225,7 +228,7 @@ exports.helpCenterMessage = functions.firestore
   });
 
 exports.premiumUpdates = functions.pubsub
-  .schedule('0 8 * * *')
+  .schedule('0 6 * * *')
   .onRun(async (context) => {
     const users = await firestore.collection('users').get()
     users.forEach( snapshot => {
@@ -254,7 +257,7 @@ exports.premiumUpdates = functions.pubsub
   });
 
 exports.recordingMarkDebts = functions.pubsub
-  .schedule('0 22 * * *')
+  .schedule('0 19 * * *')
   .onRun(async (context) => {
     const topic = 'news'
     const title = "Recordatorio 💸"

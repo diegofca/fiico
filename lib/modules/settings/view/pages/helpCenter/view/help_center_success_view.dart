@@ -87,6 +87,7 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
 
     return Expanded(
       child: SingleChildScrollView(
+        reverse: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: FiicoPaddings.twenyFour,
@@ -204,12 +205,16 @@ class _HelpCenterSuccessViewState extends State<HelpCenterSuccessView> {
     List<Widget> messagesViews = [];
     var orderedMessages =
         messages?.groupListsBy((element) => element.sortDate());
-    orderedMessages?.forEach((key, value) {
+
+    final sortedMap = Map.fromEntries(orderedMessages!.entries.toList()
+      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+
+    sortedMap.forEach((key, value) {
       messagesViews.add(
         HelpCenterDateView(message: HelpCenterMessage().date(key)),
       );
-      final messages = value.sorted(
-          (a, b) => a.createdAt!.seconds.compareTo(b.createdAt!.seconds));
+      final messages =
+          value.sorted((a, b) => a.createdAt!.compareTo(b.createdAt!));
       for (var message in messages) {
         switch (message.type) {
           case HelpCenterMessage.textType:

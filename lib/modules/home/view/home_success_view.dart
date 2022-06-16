@@ -303,7 +303,11 @@ class HomeSuccessViewState extends State<HomeSuccesView> {
     );
   }
 
-  /// MARK: - Functions class actions
+  // Widget expandedBannerView() {
+  //   return ScrollOnEx
+  // }
+
+  /// MARK: - Functions class actions ------------------------------------------
   void _scrollUp() {
     _controller.animateTo(
       _controller.position.minScrollExtent,

@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 enum FiicoNotificationType {
   DEFAULT,
   INVITE,
-  ALERT_DEBT,
-  ALERT_ENTRY,
+  ALERT_MOVEMENT,
   EDITED,
   BANNER,
   PREMIUM,

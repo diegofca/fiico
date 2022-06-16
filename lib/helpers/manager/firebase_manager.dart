@@ -12,6 +12,7 @@ import 'package:control/modules/subscriptionDetail/view/subscription_detail_page
 import 'package:control/navigation/navigator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class FirebaseManager {
     _initMessaging();
     _initCrashlytics();
     _initAnalytics();
+    _initInAppMessaging();
   }
 
   static void addContext(BuildContext context) {
@@ -63,6 +65,10 @@ class FirebaseManager {
     _callbackMessaging();
   }
 
+  static void _initInAppMessaging() {
+    FirebaseInAppMessaging.instance.setAutomaticDataCollectionEnabled(true);
+  }
+
   /// --- Callback Firebase Messaging.  ------
   static void _callbackMessaging() {
     // Mensaje nuevo
@@ -85,8 +91,7 @@ class FirebaseManager {
     final user = await Preferences.get.getUser();
     if (message != null) {
       switch (message.data['action']) {
-        case "ALERT_ENTRY":
-        case "ALERT_DEBT":
+        case "ALERT_MOVEMENT":
           final budgetID = message.data['actionId'];
           final budget = await HomeRepository().getBudget(budgetID);
           FiicoRoute.send(_context, MovementsListPage(budget: budget));
