@@ -18,6 +18,7 @@ import 'package:control/modules/createBudget/view/create_budget_cycle_view.dart'
 import 'package:control/modules/createBudget/view/headerView/create_budget_header_view.dart';
 import 'package:control/modules/createBudget/view/listView/create_budget_movement_item_list_view.dart';
 import 'package:control/modules/createMovement/view/create_movement_page.dart';
+import 'package:control/modules/defaultsMovement/repository/daily_debts/default_daily_debt_movement.dart';
 import 'package:control/modules/defaultsMovement/repository/default_movements_list.dart';
 import 'package:control/modules/defaultsMovement/view/default_movement_page.dart';
 import 'package:control/modules/editMovement/view/edit_movement_page.dart';
@@ -37,6 +38,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     Key? key,
     this.mDebts,
     this.mEntrys,
+    this.mDailyDebts,
     this.users,
   }) : super(key: key);
 
@@ -45,6 +47,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
   final List<FiicoUser>? users;
   final List<Movement>? mDebts;
   final List<Movement>? mEntrys;
+  final List<Movement>? mDailyDebts;
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +119,12 @@ class CreateBudgetSuccessView extends StatelessWidget {
       children: [
         _entryMoneyView(context),
         _entryDurationView(context),
+        _isDailyDebtSwitchView(context),
         _entrysView(context),
         _entryListView(context),
-        _entrysDebtsView(context),
-        _entrysDebtsListView(),
+        _debtsView(context),
+        _debtDailyView(context),
+        _debtsListView(),
         _infoView(),
         _entryUsersListView(context),
         _shareButtonView(context),
@@ -186,10 +191,77 @@ class CreateBudgetSuccessView extends StatelessWidget {
     return CreateBudgetCycleView(budgetToCreate: budgetToCreate);
   }
 
+  Widget _isDailyDebtSwitchView(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: FiicoPaddings.twenyFour,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                FiicoLocale().doYouHaveDailyExpenses,
+                textAlign: TextAlign.left,
+                maxLines: FiicoMaxLines.ten,
+                style: Style.subtitle.copyWith(
+                  color: FiicoColors.grayNeutral,
+                  fontSize: FiicoFontSize.sm,
+                ),
+              ),
+            ),
+          ),
+          Switch.adaptive(
+            value: budgetToCreate.isActiveDailyeDebt(),
+            activeColor: FiicoColors.pink,
+            onChanged: (isActive) {
+              final bloc = context.read<CreateBudgetBloc>();
+              bloc.add(CreateBudgetInfoSelected(isDailyDebt: isActive));
+
+              if (isActive) {
+                bloc.add(CreateBudgetAddedmovement(
+                  movement: DailyDebtsMovements.daily(budgetToCreate),
+                ));
+              } else {
+                bloc.add(CreateBudgetRemovedMovement(
+                  movement: DailyDebtsMovements.daily(budgetToCreate),
+                ));
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _debtDailyView(BuildContext context) {
+    final _mDailyDebts = mDailyDebts ?? [];
+    return Visibility(
+      visible: _mDailyDebts.isNotEmpty,
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
+        width: double.maxFinite,
+        height: 75.0 * _mDailyDebts.length,
+        child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _mDailyDebts.length,
+          itemBuilder: (context, index) {
+            final movement = _mDailyDebts[index];
+            return _itemMovementToList(context, movement);
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _entrysView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
+        top: FiicoPaddings.twenyFour,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -247,7 +319,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entrysDebtsView(BuildContext context) {
+  Widget _debtsView(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -282,7 +354,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entrysDebtsListView() {
+  Widget _debtsListView() {
     final _mDebts = mDebts ?? [];
     return Visibility(
       visible: _mDebts.isNotEmpty,

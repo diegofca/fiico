@@ -198,6 +198,7 @@ class BudgetDetailMovementListItemViewState
             ));
         break;
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         FiicoRoute.send(
             context,
             DebtDetailPage(

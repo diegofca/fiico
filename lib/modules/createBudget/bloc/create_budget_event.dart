@@ -12,6 +12,7 @@ class CreateBudgetInfoSelected extends CreateBudgetEvent {
     this.duration,
     this.initDate,
     this.finishDate,
+    this.isDailyDebt,
     this.icon,
   });
 
@@ -22,10 +23,19 @@ class CreateBudgetInfoSelected extends CreateBudgetEvent {
   final Timestamp? initDate;
   final Timestamp? finishDate;
   final FiicoIcon? icon;
+  final bool? isDailyDebt;
 
   @override
-  List<Object?> get props =>
-      [currency, isCycle, cycle, duration, initDate, finishDate, icon];
+  List<Object?> get props => [
+        currency,
+        isCycle,
+        cycle,
+        duration,
+        initDate,
+        finishDate,
+        icon,
+        isDailyDebt
+      ];
 }
 
 class CreateBudgetAdded extends CreateBudgetEvent {

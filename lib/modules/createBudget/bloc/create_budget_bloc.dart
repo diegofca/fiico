@@ -50,6 +50,7 @@ class CreateBudgetBloc extends Bloc<CreateBudgetEvent, CreateBudgetState> {
       isCycle: event.isCycle,
       initDate: event.initDate,
       finishDate: event.finishDate,
+      isDailyDebt: event.isDailyDebt,
       duration: event.duration,
       cycle: event.cycle,
       icon: event.icon,

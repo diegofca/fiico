@@ -5,13 +5,14 @@ import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/genericViews/fiico_image.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/alert.dart';
+import 'package:control/models/debt_daily.dart';
 import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/network/firestore_path.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
-enum MovementType { ENTRY, DEBT, SAFE }
+enum MovementType { ENTRY, DAILY_DEBT, DEBT, SAFE }
 enum MovementPaymentType { PENDING, PAYED }
 
 class Movement {
@@ -32,7 +33,9 @@ class Movement {
   final String? paymentStatus;
   final List<MarkMovement> markHistory;
   final List<Timestamp>? recurrencyDates;
+  final List<DebtDaily> debsDailyList;
   final bool? isVariableValue;
+  final bool? isDailyDebt;
 
   Movement({
     required this.id,
@@ -52,7 +55,9 @@ class Movement {
     this.isAddedWithBudget = false,
     this.markHistory = const [],
     this.recurrencyDates = const [],
+    this.debsDailyList = const [],
     this.isVariableValue = false,
+    this.isDailyDebt = false,
   });
 
   factory Movement.fromJson(Map<String, dynamic>? json) {
@@ -72,8 +77,10 @@ class Movement {
       alert: FiicoAlert.fromJson(json?['alert']),
       tags: List.castFrom(json?['tags']),
       markHistory: MarkMovement.toList(json),
+      debsDailyList: DebtDaily.toList(json),
       recurrencyDates: List.castFrom(json?['recurrencyDates']),
       isVariableValue: json?['isVariableValue'],
+      isDailyDebt: json?['isDailyDebt'],
     );
   }
 
@@ -94,8 +101,10 @@ class Movement {
       'alert': alert?.toJson(),
       'tags': tags,
       'markHistory': markHistory.map((e) => e.toJson()).toList(),
+      'debtDailyList': debsDailyList.map((e) => e.toJson()).toList(),
       'recurrencyDates': recurrencyDates,
       'isVariableValue': isVariableValue,
+      'isDailyDebt': isDailyDebt,
     };
   }
 
@@ -117,7 +126,9 @@ class Movement {
     String? paymentStatus,
     List<MarkMovement>? markHistory,
     List<Timestamp>? recurrencyDates,
+    List<DebtDaily>? debsDailyList,
     bool? isVariableValue,
+    bool? isDailyDebt,
   }) {
     return Movement(
       id: id ?? this.id,
@@ -136,7 +147,9 @@ class Movement {
       recurrencyDates: recurrencyDates ?? this.recurrencyDates,
       isAddedWithBudget: isAddedWithBudget,
       markHistory: markHistory ?? this.markHistory,
+      debsDailyList: debsDailyList ?? this.debsDailyList,
       isVariableValue: isVariableValue ?? this.isVariableValue,
+      isDailyDebt: isDailyDebt ?? this.isDailyDebt,
       tags: tags ?? this.tags,
     );
   }
@@ -156,6 +169,8 @@ class Movement {
         return MovementType.ENTRY;
       case 'DEBT':
         return MovementType.DEBT;
+      case 'DAILY_DEBT':
+        return MovementType.DAILY_DEBT;
       default:
         return MovementType.SAFE;
     }
@@ -174,6 +189,7 @@ class Movement {
     switch (getType()) {
       case MovementType.ENTRY:
         return FiicoImageNetwork.entry(iconData: icon?.getIcon());
+      case MovementType.DAILY_DEBT:
       case MovementType.DEBT:
         return FiicoImageNetwork.debt(iconData: icon?.getIcon());
       default:
@@ -185,6 +201,7 @@ class Movement {
     switch (getType()) {
       case MovementType.ENTRY:
         return FiicoLocale().income;
+      case MovementType.DAILY_DEBT:
       case MovementType.DEBT:
         return FiicoLocale().outcome;
       default:
@@ -196,6 +213,7 @@ class Movement {
     switch (getType()) {
       case MovementType.ENTRY:
         return FiicoColors.greenNeutral;
+      case MovementType.DAILY_DEBT:
       case MovementType.DEBT:
         return FiicoColors.pinkRed;
       default:
@@ -246,7 +264,6 @@ class Movement {
 
     switch (getType()) {
       case MovementType.ENTRY:
-        return '${days.join(',').toString()} ${FiicoLocale().everyOfMonth}';
       case MovementType.DEBT:
         return '${days.join(',').toString()} ${FiicoLocale().everyOfMonth}';
       default:
@@ -260,6 +277,8 @@ class Movement {
         return '${FiicoLocale().income}: ${getRecurrencyDate()}';
       case MovementType.DEBT:
         return '${FiicoLocale().timleyPayment}: ${getRecurrencyDate()}';
+      case MovementType.DAILY_DEBT:
+        return FiicoLocale().dontForgetAddDailyExpenses;
       default:
         return '';
     }
@@ -278,6 +297,7 @@ class Movement {
   num? getValue() {
     switch (getType()) {
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         return (value ?? 0) * -1;
       default:
         return value;
@@ -291,6 +311,7 @@ class Movement {
             ? FiicoLocale().pending
             : FiicoLocale().received;
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         return getPaymentType() == MovementPaymentType.PENDING
             ? FiicoLocale().pending
             : FiicoLocale().paid;
@@ -316,6 +337,11 @@ class Movement {
     final dayToPending =
         recurrencyAt != null || (recurrencyDates?.isNotEmpty ?? false);
     final currencyContained = currency?.isNotEmpty ?? false;
-    return nameContained && valueContained && currencyContained & dayToPending;
+    return isDailyDebtMovement() ||
+        (nameContained && valueContained && currencyContained & dayToPending);
+  }
+
+  bool isDailyDebtMovement() {
+    return getType() == MovementType.DAILY_DEBT && (isDailyDebt ?? false);
   }
 }

@@ -319,4 +319,11 @@ class FiicoLocale {
   final turnBiometricUnlock = "Turn_biometric_unlock".tr();
   final isNotPossibleEnableBiometric = "is_not_possible_enable_biometric".tr();
   final disableBiometricID = "disable_biometric_id".tr();
+  final doYouHaveDailyExpenses = "do_you_have_daily_expenses".tr();
+  final dontForgetAddDailyExpenses = "dont_forget_Add_daily_expenses".tr();
+  final addNewExpense = "add_new_expense".tr();
+  final dailyExpenses = "daily_expenses".tr();
+  final addedBy = "added_by".tr();
+  final rememberThatAfterAddingYourExpense =
+      "remember_that_after_adding_your_expense".tr();
 }

@@ -169,7 +169,6 @@ class EditMovementPageView extends StatelessWidget {
   }
 
   Movement getMovementToBloc(EditMovementState state) {
-    final type = movement?.getType() == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
     final typeDescription = movement?.getType() == MovementType.ENTRY
         ? FiicoLocale().income
         : FiicoLocale().outcome;
@@ -187,12 +186,14 @@ class EditMovementPageView extends StatelessWidget {
       isVariableValue: state.isVariableValue,
       typeDescription: typeDescription,
       isAddedWithBudget: addedinBudget,
+      isDailyDebt: movement?.isDailyDebt,
       paymentStatus: movement?.paymentStatus,
       markHistory: movement?.markHistory ?? [],
+      debsDailyList: movement?.debsDailyList ?? [],
       currency: budget?.currency,
       budgetName: budget?.name,
       tags: state.tags ?? [],
-      type: type,
+      type: movement?.getType().name,
     );
     updateMovement(newMovement);
     return newMovement;

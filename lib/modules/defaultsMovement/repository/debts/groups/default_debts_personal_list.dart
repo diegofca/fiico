@@ -21,6 +21,7 @@ class PersonalDebtsMovements implements MovementGroup {
 
   @override
   final items = [
+    _daily,
     _creditCard,
     _car,
     _motorcycle,
@@ -33,6 +34,24 @@ class PersonalDebtsMovements implements MovementGroup {
   ];
 
   // Tarjeta de credito default
+  static final _daily = Movement(
+    id: const Uuid().v1(),
+    name: FiicoLocale().dailyExpenses,
+    value: null,
+    createdAt: Timestamp.now(),
+    recurrencyAt: null,
+    icon: FiicoIcon.fromIcon(MdiIcons.viewDayOutline),
+    type: MovementType.DAILY_DEBT.name,
+    description: FiicoLocale().dailyExpenses,
+    typeDescription: null,
+    currency: null,
+    budgetName: null,
+    alert: null,
+    paymentStatus: 'Payed',
+    isDailyDebt: true,
+    isVariableValue: true,
+  );
+
   static final _creditCard = Movement(
     id: const Uuid().v1(),
     name: FiicoLocale().creditCard,

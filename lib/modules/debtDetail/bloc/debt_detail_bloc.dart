@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/debt_daily.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/repository/debt_detail_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -13,6 +14,7 @@ class DebtDetailBloc extends Bloc<DebtDetailEvent, DebtDetailState> {
     on<DebtDetailRemovedMovement>(_mapRemovedMovementToState);
     on<DebtDetailMarkPayedMovement>(_mapMarkPayedMovementToState);
     on<DebtDetailEditMovement>(_mapEditMovementToState);
+    on<DebtDetailAddDailyPayedMovement>(_mapAddDebtDailyPayedMovementToState);
   }
 
   final DebtDetailRepository repository;
@@ -66,6 +68,23 @@ class DebtDetailBloc extends Bloc<DebtDetailEvent, DebtDetailState> {
     emit(state.copyWith(
       status: DebtDetailStatus.init,
       updatedMovement: event.movement,
+    ));
+  }
+
+  void _mapAddDebtDailyPayedMovementToState(
+    DebtDetailAddDailyPayedMovement event,
+    Emitter<DebtDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: DebtDetailStatus.loading));
+
+    final budget = state.budget;
+    final newValue = (event.movement?.value ?? 0) + (event.value?.value ?? 0);
+    final newMovement = event.movement?.copyWith(value: newValue);
+    await repository.addDailyDebt(budget, newMovement, event.value);
+    emit(state.copyWith(
+      status: DebtDetailStatus.init,
+      updatedMovement: newMovement,
+      payed: true,
     ));
   }
 }

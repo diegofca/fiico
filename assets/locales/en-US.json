@@ -301,5 +301,11 @@
     "activate": "Activate",
     "Turn_biometric_unlock": "Turn biometric unlock on or off",
     "is_not_possible_enable_biometric": "It is not possible to set up your session unlock through your device.",
-    "disable_biometric_id": "Disable biometric ID"
+    "disable_biometric_id": "Disable biometric ID",
+    "do_you_have_daily_expenses": "Do you have daily expenses that you want to store?",
+    "dont_forget_Add_daily_expenses": "Don't forget to add the daily expenses!",
+    "add_new_expense": "Add new expense",
+    "daily_expenses": "Daily expenses",
+    "added_by": "Added by:",
+    "remember_that_after_adding_your_expense": "Remember that after adding your expense, you will not be able to delete it."
 }   

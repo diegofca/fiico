@@ -136,133 +136,142 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
   }
 
   Widget _entryPriceView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: FiicoPaddings.four,
-      ),
-      child: BorderContainer(
-        padding: const EdgeInsets.only(left: FiicoPaddings.sixteen),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                right: FiicoPaddings.four,
-                top: FiicoPaddings.four,
-              ),
-              child: Text(
-                widget.movement.currency ?? '',
-                style: Style.subtitle.copyWith(
-                  color: widget.movement.getTypeColor(),
-                  fontSize: FiicoFontSize.lg,
-                  fontWeight: FontWeight.bold,
+    return Visibility(
+      visible: !widget.movement.isDailyDebtMovement(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: FiicoPaddings.four,
+        ),
+        child: BorderContainer(
+          padding: const EdgeInsets.only(left: FiicoPaddings.sixteen),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: FiicoPaddings.four,
+                  top: FiicoPaddings.four,
+                ),
+                child: Text(
+                  widget.movement.currency ?? '',
+                  style: Style.subtitle.copyWith(
+                    color: widget.movement.getTypeColor(),
+                    fontSize: FiicoFontSize.lg,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                child: FiicoTextfield(
-                  keyboardType: TextInputType.number,
-                  hintText: FiicoLocale().enterAmount,
-                  textColor: widget.movement.getTypeColor(),
-                  textEditingController: _priceController,
-                  inputFormatters: <TextInputFormatter>[_currencyFormarted],
-                  onChanged: (value) {
-                    final value = _currencyFormarted.getUnformattedValue();
-                    context
-                        .read<EditMovementBloc>()
-                        .add(EditMovementInfoRequest(value: value));
-                  },
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: FiicoTextfield(
+                    keyboardType: TextInputType.number,
+                    hintText: FiicoLocale().enterAmount,
+                    textColor: widget.movement.getTypeColor(),
+                    textEditingController: _priceController,
+                    inputFormatters: <TextInputFormatter>[_currencyFormarted],
+                    onChanged: (value) {
+                      final value = _currencyFormarted.getUnformattedValue();
+                      context
+                          .read<EditMovementBloc>()
+                          .add(EditMovementInfoRequest(value: value));
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _valueVariableView(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: FiicoPaddings.eight,
+    return Visibility(
+      visible: !widget.movement.isDailyDebtMovement(),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FiicoPaddings.eight,
+            ),
+            child: Text(
+              FiicoLocale().varaibleValue,
+              textAlign: TextAlign.start,
+              style: Style.subtitle.copyWith(
+                fontSize: FiicoFontSize.xm,
+                color: FiicoColors.grayNeutral,
+              ),
+            ),
           ),
-          child: Text(
-            FiicoLocale().varaibleValue,
-            textAlign: TextAlign.start,
-            style: Style.subtitle.copyWith(
-              fontSize: FiicoFontSize.xm,
+          GestureDetector(
+            onTap: () => FiicoAlertDialog.showInfo(
+              context,
+              title: FiicoLocale().varaibleValue,
+              message: FiicoLocale().amountAcquierDiffrentValue,
+            ),
+            child: const Icon(
+              Icons.info_outline,
               color: FiicoColors.grayNeutral,
             ),
           ),
-        ),
-        GestureDetector(
-          onTap: () => FiicoAlertDialog.showInfo(
-            context,
-            title: FiicoLocale().varaibleValue,
-            message: FiicoLocale().amountAcquierDiffrentValue,
-          ),
-          child: const Icon(
-            Icons.info_outline,
-            color: FiicoColors.grayNeutral,
-          ),
-        ),
-        Expanded(
-          child: Container(
-            alignment: Alignment.centerRight,
-            child: Switch.adaptive(
-              value: widget.movement.isVariableValue ?? false,
-              activeColor: widget.movement.getTypeColor(),
-              onChanged: (value) {
-                context
-                    .read<EditMovementBloc>()
-                    .add(EditMovementInfoRequest(isVariableValue: value));
-              },
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: Switch.adaptive(
+                value: widget.movement.isVariableValue ?? false,
+                activeColor: widget.movement.getTypeColor(),
+                onChanged: (value) {
+                  context
+                      .read<EditMovementBloc>()
+                      .add(EditMovementInfoRequest(isVariableValue: value));
+                },
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
   Widget _entryNameView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.eight,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: FiicoPaddings.sixteen,
-            ),
-            child: Text(
-              FiicoLocale().name,
-              textAlign: TextAlign.start,
-              style: Style.subtitle.copyWith(
-                fontSize: FiicoFontSize.sm,
+    return Visibility(
+      visible: !widget.movement.isDailyDebtMovement(),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.eight,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: FiicoPaddings.sixteen,
+              ),
+              child: Text(
+                FiicoLocale().name,
+                textAlign: TextAlign.start,
+                style: Style.subtitle.copyWith(
+                  fontSize: FiicoFontSize.sm,
+                ),
               ),
             ),
-          ),
-          BorderContainer(
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              child: FiicoTextfield(
-                hintText: FiicoLocale().enterName,
-                textEditingController: _nameController,
-                onChanged: (name) {
-                  context
-                      .read<EditMovementBloc>()
-                      .add(EditMovementInfoRequest(name: name));
-                },
+            BorderContainer(
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                child: FiicoTextfield(
+                  hintText: FiicoLocale().enterName,
+                  textEditingController: _nameController,
+                  onChanged: (name) {
+                    context
+                        .read<EditMovementBloc>()
+                        .add(EditMovementInfoRequest(name: name));
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -306,59 +315,62 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
   }
 
   Widget _entryDateView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.thirtyTwo,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: FiicoPaddings.sixteen,
-            ),
-            child: Text(
-              widget.movement.getDateTitleText(),
-              textAlign: TextAlign.start,
-              style: Style.subtitle.copyWith(
-                fontSize: FiicoFontSize.sm,
+    return Visibility(
+      visible: !widget.movement.isDailyDebtMovement(),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: FiicoPaddings.thirtyTwo,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: FiicoPaddings.sixteen,
+              ),
+              child: Text(
+                widget.movement.getDateTitleText(),
+                textAlign: TextAlign.start,
+                style: Style.subtitle.copyWith(
+                  fontSize: FiicoFontSize.sm,
+                ),
               ),
             ),
-          ),
-          BorderContainer(
-            alignment: Alignment.center,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(
-                      left: FiicoPaddings.sixteen,
-                    ),
-                    child: Text(
-                      widget.movement.getRecurrencyDate(),
-                      textAlign: TextAlign.left,
-                      style: Style.subtitle.copyWith(
-                        color: FiicoColors.graySoft,
-                        fontSize: FiicoFontSize.sm,
+            BorderContainer(
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(
+                        left: FiicoPaddings.sixteen,
+                      ),
+                      child: Text(
+                        widget.movement.getRecurrencyDate(),
+                        textAlign: TextAlign.left,
+                        style: Style.subtitle.copyWith(
+                          color: FiicoColors.graySoft,
+                          fontSize: FiicoFontSize.sm,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () => _editCalendarRecurrency(context),
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: FiicoColors.pink,
-                    size: 34,
+                  IconButton(
+                    onPressed: () => _editCalendarRecurrency(context),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: FiicoColors.pink,
+                      size: 34,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -422,12 +434,15 @@ class EditMovementSuccessViewState extends State<EditMovementSuccessView> {
   }
 
   Widget _separatorLineView() {
-    return const Padding(
-      padding: EdgeInsets.only(
-        top: FiicoPaddings.sixteen,
-        bottom: FiicoPaddings.eight,
+    return Visibility(
+      visible: !widget.movement.isDailyDebtMovement(),
+      child: const Padding(
+        padding: EdgeInsets.only(
+          top: FiicoPaddings.sixteen,
+          bottom: FiicoPaddings.eight,
+        ),
+        child: SeparatorView(),
       ),
-      child: SeparatorView(),
     );
   }
 

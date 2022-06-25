@@ -9,5 +9,6 @@ class HomeFilterMovement {
     4: FiicoLocale().outcomes,
     5: FiicoLocale().pendingExpenses,
     6: FiicoLocale().paidExpenses,
+    7: FiicoLocale().dailyExpenses,
   };
 }

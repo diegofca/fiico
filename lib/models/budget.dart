@@ -34,6 +34,7 @@ class Budget {
   final String? ownerName;
   final List<BudgetCycleHistory>? histories;
   final bool? editBudget;
+  final bool? addedDailyDebt;
 
   Budget({
     required this.id,
@@ -55,6 +56,7 @@ class Budget {
     this.ownerName,
     this.histories,
     this.editBudget,
+    this.addedDailyDebt,
   });
 
   Budget.create({
@@ -77,6 +79,7 @@ class Budget {
     this.ownerName,
     this.histories = const [],
     this.editBudget = false,
+    this.addedDailyDebt = false,
   });
 
   factory Budget.fromJson(Map<String, dynamic>? json) {
@@ -100,6 +103,7 @@ class Budget {
       histories: BudgetCycleHistory.toList(json),
       users: FiicoUser.toList(json),
       editBudget: json?['editBudget'] ?? false,
+      addedDailyDebt: json?['addedDailyDebt'] ?? false,
     );
   }
 
@@ -121,6 +125,7 @@ class Budget {
       'icon': icon?.toJson(),
       'ownerName': ownerName,
       'editBudget': editBudget,
+      'addedDailyDebt': addedDailyDebt,
       'movements': movements?.map((e) => e.toJson()).toList() ?? [],
       'histories': histories?.map((e) => e.toJson()).toList() ?? [],
       'users': users?.map((e) => e.toJson()).toList() ?? [],
@@ -144,6 +149,7 @@ class Budget {
       'finishDate': getFinishDate(),
       'ownerName': ownerName,
       'editBudget': editBudget,
+      'addedDailyDebt': addedDailyDebt,
       'icon': icon?.toJson(),
       'histories': FieldValue.arrayUnion(
           histories?.map((e) => e.toJson()).toList() ?? []),
@@ -183,6 +189,7 @@ class Budget {
     String? ownerName,
     List<BudgetCycleHistory>? histories,
     bool? editBudget,
+    bool? addedDailyDebt,
   }) {
     return Budget(
       id: id ?? this.id,
@@ -203,6 +210,7 @@ class Budget {
       movements: movements ?? this.movements,
       ownerName: ownerName ?? this.ownerName,
       histories: histories ?? this.histories,
+      addedDailyDebt: addedDailyDebt ?? this.addedDailyDebt,
       users: users ?? this.users,
     );
   }
@@ -224,7 +232,9 @@ class Budget {
   }
 
   bool isEmptyMovements() {
-    return movements?.isEmpty ?? false;
+    final _movements =
+        movements?.where((e) => e.getType() != MovementType.DAILY_DEBT);
+    return _movements?.isEmpty ?? false;
   }
 
   bool isEmptyHistorys() {
@@ -237,6 +247,10 @@ class Budget {
 
   bool isShowSwitcherHistoryBudget() {
     return isShowHistoryBudget() && isCycleBudget();
+  }
+
+  bool isActiveDailyeDebt() {
+    return addedDailyDebt ?? false;
   }
 
   bool get isOwner => Preferences.get.getID == userID;
@@ -259,7 +273,8 @@ class Budget {
   }
 
   double getTotalDebt() {
-    final entrys = movements?.where((e) => e.getType() == MovementType.DEBT);
+    final entrys = movements?.where((e) => (e.getType() == MovementType.DEBT ||
+        e.getType() == MovementType.DAILY_DEBT));
     double total = 0;
     entrys?.forEach((e) {
       total += e.value ?? 0;
@@ -280,7 +295,9 @@ class Budget {
 
   double getPendingDebt() {
     final entrys = movements?.where((e) =>
-        e.getType() == MovementType.DEBT && e.paymentStatus == 'Pending');
+        (e.getType() == MovementType.DEBT ||
+            e.getType() == MovementType.DAILY_DEBT) &&
+        e.paymentStatus == 'Pending');
     double total = 0;
     entrys?.forEach((e) {
       total += e.value ?? 0;
@@ -302,8 +319,10 @@ class Budget {
   }
 
   double getPayedDebt() {
-    final entrys = movements?.where(
-        (e) => e.getType() == MovementType.DEBT && e.paymentStatus == 'Payed');
+    final entrys = movements?.where((e) =>
+        (e.getType() == MovementType.DEBT ||
+            e.getType() == MovementType.DAILY_DEBT) &&
+        e.paymentStatus == 'Payed');
     double total = 0;
     entrys?.forEach((e) {
       total += e.value ?? 0;
@@ -483,6 +502,10 @@ class Budget {
         return movements
             ?.where((e) =>
                 e.getType() == MovementType.DEBT && !e.isPaymentPendingState())
+            .toList();
+      case 7: // Solo gastos diarios
+        return movements
+            ?.where((e) => e.getType() == MovementType.DAILY_DEBT)
             .toList();
       default:
         return movements

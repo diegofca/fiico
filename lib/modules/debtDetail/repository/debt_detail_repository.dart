@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/generic_repository.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/debt_daily.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/network/firestore_path.dart';
@@ -13,6 +14,8 @@ abstract class DebtDetailRepositoryAbs {
   Future<void> updateBudget(Budget budget);
   Future<void> markPayed(Budget? budget, Movement? movement);
   Future<void> updateMovement(Movement? movement, Budget? budget);
+  Future<void> addDailyDebt(
+      Budget? budget, Movement? movement, DebtDaily dailyDebt);
 }
 
 class DebtDetailRepository extends DebtDetailRepositoryAbs {
@@ -101,6 +104,18 @@ class DebtDetailRepository extends DebtDetailRepositoryAbs {
     final newMovement = movement!.copyWith(paymentStatus: 'Payed');
     budget?.movements?.removeWhere((e) => e.id == movement.id);
     budget?.movements?.add(newMovement);
+    return BudgetGenericRepository.updateBudget(budget);
+  }
+
+  @override
+  Future<void> addDailyDebt(
+    Budget? budget,
+    Movement? movement,
+    DebtDaily? dailyDebt,
+  ) async {
+    movement?.debsDailyList.add(dailyDebt!);
+    budget?.movements?.removeWhere((e) => e.id == movement?.id);
+    budget?.movements?.add(movement!);
     return BudgetGenericRepository.updateBudget(budget);
   }
 }

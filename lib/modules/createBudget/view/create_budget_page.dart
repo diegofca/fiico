@@ -83,6 +83,7 @@ class CreateBudgetPageView extends StatelessWidget {
             if (snapshot.hasData) {
               return CreateBudgetSuccessView(
                 budgetToCreate: snapshot.requireData,
+                mDailyDebts: state.dailyDebts,
                 mDebts: state.debts,
                 mEntrys: state.entrys,
                 users: state.users,
@@ -121,6 +122,7 @@ class CreateBudgetPageView extends StatelessWidget {
     return Budget.create(
       id: const Uuid().v1(),
       currency: state.currencySelected?.code ?? user?.defaultCurrency?.code,
+      addedDailyDebt: state.isDailyDebt,
       name: budgetName,
       ownerName: user?.userName,
       isCycle: state.isCycle,

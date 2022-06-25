@@ -123,8 +123,7 @@ class CreateMovementPageView extends StatelessWidget {
   }
 
   Movement getMovementToBloc(CreateMovementState state) {
-    final type = this.type == MovementType.ENTRY ? 'ENTRY' : 'DEBT';
-    final typeDescription = this.type == MovementType.ENTRY
+    final typeDescription = type == MovementType.ENTRY
         ? FiicoLocale().income
         : FiicoLocale().outcome;
     final recurrencyDay = state.markDays;
@@ -147,7 +146,7 @@ class CreateMovementPageView extends StatelessWidget {
       currency: currencyCode,
       budgetName: budget?.name,
       tags: state.tags ?? [],
-      type: type,
+      type: type.name,
     );
   }
 }

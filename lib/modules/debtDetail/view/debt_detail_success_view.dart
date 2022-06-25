@@ -11,10 +11,12 @@ import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/debt_daily.dart';
 import 'package:control/models/mark_movement.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/modules/debtDetail/bloc/debt_detail_bloc.dart';
 import 'package:control/modules/debtDetail/view/headerView/debt_detail_header_view.dart';
+import 'package:control/modules/debtDetail/view/widget/debt_daily_bottom_view.dart';
 import 'package:control/modules/debtDetail/view/widget/variable_valiu_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,6 +86,7 @@ class DebtDetailSuccessView extends StatelessWidget {
                 _datesPaymentList(),
                 _categoriesList(),
                 _historyPaymentList(),
+                _debstDailyList(),
                 _paymentButtonView(context),
               ],
             ),
@@ -118,6 +121,7 @@ class DebtDetailSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.sixteen,
+        bottom: FiicoPaddings.sixteen,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,21 +204,24 @@ class DebtDetailSuccessView extends StatelessWidget {
   }
 
   Widget _categoriesList() {
-    return Container(
-      padding: const EdgeInsets.only(
-        top: FiicoPaddings.twenyFour,
-        bottom: FiicoPaddings.sixteen,
-      ),
-      child: FiicoTagsView(
-        tagBackgroundColor: FiicoColors.pink,
-        tags: movement?.tags ?? [],
+    return Visibility(
+      visible: movement?.tags?.isNotEmpty ?? false,
+      child: Container(
+        padding: const EdgeInsets.only(
+          bottom: FiicoPaddings.twenyFour,
+        ),
+        child: FiicoTagsView(
+          tagBackgroundColor: FiicoColors.pink,
+          tags: movement?.tags ?? [],
+        ),
       ),
     );
   }
 
   Widget _paymentButtonView(BuildContext context) {
     return Visibility(
-      visible: movement?.isPaymentPendingState() ?? true,
+      visible: (movement?.isDailyDebtMovement() ?? false) ||
+          (movement?.isPaymentPendingState() ?? true),
       child: Column(
         children: [
           Text(
@@ -229,7 +236,9 @@ class DebtDetailSuccessView extends StatelessWidget {
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
             child: FiicoButton(
-              title: FiicoLocale().markAsPaid,
+              title: movement?.getType() == MovementType.DEBT
+                  ? FiicoLocale().markAsPaid
+                  : FiicoLocale().addNewExpense,
               color: FiicoColors.pinkRed,
               image: SVGImages.checkMarkIcon,
               onTap: () => _paymentIntentAction(context),
@@ -370,7 +379,130 @@ class DebtDetailSuccessView extends StatelessWidget {
     );
   }
 
+  Widget _debstDailyList() {
+    final items = movement?.debsDailyList ?? [];
+    return Visibility(
+      visible: movement?.isDailyDebtMovement() ?? false,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _separatorLineView(),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.sixteen,
+              bottom: FiicoPaddings.sixteen,
+            ),
+            child: Text(
+              FiicoLocale().dailyExpenses,
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+                fontSize: FiicoFontSize.sm,
+              ),
+            ),
+          ),
+          Container(
+            height: (items.length * 110),
+            margin: const EdgeInsets.only(bottom: FiicoPaddings.eight),
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final debtDaily = items[index];
+                return _debstDailyItem(debtDaily);
+              },
+              itemCount: items.length,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _debstDailyItem(DebtDaily? debtDaily) {
+    return SizedBox(
+      height: 110,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.donut_large,
+                color: FiicoColors.pinkRed,
+                size: FiicoFontSize.md,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: FiicoPaddings.eight,
+                  right: FiicoPaddings.twenyFour,
+                ),
+                child: Text(
+                  debtDaily?.name ?? '',
+                  style: Style.subtitle.copyWith(
+                    color: FiicoColors.grayDark,
+                    fontSize: FiicoFontSize.xm,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: FiicoPaddings.eight,
+                  bottom: FiicoPaddings.eight,
+                ),
+                child: Text(
+                  debtDaily?.value.toCurrency() ?? '',
+                  style: Style.title.copyWith(
+                    color: FiicoColors.pinkRed,
+                    fontSize: FiicoFontSize.xm,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: FiicoPaddings.eight,
+              bottom: FiicoPaddings.eight,
+            ),
+            child: Text(
+              '${FiicoLocale().addedBy} ${debtDaily?.userName}',
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: FiicoPaddings.sixteen,
+            ),
+            child: Text(
+              debtDaily?.createdAt?.toDate().toDateFormat2() ?? '',
+              style: Style.subtitle.copyWith(
+                color: FiicoColors.grayNeutral,
+              ),
+            ),
+          ),
+          _separatorLineView(),
+        ],
+      ),
+    );
+  }
+
   void _paymentIntentAction(BuildContext context) {
+    switch (movement?.getType()) {
+      case MovementType.DEBT:
+        _markDebtPaymentIntent(context);
+        break;
+      case MovementType.DAILY_DEBT:
+        _markDebtDailyPaymentIntent(context);
+        break;
+      default:
+    }
+  }
+
+  void _markDebtPaymentIntent(BuildContext context) {
     final bloc = context.read<DebtDetailBloc>();
     if (movement?.isVariableValue ?? false) {
       VariableValueBottoView().show(
@@ -384,5 +516,19 @@ class DebtDetailSuccessView extends StatelessWidget {
     } else {
       bloc.add(DebtDetailMarkPayedMovement(movement: movement));
     }
+  }
+
+  void _markDebtDailyPaymentIntent(BuildContext context) {
+    final bloc = context.read<DebtDetailBloc>();
+    DebtDailyBottoView().show(
+      context,
+      movement,
+      callbackValue: (newDebt) {
+        bloc.add(DebtDetailAddDailyPayedMovement(
+          movement: movement,
+          value: newDebt,
+        ));
+      },
+    );
   }
 }

@@ -45,3 +45,16 @@ class DebtDetailEditMovement extends DebtDetailEvent {
   @override
   List<Object?> get props => [movement];
 }
+
+class DebtDetailAddDailyPayedMovement extends DebtDetailEvent {
+  const DebtDetailAddDailyPayedMovement({
+    required this.value,
+    required this.movement,
+  });
+
+  final DebtDaily? value;
+  final Movement? movement;
+
+  @override
+  List<Object?> get props => [value, movement];
+}

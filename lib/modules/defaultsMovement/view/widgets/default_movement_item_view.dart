@@ -111,7 +111,7 @@ class DefaultMovementListItemViewState
             ),
           ),
           Text(
-            widget.movement.type ?? '',
+            widget.movement.getTypeDescription(),
             style: Style.subtitle.copyWith(
               color: FiicoColors.graySoft,
               fontSize: FiicoFontSize.xm,

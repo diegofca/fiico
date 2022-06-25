@@ -22,6 +22,7 @@ class CreateBudgetState extends Equatable {
     this.initDate,
     this.finishDate,
     this.addedBudgetID,
+    this.isDailyDebt,
     this.icon = const FiicoIcon.empty(),
   });
 
@@ -38,11 +39,15 @@ class CreateBudgetState extends Equatable {
   final Timestamp? finishDate;
   final String? addedBudgetID;
   final FiicoIcon? icon;
+  final bool? isDailyDebt;
 
   List<Movement> get entrys =>
       movements.where((e) => e.getType() == MovementType.ENTRY).toList();
   List<Movement> get debts =>
       movements.where((e) => e.getType() == MovementType.DEBT).toList();
+
+  List<Movement> get dailyDebts =>
+      movements.where((e) => e.getType() == MovementType.DAILY_DEBT).toList();
 
   bool get isCompleteAdded => addedBudgetID?.isNotEmpty ?? false;
 
@@ -62,6 +67,7 @@ class CreateBudgetState extends Equatable {
     Timestamp? finishDate,
     String? addedBudgetID,
     FiicoIcon? icon,
+    bool? isDailyDebt,
   }) {
     var newMovements = movements.toList();
     if (addedMovement != null) {
@@ -84,6 +90,7 @@ class CreateBudgetState extends Equatable {
       finishDate: finishDate ?? this.finishDate,
       users: users ?? this.users,
       addedBudgetID: addedBudgetID ?? this.addedBudgetID,
+      isDailyDebt: isDailyDebt ?? this.isDailyDebt,
       movements: newMovements,
       icon: icon ?? this.icon,
     );

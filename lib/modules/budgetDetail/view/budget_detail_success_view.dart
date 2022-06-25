@@ -126,8 +126,9 @@ class BudgetDetailSuccessView extends StatelessWidget {
         _movementsDetailView(context),
         _infoCycleDetailView(context),
         _infoPeriodDurationDetailView(context),
-        _entrysDebtsView(context),
-        _entrysDebtsListView(context),
+        _debtsView(context),
+        _debtDailyView(context),
+        _debtsListView(context),
         _entrysView(context),
         _entryListView(context),
         _infoView(),
@@ -580,7 +581,28 @@ class BudgetDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entrysDebtsView(BuildContext context) {
+  Widget _debtDailyView(BuildContext context) {
+    final _mDailyDebts = budget.getMovementsBy(7) ?? [];
+    return Visibility(
+      visible: _mDailyDebts.isNotEmpty,
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(bottom: FiicoPaddings.sixteen),
+        width: double.maxFinite,
+        height: 75.0 * _mDailyDebts.length,
+        child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _mDailyDebts.length,
+          itemBuilder: (context, index) {
+            final movement = _mDailyDebts[index];
+            return _itemMovementToList(context, movement);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _debtsView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: FiicoPaddings.twenyFour,
@@ -617,7 +639,7 @@ class BudgetDetailSuccessView extends StatelessWidget {
     );
   }
 
-  Widget _entrysDebtsListView(BuildContext context) {
+  Widget _debtsListView(BuildContext context) {
     final _mDebts = budget.getMovementsBy(4) ?? [];
     return Padding(
       padding: const EdgeInsets.only(
@@ -671,7 +693,9 @@ class BudgetDetailSuccessView extends StatelessWidget {
   Widget _itemMovementToList(BuildContext context, Movement movement) {
     return Dismissible(
       key: Key(movement.id ?? ''),
-      direction: DismissDirection.endToStart,
+      direction: movement.getType() != MovementType.DAILY_DEBT
+          ? DismissDirection.endToStart
+          : DismissDirection.none,
       onDismissed: (direction) {
         context.read<BudgetDetailBloc>().add(BudgetDetailMovementRemoveRequest(
             movement: movement, budget: budget));

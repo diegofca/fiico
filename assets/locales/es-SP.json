@@ -301,5 +301,11 @@
     "activate": "Activar",
     "Turn_biometric_unlock": "Activar o desactivar el desbloqueo biométrico",
     "is_not_possible_enable_biometric": "No es posible configurar tu desbloqueo de sesión mediante tu dispositivo.",
-    "disable_biometric_id": "Deshabilitar identificación biométrica"
+    "disable_biometric_id": "Deshabilitar identificación biométrica",
+    "do_you_have_daily_expenses": "¿Tienes gastos diarios que deseas almacenar?",
+    "dont_forget_Add_daily_expenses": "¡No olvides agregar los gastos diarios!",
+    "add_new_expense": "Agregar nuevo gasto",
+    "daily_expenses": "Gastos diarios",
+    "added_by": "Agregado por:",
+    "remember_that_after_adding_your_expense": "Recuerda que despues de agregado tu gasto, no podrás eliminarlo."
 }
