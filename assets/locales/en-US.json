@@ -307,5 +307,6 @@
     "add_new_expense": "Add new expense",
     "daily_expenses": "Daily expenses",
     "added_by": "Added by:",
-    "remember_that_after_adding_your_expense": "Remember that after adding your expense, you will not be able to delete it."
+    "remember_that_after_adding_your_expense": "Remember that after adding your expense, you will not be able to delete it.",
+    "security_page": "Security screen"
 }   

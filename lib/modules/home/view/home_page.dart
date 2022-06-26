@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/constants.dart';
 import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/genericViews/fiico_giff_dialog.dart';
@@ -72,19 +75,22 @@ class HomePageView extends StatelessWidget {
     }
   }
 
-  void _validateIfShowTutorial(BuildContext context, HomeState state) {
-    final showUserTutorial = user?.showTutorial ?? false;
-    if (!showUserTutorial && state.showTutorial == null) {
-      FiicoGiffAlertDialog.show(
-        context: context,
-        urlImage: FiicoConstants.tutorialGiffUrl,
-        title: FiicoLocale().createNewBudget,
-        desc: FiicoLocale().startByCreatingYourFirstBudget,
-        okBtnText: FiicoLocale().createBudget,
-        voidCallback: () => _addBudgetClickedAction(context),
-      );
-      context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));
-    }
+  void _validateIfShowTutorial(BuildContext context, HomeState state) async {
+    Timer(const Duration(seconds: 2), () async {
+      final _user = await Preferences.get.getUser();
+      final showUserTutorial = _user?.showTutorial ?? true;
+      if (!showUserTutorial && state.showTutorial == null) {
+        context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));
+        FiicoGiffAlertDialog.show(
+          context: context,
+          urlImage: FiicoConstants.tutorialGiffUrl,
+          title: FiicoLocale().createNewBudget,
+          desc: FiicoLocale().startByCreatingYourFirstBudget,
+          okBtnText: FiicoLocale().createBudget,
+          voidCallback: () => _addBudgetClickedAction(context),
+        );
+      }
+    });
   }
 
   void _validateIfCanUpdateApp(BuildContext context, HomeState state) async {

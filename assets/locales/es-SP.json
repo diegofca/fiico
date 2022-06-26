@@ -307,5 +307,6 @@
     "add_new_expense": "Agregar nuevo gasto",
     "daily_expenses": "Gastos diarios",
     "added_by": "Agregado por:",
-    "remember_that_after_adding_your_expense": "Recuerda que despues de agregado tu gasto, no podrás eliminarlo."
+    "remember_that_after_adding_your_expense": "Recuerda que despues de agregado tu gasto, no podrás eliminarlo.",
+    "security_page": "Pantalla de seguridad"
 }

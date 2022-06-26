@@ -61,58 +61,64 @@ class PinCodeUnlockSuccessViewState extends State<PinCodeUnlockSuccessView> {
   }
 
   Widget _pinCodeView(BuildContext context) {
-    return PinCodeTextField(
-      appContext: context,
-      length: 4,
-      obscuringWidget: const Icon(
-        MdiIcons.shieldKey,
-        color: FiicoColors.greenNeutral,
+    return Visibility(
+      visible: widget.userPinCode?.isNotEmpty ?? false,
+      child: PinCodeTextField(
+        appContext: context,
+        length: 4,
+        obscuringWidget: const Icon(
+          MdiIcons.shieldKey,
+          color: FiicoColors.greenNeutral,
+        ),
+        controller: _controller,
+        blinkWhenObscuring: true,
+        animationType: AnimationType.fade,
+        pinTheme: PinTheme(
+          shape: PinCodeFieldShape.box,
+          borderRadius: BorderRadius.circular(5),
+          fieldHeight: 60,
+          fieldWidth: 60,
+          inactiveColor: FiicoColors.purpleSoft,
+          activeColor: FiicoColors.greenNeutral,
+          selectedColor: FiicoColors.purpleDark,
+          activeFillColor: Colors.white,
+          inactiveFillColor: FiicoColors.grayLite,
+          selectedFillColor: FiicoColors.white,
+          errorBorderColor: FiicoColors.pinkRed,
+          disabledColor: FiicoColors.graySoft,
+        ),
+        cursorColor: Colors.black,
+        animationDuration: const Duration(milliseconds: 300),
+        enableActiveFill: true,
+        keyboardType: TextInputType.number,
+        boxShadows: const [
+          BoxShadow(
+            offset: Offset(0, 1),
+            color: Colors.black12,
+            blurRadius: 10,
+          )
+        ],
+        onCompleted: (pinCode) => _changePinCode(context, pinCode),
+        onChanged: (value) {},
       ),
-      controller: _controller,
-      blinkWhenObscuring: true,
-      animationType: AnimationType.fade,
-      pinTheme: PinTheme(
-        shape: PinCodeFieldShape.box,
-        borderRadius: BorderRadius.circular(5),
-        fieldHeight: 60,
-        fieldWidth: 60,
-        inactiveColor: FiicoColors.purpleSoft,
-        activeColor: FiicoColors.greenNeutral,
-        selectedColor: FiicoColors.purpleDark,
-        activeFillColor: Colors.white,
-        inactiveFillColor: FiicoColors.grayLite,
-        selectedFillColor: FiicoColors.white,
-        errorBorderColor: FiicoColors.pinkRed,
-        disabledColor: FiicoColors.graySoft,
-      ),
-      cursorColor: Colors.black,
-      animationDuration: const Duration(milliseconds: 300),
-      enableActiveFill: true,
-      keyboardType: TextInputType.number,
-      boxShadows: const [
-        BoxShadow(
-          offset: Offset(0, 1),
-          color: Colors.black12,
-          blurRadius: 10,
-        )
-      ],
-      onCompleted: (pinCode) => _changePinCode(context, pinCode),
-      onChanged: (value) {},
     );
   }
 
   Widget _titlePinCodeView() {
-    return Container(
-      padding: const EdgeInsets.only(
-        right: FiicoPaddings.sixteen,
-        left: FiicoPaddings.sixteen,
-        top: FiicoPaddings.twenyFour,
-      ),
-      height: 80,
-      child: Text(
-        _titleStatusChangePin(),
-        style: Style.title,
-        maxLines: FiicoMaxLines.four,
+    return Visibility(
+      visible: widget.userPinCode?.isNotEmpty ?? false,
+      child: Container(
+        padding: const EdgeInsets.only(
+          right: FiicoPaddings.sixteen,
+          left: FiicoPaddings.sixteen,
+          top: FiicoPaddings.twenyFour,
+        ),
+        height: 80,
+        child: Text(
+          _titleStatusChangePin(),
+          style: Style.title,
+          maxLines: FiicoMaxLines.four,
+        ),
       ),
     );
   }

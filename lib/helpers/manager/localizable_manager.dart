@@ -326,4 +326,5 @@ class FiicoLocale {
   final addedBy = "added_by".tr();
   final rememberThatAfterAddingYourExpense =
       "remember_that_after_adding_your_expense".tr();
+  final securityPage = "security_page".tr();
 }

@@ -23,7 +23,7 @@ class PinCodeUnlockPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: FiicoColors.grayBackground,
       appBar: GenericAppBar(
-        text: FiicoLocale().securityPinTitle,
+        text: FiicoLocale().securityPage,
         textColor: FiicoColors.black,
         isShowBack: false,
       ),

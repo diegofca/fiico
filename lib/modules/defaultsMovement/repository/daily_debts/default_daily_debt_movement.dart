@@ -7,10 +7,11 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:uuid/uuid.dart';
 
 class DailyDebtsMovements {
+  static final _id = const Uuid().v1();
   // Gastos Diarios
   static Movement daily(Budget budget) {
     return Movement(
-      id: const Uuid().v1(),
+      id: _id,
       name: FiicoLocale().dailyExpenses,
       value: null,
       createdAt: Timestamp.now(),

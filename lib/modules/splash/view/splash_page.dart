@@ -76,8 +76,11 @@ class SplashPageView extends StatelessWidget {
   void _processLogged(BuildContext context) async {
     final user = await Preferences.get.getUser();
     final activePinCode = user?.securityCode?.isNotEmpty ?? false;
+    final activeBiometric = user?.authBiometric ?? false;
+    final activeSecurity = activePinCode || activeBiometric;
+
     final page =
-        activePinCode ? PinCodeUnlockPage(user: user) : MenuPage(user: user);
+        activeSecurity ? PinCodeUnlockPage(user: user) : MenuPage(user: user);
     FiicoRoute.sendFade(context, page);
     Smartlook.startRecording();
     BadgeManager.removeBadge();

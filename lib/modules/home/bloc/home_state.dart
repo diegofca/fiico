@@ -20,7 +20,8 @@ class HomeState extends Equatable {
   final bool? showTutorial;
 
   @override
-  List<Object> get props => [status, budgets ?? []];
+  List<Object?> get props =>
+      [status, budgets, budgetSelected, removedMovement, showTutorial, filter];
 
   HomeState copyWith({
     HomeStatus? status,

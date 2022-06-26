@@ -75,7 +75,7 @@ class CreateBudgetState extends Equatable {
     }
 
     if (removedMovement != null) {
-      newMovements.remove(removedMovement);
+      newMovements.removeWhere((e) => e.id == removedMovement.id);
     }
 
     return CreateBudgetState(

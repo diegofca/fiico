@@ -217,20 +217,7 @@ class CreateBudgetSuccessView extends StatelessWidget {
           Switch.adaptive(
             value: budgetToCreate.isActiveDailyeDebt(),
             activeColor: FiicoColors.pink,
-            onChanged: (isActive) {
-              final bloc = context.read<CreateBudgetBloc>();
-              bloc.add(CreateBudgetInfoSelected(isDailyDebt: isActive));
-
-              if (isActive) {
-                bloc.add(CreateBudgetAddedmovement(
-                  movement: DailyDebtsMovements.daily(budgetToCreate),
-                ));
-              } else {
-                bloc.add(CreateBudgetRemovedMovement(
-                  movement: DailyDebtsMovements.daily(budgetToCreate),
-                ));
-              }
-            },
+            onChanged: (isActive) => _adddDebtDailyMovement(context, isActive),
           ),
         ],
       ),
@@ -667,5 +654,20 @@ class CreateBudgetSuccessView extends StatelessWidget {
         ),
       );
     });
+  }
+
+  void _adddDebtDailyMovement(BuildContext context, bool isActive) {
+    final bloc = context.read<CreateBudgetBloc>();
+    bloc.add(CreateBudgetInfoSelected(isDailyDebt: isActive));
+
+    if (isActive) {
+      bloc.add(CreateBudgetAddedmovement(
+        movement: DailyDebtsMovements.daily(budgetToCreate),
+      ));
+    } else {
+      bloc.add(CreateBudgetRemovedMovement(
+        movement: DailyDebtsMovements.daily(budgetToCreate),
+      ));
+    }
   }
 }
