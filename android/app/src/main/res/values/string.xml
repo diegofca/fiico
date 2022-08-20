@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Valiu</string>
+    <string name="app_name">Finup</string>
     <string name="facebook_app_id">3486537098283634</string>
     <string name="fb_login_protocol_scheme">fb3486537098283634</string>
     <string name="facebook_client_token">e1e729b90cddeef2f4b3859952fc73b8</string>

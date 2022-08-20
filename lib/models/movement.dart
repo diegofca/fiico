@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
 enum MovementType { ENTRY, DAILY_DEBT, DEBT, SAFE }
+
 enum MovementPaymentType { PENDING, PAYED }
 
 class Movement {

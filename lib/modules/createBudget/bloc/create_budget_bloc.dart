@@ -5,8 +5,6 @@ import 'package:control/models/fiico_icon.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/createBudget/repository/create_budget_repository.dart';
-import 'package:control/modules/defaultsMovement/repository/daily_debts/default_daily_debt_movement.dart';
-import 'package:control/modules/defaultsMovement/repository/debts/groups/default_debts_home_list.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:equatable/equatable.dart';
 

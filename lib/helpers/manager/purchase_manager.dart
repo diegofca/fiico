@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, unnecessary_null_comparison
+// ignore_for_file: avoid_function_literals_in_foreach_calls, unnecessary_null_comparison, depend_on_referenced_packages, use_build_context_synchronously
 
 import 'dart:async';
 import 'dart:io';

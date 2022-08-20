@@ -87,7 +87,7 @@ class ValiuApp extends StatelessWidget {
           ),
           child: SmartlookHelperWidget(
             child: MaterialApp(
-              title: 'Valiu',
+              title: 'Finup',
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,

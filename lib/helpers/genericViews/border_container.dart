@@ -27,7 +27,6 @@ class BorderContainer extends Container {
       duration: const Duration(milliseconds: 800),
       curve: Curves.decelerate,
       alignment: alignment,
-      child: child,
       height: heigth,
       padding: padding,
       decoration: BoxDecoration(
@@ -36,6 +35,7 @@ class BorderContainer extends Container {
         ),
         borderRadius: BorderRadius.circular(FiicoPaddings.eight),
       ),
+      child: child,
     );
   }
 }

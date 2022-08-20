@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:control/helpers/manager/analytics_manager.dart';
 import 'package:control/helpers/manager/firebase_manager.dart';
