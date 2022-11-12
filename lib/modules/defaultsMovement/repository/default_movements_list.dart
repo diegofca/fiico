@@ -9,6 +9,7 @@ class MovementsList {
   static MovementsList getListBy({required MovementType type}) {
     switch (type) {
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         return DebtsMovements();
       default:
         return EntryMovements();

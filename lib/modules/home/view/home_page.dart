@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/constants.dart';
 import 'package:control/helpers/extension/remote_config.dart';
@@ -76,21 +74,14 @@ class HomePageView extends StatelessWidget {
   }
 
   void _validateIfShowTutorial(BuildContext context, HomeState state) async {
-    Timer(const Duration(seconds: 2), () async {
-      final _user = await Preferences.get.getUser();
-      final showUserTutorial = _user?.showTutorial ?? true;
-      if (!showUserTutorial && state.showTutorial == null) {
-        context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));
-        FiicoGiffAlertDialog.show(
-          context: context,
-          urlImage: FiicoConstants.tutorialGiffUrl,
-          title: FiicoLocale().createNewBudget,
-          desc: FiicoLocale().startByCreatingYourFirstBudget,
-          okBtnText: FiicoLocale().createBudget,
-          voidCallback: () => _addBudgetClickedAction(context),
-        );
-      }
-    });
+    final _user = await Preferences.get.getUser();
+    final showedUserTutorial = _user?.showTutorial ?? false;
+
+    if (!showedUserTutorial && state.showTutorial == null) {
+      context.read<HomeBloc>().add(const HomeShowedTutorial(showed: true));
+    } else if (showedUserTutorial && state.status == HomeStatus.init) {
+      _showTutorialAlert(context);
+    }
   }
 
   void _validateIfCanUpdateApp(BuildContext context, HomeState state) async {
@@ -109,6 +100,19 @@ class HomePageView extends StatelessWidget {
         break;
       default:
     }
+  }
+
+  void _showTutorialAlert(BuildContext context) {
+    FiicoGiffAlertDialog.show(
+      context: context,
+      urlImage: FiicoConstants.tutorialGiffUrl,
+      title: FiicoLocale().createNewBudget,
+      desc: FiicoLocale().startByCreatingYourFirstBudget,
+      okBtnText: FiicoLocale().createBudget,
+      voidCallback: () => _addBudgetClickedAction(context),
+      touchDissmis: false,
+      hideCancelButton: true,
+    );
   }
 
   void _addBudgetClickedAction(BuildContext context) {

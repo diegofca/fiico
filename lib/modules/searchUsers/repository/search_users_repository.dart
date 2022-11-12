@@ -13,7 +13,8 @@ class SearchUsersRepository extends SearchUsersRepositoryAbs {
   @override
   Stream<List<FiicoUser>> searchUsers(String? userID) {
     return _usersCollections
-        .where("id", isNotEqualTo: userID)
+        .doc(userID)
+        .collection(Firestore.friendsPath)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs

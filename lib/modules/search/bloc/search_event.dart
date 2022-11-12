@@ -21,3 +21,14 @@ class SearchSelectSegment extends SearchEvent {
   @override
   List<Object?> get props => [index];
 }
+
+class SendRequestFriendRequest extends SearchEvent {
+  const SendRequestFriendRequest({
+    this.user,
+  });
+
+  final FiicoUser? user;
+
+  @override
+  List<Object?> get props => [user];
+}

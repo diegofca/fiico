@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/invite_friend.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
 import 'package:control/modules/search/bloc/search_bloc.dart';
@@ -16,15 +17,21 @@ class SearchSuccessView extends StatelessWidget {
   SearchSuccessView({
     Key? key,
     required this.usersStream,
+    required this.friendStream,
     required this.budgetsStream,
     required this.movementsStream,
+    required this.invitesStream,
+    required this.requestInvitesStream,
   }) : super(key: key);
 
   final items = 10;
 
   final Stream<List<FiicoUser>>? usersStream;
+  final Stream<List<FiicoUser>>? friendStream;
   final Stream<List<Budget>>? budgetsStream;
   final Stream<List<Movement>>? movementsStream;
+  final Stream<List<InviteFriend>>? invitesStream;
+  final Stream<List<InviteFriend>>? requestInvitesStream;
 
   final _segmentOptions = {
     0: ' ${FiicoLocale().all} ',
@@ -132,8 +139,26 @@ class SearchSuccessView extends StatelessWidget {
     return StreamBuilder<List<FiicoUser>>(
       stream: usersStream,
       builder: (context, snapshot) {
-        return SearchUsersListView(
-          users: state.showUsers ? snapshot.data ?? [] : [],
+        return StreamBuilder<List<InviteFriend>>(
+          stream: invitesStream,
+          builder: (context, inviteSnapshot) {
+            return StreamBuilder<List<InviteFriend>>(
+              stream: requestInvitesStream,
+              builder: (context, rInviteSnapshot) {
+                return StreamBuilder<List<FiicoUser>>(
+                  stream: friendStream,
+                  builder: (context, friendsSnapshot) {
+                    return SearchUsersListView(
+                      users: state.showUsers ? snapshot.data ?? [] : [],
+                      invites: inviteSnapshot.data ?? [],
+                      requestInvites: rInviteSnapshot.data ?? [],
+                      friends: friendsSnapshot.data ?? [],
+                    );
+                  },
+                );
+              },
+            );
+          },
         );
       },
     );

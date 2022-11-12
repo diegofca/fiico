@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/models/budget.dart';
+import 'package:control/models/invite_friend.dart';
 import 'package:control/models/movement.dart';
 import 'package:control/models/user.dart';
 import 'package:control/network/firestore_path.dart';
@@ -8,6 +10,10 @@ abstract class SearchRepositoryAbs {
   Stream<List<FiicoUser>> searchUsers(String? userID, String query);
   Stream<List<Budget>> searchBudgets(String? userID, String query);
   Stream<List<Movement>> searchMovements(String? userID, String query);
+  Future<void> sendRequestFriend(FiicoUser? invitedUser);
+  Stream<List<InviteFriend>> getRequestedInvitations(String? userID);
+  Stream<List<InviteFriend>> getInvitations(String? userID);
+  Stream<List<FiicoUser>> getFriends(String? userID);
 }
 
 class SearchRepository extends SearchRepositoryAbs {
@@ -73,5 +79,80 @@ class SearchRepository extends SearchRepositoryAbs {
       }
     });
     return Stream.value(movements);
+  }
+
+  @override
+  Future<void> sendRequestFriend(FiicoUser? invitedUser) async {
+    var user = await Preferences.get.getUser();
+    final invite = InviteFriend(
+      sendUserId: user?.id,
+      sendUserName: user?.userName,
+      receivedUserId: invitedUser?.id,
+      createdAt: Timestamp.now(),
+      status: 'Pending',
+    );
+
+    final docInvite = await _usersCollections
+        .doc(invite.receivedUserId)
+        .collection(Firestore.inviteFriendsPath)
+        .add(invite.toJson());
+
+    final docReqInvite = await _usersCollections
+        .doc(invite.sendUserId)
+        .collection(Firestore.inviteRequestFriendsPath)
+        .add(invite.toJson());
+
+    _usersCollections
+        .doc(invite.receivedUserId)
+        .collection(Firestore.inviteFriendsPath)
+        .doc(docInvite.id)
+        .update({'id': docInvite.id, 'requestInviteId': docReqInvite.id});
+
+    _usersCollections
+        .doc(invite.sendUserId)
+        .collection(Firestore.inviteRequestFriendsPath)
+        .doc(docReqInvite.id)
+        .update({'id': docReqInvite.id});
+  }
+
+  @override
+  Stream<List<InviteFriend>> getRequestedInvitations(String? userID) {
+    return _usersCollections
+        .doc(userID)
+        .collection(Firestore.inviteRequestFriendsPath)
+        .where(Firestore.statusField, isNotEqualTo: 'Complete')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => InviteFriend.fromJson(doc.data()))
+          .toList();
+    });
+  }
+
+  @override
+  Stream<List<InviteFriend>> getInvitations(String? userID) {
+    return _usersCollections
+        .doc(userID)
+        .collection(Firestore.inviteFriendsPath)
+        .where(Firestore.statusField, isEqualTo: 'Pending')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => InviteFriend.fromJson(doc.data()))
+          .toList();
+    });
+  }
+
+  @override
+  Stream<List<FiicoUser>> getFriends(String? userID) {
+    return _usersCollections
+        .doc(userID)
+        .collection(Firestore.friendsPath)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => FiicoUser.fromJson(doc.data()))
+          .toList();
+    });
   }
 }

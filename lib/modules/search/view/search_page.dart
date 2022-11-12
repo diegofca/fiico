@@ -57,8 +57,11 @@ class SearchPageView extends StatelessWidget {
       ),
       body: SearchSuccessView(
         usersStream: state.users,
+        friendStream: state.friends,
         budgetsStream: state.budgets,
         movementsStream: state.movements,
+        invitesStream: state.invites,
+        requestInvitesStream: state.requestInvites,
       ),
     );
   }

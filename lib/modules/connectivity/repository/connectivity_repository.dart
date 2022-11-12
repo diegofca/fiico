@@ -15,8 +15,8 @@ class ConnectivityRepository {
     InternetConnectionChecker? connectionChecker,
   })  : _connectivity = connectivity ?? Connectivity(),
         _connectionChecker = connectionChecker ??
-            (InternetConnectionChecker()
-              ..checkInterval = const Duration(seconds: 5)),
+            (InternetConnectionChecker.createInstance(
+                checkInterval: const Duration(seconds: 5))),
         _connectedStream = BehaviorSubject<bool>();
 
   final Connectivity _connectivity;

@@ -27,7 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: HomeStatus.loading));
     emit(state.copyWith(
-      status: HomeStatus.init,
+      status: HomeStatus.success,
       budgets: repository.budgets(event.uID),
     ));
   }
@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final user = await Preferences.get.getUser();
     emit(state.copyWith(
-      status: HomeStatus.init,
+      status: HomeStatus.success,
       budgets: repository.budgets(user?.id),
       budgetSelected: event.budget,
     ));
@@ -50,7 +50,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final user = await Preferences.get.getUser();
     emit(state.copyWith(
-      status: HomeStatus.init,
+      status: HomeStatus.success,
       budgets: repository.budgets(user?.id),
       filter: event.filter,
     ));
@@ -63,7 +63,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await repository.deleteMovement(event.movement, state.budgetSelected);
     final user = await Preferences.get.getUser();
     emit(state.copyWith(
-      status: HomeStatus.init,
+      status: HomeStatus.success,
       removedMovement: event.movement,
       budgets: repository.budgets(user?.id),
     ));
@@ -78,11 +78,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Preferences.get.saveUser(user);
 
     await repository.showTutorial(user?.id);
-
     emit(state.copyWith(
       status: HomeStatus.init,
-      budgets: repository.budgets(user?.id),
-      showTutorial: event.showed,
+      showTutorial: event.showed ?? true,
     ));
   }
 }

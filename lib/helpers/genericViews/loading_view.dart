@@ -25,8 +25,8 @@ class LoadingView extends StatelessWidget {
             children: const [
               Center(
                 child: SizedBox(
-                  height: 90,
-                  width: 90,
+                  height: 60,
+                  width: 60,
                   child: CircularProgressIndicator(
                     strokeWidth: 6,
                     color: Colors.white,

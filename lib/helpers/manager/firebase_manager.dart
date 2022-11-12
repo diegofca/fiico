@@ -6,6 +6,7 @@ import 'package:control/helpers/extension/remote_config.dart';
 import 'package:control/helpers/extension/toast.dart';
 import 'package:control/helpers/manager/badgeManager.dart';
 import 'package:control/models/notification_center_option.dart';
+import 'package:control/modules/friends/view/friends_page.dart';
 import 'package:control/modules/home/repository/home_repository.dart';
 import 'package:control/modules/movementList/view/movement_list_page.dart';
 import 'package:control/modules/notifications/view/notifications_page.dart';
@@ -17,6 +18,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseManager {
@@ -31,6 +33,7 @@ class FirebaseManager {
     _initCrashlytics();
     _initAnalytics();
     _initInAppMessaging();
+    _initPerformance();
   }
 
   static void addContext(BuildContext context) {
@@ -67,6 +70,10 @@ class FirebaseManager {
     _callbackMessaging();
   }
 
+  static void _initPerformance() {
+    FirebasePerformance.instance.setPerformanceCollectionEnabled(true);
+  }
+
   static void _initInAppMessaging() {
     FirebaseInAppMessaging.instance.setAutomaticDataCollectionEnabled(true);
   }
@@ -97,6 +104,9 @@ class FirebaseManager {
           final budgetID = message.data['actionId'];
           final budget = await HomeRepository().getBudget(budgetID);
           FiicoRoute.send(_context, MovementsListPage(budget: budget));
+          break;
+        case "INVITE":
+          FiicoRoute.send(_context, FriendsPage(user: user));
           break;
         case "PREMIUM":
           FiicoRoute.send(_context, SubscriptionDetailPage(user: user));

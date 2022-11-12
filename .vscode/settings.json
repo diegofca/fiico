@@ -7,5 +7,9 @@
     // Eliminar de la observación de archivos
     "files.watcherExclude": {
       "**/.fvm": true
-    }
+    },
+    "dart.flutterSdkPaths": [
+      "/Users/osx/Documents/sdk/flutter/",
+      "/Users/osx/Documents/sdk/flutter/bin"
+    ]
   }

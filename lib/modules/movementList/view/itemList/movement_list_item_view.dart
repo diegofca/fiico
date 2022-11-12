@@ -129,6 +129,7 @@ class MovementListItemViewState extends State<MovementListItemView> {
   void _showDetailMovement(BuildContext context) {
     switch (widget.movement?.getType()) {
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         FiicoRoute.send(
           context,
           DebtDetailPage(movement: widget.movement, budget: widget.budget),

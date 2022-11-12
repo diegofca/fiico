@@ -54,7 +54,7 @@ class SettingsConfiguration {
 
   // valiuPremium item
   SettingItem _valiuPremium() => SettingItem(
-        name: 'Kotfi Premium',
+        name: 'FinUp Premium',
         icon: const Icon(
           MdiIcons.crown,
           color: FiicoColors.gold,

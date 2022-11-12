@@ -45,9 +45,10 @@ class SignUpRepository extends SignUpRepositoryAbs {
         deviceTokens: [token],
       );
 
+      await _addNewUser(user);
       Preferences.get.saveUser(user);
       _suscribesTopicsUpdate(user);
-      await _addNewUser(user);
+
       return _getUser(user.id);
     } on FirebaseAuthException catch (e) {
       onError(e.code, e.message);

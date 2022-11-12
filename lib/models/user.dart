@@ -62,7 +62,8 @@ class FiicoUser extends Equatable {
       socialToken: json?['socialToken'],
       profileImage: json?['profileImage'],
       totalBudgets: json?['totalBudgets'],
-      deviceTokens: List.castFrom(json?['deviceTokens']),
+      deviceTokens:
+          List.castFrom<dynamic, String>(json?['deviceTokens']).toList(),
       currentPlan: Plan.fromJson(json?['currentPlan']),
       defaultCurrency: Currency.from(json: json?['defaultCurrency']),
       payments: PaymentPremium.toList(json),
@@ -71,8 +72,8 @@ class FiicoUser extends Equatable {
       budgetPermission: json?['budgetPermission'],
       authBiometric: json?['authBiometric'],
       securityCode: json?['securityCode'],
-      email: json?['email'],
       languageCode: json?['languageCode'],
+      email: json?['email'],
       vip: json?['vip'],
     );
   }
@@ -130,6 +131,7 @@ class FiicoUser extends Equatable {
     Currency? defaultCurrency,
     int? totalBudgets,
     String? languageCode,
+    List<String>? friendsIDs,
   }) {
     return FiicoUser(
       id: id ?? this.id,
@@ -160,13 +162,18 @@ class FiicoUser extends Equatable {
         id,
         vip,
         userName,
+        email,
         socialToken,
-        deviceTokens,
-        currentPlan,
         profileImage,
+        deviceTokens,
+        totalBudgets,
+        currentPlan,
         securityCode,
         authBiometric,
         languageCode,
+        budgets,
+        budgetPermission,
+        defaultCurrency
       ];
 
   @override

@@ -327,4 +327,8 @@ class FiicoLocale {
   final rememberThatAfterAddingYourExpense =
       "remember_that_after_adding_your_expense".tr();
   final securityPage = "security_page".tr();
+  final friends = "friends".tr();
+  final addFriend = "add_friend".tr();
+  final showInvite = "show_invite".tr();
+  final invitations = "invitations".tr();
 }

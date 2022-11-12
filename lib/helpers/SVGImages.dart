@@ -25,6 +25,7 @@ class SVGImages {
   static const diamondPremium = 'assets/images/diamond_premium.svg';
   static const goldPremium = 'assets/images/gold_premium.svg';
   static const unlimitedPremium = 'assets/images/unlimited_premium.svg';
+  static const addFriend = 'assets/images/add_friend.svg';
 
   static const homeTab = 'assets/images/home_tab.svg';
   static const groupTab = 'assets/images/group_tab.svg';

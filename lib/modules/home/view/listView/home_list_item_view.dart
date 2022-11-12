@@ -214,6 +214,7 @@ class HomeListItemViewState extends State<HomeListItemView> {
             EntryDetailPage(movement: widget.movement, budget: widget.budget));
         break;
       case MovementType.DEBT:
+      case MovementType.DAILY_DEBT:
         FiicoRoute.send(context,
             DebtDetailPage(movement: widget.movement, budget: widget.budget));
         break;

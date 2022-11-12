@@ -5,6 +5,9 @@ class Firestore {
   static const suggestionsPath = 'suggestions';
   static const helpCenterPath = 'helpCenter';
   static const helpCenterMessagesPath = 'messages';
+  static const inviteFriendsPath = 'invites';
+  static const inviteRequestFriendsPath = 'inviteRequest';
+  static const friendsPath = 'friends';
 
   static const statusField = 'status';
   static const nameField = 'name';

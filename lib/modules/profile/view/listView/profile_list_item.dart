@@ -4,6 +4,7 @@ import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/modules/editProfile/view/edit_profile_page.dart';
+import 'package:control/modules/friends/view/friends_page.dart';
 import 'package:control/modules/profile/model/profile_option.dart';
 import 'package:control/modules/settings/view/pages/helpCenter/view/help_center_dart.dart';
 import 'package:control/modules/settings/view/pages/pinCode/view/security_pin_code_page.dart';
@@ -100,7 +101,9 @@ class ProfileListItemViewState extends State<ProfileListItemView> {
     if (widget.option.name == FiicoLocale().securityPinTitle) {
       FiicoRoute.send(context, SecurityPinCodePage(user: user));
     }
-    if (widget.option.name == FiicoLocale().shareQR) {}
+    if (widget.option.name == FiicoLocale().friends) {
+      FiicoRoute.send(context, FriendsPage(user: user));
+    }
     if (widget.option.name == FiicoLocale().editUser) {
       FiicoRoute.send(context, EditProfilePage(user: user));
     }

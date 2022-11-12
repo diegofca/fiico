@@ -212,6 +212,18 @@ exports.createBudget = functions.firestore
     });
   });
 
+exports.createInvite = functions.firestore
+  .document("/users/{userID}/invites/{inviteID}")
+  .onCreate((snap, context) => {
+    const invite = snap.data();
+    const receivedUserId = invite['receivedUserId'];
+    const sendUserName = invite['sendUserName'];
+    const title = "Solicitud de amistad";
+    const topic = "news";
+    const message = sendUserName + " te ha agregado como amigo.";
+    sendMessage(title, message, topic, "INVITE", receivedUserId);
+  });
+
 exports.helpCenterMessage = functions.firestore
   .document("/users/{userID}/helpCenter/{conversationID}/messages/{messageID}")
   .onCreate((snap, context) => {

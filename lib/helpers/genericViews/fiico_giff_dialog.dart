@@ -13,10 +13,14 @@ class FiicoGiffAlertDialog {
     required String desc,
     required String okBtnText,
     required VoidCallback voidCallback,
+    bool touchDissmis = true,
+    bool hideCancelButton = false,
   }) {
     showDialog(
       context: context,
+      barrierDismissible: touchDissmis,
       builder: (_) => NetworkGiffyDialog(
+        onlyOkButton: hideCancelButton,
         image: CachedNetworkImage(
           imageUrl: urlImage,
           fit: BoxFit.cover,
@@ -39,6 +43,8 @@ class FiicoGiffAlertDialog {
           ),
         ),
         onOkButtonPressed: () => voidCallback.call(),
+        buttonOkColor: FiicoColors.purpleDark,
+        buttonCancelColor: FiicoColors.pinkRed,
       ),
     );
   }

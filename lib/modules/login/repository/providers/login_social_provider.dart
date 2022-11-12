@@ -4,7 +4,7 @@ import 'package:control/modules/login/repository/providers/auth_google_provider.
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginSocialProvider {
-  final _appleAuth = AppleAuthProvider();
+  final _appleAuth = ApAuthProvider();
   final _fbAuth = FbAuthProvider();
   final _glAuth = GlAuthProvider();
 
