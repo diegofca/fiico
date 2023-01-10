@@ -52,7 +52,7 @@ class FriendsEmptyViewState extends State<FriendsEmptyView> {
           Padding(
             padding: const EdgeInsets.all(FiicoPaddings.eight),
             child: Text(
-              FiicoLocale().thereNoResultsForYourSearch,
+              FiicoLocale().youHaveNoFriendsAddedYet,
               style: Style.subtitle.copyWith(
                 fontSize: FiicoFontSize.xm,
                 color: FiicoColors.graySoft,

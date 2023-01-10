@@ -6,13 +6,13 @@ import 'package:control/helpers/genericViews/fiico_button.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/genericViews/gray_app_bard.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
-import 'package:control/modules/settings/view/pages/sendSuggestion/bloc/send_suggestion_bloc.dart';
+import 'package:control/modules/deleteAccount/bloc/delete_account_bloc.dart';
 import 'package:control/modules/settings/view/pages/sendSuggestion/model/suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SendSuggestionSuccessView extends StatelessWidget {
-  SendSuggestionSuccessView({
+class DeleteAccountSuccessView extends StatelessWidget {
+  DeleteAccountSuccessView({
     Key? key,
   }) : super(key: key);
 
@@ -74,7 +74,7 @@ class SendSuggestionSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(FiicoPaddings.sixteen),
       child: Text(
-        FiicoLocale().iHaveSuggestion,
+        "Nos entristece que te vayas!",
         maxLines: FiicoMaxLines.two,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -89,7 +89,7 @@ class SendSuggestionSuccessView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: FiicoPaddings.twenyFour),
       child: Text(
-        FiicoLocale().pleaseTellUsMore,
+        "Cuentanos que no te gusto y que podemos mejorar para regreses.",
         maxLines: FiicoMaxLines.two,
         textAlign: TextAlign.center,
         style: Style.subtitle.copyWith(
@@ -102,7 +102,7 @@ class SendSuggestionSuccessView extends StatelessWidget {
 
   Widget _textAreaView(BuildContext context) {
     _controller.text =
-        context.read<SendSuggestionBloc>().state.suggestion?.text ?? '';
+        context.read<DeleteAccountBloc>().state.suggestion?.text ?? '';
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(FiicoPaddings.sixteen),
@@ -117,7 +117,7 @@ class SendSuggestionSuccessView extends StatelessWidget {
           controller: _controller,
           onChanged: (newText) => _onChangeValue(context, newText),
           decoration: InputDecoration.collapsed(
-            hintText: FiicoLocale().weLoveToKnowFeatureLooking,
+            hintText: "Quiero eliminar mi cuenta por que ...",
             hintStyle: Style.subtitle.copyWith(
               color: FiicoColors.grayNeutral,
               fontSize: FiicoFontSize.xm,
@@ -155,16 +155,14 @@ class SendSuggestionSuccessView extends StatelessWidget {
       padding: const EdgeInsets.all(FiicoPaddings.eight),
       width: double.maxFinite,
       child: FiicoButton(
-        title: FiicoLocale().sendSuggestion,
+        title: "Eliminar cuenta",
         color: isSendSuggestionAvailable()
             ? FiicoColors.pink
             : FiicoColors.graySoft,
         onTap: () {
           if (isSendSuggestionAvailable()) {
             _controller.clear();
-            context
-                .read<SendSuggestionBloc>()
-                .add(const SendSuggetionRequest());
+            context.read<DeleteAccountBloc>().add(const SendSuggetionRequest());
           }
         },
       ),
@@ -174,11 +172,11 @@ class SendSuggestionSuccessView extends StatelessWidget {
   void _onChangeValue(BuildContext context, String newText) {
     final suggestion = Suggestion(
       text: newText,
-      type: SuggestionType.suggestion,
+      type: SuggestionType.removeAccount,
     );
     context
-        .read<SendSuggestionBloc>()
-        .add(SendSuggestionUpdateTexRequest(suggestion: suggestion));
+        .read<DeleteAccountBloc>()
+        .add(SendSuggestionUpdateRequest(suggestion: suggestion));
   }
 
   bool isSendSuggestionAvailable() {

@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
+import 'package:control/modules/deleteAccount/view/delete_account_page.dart';
 import 'package:control/modules/editProfile/view/edit_profile_page.dart';
 import 'package:control/modules/friends/view/friends_page.dart';
 import 'package:control/modules/profile/model/profile_option.dart';
@@ -109,6 +110,9 @@ class ProfileListItemViewState extends State<ProfileListItemView> {
     }
     if (widget.option.name == FiicoLocale().helpCenter) {
       FiicoRoute.send(context, HelpCenterPage(user: user));
+    }
+    if (widget.option.name == FiicoLocale().deleteAccount) {
+      FiicoRoute.send(context, const DeleteAccountPage());
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:control/helpers/database/shared_preference.dart';
+import 'package:control/modules/settings/view/pages/sendSuggestion/model/suggestion.dart';
 import 'package:control/modules/settings/view/pages/sendSuggestion/repository/send_suggestion_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -19,8 +20,9 @@ class SendSuggestionBloc extends Bloc<SendSuggetionEvent, SendSuggestionState> {
     Emitter<SendSuggestionState> emit,
   ) async {
     emit(state.copyWith(status: SendSuggestionStatus.loading));
+
     final user = await Preferences.get.getUser();
-    await repository.sendSuggestion(user, state.text);
+    await repository.sendSuggestion(user, state.suggestion);
     emit(state.copyWith(
       status: SendSuggestionStatus.success,
       sendSuggestion: true,
@@ -33,7 +35,7 @@ class SendSuggestionBloc extends Bloc<SendSuggetionEvent, SendSuggestionState> {
   ) async {
     emit(state.copyWith(
       status: SendSuggestionStatus.success,
-      text: event.text,
+      suggestion: event.suggestion,
     ));
   }
 }

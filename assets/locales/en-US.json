@@ -285,7 +285,7 @@
     "update": "Update",
     "after": "After",
     "update_description": "A new version of the app is now available!.\n\nWe improve day by day to provide you with the best service.",
-    "update_your_premium_plan": "Upgrade your Premium plan!",
+    "update_your_premium_plan": "Upgrade your plan to Premium!",
     "learn_about_your_premium_plan": "Learn about the benefits of being FinUp Premium, unlock all current and future features",
     "recover_budget": "Recover budget",
     "archive_budget": "Archive budget",
@@ -312,5 +312,7 @@
     "friends": "Friends",
     "add_friend": "Add friend",
     "show_invite": "Show invite",
-    "invitations": "Invitations"
+    "invitations": "Invitations",
+    "You_have_no_friends_added_yet": "You have no friends added yet.",
+    "delete_account": "Delete account"
 }   

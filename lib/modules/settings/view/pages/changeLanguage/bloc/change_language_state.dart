@@ -14,7 +14,7 @@ class ChangeLanguageState extends Equatable {
   bool get isSelectedLanguage => language != null;
 
   @override
-  List<Object?> get props => [status, language];
+  List<Object?> get props => [status, language, isSelectedLanguage];
 
   ChangeLanguageState copyWith({
     ChangeLanguageStatus? status,

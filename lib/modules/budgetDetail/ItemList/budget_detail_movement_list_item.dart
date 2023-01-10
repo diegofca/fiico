@@ -3,6 +3,7 @@ import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/font_styles.dart';
+import 'package:control/helpers/extension/string.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/models/budget.dart';
 import 'package:control/models/movement.dart';
@@ -122,7 +123,7 @@ class BudgetDetailMovementListItemViewState
     return Padding(
       padding: const EdgeInsets.only(top: FiicoPaddings.four),
       child: Text(
-        widget.movement.createdAt?.toDate().toDateFormat1() ?? '',
+        widget.movement.createdAt?.toDate().toDateFormat5().capitalize() ?? '',
         style: Style.subtitle.copyWith(
           color: FiicoColors.graySoft,
           fontSize: FiicoFontSize.xs,

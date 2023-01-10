@@ -331,4 +331,6 @@ class FiicoLocale {
   final addFriend = "add_friend".tr();
   final showInvite = "show_invite".tr();
   final invitations = "invitations".tr();
+  final youHaveNoFriendsAddedYet = "You_have_no_friends_added_yet".tr();
+  final deleteAccount = "delete_account".tr();
 }

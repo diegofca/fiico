@@ -164,6 +164,7 @@ class Movement {
   }
 
   /// Functions classs
+
   MovementType getType() {
     switch (type) {
       case 'ENTRY':

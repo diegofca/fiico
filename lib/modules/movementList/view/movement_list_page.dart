@@ -157,7 +157,7 @@ class MovementsListPageView extends StatelessWidget {
         var value = 4;
         switch (option) {
           case MovementListTypeOption.all:
-            value = 7;
+            value = 8;
             break;
           case MovementListTypeOption.entry:
             value = 3;

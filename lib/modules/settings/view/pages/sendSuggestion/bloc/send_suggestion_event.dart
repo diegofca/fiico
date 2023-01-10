@@ -12,10 +12,10 @@ class SendSuggetionRequest extends SendSuggetionEvent {
 }
 
 class SendSuggestionUpdateTexRequest extends SendSuggetionEvent {
-  const SendSuggestionUpdateTexRequest({required this.text});
+  const SendSuggestionUpdateTexRequest({required this.suggestion});
 
-  final String? text;
+  final Suggestion? suggestion;
 
   @override
-  List<Object?> get props => [text];
+  List<Object?> get props => [suggestion];
 }

@@ -245,7 +245,7 @@
     "tMobile_description": "Saldo de suscripción en T-Mobile",
     "feeding": "Alimentación",
     "rent": "Arriendo",
-    "mortgage_payment": "pago hipotecario",
+    "mortgage_payment": "Pago hipotecario",
     "water_service": "Servicio de agua",
     "gas_service": "Servicio de gas",
     "light_service": "Servicio de luz",
@@ -285,7 +285,7 @@
     "update": "Actualizar",
     "after": "Después",
     "update_description": "¡Una nueva versión de la aplicación está ahora disponible!.\n\nMejoramos día a día para brindarte el mejor servicio.",
-    "update_your_premium_plan": "¡Actualiza tu plan Premium!",
+    "update_your_premium_plan": "¡Actualiza tu plan a Premium!",
     "learn_about_your_premium_plan": "Conoce los beneficios de ser FinUp Premium, desbloquea todas las actuales y futuras funcionalidades",
     "recover_budget": "Recuperar presupuesto",
     "archive_budget": "Archivar presupuesto",
@@ -312,5 +312,7 @@
     "friends": "Amigos",
     "add_friend": "Agregar amigo",
     "show_invite": "Ver invitación",
-    "invitations": "Invitaciones"
+    "invitations": "Invitaciones",
+    "You_have_no_friends_added_yet": "No tienes amigos agregados aún.",
+    "delete_account": "Eliminar cuenta"
 }

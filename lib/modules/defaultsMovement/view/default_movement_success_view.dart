@@ -9,6 +9,7 @@ import 'package:control/modules/defaultsMovement/repository/default_movements_li
 import 'package:control/modules/defaultsMovement/view/widgets/default_movement_item_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class DefaultMovementSuccessView extends StatelessWidget {
   DefaultMovementSuccessView({
@@ -110,7 +111,8 @@ class DefaultMovementSuccessView extends StatelessWidget {
                   movement: movement,
                   onSelected: (movement) {
                     Navigator.of(context).pop();
-                    onMovementSelected.call(movement);
+                    final nMovement = movement.copyWith(id: const Uuid().v1());
+                    onMovementSelected.call(nMovement);
                   },
                 ),
               );

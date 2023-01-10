@@ -22,6 +22,7 @@ class ProfileSuccessView extends StatelessWidget {
     ProfileOption(FiicoLocale().securityPinTitle, false),
     ProfileOption(FiicoLocale().friends, false),
     ProfileOption(FiicoLocale().helpCenter, false),
+    ProfileOption(FiicoLocale().deleteAccount, false),
   ];
 
   @override

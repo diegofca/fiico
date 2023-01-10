@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -7,6 +6,7 @@ import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/fiico_slide_action.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
@@ -235,17 +235,26 @@ class DebtDetailSuccessView extends StatelessWidget {
           Container(
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
-            child: FiicoButton(
-              title: movement?.getType() == MovementType.DEBT
-                  ? FiicoLocale().markAsPaid
-                  : FiicoLocale().addNewExpense,
-              color: FiicoColors.pinkRed,
-              image: SVGImages.checkMarkIcon,
-              onTap: () => _paymentIntentAction(context),
-            ),
+            child: _typePaymentButton(context),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _typePaymentButton(BuildContext context) {
+    if (movement?.getType() == MovementType.DEBT) {
+      return FiicoSlideButton(
+        title: FiicoLocale().markAsPaid,
+        color: FiicoColors.pinkRed,
+        onSubmit: () => _paymentIntentAction(context),
+        onStart: () => true,
+      );
+    }
+    return FiicoButton(
+      title: FiicoLocale().addNewExpense,
+      color: FiicoColors.pinkRed,
+      onTap: () => _paymentIntentAction(context),
     );
   }
 
@@ -502,7 +511,7 @@ class DebtDetailSuccessView extends StatelessWidget {
     }
   }
 
-  void _markDebtPaymentIntent(BuildContext context) {
+  void _markDebtPaymentIntent(BuildContext context) async {
     final bloc = context.read<DebtDetailBloc>();
     if (movement?.isVariableValue ?? false) {
       VariableValueBottoView().show(
@@ -514,6 +523,7 @@ class DebtDetailSuccessView extends StatelessWidget {
         },
       );
     } else {
+      await Future.delayed(const Duration(milliseconds: 300));
       bloc.add(DebtDetailMarkPayedMovement(movement: movement));
     }
   }

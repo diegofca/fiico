@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/date.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/extension/num.dart';
 import 'package:control/helpers/extension/shadow.dart';
 import 'package:control/helpers/fonts_params.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/fiico_slide_action.dart';
 import 'package:control/helpers/genericViews/separator_view.dart';
 import 'package:control/helpers/genericViews/tags_view.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
@@ -229,11 +228,11 @@ class EntryDetailSuccessView extends StatelessWidget {
           Container(
             width: double.maxFinite,
             padding: const EdgeInsets.only(top: FiicoPaddings.eight),
-            child: FiicoButton(
+            child: FiicoSlideButton(
               title: FiicoLocale().markAsReceived,
               color: FiicoColors.greenNeutral,
-              image: SVGImages.checkMarkIcon,
-              onTap: () => _paymentIntentAction(context),
+              onSubmit: () => _paymentIntentAction(context),
+              onStart: () => true,
             ),
           ),
         ],

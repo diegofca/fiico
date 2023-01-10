@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
@@ -9,7 +11,13 @@ import 'package:control/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum HomeSliverButtonOptions { addEntry, addDebt, addGroup, myGroups }
+enum HomeSliverButtonOptions {
+  addEntry,
+  addDebt,
+  addGroup,
+  myGroups,
+  calculator
+}
 
 class HomeSliverAppBar extends SliverAppBar {
   const HomeSliverAppBar(
@@ -45,6 +53,23 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
   final flexDuration = const Duration(milliseconds: 10);
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
+
+  final _scrollController = ScrollController();
+  double step = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 5), (_) {
+      step = _scrollController.position.pixels + 100.0;
+      if (step >= _scrollController.position.maxScrollExtent) {
+        step = _scrollController.position.minScrollExtent;
+      }
+
+      _scrollController.animateTo(step,
+          duration: const Duration(seconds: 1), curve: Curves.ease);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -350,8 +375,9 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
       alignment: Alignment.bottomCenter,
       height: _heigthButtonsWidget,
       child: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        padding: const EdgeInsets.only(left: FiicoPaddings.sixteen),
         child: Row(
           children: [
             _buttonAction(
@@ -368,15 +394,21 @@ class _HomeSliverAppBarState extends State<HomeSliverAppBar> {
             ),
             _buttonAction(
               context,
-              SVGImages.addBudget,
-              FiicoLocale().addBudget,
-              () => widget.optionTapped(HomeSliverButtonOptions.addGroup),
-            ),
-            _buttonAction(
-              context,
               SVGImages.budgetList,
               FiicoLocale().myBudgets,
               () => widget.optionTapped(HomeSliverButtonOptions.myGroups),
+            ),
+            _buttonAction(
+              context,
+              SVGImages.calculator,
+              'Calculadora',
+              () => widget.optionTapped(HomeSliverButtonOptions.calculator),
+            ),
+            _buttonAction(
+              context,
+              SVGImages.addBudget,
+              FiicoLocale().addBudget,
+              () => widget.optionTapped(HomeSliverButtonOptions.addGroup),
             ),
           ],
         ),

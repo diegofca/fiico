@@ -48,4 +48,11 @@ extension DateExtension on DateTime {
       FiicoLocale.locale.toString(),
     ).format(this);
   }
+
+  String toDateFormat5() {
+    return DateFormat(
+      "MMM dd - yyy",
+      FiicoLocale.locale.toString(),
+    ).format(this);
+  }
 }

@@ -1,15 +1,15 @@
-part of 'send_suggestion_bloc.dart';
+part of 'delete_account_bloc.dart';
 
-enum SendSuggestionStatus { success, loading }
+enum DeleteAccountStatus { success, loading, removePending }
 
-class SendSuggestionState extends Equatable {
-  const SendSuggestionState({
-    this.status = SendSuggestionStatus.success,
+class DeleteAccountState extends Equatable {
+  const DeleteAccountState({
+    this.status = DeleteAccountStatus.loading,
     this.sendSuggestion,
     this.suggestion,
   });
 
-  final SendSuggestionStatus status;
+  final DeleteAccountStatus status;
   final Suggestion? suggestion;
   final bool? sendSuggestion;
 
@@ -18,12 +18,12 @@ class SendSuggestionState extends Equatable {
   @override
   List<Object?> get props => [status, suggestion, sendSuggestion];
 
-  SendSuggestionState copyWith({
-    SendSuggestionStatus? status,
+  DeleteAccountState copyWith({
+    DeleteAccountStatus? status,
     Suggestion? suggestion,
     bool? sendSuggestion,
   }) {
-    return SendSuggestionState(
+    return DeleteAccountState(
       status: status ?? this.status,
       suggestion: suggestion ?? this.suggestion,
       sendSuggestion: sendSuggestion,

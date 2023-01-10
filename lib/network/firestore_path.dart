@@ -18,4 +18,6 @@ class Firestore {
   static const histories = 'histories';
   static const paymentsHistory = 'payments';
   static const notificationOptions = 'notificationsOptions';
+  static const typeField = 'type';
+  static const userIdField = 'userId';
 }

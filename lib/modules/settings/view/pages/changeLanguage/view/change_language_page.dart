@@ -8,7 +8,6 @@ import 'package:control/modules/settings/view/pages/changeLanguage/bloc/change_l
 import 'package:control/modules/settings/view/pages/changeLanguage/repository/change_language_repository.dart';
 import 'package:control/modules/settings/view/pages/changeLanguage/repository/languages_list.dart';
 import 'package:control/modules/settings/view/pages/changeLanguage/view/change_language_success_view.dart';
-import 'package:control/navigation/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,22 +54,12 @@ class ChangeLanguageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChangeLanguageBloc, ChangeLanguageState>(
-      builder: (context, state) {
-        return ChangeLanguageSuccessView(
-          onSelectLanguage: onSelectLanguage,
-          languages: Languages().items,
-        );
-      },
-      listener: (context, state) {
-        switch (state.status) {
-          case ChangeLanguageStatus.loading:
-            FiicoRoute.showLoader(context);
-            break;
-          default:
-            FiicoRoute.hideLoader(context);
-        }
-      },
-    );
+    return BlocBuilder<ChangeLanguageBloc, ChangeLanguageState>(
+        builder: (context, state) {
+      return ChangeLanguageSuccessView(
+        onSelectLanguage: onSelectLanguage,
+        languages: Languages().items,
+      );
+    });
   }
 }

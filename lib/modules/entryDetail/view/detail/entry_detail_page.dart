@@ -130,7 +130,7 @@ class EntryDetailPageView extends StatelessWidget {
   void _validateIfModifyMovement(BuildContext context, EntryDetailState state) {
     if (state.isPayed) {
       movement = state.updatedMovement;
-      MovementDetailMarkPayedSuccessBottomView.show(context);
+       MovementDetailMarkPayedSuccessBottomView.show(context);
     }
 
     if (state.isModify) {

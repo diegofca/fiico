@@ -1,13 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:control/helpers/SVGImages.dart';
 import 'package:control/helpers/database/shared_preference.dart';
 import 'package:control/helpers/extension/colors.dart';
 import 'package:control/helpers/extension/font_styles.dart';
 import 'package:control/helpers/fonts_params.dart';
 import 'package:control/helpers/genericViews/border_container.dart';
-import 'package:control/helpers/genericViews/fiico_button.dart';
+import 'package:control/helpers/genericViews/fiico_slide_action.dart';
 import 'package:control/helpers/genericViews/fiico_textfield.dart';
 import 'package:control/helpers/manager/localizable_manager.dart';
 import 'package:control/models/debt_daily.dart';
@@ -183,11 +182,11 @@ class DebtDailyBottoView {
         vertical: FiicoPaddings.sixteen,
         horizontal: FiicoPaddings.sixteen,
       ),
-      child: FiicoButton(
+      child: FiicoSlideButton(
         title: FiicoLocale().addNewExpense,
         color: movement?.getTypeColor() ?? FiicoColors.gold,
-        image: SVGImages.checkMarkIcon,
-        onTap: () async {
+        onStart: () => _isSuccessfullSlide(),
+        onSubmit: () async {
           final value = _currencyFormarted.getUnformattedValue();
           final name = _nameController.text;
           final user = await Preferences.get.getUser();
@@ -204,5 +203,11 @@ class DebtDailyBottoView {
         },
       ),
     );
+  }
+
+  bool _isSuccessfullSlide() {
+    final value = _currencyFormarted.getUnformattedValue();
+    final name = _nameController.text;
+    return name.isNotEmpty && value > 0;
   }
 }

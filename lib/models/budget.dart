@@ -510,6 +510,7 @@ class Budget {
       default:
         return movements
             ?.sortedBy((e) => e.name!)
+            .sortedBy((e) => e.type!)
             .sortedBy((e) => e.paymentStatus!)
             .toList();
     }
